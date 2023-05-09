@@ -43,9 +43,9 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "UA Cloud Library REST Service",
+        Title = "UA REST Server",
         Version = "v1",
-        Description = "A REST-full interface to the CESMII & OPC Foundation Cloud Library",
+        Description = "A REST-full interface to an OPC UA Server",
         Contact = new OpenApiContact
         {
             Name = "OPC Foundation",
