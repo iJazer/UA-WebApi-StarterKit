@@ -37,7 +37,7 @@ namespace Ua.Rest.Server
     using System.Net;
     using Microsoft.AspNetCore.Authorization;
 
-    //[Authorize(AuthenticationSchemes = "BasicAuthentication")]
+    [Authorize(AuthenticationSchemes = "BasicAuthentication")]
     [ApiController]
     public class UARESTController : ControllerBase
     {

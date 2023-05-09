@@ -85,7 +85,7 @@ namespace Ua.Rest.Server
                     {
                         throw new ArgumentException("Invalid credentials");
                     }
-                    if ((password != null) && !password.Equals(passwordFromEnvironment, StringComparison.OrdinalIgnoreCase))
+                    if ((password != null) && !password.Equals(passwordFromEnvironment, StringComparison.InvariantCulture))
                     {
                         throw new ArgumentException("Invalid credentials");
                     }
@@ -108,7 +108,7 @@ namespace Ua.Rest.Server
 
             if (claims == null)
             {
-                throw new ArgumentException("Invalid credentials");
+                return Task.FromResult(AuthenticateResult.Fail($"Authentication failed."));
             }
 
             ClaimsIdentity identity = new ClaimsIdentity(claims, Scheme.Name);
