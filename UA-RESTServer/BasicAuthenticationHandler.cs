@@ -30,7 +30,6 @@
 namespace Ua.Rest.Server
 {
     using Microsoft.AspNetCore.Authentication;
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using Microsoft.Extensions.Primitives;
@@ -56,8 +55,7 @@ namespace Ua.Rest.Server
 
         protected override Task<AuthenticateResult> HandleAuthenticateAsync()
         {
-            string username = null;
-            IEnumerable<Claim> claims = null;
+            IEnumerable<Claim> claims;
             try
             {
                 if (StringValues.IsNullOrEmpty(Request.Headers["Authorization"]))
@@ -65,12 +63,43 @@ namespace Ua.Rest.Server
                     throw new ArgumentException("Authentication header missing in request!");
                 }
 
+                string[] credentials = new string[0];
                 AuthenticationHeaderValue authHeader = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]);
-                string[] credentials = Encoding.UTF8.GetString(Convert.FromBase64String(authHeader.Parameter)).Split(':');
-                username = credentials.FirstOrDefault();
-                string password = credentials.LastOrDefault();
+                if (authHeader.Parameter != null)
+                {
+                    credentials = Encoding.UTF8.GetString(Convert.FromBase64String(authHeader.Parameter)).Split(':');
+                }
 
-                throw new ArgumentException("Invalid credentials");
+                string? username = null;
+                string? password = null;
+                if (credentials != null)
+                {
+                    username = credentials.FirstOrDefault();
+                    password = credentials.LastOrDefault();
+                }
+
+                if ((username != null) && username.Equals("admin", StringComparison.OrdinalIgnoreCase))
+                {
+                    string? passwordFromEnvironment = Environment.GetEnvironmentVariable("ServicePassword");
+                    if (string.IsNullOrEmpty(passwordFromEnvironment))
+                    {
+                        throw new ArgumentException("Invalid credentials");
+                    }
+                    if ((password != null) && !password.Equals(passwordFromEnvironment, StringComparison.OrdinalIgnoreCase))
+                    {
+                        throw new ArgumentException("Invalid credentials");
+                    }
+
+                    claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, username),
+                        new Claim(ClaimTypes.Role, "Administrator")
+                    };
+                }
+                else
+                {
+                    throw new ArgumentException("Invalid credentials");
+                }
             }
             catch (Exception ex)
             {
