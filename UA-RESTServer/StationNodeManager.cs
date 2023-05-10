@@ -61,6 +61,8 @@ namespace Ua.Rest.Server
         public Dictionary<string, BaseDataVariableState> UAVariableNodes { get; private set; } = new();
         public Dictionary<string, MethodState> UAMethodNodes { get; private set; } = new();
 
+        public List<NodeState>? NodeStates { get; private set; } = null;
+
         public StationNodeManager(IServerInternal server, ApplicationConfiguration configuration)
         : base(server, configuration)
         {
@@ -92,6 +94,8 @@ namespace Ua.Rest.Server
 
                 AddReverseReferences(externalReferences);
             }
+
+            NodeStates = PredefinedNodes.Values.ToList();
 
             // set initial values
             UAVariableNodes["ProductSerialNumber"].Value = (UInt64)1;

@@ -173,12 +173,42 @@ namespace Ua.Rest.Server
             try
             {
                 NamespaceTable namespaceTable = new NamespaceTable(FactoryStationServer.NodeManagerInstance?.NamespaceUris);
-
-                if (string.IsNullOrEmpty(browsePath))
+                if (FactoryStationServer.NodeManagerInstance?.NodeStates != null)
                 {
-                    List<ReferenceDescription> references = new();
+                    NodeState? browseNode = null;
+                    if (string.IsNullOrEmpty(browsePath))
+                    {
+                        browseNode = FactoryStationServer.NodeManagerInstance.NodeStates[0].GetHierarchyRoot();
+                    }
+                    else
+                    {
+                        foreach (NodeState node in FactoryStationServer.NodeManagerInstance.NodeStates)
+                        {
+                            if (node.BrowseName.Name == browsePath)
+                            {
+                                browseNode = node;
+                                break;
+                            }
+                        }
+                    }
 
-                    return new ObjectResult(references) { StatusCode = (int)HttpStatusCode.OK };
+                    if (browseNode == null)
+                    {
+                        return new ObjectResult("Not found") { StatusCode = (int)HttpStatusCode.NotFound };
+                    }
+
+                    Dictionary<NodeId, string> hierarchy = new();
+                    List<NodeStateHierarchyReference> references = new();
+                    browseNode.GetHierarchyReferences(FactoryStationServer.NodeManagerInstance.Server.DefaultSystemContext, "", hierarchy, references);
+                    
+                    List<string> browseResult = new();
+                    foreach (NodeStateHierarchyReference reference in references)
+                    {
+                        string? browseName = FactoryStationServer.NodeManagerInstance?.Find(ExpandedNodeId.ToNodeId(reference.TargetId, namespaceTable)).BrowseName.Name;
+                        browseResult.Add(browseNode.BrowseName.Name + " -> " + browseName);
+                    }
+
+                    return new ObjectResult(browseResult) { StatusCode = (int)HttpStatusCode.OK };
                 }
                 else
                 {
