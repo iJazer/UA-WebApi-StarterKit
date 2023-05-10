@@ -29,15 +29,15 @@
 
 namespace Ua.Rest.Server
 {
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Newtonsoft.Json;
+    using Opc.Ua;
     using Swashbuckle.AspNetCore.Annotations;
     using System.ComponentModel.DataAnnotations;
-    using Opc.Ua;
     using System.Net;
-    using Microsoft.AspNetCore.Authorization;
-    using UA_RESTServer.Models;
     using System.Text;
+    using UA_RESTServer.Models;
 
     [Authorize(AuthenticationSchemes = "BasicAuthentication")]
     [ApiController]
@@ -50,7 +50,6 @@ namespace Ua.Rest.Server
         /// <response code="403">Forbidden</response>
         /// <response code="404">Not Found</response>
         /// <response code="500">Internal Server Error</response>
-        /// <response code="0">Default error handling for unmentioned status codes</response>
         [HttpGet]
         [Route("/listServerNamespaces")]
         [SwaggerOperation("ListServerNamespaces")]
@@ -77,7 +76,6 @@ namespace Ua.Rest.Server
         /// <response code="403">Forbidden</response>
         /// <response code="404">Not Found</response>
         /// <response code="500">Internal Server Error</response>
-        /// <response code="0">Default error handling for unmentioned status codes</response>
         [HttpGet]
         [Route("/listVariables")]
         [SwaggerOperation("ListVariables")]
@@ -119,7 +117,6 @@ namespace Ua.Rest.Server
         /// <response code="403">Forbidden</response>
         /// <response code="404">Not Found</response>
         /// <response code="500">Internal Server Error</response>
-        /// <response code="0">Default error handling for unmentioned status codes</response>
         [HttpGet]
         [Route("/listMethods")]
         [SwaggerOperation("ListMethods")]
@@ -157,33 +154,31 @@ namespace Ua.Rest.Server
         /// <summary>
         /// Browse an OPC UA node on the server
         /// </summary>
+        /// <param name="browsePath">The browse path within the OPC UA Server. If omitted, the browse will start in the root folder of the OPC UA Server.</param>
+        /// <response code="200">Requested OPC UA node value</response>
+        /// <response code="400">Bad Request, e.g. the format of the parameter is wrong.</response>
         /// <response code="401">Unauthorized, e.g. the server refused the authorization attempt.</response>
         /// <response code="403">Forbidden</response>
         /// <response code="404">Not Found</response>
         /// <response code="500">Internal Server Error</response>
-        /// <response code="0">Default error handling for unmentioned status codes</response>
-        [HttpGet]
+        [HttpPost]
         [Route("/browse")]
         [SwaggerOperation("Browse")]
         [SwaggerResponse(statusCode: 401, type: typeof(ActionResult), description: "Unauthorized, e.g. the server refused the authorization attempt.")]
         [SwaggerResponse(statusCode: 403, type: typeof(ActionResult), description: "Forbidden")]
         [SwaggerResponse(statusCode: 404, type: typeof(ActionResult), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(ActionResult), description: "Internal Server Error")]
-        [SwaggerResponse(statusCode: 0, type: typeof(ActionResult), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult Browse()
+        public virtual IActionResult Browse([FromBody] string browsePath)
         {
             try
             {
-                StationNodeManager? manager = FactoryStationServer.NodeManagerInstance;
-                if (manager != null)
-                {
-                    Dictionary<string, string> keyValuePairs = new();
-                    foreach (BaseVariableState variable in manager.UAVariableNodes.Values)
-                    {
-                        keyValuePairs.Add(variable.DisplayName.Text, variable.NodeId.ToString());
-                    }
+                NamespaceTable namespaceTable = new NamespaceTable(FactoryStationServer.NodeManagerInstance?.NamespaceUris);
 
-                    return new ObjectResult(keyValuePairs) { StatusCode = (int)HttpStatusCode.OK };
+                if (string.IsNullOrEmpty(browsePath))
+                {
+                    List<ReferenceDescription> references = new();
+
+                    return new ObjectResult(references) { StatusCode = (int)HttpStatusCode.OK };
                 }
                 else
                 {
@@ -192,7 +187,7 @@ namespace Ua.Rest.Server
             }
             catch (Exception ex)
             {
-                return new ObjectResult(ex.Message) { StatusCode = (int)HttpStatusCode.BadRequest };
+                return new ObjectResult(ex.Message) { StatusCode = (int)HttpStatusCode.InternalServerError };
             }
         }
 
@@ -206,7 +201,6 @@ namespace Ua.Rest.Server
         /// <response code="403">Forbidden</response>
         /// <response code="404">Not Found</response>
         /// <response code="500">Internal Server Error</response>
-        /// <response code="0">Default error handling for unmentioned status codes</response>
         [HttpPost]
         [Route("/read")]
         [SwaggerOperation("ReadNode")]
@@ -248,7 +242,6 @@ namespace Ua.Rest.Server
         /// <response code="403">Forbidden</response>
         /// <response code="404">Not Found</response>
         /// <response code="500">Internal Server Error</response>
-        /// <response code="0">Default error handling for unmentioned status codes</response>
         [HttpPost]
         [Route("/write")]
         [SwaggerOperation("WriteNode")]
@@ -311,7 +304,6 @@ namespace Ua.Rest.Server
         /// <response code="403">Forbidden</response>
         /// <response code="404">Not Found</response>
         /// <response code="500">Internal Server Error</response>
-        /// <response code="0">Default error handling for unmentioned status codes</response>
         [HttpPost]
         [Route("/call")]
         [SwaggerOperation("MethodCall")]

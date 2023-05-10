@@ -37,7 +37,6 @@ namespace Ua.Rest.Server
     using System.Diagnostics;
     using System.IO;
     using System.Threading;
-    using static System.Net.WebRequestMethods;
 
     public enum StationStatus : int
     {
