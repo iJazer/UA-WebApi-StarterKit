@@ -43,9 +43,9 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "UA REST Server",
+        Title = "OPC UA REST Server",
         Version = "v1",
-        Description = "A REST-full interface to an OPC UA Server",
+        Description = "A REST-full interface for an OPC UA Server",
         Contact = new OpenApiContact
         {
             Name = "OPC Foundation",
