@@ -27,14 +27,52 @@
  * http://opcfoundation.org/License/MIT/1.00/
  * ======================================================================*/
 
-using Opc.Ua;
+using Newtonsoft.Json;
 
 namespace UA_RESTServer.Models
 {
-    public class CallPayload
+    internal class UserInfo
     {
-        public string ExpandedNodeId { get; set; } = string.Empty;
+        [JsonProperty("ID")]
+        public string Id { get; set; } = string.Empty;
 
-        public List<Variant> InputArguments { get; set; } = new();
+        [JsonProperty("display_name")]
+        public string DisplayName { get; set; } = string.Empty;
+
+        [JsonProperty("user_login")]
+        public string UserLogin { get; set; } = string.Empty;
+
+        [JsonProperty("user_nicename")]
+        public string UserNiceName { get; set; } = string.Empty;
+
+        [JsonProperty("user_email")]
+        public string UserEmail { get; set; } = string.Empty;
+
+        [JsonProperty("user_registered")]
+        public DateTime? UserRegistered { get; set; }
+
+        [JsonProperty("user_status")]
+        public string UserStatus { get; set; } = string.Empty;
+
+        [JsonProperty("spam")]
+        public string IsSpam { get; set; } = string.Empty;
+
+        [JsonProperty("deleted")]
+        public string IsDeleted { get; set; } = string.Empty;
+
+        [JsonProperty("real_pass")]
+        public string RealPass { get; set; } = string.Empty;
+
+        [JsonProperty("is_logged_in")]
+        public string IsLoggedIn { get; set; } = string.Empty;
+
+        [JsonProperty("company_id")]
+        public int? CompanyId { get; set; }
+
+        [JsonProperty("company_name")]
+        public string CompanyName { get; set; } = string.Empty;
+
+        [JsonProperty("membership_type")]
+        public int? MembershipType { get; set; }
     }
 }

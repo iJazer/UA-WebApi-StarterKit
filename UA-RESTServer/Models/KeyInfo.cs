@@ -27,14 +27,28 @@
  * http://opcfoundation.org/License/MIT/1.00/
  * ======================================================================*/
 
-using Opc.Ua;
+using Newtonsoft.Json;
 
 namespace UA_RESTServer.Models
 {
-    public class CallPayload
+    internal class KeyInfo
     {
-        public string ExpandedNodeId { get; set; } = string.Empty;
+        [JsonProperty("kid")]
+        public string KeyId { get; set; } = string.Empty;
 
-        public List<Variant> InputArguments { get; set; } = new();
+        [JsonProperty("kty")]
+        public string KeyType { get; set; } = string.Empty;
+
+        [JsonProperty("alg")]
+        public string Algorithm { get; set; } = string.Empty;
+
+        [JsonProperty("sig")]
+        public string Usage { get; set; } = string.Empty;
+
+        [JsonProperty("n")]
+        public string Modulus { get; set; } = string.Empty;
+
+        [JsonProperty("e")]
+        public string Exponent { get; set; } = string.Empty;
     }
 }

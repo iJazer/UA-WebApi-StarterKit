@@ -27,14 +27,22 @@
  * http://opcfoundation.org/License/MIT/1.00/
  * ======================================================================*/
 
-using Opc.Ua;
+using Newtonsoft.Json;
 
 namespace UA_RESTServer.Models
 {
-    public class CallPayload
+    internal class Token
     {
-        public string ExpandedNodeId { get; set; } = string.Empty;
+        [JsonProperty("access_token")]
+        public string AccessToken { get; set; } = string.Empty;
 
-        public List<Variant> InputArguments { get; set; } = new();
+        [JsonProperty("token_type")]
+        public string TokenType { get; set; } = string.Empty;
+
+        [JsonProperty("expires_in")]
+        public int ExpiresIn { get; set; }
+
+        [JsonProperty("refresh_token")]
+        public string RefreshToken { get; set; } = string.Empty;
     }
 }

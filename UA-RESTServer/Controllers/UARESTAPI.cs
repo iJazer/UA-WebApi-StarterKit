@@ -29,6 +29,7 @@
 
 namespace Ua.Rest.Server
 {
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Newtonsoft.Json;
@@ -39,7 +40,7 @@ namespace Ua.Rest.Server
     using System.Text;
     using UA_RESTServer.Models;
 
-    [Authorize(AuthenticationSchemes = "BasicAuthentication")]
+    [Authorize(AuthenticationSchemes = "BasicAuthentication,OAuthAuthentication,Bearer")]
     [ApiController]
     public class UARESTController : ControllerBase
     {

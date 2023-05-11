@@ -28,10 +28,16 @@
  * ======================================================================*/
 
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Opc.Ua;
 using Opc.Ua.Configuration;
+using System.Text;
 using Ua.Rest.Server;
+
+var configBuilder = new ConfigurationBuilder().AddJsonFile($"appsettings.json");
+var config = configBuilder.Build();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,7 +49,7 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "OPC UA REST Server",
+        Title = "OPC UA Server REST API",
         Version = "v1",
         Description = "A REST-full interface for an OPC UA Server",
         Contact = new OpenApiContact
@@ -51,6 +57,33 @@ builder.Services.AddSwaggerGen(options =>
             Name = "OPC Foundation",
             Email = "office@opcfoundation.org",
             Url = new Uri("https://opcfoundation.org/")
+        }
+    });
+
+    options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+    {
+        Type = SecuritySchemeType.OAuth2,
+        Flows = new OpenApiOAuthFlows
+        {
+            AuthorizationCode = new OpenApiOAuthFlow
+            {
+                AuthorizationUrl = new Uri("https://opcfoundation.org/oauth/authorize/"),
+                TokenUrl = new Uri("https://opcfoundation.org/oauth/token/"),
+                Scopes = new Dictionary<string, string>()
+            }
+        }
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme {
+                Reference = new OpenApiReference {
+                    Id = "oauth2",
+                    Type = ReferenceType.SecurityScheme
+                }
+            },
+            new List<string>()
         }
     });
 
@@ -84,11 +117,34 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 builder.Services.AddAuthentication().AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
+builder.Services.AddAuthentication().AddScheme<AuthenticationSchemeOptions, OAuthAuthenticationHandler>("OAuthAuthentication", null);
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.GetSection("Settings").GetSection("OAuthClientSecret").Value)),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
+});
 
 var app = builder.Build();
 
 app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerUI(options =>
+{
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "OPC UA Server REST API");
+    options.OAuthClientId(config.GetSection("Settings").GetSection("OAuthClientId").Value);
+    options.OAuthClientSecret(config.GetSection("Settings").GetSection("OAuthClientSecret").Value);
+    options.OAuthAppName("OPC UA Server REST API");
+});
 
 app.UseHttpsRedirection();
 
@@ -98,11 +154,11 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-_ = Task.Run(() => ConsoleServer());
+_ = Task.Run(() => OPCUAServer());
 
 app.Run();
 
-void ConsoleServer()
+void OPCUAServer()
 {
     ApplicationInstance.MessageDlg = new ApplicationMessageDlg();
     ApplicationInstance application = new ApplicationInstance();
