@@ -113,7 +113,13 @@ namespace Ua.Rest.Server
                         if (reference.TargetId == ObjectIds.ObjectsFolder)
                         {
                             RootNode = folder;
+                            break;
                         }
+                    }
+
+                    if (RootNode != null)
+                    {
+                        break;
                     }
                 }
             }
