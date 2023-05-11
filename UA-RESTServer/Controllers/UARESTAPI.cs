@@ -178,7 +178,7 @@ namespace Ua.Rest.Server
                     NodeState? browseNode = null;
                     if (string.IsNullOrEmpty(browsePath))
                     {
-                        browseNode = FactoryStationServer.NodeManagerInstance.NodeStates[0].GetHierarchyRoot();
+                        browseNode = FactoryStationServer.NodeManagerInstance.RootNode;
                     }
                     else
                     {
@@ -200,12 +200,15 @@ namespace Ua.Rest.Server
                     Dictionary<NodeId, string> hierarchy = new();
                     List<NodeStateHierarchyReference> references = new();
                     browseNode.GetHierarchyReferences(FactoryStationServer.NodeManagerInstance.Server.DefaultSystemContext, "", hierarchy, references);
-                    
+
                     List<string> browseResult = new();
                     foreach (NodeStateHierarchyReference reference in references)
                     {
-                        string? browseName = FactoryStationServer.NodeManagerInstance?.Find(ExpandedNodeId.ToNodeId(reference.TargetId, namespaceTable)).BrowseName.Name;
-                        browseResult.Add(browseNode.BrowseName.Name + " -> " + browseName);
+                        string? browseName = FactoryStationServer.NodeManagerInstance?.Find(ExpandedNodeId.ToNodeId(reference.TargetId, namespaceTable))?.BrowseName.Name;
+                        if (browseName != null)
+                        {
+                            browseResult.Add(browseNode.BrowseName.Name + " -> " + browseName + " (" + NodeId.ToExpandedNodeId(ExpandedNodeId.ToNodeId(reference.TargetId, namespaceTable), namespaceTable).ToString() + ")");
+                        }
                     }
 
                     return new ObjectResult(browseResult) { StatusCode = (int)HttpStatusCode.OK };

@@ -63,6 +63,8 @@ namespace Ua.Rest.Server
 
         public List<NodeState>? NodeStates { get; private set; } = null;
 
+        public NodeState? RootNode { get; private set; } = null;
+
         public StationNodeManager(IServerInternal server, ApplicationConfiguration configuration)
         : base(server, configuration)
         {
@@ -96,6 +98,25 @@ namespace Ua.Rest.Server
             }
 
             NodeStates = PredefinedNodes.Values.ToList();
+
+            // capture root node
+            foreach (NodeState predefinedNode in PredefinedNodes.Values)
+            {
+                BaseObjectState? folder = predefinedNode as BaseObjectState;
+                if (folder != null)
+                {
+                    Dictionary<NodeId, string> hierarchy = new();
+                    List<NodeStateHierarchyReference> references = new();
+                    folder.GetHierarchyReferences(Server.DefaultSystemContext, "", hierarchy, references);
+                    foreach (NodeStateHierarchyReference reference in references)
+                    {
+                        if (reference.TargetId == ObjectIds.ObjectsFolder)
+                        {
+                            RootNode = folder;
+                        }
+                    }
+                }
+            }
 
             // set initial values
             UAVariableNodes["ProductSerialNumber"].Value = (UInt64)1;
