@@ -29,7 +29,6 @@
 
 namespace Ua.Rest.Server
 {
-    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Newtonsoft.Json;
@@ -52,13 +51,13 @@ namespace Ua.Rest.Server
         /// <response code="404">Not Found</response>
         /// <response code="500">Internal Server Error</response>
         [HttpGet]
-        [Route("/listServerNamespaces")]
-        [SwaggerOperation("ListServerNamespaces")]
+        [Route("/listNamespaces")]
+        [SwaggerOperation("ListNamespaces")]
         [SwaggerResponse(statusCode: 401, type: typeof(ActionResult), description: "Unauthorized, e.g. the server refused the authorization attempt.")]
         [SwaggerResponse(statusCode: 403, type: typeof(ActionResult), description: "Forbidden")]
         [SwaggerResponse(statusCode: 404, type: typeof(ActionResult), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(ActionResult), description: "Internal Server Error")]
-        public virtual IActionResult ListServerNamespaces()
+        public virtual IActionResult ListNamespaces()
         {
             try
             {
