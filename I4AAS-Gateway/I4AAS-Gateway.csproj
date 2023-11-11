@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -22,20 +22,8 @@
 
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
-    <Compile Remove="Controllers\Model\**" />
-    <Compile Remove="Model\**" />
-    <Compile Remove="Server\Boiler\**" />
     <Content Remove="$(SpaRoot)**" />
-    <Content Remove="Controllers\Model\**" />
-    <Content Remove="Model\**" />
-    <Content Remove="Server\Boiler\**" />
-    <EmbeddedResource Remove="Controllers\Model\**" />
-    <EmbeddedResource Remove="Model\**" />
-    <EmbeddedResource Remove="Server\Boiler\**" />
     <None Remove="$(SpaRoot)**" />
-    <None Remove="Controllers\Model\**" />
-    <None Remove="Model\**" />
-    <None Remove="Server\Boiler\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
@@ -56,9 +44,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\UA-.NETStandard\Libraries\Opc.Ua.Client\Opc.Ua.Client.csproj" />
-    <ProjectReference Include="..\..\UA-.NETStandard\Libraries\Opc.Ua.Server\Opc.Ua.Server.csproj" />
-    <ProjectReference Include="..\..\UA-.NETStandard\Stack\Opc.Ua.Core\Opc.Ua.Core.csproj" />
+    <ProjectReference Include="..\UaStack\Libraries\Opc.Ua.Client\Opc.Ua.Client.csproj" />
+    <ProjectReference Include="..\UaStack\Libraries\Opc.Ua.Server\Opc.Ua.Server.csproj" />
+    <ProjectReference Include="..\UaStack\Stack\Opc.Ua.Core\Opc.Ua.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

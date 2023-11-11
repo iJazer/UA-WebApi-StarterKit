@@ -151,8 +151,8 @@ namespace I4AAS_Gateway.Client
 
                     var endpointConfiguration = EndpointConfiguration.Create(m_configuration);
                     var endpoint = new ConfiguredEndpoint(null, endpointDescription, endpointConfiguration);
-                    var sessionFactory = new DefaultSessionFactory();
-
+                    var sessionFactory = TraceableSessionFactory.Instance;
+  
                     // set user identity
                     if (!String.IsNullOrEmpty(m_settings.UserName))
                     {
@@ -161,7 +161,6 @@ namespace I4AAS_Gateway.Client
 
                     var session = await sessionFactory.CreateAsync(
                         m_configuration,
-                        null,
                         endpoint,
                         connection == null,
                         false,
