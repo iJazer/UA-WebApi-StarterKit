@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34221.43
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "I4AAS-Gateway", "I4AAS-Gateway.csproj", "{B80FC3AD-D539-4523-AB06-1622B99FD30A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opc.Ua.Core", "..\..\UA-.NETStandard\Stack\Opc.Ua.Core\Opc.Ua.Core.csproj", "{9FFA297B-39BA-4000-8B45-A54D90DC0EF9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opc.Ua.Server", "..\..\UA-.NETStandard\Libraries\Opc.Ua.Server\Opc.Ua.Server.csproj", "{209DA44D-9607-44EC-A126-2974885D34B2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opc.Ua.Security.Certificates", "..\..\UA-.NETStandard\Libraries\Opc.Ua.Security.Certificates\Opc.Ua.Security.Certificates.csproj", "{62BF2A61-AC36-4DE9-923E-69CA66F1419D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opc.Ua.Configuration", "..\..\UA-.NETStandard\Libraries\Opc.Ua.Configuration\Opc.Ua.Configuration.csproj", "{52F49143-BBF3-47FD-B07D-FF211F1961D0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opc.Ua.Client", "..\..\UA-.NETStandard\Libraries\Opc.Ua.Client\Opc.Ua.Client.csproj", "{330F393C-AB07-46CC-A0DA-0180570A1301}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B80FC3AD-D539-4523-AB06-1622B99FD30A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B80FC3AD-D539-4523-AB06-1622B99FD30A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B80FC3AD-D539-4523-AB06-1622B99FD30A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B80FC3AD-D539-4523-AB06-1622B99FD30A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FFA297B-39BA-4000-8B45-A54D90DC0EF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FFA297B-39BA-4000-8B45-A54D90DC0EF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FFA297B-39BA-4000-8B45-A54D90DC0EF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FFA297B-39BA-4000-8B45-A54D90DC0EF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{209DA44D-9607-44EC-A126-2974885D34B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{209DA44D-9607-44EC-A126-2974885D34B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{209DA44D-9607-44EC-A126-2974885D34B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{209DA44D-9607-44EC-A126-2974885D34B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62BF2A61-AC36-4DE9-923E-69CA66F1419D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62BF2A61-AC36-4DE9-923E-69CA66F1419D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62BF2A61-AC36-4DE9-923E-69CA66F1419D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62BF2A61-AC36-4DE9-923E-69CA66F1419D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52F49143-BBF3-47FD-B07D-FF211F1961D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52F49143-BBF3-47FD-B07D-FF211F1961D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52F49143-BBF3-47FD-B07D-FF211F1961D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52F49143-BBF3-47FD-B07D-FF211F1961D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{330F393C-AB07-46CC-A0DA-0180570A1301}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{330F393C-AB07-46CC-A0DA-0180570A1301}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{330F393C-AB07-46CC-A0DA-0180570A1301}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{330F393C-AB07-46CC-A0DA-0180570A1301}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {07015CD9-11CD-485C-B4AA-16BF51092797}
+	EndGlobalSection
+EndGlobal

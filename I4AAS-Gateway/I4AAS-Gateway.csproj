@@ -1,0 +1,110 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+    <IsPackable>false</IsPackable>
+    <SpaRoot>ClientApp\</SpaRoot>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
+    <SpaProxyServerUrl>https://localhost:44403</SpaProxyServerUrl>
+    <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
+    <RootNamespace>I4AAS_Gateway</RootNamespace>
+    <ImplicitUsings>disable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="6.0.23" />
+    <PackageReference Include="System.Device.Gpio" Version="3.0.0" />
+    <PackageReference Include="System.IO.Packaging" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Compile Remove="Controllers\Model\**" />
+    <Compile Remove="Model\**" />
+    <Compile Remove="Server\Boiler\**" />
+    <Content Remove="$(SpaRoot)**" />
+    <Content Remove="Controllers\Model\**" />
+    <Content Remove="Model\**" />
+    <Content Remove="Server\Boiler\**" />
+    <EmbeddedResource Remove="Controllers\Model\**" />
+    <EmbeddedResource Remove="Model\**" />
+    <EmbeddedResource Remove="Server\Boiler\**" />
+    <None Remove="$(SpaRoot)**" />
+    <None Remove="Controllers\Model\**" />
+    <None Remove="Model\**" />
+    <None Remove="Server\Boiler\**" />
+    <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Server\AASXPackageService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Server\I4AAS\I4AAS.IRDI.PredefinedNodes.uanodes" />
+    <None Remove="Server\I4AAS\I4AAS.PredefinedNodes.uanodes" />
+    <None Remove="Server\I4AAS\I4AAS.Submodels.PredefinedNodes.uanodes" />
+    <None Remove="Server\I4AAS\IRDI.PredefinedNodes.uanodes" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Server\I4AAS\I4AAS.IRDI.PredefinedNodes.uanodes" />
+    <EmbeddedResource Include="Server\I4AAS\I4AAS.Submodels.PredefinedNodes.uanodes" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\UA-.NETStandard\Libraries\Opc.Ua.Client\Opc.Ua.Client.csproj" />
+    <ProjectReference Include="..\..\UA-.NETStandard\Libraries\Opc.Ua.Server\Opc.Ua.Server.csproj" />
+    <ProjectReference Include="..\..\UA-.NETStandard\Stack\Opc.Ua.Core\Opc.Ua.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="config\product_carbon_footprint.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Data\ProductCarbonFootprint_NCSU Pulp &amp; Paper batch 2023-10-12\aasx\NCSU_ProductCarbonFootprint\NCSU_ProductCarbonFootprint.opcua.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="config\uaserver-configuration.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\ProductCarbonFootprint_NCSU Pulp &amp; Paper batch 2023-10-12.aasx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\ProductCarbonFootprint_NCSU Pulp &amp; Paper batch 2023-10-12\aasx\files\ncsu.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
+    <!-- Ensure Node.js is installed -->
+    <Exec Command="node --version" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+    </Exec>
+    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+    <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+  </Target>
+
+  <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+    <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build" />
+
+    <!-- Include the newly-built files in the publish output -->
+    <ItemGroup>
+      <DistFiles Include="$(SpaRoot)build\**" />
+      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+        <RelativePath>wwwroot\%(RecursiveDir)%(FileName)%(Extension)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
+</Project>

@@ -1,0 +1,107 @@
+<opc:TypeDictionary
+  xmlns:I4AAS.IRDI="http://opcfoundation.org/UA/Dictionary/IRDI"
+  xmlns:opc="http://opcfoundation.org/BinarySchema/"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:ua="http://opcfoundation.org/UA/"
+  xmlns:tns="http://opcfoundation.org/UA/I4AAS/"
+  DefaultByteOrder="LittleEndian"
+  TargetNamespace="http://opcfoundation.org/UA/I4AAS/"
+>
+  <opc:Import Namespace="http://opcfoundation.org/UA/" Location="Opc.Ua.BinarySchema.bsd"/>
+  <opc:Import Namespace="http://opcfoundation.org/UA/Dictionary/IRDI" Location="I4AAS.IRDI.BinarySchema.bsd"/>
+
+  <opc:StructuredType Name="SubmodelDataType" BaseType="ua:ExtensionObject">
+    <opc:Field Name="ModelId" TypeName="opc:String" />
+    <opc:Field Name="ModelIdShort" TypeName="opc:String" />
+    <opc:Field Name="ModelDescription" TypeName="ua:LocalizedText" />
+  </opc:StructuredType>
+
+  <opc:StructuredType Name="AssetDescriptionFileDataType" BaseType="ua:DataTypeSchemaHeader">
+    <opc:Field Name="NoOfNamespaces" TypeName="opc:Int32" />
+    <opc:Field Name="Namespaces" TypeName="opc:String" LengthField="NoOfNamespaces" />
+    <opc:Field Name="NoOfStructureDataTypes" TypeName="opc:Int32" />
+    <opc:Field Name="StructureDataTypes" TypeName="ua:StructureDescription" LengthField="NoOfStructureDataTypes" />
+    <opc:Field Name="NoOfEnumDataTypes" TypeName="opc:Int32" />
+    <opc:Field Name="EnumDataTypes" TypeName="ua:EnumDescription" LengthField="NoOfEnumDataTypes" />
+    <opc:Field Name="NoOfSimpleDataTypes" TypeName="opc:Int32" />
+    <opc:Field Name="SimpleDataTypes" TypeName="ua:SimpleTypeDescription" LengthField="NoOfSimpleDataTypes" />
+    <opc:Field Name="ModelId" TypeName="opc:String" />
+    <opc:Field Name="ModelIdShort" TypeName="opc:String" />
+    <opc:Field Name="NoOfSubmodels" TypeName="opc:Int32" />
+    <opc:Field Name="Submodels" TypeName="ua:ExtensionObject" LengthField="NoOfSubmodels" />
+  </opc:StructuredType>
+
+  <opc:StructuredType Name="NameplateSubmodelDataType" BaseType="tns:SubmodelDataType">
+    <opc:Field Name="ModelId" TypeName="opc:String" SourceType="tns:SubmodelDataType" />
+    <opc:Field Name="ModelIdShort" TypeName="opc:String" SourceType="tns:SubmodelDataType" />
+    <opc:Field Name="ModelDescription" TypeName="ua:LocalizedText" SourceType="tns:SubmodelDataType" />
+    <opc:Field Name="URIOfTheProduct" TypeName="opc:String" />
+    <opc:Field Name="ManufacturerName" TypeName="ua:LocalizedText" />
+    <opc:Field Name="ManufacturerProductDesignation" TypeName="ua:LocalizedText" />
+    <opc:Field Name="ContactInformation" TypeName="tns:ContactInformationSubmodelDataType" />
+    <opc:Field Name="ManufacturerProductRoot" TypeName="ua:LocalizedText" />
+    <opc:Field Name="ManufacturerProductFamily" TypeName="ua:LocalizedText" />
+    <opc:Field Name="ManufacturerProductType" TypeName="ua:LocalizedText" />
+    <opc:Field Name="OrderCodeOfManufacturer" TypeName="opc:String" />
+    <opc:Field Name="ProductArticleNumberOfManufacturer" TypeName="opc:String" />
+    <opc:Field Name="SerialNumber" TypeName="opc:String" />
+    <opc:Field Name="YearOfConstruction" TypeName="opc:String" />
+    <opc:Field Name="DateOfManufacture" TypeName="opc:DateTime" />
+    <opc:Field Name="HardwareVersion" TypeName="opc:String" />
+    <opc:Field Name="FirmwareVersion" TypeName="opc:String" />
+    <opc:Field Name="SoftwareVersion" TypeName="opc:String" />
+    <opc:Field Name="CountryOfOrigin" TypeName="opc:String" />
+    <opc:Field Name="CompanyLogo" TypeName="opc:String" />
+    <opc:Field Name="NoOfMarkings" TypeName="opc:Int32" />
+    <opc:Field Name="Markings" TypeName="tns:MarkingSubmodelDataType" LengthField="NoOfMarkings" />
+  </opc:StructuredType>
+
+  <opc:StructuredType Name="ContactInformationSubmodelDataType" BaseType="tns:SubmodelDataType">
+    <opc:Field Name="ModelId" TypeName="opc:String" SourceType="tns:SubmodelDataType" />
+    <opc:Field Name="ModelIdShort" TypeName="opc:String" SourceType="tns:SubmodelDataType" />
+    <opc:Field Name="ModelDescription" TypeName="ua:LocalizedText" SourceType="tns:SubmodelDataType" />
+    <opc:Field Name="Street" TypeName="ua:LocalizedText" />
+    <opc:Field Name="Zipcode" TypeName="opc:String" />
+    <opc:Field Name="CityTown" TypeName="ua:LocalizedText" />
+    <opc:Field Name="NationalCode" TypeName="opc:String" />
+  </opc:StructuredType>
+
+  <opc:StructuredType Name="MarkingSubmodelDataType" BaseType="tns:SubmodelDataType">
+    <opc:Field Name="ModelId" TypeName="opc:String" SourceType="tns:SubmodelDataType" />
+    <opc:Field Name="ModelIdShort" TypeName="opc:String" SourceType="tns:SubmodelDataType" />
+    <opc:Field Name="ModelDescription" TypeName="ua:LocalizedText" SourceType="tns:SubmodelDataType" />
+    <opc:Field Name="MarkingName" TypeName="opc:String" />
+    <opc:Field Name="DesignationOfCertificateOrApproval" TypeName="opc:String" />
+    <opc:Field Name="IssueDate" TypeName="opc:DateTime" />
+    <opc:Field Name="ExpiryDate" TypeName="opc:DateTime" />
+    <opc:Field Name="MarkingFile" TypeName="opc:String" />
+    <opc:Field Name="NoOfMarkingAdditionalText" TypeName="opc:Int32" />
+    <opc:Field Name="MarkingAdditionalText" TypeName="opc:String" LengthField="NoOfMarkingAdditionalText" />
+  </opc:StructuredType>
+
+  <opc:StructuredType Name="ProductCarbonFootprintDataType" BaseType="tns:SubmodelDataType">
+    <opc:Field Name="ModelId" TypeName="opc:String" SourceType="tns:SubmodelDataType" />
+    <opc:Field Name="ModelIdShort" TypeName="opc:String" SourceType="tns:SubmodelDataType" />
+    <opc:Field Name="ModelDescription" TypeName="ua:LocalizedText" SourceType="tns:SubmodelDataType" />
+    <opc:Field Name="PCFCalculationMethod" TypeName="opc:String" />
+    <opc:Field Name="PCFCO2eq" TypeName="opc:Double" />
+    <opc:Field Name="PCFReferenceValueForCalculation" TypeName="opc:String" />
+    <opc:Field Name="PCFQuantityOfMeasureForCalculation" TypeName="opc:Double" />
+    <opc:Field Name="PCFLiveCyclePhase" TypeName="opc:String" />
+    <opc:Field Name="PCFGoodsAddressHandover" TypeName="tns:AddressSubmodelDataType" />
+  </opc:StructuredType>
+
+  <opc:StructuredType Name="AddressSubmodelDataType" BaseType="tns:SubmodelDataType">
+    <opc:Field Name="ModelId" TypeName="opc:String" SourceType="tns:SubmodelDataType" />
+    <opc:Field Name="ModelIdShort" TypeName="opc:String" SourceType="tns:SubmodelDataType" />
+    <opc:Field Name="ModelDescription" TypeName="ua:LocalizedText" SourceType="tns:SubmodelDataType" />
+    <opc:Field Name="Street" TypeName="opc:String" />
+    <opc:Field Name="HouseNumber" TypeName="opc:String" />
+    <opc:Field Name="ZipCode" TypeName="opc:String" />
+    <opc:Field Name="CityTown" TypeName="ua:LocalizedText" />
+    <opc:Field Name="Country" TypeName="opc:String" />
+    <opc:Field Name="Latitude" TypeName="opc:Double" />
+    <opc:Field Name="Longitude" TypeName="opc:Double" />
+  </opc:StructuredType>
+
+</opc:TypeDictionary>
