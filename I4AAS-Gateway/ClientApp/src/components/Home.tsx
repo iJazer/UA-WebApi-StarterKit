@@ -23,8 +23,7 @@ enum NodeClass {
    View = 128
 };
 
-enum BuiltInType
-{
+enum BuiltInType {
    Null = 0,
    Boolean = 1,
    SByte = 2,
@@ -135,7 +134,9 @@ async function browse(nodeId: string, requestHandle: number): Promise<TreeNode[]
    }
    var nodes: TreeNode[] = [];
    browseResult?.References?.forEach((x) => {
-      nodes.push({ Id: counter++, Reference: x });
+      if (x.NodeClass === NodeClass.Object || x.NodeClass === NodeClass.Variable) {
+         nodes.push({ Id: counter++, Reference: x });
+      }
    });
    return nodes;
 }
@@ -240,10 +241,10 @@ const NodeWidget = ({ node, offset }: NodeWidgetProps) => {
          <div style={{ display: 'flex' }}>
             <div style={{ marginBottom: '5px' }}>{
                (FileType === node.Reference?.TypeDefinition)
-               ? <SaveAltOutlinedIcon />
-               : (NodeClass.Variable === node.Reference?.NodeClass)
-               ? <LabelOutlinedIcon />
-               : <AddCircleOutlineIcon />
+                  ? <SaveAltOutlinedIcon />
+                  : (NodeClass.Variable === node.Reference?.NodeClass)
+                     ? <LabelOutlinedIcon />
+                     : <AddCircleOutlineIcon />
             }
             </div>
             <NodeTag node={node} />
@@ -251,7 +252,10 @@ const NodeWidget = ({ node, offset }: NodeWidgetProps) => {
             <div style={{ marginLeft: `10px`, marginBottom: '5px' }}>{node.Value}</div>
          </div>
          {node.Children?.map(x => {
-            return <NodeWidget key={x.Id} node={x} offset={offset + 10} />
+            if (x.Reference.NodeClass === NodeClass.Object || x.Value) {
+               return <NodeWidget key={x.Id} node={x} offset={offset + 10} />
+            }
+            return null;
          })}
       </div>
    );
@@ -262,8 +266,7 @@ export function Home() {
 
    React.useEffect(() => {
       fetch();
-      async function fetch()
-      {
+      async function fetch() {
          let nodes = await browse(ObjectsFolder, counter++);
          if (nodes) {
             nodes = await read(nodes, counter++);

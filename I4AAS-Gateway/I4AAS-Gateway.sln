@@ -5,15 +5,17 @@ VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "I4AAS-Gateway", "I4AAS-Gateway.csproj", "{B80FC3AD-D539-4523-AB06-1622B99FD30A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opc.Ua.Core", "..\..\UA-.NETStandard\Stack\Opc.Ua.Core\Opc.Ua.Core.csproj", "{9FFA297B-39BA-4000-8B45-A54D90DC0EF9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opc.Ua.Core", "..\UaStack\Stack\Opc.Ua.Core\Opc.Ua.Core.csproj", "{9FFA297B-39BA-4000-8B45-A54D90DC0EF9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opc.Ua.Server", "..\..\UA-.NETStandard\Libraries\Opc.Ua.Server\Opc.Ua.Server.csproj", "{209DA44D-9607-44EC-A126-2974885D34B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opc.Ua.Server", "..\UaStack\Libraries\Opc.Ua.Server\Opc.Ua.Server.csproj", "{209DA44D-9607-44EC-A126-2974885D34B2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opc.Ua.Security.Certificates", "..\..\UA-.NETStandard\Libraries\Opc.Ua.Security.Certificates\Opc.Ua.Security.Certificates.csproj", "{62BF2A61-AC36-4DE9-923E-69CA66F1419D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opc.Ua.Security.Certificates", "..\UaStack\Libraries\Opc.Ua.Security.Certificates\Opc.Ua.Security.Certificates.csproj", "{62BF2A61-AC36-4DE9-923E-69CA66F1419D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opc.Ua.Configuration", "..\..\UA-.NETStandard\Libraries\Opc.Ua.Configuration\Opc.Ua.Configuration.csproj", "{52F49143-BBF3-47FD-B07D-FF211F1961D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opc.Ua.Configuration", "..\UaStack\Libraries\Opc.Ua.Configuration\Opc.Ua.Configuration.csproj", "{52F49143-BBF3-47FD-B07D-FF211F1961D0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opc.Ua.Client", "..\..\UA-.NETStandard\Libraries\Opc.Ua.Client\Opc.Ua.Client.csproj", "{330F393C-AB07-46CC-A0DA-0180570A1301}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opc.Ua.Client", "..\UaStack\Libraries\Opc.Ua.Client\Opc.Ua.Client.csproj", "{330F393C-AB07-46CC-A0DA-0180570A1301}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UaStack", "UaStack", "{24D3CF53-C162-4022-A367-2DEADFDA51E2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +50,13 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9FFA297B-39BA-4000-8B45-A54D90DC0EF9} = {24D3CF53-C162-4022-A367-2DEADFDA51E2}
+		{209DA44D-9607-44EC-A126-2974885D34B2} = {24D3CF53-C162-4022-A367-2DEADFDA51E2}
+		{62BF2A61-AC36-4DE9-923E-69CA66F1419D} = {24D3CF53-C162-4022-A367-2DEADFDA51E2}
+		{52F49143-BBF3-47FD-B07D-FF211F1961D0} = {24D3CF53-C162-4022-A367-2DEADFDA51E2}
+		{330F393C-AB07-46CC-A0DA-0180570A1301} = {24D3CF53-C162-4022-A367-2DEADFDA51E2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {07015CD9-11CD-485C-B4AA-16BF51092797}
