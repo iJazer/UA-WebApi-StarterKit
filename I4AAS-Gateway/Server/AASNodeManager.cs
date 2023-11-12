@@ -46,6 +46,7 @@ namespace I4AAS_Gateway.Server
         #region Private Fields
         private Dictionary<NodeId, FileManager> m_fileManagers = new();
         private ushort InstanceNamespaceIndex = 0;
+        private ushort TestNamespaceIndex = 0;
         #endregion
 
         #region Constructors
@@ -58,13 +59,15 @@ namespace I4AAS_Gateway.Server
         {
             SystemContext.NodeIdFactory = this;
 
-            string[] namespaceUrls = new string[3];
+            string[] namespaceUrls = new string[4];
             namespaceUrls[0] = I4AAS.Submodels.Namespaces.I4AAS;
             namespaceUrls[1] = I4AAS.IRDI.Namespaces.IRDI;
             namespaceUrls[2] = I4AAS.Submodels.Namespaces.I4AAS + "instances";
+            namespaceUrls[3] = "tag:opcua-is-great.net,2023:testing";
             SetNamespaces(namespaceUrls);
             
             InstanceNamespaceIndex = NamespaceIndexes[2];
+            TestNamespaceIndex = NamespaceIndexes[3];
 
             Server.MessageContext.Factory.AddEncodeableTypes(typeof(I4AAS.Submodels.SubmodelDataType).GetTypeInfo().Assembly);
         }
@@ -152,8 +155,8 @@ namespace I4AAS_Gateway.Server
 
             folder.Create(
                 SystemContext,
-                new NodeId("Tests", InstanceNamespaceIndex),
-                new QualifiedName("Tests", InstanceNamespaceIndex),
+                new NodeId("Tests", TestNamespaceIndex),
+                new QualifiedName("Tests", TestNamespaceIndex),
                 null,
                 true);
 
@@ -163,8 +166,8 @@ namespace I4AAS_Gateway.Server
 
             variable.Create(
                 SystemContext,
-                new NodeId("Temperature", InstanceNamespaceIndex),
-                new QualifiedName("Temperature", InstanceNamespaceIndex),
+                new NodeId("Temperature", TestNamespaceIndex),
+                new QualifiedName("Temperature", TestNamespaceIndex),
                 null,
                 true);
 
@@ -194,8 +197,8 @@ namespace I4AAS_Gateway.Server
 
             method.Create(
                 SystemContext,
-                new NodeId("Reset", InstanceNamespaceIndex),
-                new QualifiedName("Reset", InstanceNamespaceIndex),
+                new NodeId("Reset", TestNamespaceIndex),
+                new QualifiedName("Reset", TestNamespaceIndex),
                 null,
                 true);
 
@@ -209,7 +212,7 @@ namespace I4AAS_Gateway.Server
 
             argument.Create(
                 SystemContext,
-                new NodeId(Opc.Ua.BrowseNames.InputArguments, InstanceNamespaceIndex),
+                new NodeId(Opc.Ua.BrowseNames.InputArguments, TestNamespaceIndex),
                 Opc.Ua.BrowseNames.InputArguments,
                 null,
                 true);
@@ -234,7 +237,7 @@ namespace I4AAS_Gateway.Server
 
             argument.Create(
                 SystemContext,
-                new NodeId(Opc.Ua.BrowseNames.OutputArguments, InstanceNamespaceIndex),
+                new NodeId(Opc.Ua.BrowseNames.OutputArguments, TestNamespaceIndex),
                 Opc.Ua.BrowseNames.OutputArguments,
                 null,
                 true);

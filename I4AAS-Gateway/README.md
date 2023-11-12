@@ -2,9 +2,9 @@
 
 This demonstration shows how to use the OPC UA REST API to access OPC UA data from a web browser.
 
-The sample server address space include an AAS ProductCarbonFootprint and some simple variables and methods.
+The sample server address space includes an AAS ProductCarbonFootprint and some simple variables and methods.
 
-The 'Swagger' page allows developers to experiment the OPC UA REST API directly.
+The 'Swagger' page allows developers to experiment with the OPC UA REST API directly.
 
 Interesting requests are:
 
@@ -19,7 +19,7 @@ Interesting requests are:
     },
     "NodesToBrowse": [
       {
-        "NodeId": "nsu=http://opcfoundation.org/UA/I4AAS/instances;s=Tests",
+        "NodeId": "nsu=tag:opcua-is-great.net,2023:testing;s=Tests",
         "BrowseDirection": 0,
         "IncludeSubtypes": true,
         "NodeClassMask": 255,
@@ -37,13 +37,13 @@ Interesting requests are:
     "RequestHeader": {
       "Timestamp": "2023-11-11T13:22:50.400Z",
       "RequestHandle": 1234,
-      "TimeoutHint": 600000,
+      "TimeoutHint": 60000,
     },
     "MaxAge": 0,
     "TimestampsToReturn": 0,
     "NodesToRead": [
       {
-        "NodeId": "nsu=http://opcfoundation.org/UA/I4AAS/instances;s=Tests_Temperature",
+        "NodeId": "nsu=tag:opcua-is-great.net,2023:testing;s=Tests_Temperature",
         "AttributeId": 13
       }
     ]
@@ -62,7 +62,7 @@ Interesting requests are:
     },
     "NodesToWrite": [
       {
-        "NodeId": "nsu=http://opcfoundation.org/UA/I4AAS/instances;s=Tests_Temperature",
+        "NodeId": "tag:opcua-is-great.net,2023:testing;s=Tests_Temperature",
         "AttributeId": 13,
         "Value": {
           "Value": {
@@ -87,13 +87,13 @@ Interesting requests are:
     },
     "MethodsToCall": [
       {
-        "ObjectId": "nsu=http://opcfoundation.org/UA/I4AAS/instances;s=Tests",
-        "MethodId": "nsu=http://opcfoundation.org/UA/I4AAS/instances;s=Tests_Reset",
+        "ObjectId": "nsu=tag:opcua-is-great.net,2023:testing;s=Tests",
+        "MethodId": "nsu=tag:opcua-is-great.net,2023:testing;s=Tests_Reset",
         "InputArguments": [
           {
-			"Type": 11,
-			"Body": 98.765
-		  }
+            "Type": 11,
+            "Body": 98.765
+          }
         ]
       }
     ]
