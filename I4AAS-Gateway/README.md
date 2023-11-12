@@ -62,7 +62,7 @@ Interesting requests are:
     },
     "NodesToWrite": [
       {
-        "NodeId": "tag:opcua-is-great.net,2023:testing;s=Tests_Temperature",
+        "NodeId": "nsu=tag:opcua-is-great.net,2023:testing;s=Tests_Temperature",
         "AttributeId": 13,
         "Value": {
           "Value": {

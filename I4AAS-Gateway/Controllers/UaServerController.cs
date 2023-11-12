@@ -15,7 +15,7 @@ namespace I4AAS_Gateway.Controllers
 {
     [ApiController]
     [Route("opcua")]
-    [ResponseCache(NoStore = true)]
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public class UaServerController : ControllerBase
     {
         private readonly IConfiguration _configuration;

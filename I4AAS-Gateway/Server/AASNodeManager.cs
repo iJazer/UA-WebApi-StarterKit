@@ -268,7 +268,7 @@ namespace I4AAS_Gateway.Server
         {
             var variable = method.Parent.FindChild(
                 context,
-                new QualifiedName("Temperature", InstanceNamespaceIndex)) as AnalogItemState<double>;
+                new QualifiedName("Temperature", TestNamespaceIndex)) as AnalogItemState<double>;
 
             if (variable == null)
             {
