@@ -26,6 +26,43 @@ import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError } from './base';
 /**
  * 
  * @export
+ * @interface AggregateConfiguration
+ */
+export interface AggregateConfiguration {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AggregateConfiguration
+     */
+    'UseServerCapabilitiesDefaults'?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AggregateConfiguration
+     */
+    'TreatUncertainAsBad'?: boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof AggregateConfiguration
+     */
+    'PercentDataBad'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof AggregateConfiguration
+     */
+    'PercentDataGood'?: number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AggregateConfiguration
+     */
+    'UseSlopedExtrapolation'?: boolean;
+}
+/**
+ * 
+ * @export
  * @interface BrowseDescription
  */
 export interface BrowseDescription {
@@ -183,6 +220,63 @@ export interface BrowseNextResponseMessage {
      * @memberof BrowseNextResponseMessage
      */
     'Body'?: BrowseNextResponse;
+}
+/**
+ * 
+ * @export
+ * @interface BrowsePath
+ */
+export interface BrowsePath {
+    /**
+     * 
+     * @type {string}
+     * @memberof BrowsePath
+     */
+    'StartingNode'?: string;
+    /**
+     * 
+     * @type {RelativePath}
+     * @memberof BrowsePath
+     */
+    'RelativePath'?: RelativePath;
+}
+/**
+ * 
+ * @export
+ * @interface BrowsePathResult
+ */
+export interface BrowsePathResult {
+    /**
+     * 
+     * @type {number}
+     * @memberof BrowsePathResult
+     */
+    'StatusCode'?: number;
+    /**
+     * 
+     * @type {Array<BrowsePathTarget>}
+     * @memberof BrowsePathResult
+     */
+    'Targets'?: Array<BrowsePathTarget>;
+}
+/**
+ * 
+ * @export
+ * @interface BrowsePathTarget
+ */
+export interface BrowsePathTarget {
+    /**
+     * 
+     * @type {string}
+     * @memberof BrowsePathTarget
+     */
+    'TargetId'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof BrowsePathTarget
+     */
+    'RemainingPathIndex'?: number;
 }
 /**
  * 
@@ -504,6 +598,38 @@ export interface CallResponseMessage {
 /**
  * 
  * @export
+ * @interface ContentFilter
+ */
+export interface ContentFilter {
+    /**
+     * 
+     * @type {Array<ContentFilterElement>}
+     * @memberof ContentFilter
+     */
+    'Elements'?: Array<ContentFilterElement>;
+}
+/**
+ * 
+ * @export
+ * @interface ContentFilterElement
+ */
+export interface ContentFilterElement {
+    /**
+     * 
+     * @type {number}
+     * @memberof ContentFilterElement
+     */
+    'FilterOperator'?: number;
+    /**
+     * 
+     * @type {Array<ExtensionObject>}
+     * @memberof ContentFilterElement
+     */
+    'FilterOperands'?: Array<ExtensionObject>;
+}
+/**
+ * 
+ * @export
  * @interface DataValue
  */
 export interface DataValue {
@@ -615,6 +741,25 @@ export interface DiagnosticInfo {
 /**
  * 
  * @export
+ * @interface EventFilter
+ */
+export interface EventFilter {
+    /**
+     * 
+     * @type {Array<SimpleAttributeOperand>}
+     * @memberof EventFilter
+     */
+    'SelectClauses'?: Array<SimpleAttributeOperand>;
+    /**
+     * 
+     * @type {ContentFilter}
+     * @memberof EventFilter
+     */
+    'WhereClause'?: ContentFilter;
+}
+/**
+ * 
+ * @export
  * @interface ExtensionObject
  */
 export interface ExtensionObject {
@@ -640,6 +785,387 @@ export interface ExtensionObject {
 /**
  * 
  * @export
+ * @interface HistoryData
+ */
+export interface HistoryData {
+    /**
+     * 
+     * @type {Array<DataValue>}
+     * @memberof HistoryData
+     */
+    'DataValues'?: Array<DataValue>;
+}
+/**
+ * 
+ * @export
+ * @interface HistoryEvent
+ */
+export interface HistoryEvent {
+    /**
+     * 
+     * @type {Array<HistoryEventFieldList>}
+     * @memberof HistoryEvent
+     */
+    'Events'?: Array<HistoryEventFieldList>;
+}
+/**
+ * 
+ * @export
+ * @interface HistoryEventFieldList
+ */
+export interface HistoryEventFieldList {
+    /**
+     * 
+     * @type {Array<object>}
+     * @memberof HistoryEventFieldList
+     */
+    'EventFields'?: Array<object>;
+}
+/**
+ * 
+ * @export
+ * @interface HistoryModifiedData
+ */
+export interface HistoryModifiedData {
+    /**
+     * 
+     * @type {Array<ModificationInfo>}
+     * @memberof HistoryModifiedData
+     */
+    'ModificationInfos'?: Array<ModificationInfo>;
+    /**
+     * 
+     * @type {Array<DataValue>}
+     * @memberof HistoryModifiedData
+     */
+    'DataValues'?: Array<DataValue>;
+}
+/**
+ * 
+ * @export
+ * @interface HistoryReadRequest
+ */
+export interface HistoryReadRequest {
+    /**
+     * 
+     * @type {RequestHeader}
+     * @memberof HistoryReadRequest
+     */
+    'RequestHeader'?: RequestHeader;
+    /**
+     * 
+     * @type {ExtensionObject}
+     * @memberof HistoryReadRequest
+     */
+    'HistoryReadDetails'?: ExtensionObject;
+    /**
+     * 
+     * @type {number}
+     * @memberof HistoryReadRequest
+     */
+    'TimestampsToReturn'?: number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof HistoryReadRequest
+     */
+    'ReleaseContinuationPoints'?: boolean;
+    /**
+     * 
+     * @type {Array<HistoryReadValueId>}
+     * @memberof HistoryReadRequest
+     */
+    'NodesToRead'?: Array<HistoryReadValueId>;
+}
+/**
+ * 
+ * @export
+ * @interface HistoryReadRequestMessage
+ */
+export interface HistoryReadRequestMessage {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof HistoryReadRequestMessage
+     */
+    'NamespaceUris'?: Array<string>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof HistoryReadRequestMessage
+     */
+    'ServerUris'?: Array<string>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof HistoryReadRequestMessage
+     */
+    'LocaleIds'?: Array<string>;
+    /**
+     * 
+     * @type {number}
+     * @memberof HistoryReadRequestMessage
+     */
+    'ServiceId'?: number;
+    /**
+     * 
+     * @type {HistoryReadRequest}
+     * @memberof HistoryReadRequestMessage
+     */
+    'Body'?: HistoryReadRequest;
+}
+/**
+ * 
+ * @export
+ * @interface HistoryReadResponse
+ */
+export interface HistoryReadResponse {
+    /**
+     * 
+     * @type {ResponseHeader}
+     * @memberof HistoryReadResponse
+     */
+    'ResponseHeader'?: ResponseHeader;
+    /**
+     * 
+     * @type {Array<HistoryReadResult>}
+     * @memberof HistoryReadResponse
+     */
+    'Results'?: Array<HistoryReadResult>;
+    /**
+     * 
+     * @type {Array<DiagnosticInfo>}
+     * @memberof HistoryReadResponse
+     */
+    'DiagnosticInfos'?: Array<DiagnosticInfo>;
+}
+/**
+ * 
+ * @export
+ * @interface HistoryReadResponseMessage
+ */
+export interface HistoryReadResponseMessage {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof HistoryReadResponseMessage
+     */
+    'NamespaceUris'?: Array<string>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof HistoryReadResponseMessage
+     */
+    'ServerUris'?: Array<string>;
+    /**
+     * 
+     * @type {number}
+     * @memberof HistoryReadResponseMessage
+     */
+    'ServiceId'?: number;
+    /**
+     * 
+     * @type {HistoryReadResponse}
+     * @memberof HistoryReadResponseMessage
+     */
+    'Body'?: HistoryReadResponse;
+}
+/**
+ * 
+ * @export
+ * @interface HistoryReadResult
+ */
+export interface HistoryReadResult {
+    /**
+     * 
+     * @type {number}
+     * @memberof HistoryReadResult
+     */
+    'StatusCode'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof HistoryReadResult
+     */
+    'ContinuationPoint'?: string;
+    /**
+     * 
+     * @type {ExtensionObject}
+     * @memberof HistoryReadResult
+     */
+    'HistoryData'?: ExtensionObject;
+}
+/**
+ * 
+ * @export
+ * @interface HistoryReadValueId
+ */
+export interface HistoryReadValueId {
+    /**
+     * 
+     * @type {string}
+     * @memberof HistoryReadValueId
+     */
+    'NodeId'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof HistoryReadValueId
+     */
+    'IndexRange'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof HistoryReadValueId
+     */
+    'DataEncoding'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof HistoryReadValueId
+     */
+    'ContinuationPoint'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface HistoryUpdateRequest
+ */
+export interface HistoryUpdateRequest {
+    /**
+     * 
+     * @type {RequestHeader}
+     * @memberof HistoryUpdateRequest
+     */
+    'RequestHeader'?: RequestHeader;
+    /**
+     * 
+     * @type {Array<ExtensionObject>}
+     * @memberof HistoryUpdateRequest
+     */
+    'HistoryUpdateDetails'?: Array<ExtensionObject>;
+}
+/**
+ * 
+ * @export
+ * @interface HistoryUpdateRequestMessage
+ */
+export interface HistoryUpdateRequestMessage {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof HistoryUpdateRequestMessage
+     */
+    'NamespaceUris'?: Array<string>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof HistoryUpdateRequestMessage
+     */
+    'ServerUris'?: Array<string>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof HistoryUpdateRequestMessage
+     */
+    'LocaleIds'?: Array<string>;
+    /**
+     * 
+     * @type {number}
+     * @memberof HistoryUpdateRequestMessage
+     */
+    'ServiceId'?: number;
+    /**
+     * 
+     * @type {HistoryUpdateRequest}
+     * @memberof HistoryUpdateRequestMessage
+     */
+    'Body'?: HistoryUpdateRequest;
+}
+/**
+ * 
+ * @export
+ * @interface HistoryUpdateResponse
+ */
+export interface HistoryUpdateResponse {
+    /**
+     * 
+     * @type {ResponseHeader}
+     * @memberof HistoryUpdateResponse
+     */
+    'ResponseHeader'?: ResponseHeader;
+    /**
+     * 
+     * @type {Array<HistoryUpdateResult>}
+     * @memberof HistoryUpdateResponse
+     */
+    'Results'?: Array<HistoryUpdateResult>;
+    /**
+     * 
+     * @type {Array<DiagnosticInfo>}
+     * @memberof HistoryUpdateResponse
+     */
+    'DiagnosticInfos'?: Array<DiagnosticInfo>;
+}
+/**
+ * 
+ * @export
+ * @interface HistoryUpdateResponseMessage
+ */
+export interface HistoryUpdateResponseMessage {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof HistoryUpdateResponseMessage
+     */
+    'NamespaceUris'?: Array<string>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof HistoryUpdateResponseMessage
+     */
+    'ServerUris'?: Array<string>;
+    /**
+     * 
+     * @type {number}
+     * @memberof HistoryUpdateResponseMessage
+     */
+    'ServiceId'?: number;
+    /**
+     * 
+     * @type {HistoryUpdateResponse}
+     * @memberof HistoryUpdateResponseMessage
+     */
+    'Body'?: HistoryUpdateResponse;
+}
+/**
+ * 
+ * @export
+ * @interface HistoryUpdateResult
+ */
+export interface HistoryUpdateResult {
+    /**
+     * 
+     * @type {number}
+     * @memberof HistoryUpdateResult
+     */
+    'StatusCode'?: number;
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof HistoryUpdateResult
+     */
+    'OperationResults'?: Array<number>;
+    /**
+     * 
+     * @type {Array<DiagnosticInfo>}
+     * @memberof HistoryUpdateResult
+     */
+    'DiagnosticInfos'?: Array<DiagnosticInfo>;
+}
+/**
+ * 
+ * @export
  * @interface LocalizedText
  */
 export interface LocalizedText {
@@ -655,6 +1181,181 @@ export interface LocalizedText {
      * @memberof LocalizedText
      */
     'Text'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface ModificationInfo
+ */
+export interface ModificationInfo {
+    /**
+     * 
+     * @type {string}
+     * @memberof ModificationInfo
+     */
+    'ModificationTime'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ModificationInfo
+     */
+    'UpdateType'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModificationInfo
+     */
+    'UserName'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface ReadAnnotationDataDetails
+ */
+export interface ReadAnnotationDataDetails {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof ReadAnnotationDataDetails
+     */
+    'ReqTimes'?: Array<string>;
+}
+/**
+ * 
+ * @export
+ * @interface ReadAtTimeDetails
+ */
+export interface ReadAtTimeDetails {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof ReadAtTimeDetails
+     */
+    'ReqTimes'?: Array<string>;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ReadAtTimeDetails
+     */
+    'UseSimpleBounds'?: boolean;
+}
+/**
+ * 
+ * @export
+ * @interface ReadEventDetails
+ */
+export interface ReadEventDetails {
+    /**
+     * 
+     * @type {number}
+     * @memberof ReadEventDetails
+     */
+    'NumValuesPerNode'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ReadEventDetails
+     */
+    'StartTime'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ReadEventDetails
+     */
+    'EndTime'?: string;
+    /**
+     * 
+     * @type {EventFilter}
+     * @memberof ReadEventDetails
+     */
+    'Filter'?: EventFilter;
+}
+/**
+ * 
+ * @export
+ * @interface ReadEventDetails2
+ */
+export interface ReadEventDetails2 {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ReadEventDetails2
+     */
+    'ReadModified'?: boolean;
+}
+/**
+ * 
+ * @export
+ * @interface ReadProcessedDetails
+ */
+export interface ReadProcessedDetails {
+    /**
+     * 
+     * @type {string}
+     * @memberof ReadProcessedDetails
+     */
+    'StartTime'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ReadProcessedDetails
+     */
+    'EndTime'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ReadProcessedDetails
+     */
+    'ProcessingInterval'?: number;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof ReadProcessedDetails
+     */
+    'AggregateType'?: Array<string>;
+    /**
+     * 
+     * @type {AggregateConfiguration}
+     * @memberof ReadProcessedDetails
+     */
+    'AggregateConfiguration'?: AggregateConfiguration;
+}
+/**
+ * 
+ * @export
+ * @interface ReadRawModifiedDetails
+ */
+export interface ReadRawModifiedDetails {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ReadRawModifiedDetails
+     */
+    'IsReadModified'?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof ReadRawModifiedDetails
+     */
+    'StartTime'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ReadRawModifiedDetails
+     */
+    'EndTime'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ReadRawModifiedDetails
+     */
+    'NumValuesPerNode'?: number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ReadRawModifiedDetails
+     */
+    'ReturnBounds'?: boolean;
 }
 /**
  * 
@@ -863,6 +1564,50 @@ export interface ReferenceDescription {
 /**
  * 
  * @export
+ * @interface RelativePath
+ */
+export interface RelativePath {
+    /**
+     * 
+     * @type {Array<RelativePathElement>}
+     * @memberof RelativePath
+     */
+    'Elements'?: Array<RelativePathElement>;
+}
+/**
+ * 
+ * @export
+ * @interface RelativePathElement
+ */
+export interface RelativePathElement {
+    /**
+     * 
+     * @type {string}
+     * @memberof RelativePathElement
+     */
+    'ReferenceTypeId'?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof RelativePathElement
+     */
+    'IsInverse'?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof RelativePathElement
+     */
+    'IncludeSubtypes'?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof RelativePathElement
+     */
+    'TargetName'?: string;
+}
+/**
+ * 
+ * @export
  * @interface RequestHeader
  */
 export interface RequestHeader {
@@ -955,15 +1700,226 @@ export interface ResponseHeader {
 /**
  * 
  * @export
- * @interface Union
+ * @interface SimpleAttributeOperand
  */
-export interface Union {
+export interface SimpleAttributeOperand {
+    /**
+     * 
+     * @type {string}
+     * @memberof SimpleAttributeOperand
+     */
+    'TypeDefinitionId'?: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof SimpleAttributeOperand
+     */
+    'BrowsePath'?: Array<string>;
     /**
      * 
      * @type {number}
-     * @memberof Union
+     * @memberof SimpleAttributeOperand
      */
-    'SwitchField'?: number;
+    'AttributeId'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof SimpleAttributeOperand
+     */
+    'IndexRange'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface TranslateBrowsePathsToNodeIdsRequest
+ */
+export interface TranslateBrowsePathsToNodeIdsRequest {
+    /**
+     * 
+     * @type {RequestHeader}
+     * @memberof TranslateBrowsePathsToNodeIdsRequest
+     */
+    'RequestHeader'?: RequestHeader;
+    /**
+     * 
+     * @type {Array<BrowsePath>}
+     * @memberof TranslateBrowsePathsToNodeIdsRequest
+     */
+    'BrowsePaths'?: Array<BrowsePath>;
+}
+/**
+ * 
+ * @export
+ * @interface TranslateBrowsePathsToNodeIdsRequestMessage
+ */
+export interface TranslateBrowsePathsToNodeIdsRequestMessage {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof TranslateBrowsePathsToNodeIdsRequestMessage
+     */
+    'NamespaceUris'?: Array<string>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof TranslateBrowsePathsToNodeIdsRequestMessage
+     */
+    'ServerUris'?: Array<string>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof TranslateBrowsePathsToNodeIdsRequestMessage
+     */
+    'LocaleIds'?: Array<string>;
+    /**
+     * 
+     * @type {number}
+     * @memberof TranslateBrowsePathsToNodeIdsRequestMessage
+     */
+    'ServiceId'?: number;
+    /**
+     * 
+     * @type {TranslateBrowsePathsToNodeIdsRequest}
+     * @memberof TranslateBrowsePathsToNodeIdsRequestMessage
+     */
+    'Body'?: TranslateBrowsePathsToNodeIdsRequest;
+}
+/**
+ * 
+ * @export
+ * @interface TranslateBrowsePathsToNodeIdsResponse
+ */
+export interface TranslateBrowsePathsToNodeIdsResponse {
+    /**
+     * 
+     * @type {ResponseHeader}
+     * @memberof TranslateBrowsePathsToNodeIdsResponse
+     */
+    'ResponseHeader'?: ResponseHeader;
+    /**
+     * 
+     * @type {Array<BrowsePathResult>}
+     * @memberof TranslateBrowsePathsToNodeIdsResponse
+     */
+    'Results'?: Array<BrowsePathResult>;
+    /**
+     * 
+     * @type {Array<DiagnosticInfo>}
+     * @memberof TranslateBrowsePathsToNodeIdsResponse
+     */
+    'DiagnosticInfos'?: Array<DiagnosticInfo>;
+}
+/**
+ * 
+ * @export
+ * @interface TranslateBrowsePathsToNodeIdsResponseMessage
+ */
+export interface TranslateBrowsePathsToNodeIdsResponseMessage {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof TranslateBrowsePathsToNodeIdsResponseMessage
+     */
+    'NamespaceUris'?: Array<string>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof TranslateBrowsePathsToNodeIdsResponseMessage
+     */
+    'ServerUris'?: Array<string>;
+    /**
+     * 
+     * @type {number}
+     * @memberof TranslateBrowsePathsToNodeIdsResponseMessage
+     */
+    'ServiceId'?: number;
+    /**
+     * 
+     * @type {TranslateBrowsePathsToNodeIdsResponse}
+     * @memberof TranslateBrowsePathsToNodeIdsResponseMessage
+     */
+    'Body'?: TranslateBrowsePathsToNodeIdsResponse;
+}
+/**
+ * 
+ * @export
+ * @interface UpdateDataDetails
+ */
+export interface UpdateDataDetails {
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateDataDetails
+     */
+    'NodeId'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof UpdateDataDetails
+     */
+    'PerformInsertReplace'?: number;
+    /**
+     * 
+     * @type {Array<DataValue>}
+     * @memberof UpdateDataDetails
+     */
+    'UpdateValues'?: Array<DataValue>;
+}
+/**
+ * 
+ * @export
+ * @interface UpdateEventDetails
+ */
+export interface UpdateEventDetails {
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateEventDetails
+     */
+    'NodeId'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof UpdateEventDetails
+     */
+    'PerformInsertReplace'?: number;
+    /**
+     * 
+     * @type {EventFilter}
+     * @memberof UpdateEventDetails
+     */
+    'Filter'?: EventFilter;
+    /**
+     * 
+     * @type {Array<HistoryEventFieldList>}
+     * @memberof UpdateEventDetails
+     */
+    'EventData'?: Array<HistoryEventFieldList>;
+}
+/**
+ * 
+ * @export
+ * @interface UpdateStructureDataDetails
+ */
+export interface UpdateStructureDataDetails {
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateStructureDataDetails
+     */
+    'NodeId'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof UpdateStructureDataDetails
+     */
+    'PerformInsertReplace'?: number;
+    /**
+     * 
+     * @type {Array<DataValue>}
+     * @memberof UpdateStructureDataDetails
+     */
+    'UpdateValues'?: Array<DataValue>;
 }
 /**
  * 
@@ -979,10 +1935,10 @@ export interface Variant {
     'Type'?: number;
     /**
      * 
-     * @type {VariantBody}
+     * @type {any}
      * @memberof Variant
      */
-    'Body'?: VariantBody;
+    'Body'?: any;
     /**
      * 
      * @type {Array<number>}
@@ -990,18 +1946,6 @@ export interface Variant {
      */
     'Dimensions'?: Array<number>;
 }
-/**
- * @type VariantBody
- * @export
- */
-export type VariantBody = Array<VariantUnion> | VariantUnion;
-
-/**
- * @type VariantUnion
- * @export
- */
-export type VariantUnion = boolean | number | object | string;
-
 /**
  * 
  * @export
@@ -1278,6 +2222,72 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
+         * @param {HistoryReadRequestMessage} [historyReadRequestMessage] HistoryReadRequestMessage
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        historyRead: async (historyReadRequestMessage?: HistoryReadRequestMessage, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/historyread`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(historyReadRequestMessage, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {HistoryUpdateRequestMessage} [historyUpdateRequestMessage] HistoryUpdateRequestMessage
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        historyUpdate: async (historyUpdateRequestMessage?: HistoryUpdateRequestMessage, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/historyupdate`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(historyUpdateRequestMessage, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {ReadRequestMessage} [readRequestMessage] ReadRequestMessage
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1303,6 +2313,39 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(readRequestMessage, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {TranslateBrowsePathsToNodeIdsRequestMessage} [translateBrowsePathsToNodeIdsRequestMessage] TranslateBrowsePathsToNodeIdsRequestMessage
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        translateBrowsePathsToNodeIds: async (translateBrowsePathsToNodeIdsRequestMessage?: TranslateBrowsePathsToNodeIdsRequestMessage, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/translate`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(translateBrowsePathsToNodeIdsRequestMessage, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1384,12 +2427,42 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {HistoryReadRequestMessage} [historyReadRequestMessage] HistoryReadRequestMessage
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async historyRead(historyReadRequestMessage?: HistoryReadRequestMessage, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<HistoryReadResponseMessage>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.historyRead(historyReadRequestMessage, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {HistoryUpdateRequestMessage} [historyUpdateRequestMessage] HistoryUpdateRequestMessage
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async historyUpdate(historyUpdateRequestMessage?: HistoryUpdateRequestMessage, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<HistoryUpdateResponseMessage>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.historyUpdate(historyUpdateRequestMessage, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @param {ReadRequestMessage} [readRequestMessage] ReadRequestMessage
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         async read(readRequestMessage?: ReadRequestMessage, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ReadResponseMessage>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.read(readRequestMessage, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {TranslateBrowsePathsToNodeIdsRequestMessage} [translateBrowsePathsToNodeIdsRequestMessage] TranslateBrowsePathsToNodeIdsRequestMessage
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async translateBrowsePathsToNodeIds(translateBrowsePathsToNodeIdsRequestMessage?: TranslateBrowsePathsToNodeIdsRequestMessage, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TranslateBrowsePathsToNodeIdsResponseMessage>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.translateBrowsePathsToNodeIds(translateBrowsePathsToNodeIdsRequestMessage, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -1441,12 +2514,39 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
+         * @param {HistoryReadRequestMessage} [historyReadRequestMessage] HistoryReadRequestMessage
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        historyRead(historyReadRequestMessage?: HistoryReadRequestMessage, options?: any): AxiosPromise<HistoryReadResponseMessage> {
+            return localVarFp.historyRead(historyReadRequestMessage, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {HistoryUpdateRequestMessage} [historyUpdateRequestMessage] HistoryUpdateRequestMessage
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        historyUpdate(historyUpdateRequestMessage?: HistoryUpdateRequestMessage, options?: any): AxiosPromise<HistoryUpdateResponseMessage> {
+            return localVarFp.historyUpdate(historyUpdateRequestMessage, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {ReadRequestMessage} [readRequestMessage] ReadRequestMessage
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         read(readRequestMessage?: ReadRequestMessage, options?: any): AxiosPromise<ReadResponseMessage> {
             return localVarFp.read(readRequestMessage, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {TranslateBrowsePathsToNodeIdsRequestMessage} [translateBrowsePathsToNodeIdsRequestMessage] TranslateBrowsePathsToNodeIdsRequestMessage
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        translateBrowsePathsToNodeIds(translateBrowsePathsToNodeIdsRequestMessage?: TranslateBrowsePathsToNodeIdsRequestMessage, options?: any): AxiosPromise<TranslateBrowsePathsToNodeIdsResponseMessage> {
+            return localVarFp.translateBrowsePathsToNodeIds(translateBrowsePathsToNodeIdsRequestMessage, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1502,6 +2602,28 @@ export class DefaultApi extends BaseAPI {
 
     /**
      * 
+     * @param {HistoryReadRequestMessage} [historyReadRequestMessage] HistoryReadRequestMessage
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public historyRead(historyReadRequestMessage?: HistoryReadRequestMessage, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).historyRead(historyReadRequestMessage, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {HistoryUpdateRequestMessage} [historyUpdateRequestMessage] HistoryUpdateRequestMessage
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public historyUpdate(historyUpdateRequestMessage?: HistoryUpdateRequestMessage, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).historyUpdate(historyUpdateRequestMessage, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @param {ReadRequestMessage} [readRequestMessage] ReadRequestMessage
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -1509,6 +2631,17 @@ export class DefaultApi extends BaseAPI {
      */
     public read(readRequestMessage?: ReadRequestMessage, options?: AxiosRequestConfig) {
         return DefaultApiFp(this.configuration).read(readRequestMessage, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {TranslateBrowsePathsToNodeIdsRequestMessage} [translateBrowsePathsToNodeIdsRequestMessage] TranslateBrowsePathsToNodeIdsRequestMessage
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public translateBrowsePathsToNodeIds(translateBrowsePathsToNodeIdsRequestMessage?: TranslateBrowsePathsToNodeIdsRequestMessage, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).translateBrowsePathsToNodeIds(translateBrowsePathsToNodeIdsRequestMessage, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

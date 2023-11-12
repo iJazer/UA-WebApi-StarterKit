@@ -45,6 +45,7 @@ namespace I4AAS_Gateway.Server
     {
         #region Private Fields
         private Dictionary<NodeId, FileManager> m_fileManagers = new();
+        private ushort InstanceNamespaceIndex = 0;
         #endregion
 
         #region Constructors
@@ -57,10 +58,13 @@ namespace I4AAS_Gateway.Server
         {
             SystemContext.NodeIdFactory = this;
 
-            string[] namespaceUrls = new string[2];
+            string[] namespaceUrls = new string[3];
             namespaceUrls[0] = I4AAS.Submodels.Namespaces.I4AAS;
             namespaceUrls[1] = I4AAS.IRDI.Namespaces.IRDI;
+            namespaceUrls[2] = I4AAS.Submodels.Namespaces.I4AAS + "instances";
             SetNamespaces(namespaceUrls);
+            
+            InstanceNamespaceIndex = NamespaceIndexes[2];
 
             Server.MessageContext.Factory.AddEncodeableTypes(typeof(I4AAS.Submodels.SubmodelDataType).GetTypeInfo().Assembly);
         }
@@ -136,7 +140,146 @@ namespace I4AAS_Gateway.Server
                 }
 
                 references.Add(new NodeStateReference(Opc.Ua.ReferenceTypeIds.Organizes, false, asset.NodeId));
+
+                var tests = CreateTestFolder();
+                references.Add(new NodeStateReference(Opc.Ua.ReferenceTypeIds.Organizes, false, tests.NodeId));
             }
+        }
+
+        private FolderState CreateTestFolder()
+        {
+            var folder = new FolderState(null);
+
+            folder.Create(
+                SystemContext,
+                new NodeId("Tests", InstanceNamespaceIndex),
+                new QualifiedName("Tests", InstanceNamespaceIndex),
+                null,
+                true);
+
+            AddPredefinedNode(SystemContext, folder);
+
+            var variable = new AnalogItemState<double>(folder);
+
+            variable.Create(
+                SystemContext,
+                new NodeId("Temperature", InstanceNamespaceIndex),
+                new QualifiedName("Temperature", InstanceNamespaceIndex),
+                null,
+                true);
+
+            variable.Definition = null;
+            variable.InstrumentRange = null;
+            variable.ValuePrecision = null;
+            variable.AccessLevel = AccessLevels.CurrentReadOrWrite;
+            variable.UserAccessLevel = AccessLevels.CurrentReadOrWrite;
+
+            variable.Value = 100.0;
+
+            variable.EngineeringUnits.Value = new EUInformation()
+            {
+                DisplayName = "°C",
+                Description = "Celsius",
+                UnitId = 4408652,
+                NamespaceUri = "http://www.opcfoundation.org/UA/units/un/cefact"
+            };
+
+            variable.EURange.Value = new Opc.Ua.Range(-263, 400);
+
+            folder.AddChild(variable);
+            AddPredefinedNode(SystemContext, variable);
+
+            var method = new MethodState(folder);
+            method.ReferenceTypeId = ReferenceTypeIds.HasComponent;
+
+            method.Create(
+                SystemContext,
+                new NodeId("Reset", InstanceNamespaceIndex),
+                new QualifiedName("Reset", InstanceNamespaceIndex),
+                null,
+                true);
+
+            method.OnCallMethod = new GenericMethodCalledEventHandler(OnReset);
+
+            folder.AddChild(method);
+            AddPredefinedNode(SystemContext, method);
+
+            var argument = new PropertyState<Argument[]>(method);
+            argument.ReferenceTypeId = ReferenceTypeIds.HasProperty;
+
+            argument.Create(
+                SystemContext,
+                new NodeId(Opc.Ua.BrowseNames.InputArguments, InstanceNamespaceIndex),
+                Opc.Ua.BrowseNames.InputArguments,
+                null,
+                true);
+
+            argument.Value = new Argument[]
+            {
+                new()
+                {
+                    Name = "NewValue",
+                    Description = "Sets the temperature to a new value.",
+                    DataType = Opc.Ua.DataTypeIds.Double,
+                    ValueRank = ValueRanks.Scalar
+                }
+            };
+
+            method.AddChild(argument);
+            method.InputArguments = argument;
+            AddPredefinedNode(SystemContext, argument);
+
+            argument = new PropertyState<Argument[]>(method);
+            argument.ReferenceTypeId = ReferenceTypeIds.HasProperty;
+
+            argument.Create(
+                SystemContext,
+                new NodeId(Opc.Ua.BrowseNames.OutputArguments, InstanceNamespaceIndex),
+                Opc.Ua.BrowseNames.OutputArguments,
+                null,
+                true);
+
+            argument.Value = new Argument[]
+            {
+                new()
+                {
+                    Name = "OldValue",
+                    Description = "The previous value for the temperature.",
+                    DataType = Opc.Ua.DataTypeIds.Double,
+                    ValueRank = ValueRanks.Scalar
+                }
+            };
+
+            method.AddChild(argument);
+            method.OutputArguments = argument;
+            AddPredefinedNode(SystemContext, argument);
+
+            return folder;
+        }
+
+        private ServiceResult OnReset(
+            ISystemContext context, 
+            MethodState method, 
+            IList<object> inputArguments, 
+            IList<object> outputArguments)
+        {
+            var variable = method.Parent.FindChild(
+                context,
+                new QualifiedName("Temperature", InstanceNamespaceIndex)) as AnalogItemState<double>;
+
+            if (variable == null)
+            {
+                return StatusCodes.BadInvalidState;
+            }
+
+            if (inputArguments[0] is double value)
+            {
+                outputArguments[0] = variable.Value;
+                variable.Value = value;
+                return ServiceResult.Good;
+            }
+
+            return StatusCodes.BadInvalidArgument;
         }
 
         private AssetModelState CreateAsset(string rootFolder)
@@ -168,8 +311,8 @@ namespace I4AAS_Gateway.Server
 
             node.Create(
                 SystemContext,
-                new NodeId(product.ModelIdShort, NamespaceIndexes[0]),
-                new QualifiedName(product.ModelIdShort, NamespaceIndexes[0]),
+                new NodeId(product.ModelIdShort, InstanceNamespaceIndex),
+                new QualifiedName(product.ModelIdShort, InstanceNamespaceIndex),
                 null,
                 true);
 
@@ -200,8 +343,8 @@ namespace I4AAS_Gateway.Server
 
                     child.Create(
                         SystemContext,
-                        new NodeId(instance.ModelIdShort, NamespaceIndexes[0]),
-                        new QualifiedName(instance.ModelIdShort, NamespaceIndexes[0]),
+                        new NodeId(instance.ModelIdShort, InstanceNamespaceIndex),
+                        new QualifiedName(instance.ModelIdShort, InstanceNamespaceIndex),
                         null,
                         true);
 
@@ -254,8 +397,8 @@ namespace I4AAS_Gateway.Server
 
                     newChild.Create(
                         SystemContext,
-                        new NodeId(property.Name, NamespaceIndexes[0]),
-                        new QualifiedName(property.Name, NamespaceIndexes[0]),
+                        new NodeId(property.Name, InstanceNamespaceIndex),
+                        new QualifiedName(property.Name, InstanceNamespaceIndex),
                         null,
                         true);
 

@@ -1,87 +1,89 @@
 {
-  "openapi" : "3.0.1",
-  "info" : {
-    "title" : "OPC UA REST API",
-    "description" : "This API provides simple REST based access to an OPC UA server.",
-    "contact" : {
-      "email" : "office@opcfoundation.org"
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OPC UA REST API",
+    "description": "This API provides simple REST based access to an OPC UA server.",
+    "contact": {
+      "email": "office@opcfoundation.org"
     },
-    "license" : {
-      "name" : "OPC Source Deliverable Agreement of Use",
-      "url" : "https://opcfoundation.org/license/source/1.11/"
+    "license": {
+      "name": "OPC Source Deliverable Agreement of Use",
+      "url": "https://opcfoundation.org/license/source/1.11/"
     },
-    "version" : "1.0.0"
+    "version": "0.0.1"
   },
   "servers" : [ {
     "url" : "https://i4aas-gateway.azurewebsites.net/opcua"
-  } ],
-  "paths" : {
-    "/read" : {
-      "post" : {
-        "operationId" : "Read",
-        "requestBody" : {
-          "description" : "ReadRequestMessage",
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "title" : "ReadRequestMessage",
-                "properties" : {
-                  "NamespaceUris" : {
-                    "type" : "array",
-                    "items" : {
-                      "type" : "string"
+  },{
+    "url" : "https://localhost:44403/opcua"
+  }],
+  "paths": {
+    "/read": {
+      "post": {
+        "operationId": "Read",
+        "requestBody": {
+          "description": "ReadRequestMessage",
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "ReadRequestMessage",
+                "properties": {
+                  "NamespaceUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
                     }
                   },
-                  "ServerUris" : {
-                    "type" : "array",
-                    "items" : {
-                      "type" : "string"
+                  "ServerUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
                     }
                   },
-                  "LocaleIds" : {
-                    "type" : "array",
-                    "items" : {
-                      "type" : "string"
+                  "LocaleIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
                     }
                   },
-                  "ServiceId" : {
-                    "type" : "integer",
-                    "format" : "uint32"
+                  "ServiceId": {
+                    "type": "integer",
+                    "format": "uint32"
                   },
-                  "Body" : {
-                    "$ref" : "#/components/schemas/ReadRequest"
+                  "Body": {
+                    "$ref": "#/components/schemas/ReadRequest"
                   }
                 }
               }
             }
           }
         },
-        "responses" : {
-          "200" : {
-            "description" : "ReadResponseMessage",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "title" : "ReadResponseMessage",
-                  "properties" : {
-                    "NamespaceUris" : {
-                      "type" : "array",
-                      "items" : {
-                        "type" : "string"
+        "responses": {
+          "200": {
+            "description": "ReadResponseMessage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "ReadResponseMessage",
+                  "properties": {
+                    "NamespaceUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
                       }
                     },
-                    "ServerUris" : {
-                      "type" : "array",
-                      "items" : {
-                        "type" : "string"
+                    "ServerUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
                       }
                     },
-                    "ServiceId" : {
-                      "type" : "integer",
-                      "format" : "uint32"
+                    "ServiceId": {
+                      "type": "integer",
+                      "format": "uint32"
                     },
-                    "Body" : {
-                      "$ref" : "#/components/schemas/ReadResponse"
+                    "Body": {
+                      "$ref": "#/components/schemas/ReadResponse"
                     }
                   }
                 }
@@ -91,72 +93,72 @@
         }
       }
     },
-    "/write" : {
-      "post" : {
-        "operationId" : "Write",
-        "requestBody" : {
-          "description" : "WriteRequestMessage",
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "title" : "WriteRequestMessage",
-                "properties" : {
-                  "NamespaceUris" : {
-                    "type" : "array",
-                    "items" : {
-                      "type" : "string"
+    "/write": {
+      "post": {
+        "operationId": "Write",
+        "requestBody": {
+          "description": "WriteRequestMessage",
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "WriteRequestMessage",
+                "properties": {
+                  "NamespaceUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
                     }
                   },
-                  "ServerUris" : {
-                    "type" : "array",
-                    "items" : {
-                      "type" : "string"
+                  "ServerUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
                     }
                   },
-                  "LocaleIds" : {
-                    "type" : "array",
-                    "items" : {
-                      "type" : "string"
+                  "LocaleIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
                     }
                   },
-                  "ServiceId" : {
-                    "type" : "integer",
-                    "format" : "uint32"
+                  "ServiceId": {
+                    "type": "integer",
+                    "format": "uint32"
                   },
-                  "Body" : {
-                    "$ref" : "#/components/schemas/WriteRequest"
+                  "Body": {
+                    "$ref": "#/components/schemas/WriteRequest"
                   }
                 }
               }
             }
           }
         },
-        "responses" : {
-          "200" : {
-            "description" : "WriteResponseMessage",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "title" : "WriteResponseMessage",
-                  "properties" : {
-                    "NamespaceUris" : {
-                      "type" : "array",
-                      "items" : {
-                        "type" : "string"
+        "responses": {
+          "200": {
+            "description": "WriteResponseMessage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "WriteResponseMessage",
+                  "properties": {
+                    "NamespaceUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
                       }
                     },
-                    "ServerUris" : {
-                      "type" : "array",
-                      "items" : {
-                        "type" : "string"
+                    "ServerUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
                       }
                     },
-                    "ServiceId" : {
-                      "type" : "integer",
-                      "format" : "uint32"
+                    "ServiceId": {
+                      "type": "integer",
+                      "format": "uint32"
                     },
-                    "Body" : {
-                      "$ref" : "#/components/schemas/WriteResponse"
+                    "Body": {
+                      "$ref": "#/components/schemas/WriteResponse"
                     }
                   }
                 }
@@ -166,72 +168,72 @@
         }
       }
     },
-    "/call" : {
-      "post" : {
-        "operationId" : "Call",
-        "requestBody" : {
-          "description" : "CallRequestMessage",
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "title" : "CallRequestMessage",
-                "properties" : {
-                  "NamespaceUris" : {
-                    "type" : "array",
-                    "items" : {
-                      "type" : "string"
+    "/call": {
+      "post": {
+        "operationId": "Call",
+        "requestBody": {
+          "description": "CallRequestMessage",
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "CallRequestMessage",
+                "properties": {
+                  "NamespaceUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
                     }
                   },
-                  "ServerUris" : {
-                    "type" : "array",
-                    "items" : {
-                      "type" : "string"
+                  "ServerUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
                     }
                   },
-                  "LocaleIds" : {
-                    "type" : "array",
-                    "items" : {
-                      "type" : "string"
+                  "LocaleIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
                     }
                   },
-                  "ServiceId" : {
-                    "type" : "integer",
-                    "format" : "uint32"
+                  "ServiceId": {
+                    "type": "integer",
+                    "format": "uint32"
                   },
-                  "Body" : {
-                    "$ref" : "#/components/schemas/CallRequest"
+                  "Body": {
+                    "$ref": "#/components/schemas/CallRequest"
                   }
                 }
               }
             }
           }
         },
-        "responses" : {
-          "200" : {
-            "description" : "CallResponseMessage",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "title" : "CallResponseMessage",
-                  "properties" : {
-                    "NamespaceUris" : {
-                      "type" : "array",
-                      "items" : {
-                        "type" : "string"
+        "responses": {
+          "200": {
+            "description": "CallResponseMessage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "CallResponseMessage",
+                  "properties": {
+                    "NamespaceUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
                       }
                     },
-                    "ServerUris" : {
-                      "type" : "array",
-                      "items" : {
-                        "type" : "string"
+                    "ServerUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
                       }
                     },
-                    "ServiceId" : {
-                      "type" : "integer",
-                      "format" : "uint32"
+                    "ServiceId": {
+                      "type": "integer",
+                      "format": "uint32"
                     },
-                    "Body" : {
-                      "$ref" : "#/components/schemas/CallResponse"
+                    "Body": {
+                      "$ref": "#/components/schemas/CallResponse"
                     }
                   }
                 }
@@ -241,72 +243,72 @@
         }
       }
     },
-    "/historyread" : {
-      "post" : {
-        "operationId" : "HistoryRead",
-        "requestBody" : {
-          "description" : "HistoryReadRequestMessage",
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "title" : "HistoryReadRequestMessage",
-                "properties" : {
-                  "NamespaceUris" : {
-                    "type" : "array",
-                    "items" : {
-                      "type" : "string"
+    "/historyread": {
+      "post": {
+        "operationId": "HistoryRead",
+        "requestBody": {
+          "description": "HistoryReadRequestMessage",
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "HistoryReadRequestMessage",
+                "properties": {
+                  "NamespaceUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
                     }
                   },
-                  "ServerUris" : {
-                    "type" : "array",
-                    "items" : {
-                      "type" : "string"
+                  "ServerUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
                     }
                   },
-                  "LocaleIds" : {
-                    "type" : "array",
-                    "items" : {
-                      "type" : "string"
+                  "LocaleIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
                     }
                   },
-                  "ServiceId" : {
-                    "type" : "integer",
-                    "format" : "uint32"
+                  "ServiceId": {
+                    "type": "integer",
+                    "format": "uint32"
                   },
-                  "Body" : {
-                    "$ref" : "#/components/schemas/HistoryReadRequest"
+                  "Body": {
+                    "$ref": "#/components/schemas/HistoryReadRequest"
                   }
                 }
               }
             }
           }
         },
-        "responses" : {
-          "200" : {
-            "description" : "HistoryReadResponseMessage",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "title" : "HistoryReadResponseMessage",
-                  "properties" : {
-                    "NamespaceUris" : {
-                      "type" : "array",
-                      "items" : {
-                        "type" : "string"
+        "responses": {
+          "200": {
+            "description": "HistoryReadResponseMessage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "HistoryReadResponseMessage",
+                  "properties": {
+                    "NamespaceUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
                       }
                     },
-                    "ServerUris" : {
-                      "type" : "array",
-                      "items" : {
-                        "type" : "string"
+                    "ServerUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
                       }
                     },
-                    "ServiceId" : {
-                      "type" : "integer",
-                      "format" : "uint32"
+                    "ServiceId": {
+                      "type": "integer",
+                      "format": "uint32"
                     },
-                    "Body" : {
-                      "$ref" : "#/components/schemas/HistoryReadResponse"
+                    "Body": {
+                      "$ref": "#/components/schemas/HistoryReadResponse"
                     }
                   }
                 }
@@ -316,72 +318,72 @@
         }
       }
     },
-    "/historyupdate" : {
-      "post" : {
-        "operationId" : "HistoryUpdate",
-        "requestBody" : {
-          "description" : "HistoryUpdateRequestMessage",
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "title" : "HistoryUpdateRequestMessage",
-                "properties" : {
-                  "NamespaceUris" : {
-                    "type" : "array",
-                    "items" : {
-                      "type" : "string"
+    "/historyupdate": {
+      "post": {
+        "operationId": "HistoryUpdate",
+        "requestBody": {
+          "description": "HistoryUpdateRequestMessage",
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "HistoryUpdateRequestMessage",
+                "properties": {
+                  "NamespaceUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
                     }
                   },
-                  "ServerUris" : {
-                    "type" : "array",
-                    "items" : {
-                      "type" : "string"
+                  "ServerUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
                     }
                   },
-                  "LocaleIds" : {
-                    "type" : "array",
-                    "items" : {
-                      "type" : "string"
+                  "LocaleIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
                     }
                   },
-                  "ServiceId" : {
-                    "type" : "integer",
-                    "format" : "uint32"
+                  "ServiceId": {
+                    "type": "integer",
+                    "format": "uint32"
                   },
-                  "Body" : {
-                    "$ref" : "#/components/schemas/HistoryUpdateRequest"
+                  "Body": {
+                    "$ref": "#/components/schemas/HistoryUpdateRequest"
                   }
                 }
               }
             }
           }
         },
-        "responses" : {
-          "200" : {
-            "description" : "HistoryUpdateResponseMessage",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "title" : "HistoryUpdateResponseMessage",
-                  "properties" : {
-                    "NamespaceUris" : {
-                      "type" : "array",
-                      "items" : {
-                        "type" : "string"
+        "responses": {
+          "200": {
+            "description": "HistoryUpdateResponseMessage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "HistoryUpdateResponseMessage",
+                  "properties": {
+                    "NamespaceUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
                       }
                     },
-                    "ServerUris" : {
-                      "type" : "array",
-                      "items" : {
-                        "type" : "string"
+                    "ServerUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
                       }
                     },
-                    "ServiceId" : {
-                      "type" : "integer",
-                      "format" : "uint32"
+                    "ServiceId": {
+                      "type": "integer",
+                      "format": "uint32"
                     },
-                    "Body" : {
-                      "$ref" : "#/components/schemas/HistoryUpdateResponse"
+                    "Body": {
+                      "$ref": "#/components/schemas/HistoryUpdateResponse"
                     }
                   }
                 }
@@ -391,72 +393,72 @@
         }
       }
     },
-    "/browse" : {
-      "post" : {
-        "operationId" : "Browse",
-        "requestBody" : {
-          "description" : "BrowseRequestMessage",
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "title" : "BrowseRequestMessage",
-                "properties" : {
-                  "NamespaceUris" : {
-                    "type" : "array",
-                    "items" : {
-                      "type" : "string"
+    "/browse": {
+      "post": {
+        "operationId": "Browse",
+        "requestBody": {
+          "description": "BrowseRequestMessage",
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "BrowseRequestMessage",
+                "properties": {
+                  "NamespaceUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
                     }
                   },
-                  "ServerUris" : {
-                    "type" : "array",
-                    "items" : {
-                      "type" : "string"
+                  "ServerUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
                     }
                   },
-                  "LocaleIds" : {
-                    "type" : "array",
-                    "items" : {
-                      "type" : "string"
+                  "LocaleIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
                     }
                   },
-                  "ServiceId" : {
-                    "type" : "integer",
-                    "format" : "uint32"
+                  "ServiceId": {
+                    "type": "integer",
+                    "format": "uint32"
                   },
-                  "Body" : {
-                    "$ref" : "#/components/schemas/BrowseRequest"
+                  "Body": {
+                    "$ref": "#/components/schemas/BrowseRequest"
                   }
                 }
               }
             }
           }
         },
-        "responses" : {
-          "200" : {
-            "description" : "BrowseResponseMessage",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "title" : "BrowseResponseMessage",
-                  "properties" : {
-                    "NamespaceUris" : {
-                      "type" : "array",
-                      "items" : {
-                        "type" : "string"
+        "responses": {
+          "200": {
+            "description": "BrowseResponseMessage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "BrowseResponseMessage",
+                  "properties": {
+                    "NamespaceUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
                       }
                     },
-                    "ServerUris" : {
-                      "type" : "array",
-                      "items" : {
-                        "type" : "string"
+                    "ServerUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
                       }
                     },
-                    "ServiceId" : {
-                      "type" : "integer",
-                      "format" : "uint32"
+                    "ServiceId": {
+                      "type": "integer",
+                      "format": "uint32"
                     },
-                    "Body" : {
-                      "$ref" : "#/components/schemas/BrowseResponse"
+                    "Body": {
+                      "$ref": "#/components/schemas/BrowseResponse"
                     }
                   }
                 }
@@ -466,72 +468,72 @@
         }
       }
     },
-    "/browsenext" : {
-      "post" : {
-        "operationId" : "BrowseNext",
-        "requestBody" : {
-          "description" : "BrowseNextRequestMessage",
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "title" : "BrowseNextRequestMessage",
-                "properties" : {
-                  "NamespaceUris" : {
-                    "type" : "array",
-                    "items" : {
-                      "type" : "string"
+    "/browsenext": {
+      "post": {
+        "operationId": "BrowseNext",
+        "requestBody": {
+          "description": "BrowseNextRequestMessage",
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "BrowseNextRequestMessage",
+                "properties": {
+                  "NamespaceUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
                     }
                   },
-                  "ServerUris" : {
-                    "type" : "array",
-                    "items" : {
-                      "type" : "string"
+                  "ServerUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
                     }
                   },
-                  "LocaleIds" : {
-                    "type" : "array",
-                    "items" : {
-                      "type" : "string"
+                  "LocaleIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
                     }
                   },
-                  "ServiceId" : {
-                    "type" : "integer",
-                    "format" : "uint32"
+                  "ServiceId": {
+                    "type": "integer",
+                    "format": "uint32"
                   },
-                  "Body" : {
-                    "$ref" : "#/components/schemas/BrowseNextRequest"
+                  "Body": {
+                    "$ref": "#/components/schemas/BrowseNextRequest"
                   }
                 }
               }
             }
           }
         },
-        "responses" : {
-          "200" : {
-            "description" : "BrowseNextResponseMessage",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "title" : "BrowseNextResponseMessage",
-                  "properties" : {
-                    "NamespaceUris" : {
-                      "type" : "array",
-                      "items" : {
-                        "type" : "string"
+        "responses": {
+          "200": {
+            "description": "BrowseNextResponseMessage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "BrowseNextResponseMessage",
+                  "properties": {
+                    "NamespaceUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
                       }
                     },
-                    "ServerUris" : {
-                      "type" : "array",
-                      "items" : {
-                        "type" : "string"
+                    "ServerUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
                       }
                     },
-                    "ServiceId" : {
-                      "type" : "integer",
-                      "format" : "uint32"
+                    "ServiceId": {
+                      "type": "integer",
+                      "format": "uint32"
                     },
-                    "Body" : {
-                      "$ref" : "#/components/schemas/BrowseNextResponse"
+                    "Body": {
+                      "$ref": "#/components/schemas/BrowseNextResponse"
                     }
                   }
                 }
@@ -541,72 +543,72 @@
         }
       }
     },
-    "/translate" : {
-      "post" : {
-        "operationId" : "TranslateBrowsePathsToNodeIds",
-        "requestBody" : {
-          "description" : "TranslateBrowsePathsToNodeIdsRequestMessage",
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "title" : "TranslateBrowsePathsToNodeIdsRequestMessage",
-                "properties" : {
-                  "NamespaceUris" : {
-                    "type" : "array",
-                    "items" : {
-                      "type" : "string"
+    "/translate": {
+      "post": {
+        "operationId": "TranslateBrowsePathsToNodeIds",
+        "requestBody": {
+          "description": "TranslateBrowsePathsToNodeIdsRequestMessage",
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "TranslateBrowsePathsToNodeIdsRequestMessage",
+                "properties": {
+                  "NamespaceUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
                     }
                   },
-                  "ServerUris" : {
-                    "type" : "array",
-                    "items" : {
-                      "type" : "string"
+                  "ServerUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
                     }
                   },
-                  "LocaleIds" : {
-                    "type" : "array",
-                    "items" : {
-                      "type" : "string"
+                  "LocaleIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
                     }
                   },
-                  "ServiceId" : {
-                    "type" : "integer",
-                    "format" : "uint32"
+                  "ServiceId": {
+                    "type": "integer",
+                    "format": "uint32"
                   },
-                  "Body" : {
-                    "$ref" : "#/components/schemas/TranslateBrowsePathsToNodeIdsRequest"
+                  "Body": {
+                    "$ref": "#/components/schemas/TranslateBrowsePathsToNodeIdsRequest"
                   }
                 }
               }
             }
           }
         },
-        "responses" : {
-          "200" : {
-            "description" : "TranslateBrowsePathsToNodeIdsResponseMessage",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "title" : "TranslateBrowsePathsToNodeIdsResponseMessage",
-                  "properties" : {
-                    "NamespaceUris" : {
-                      "type" : "array",
-                      "items" : {
-                        "type" : "string"
+        "responses": {
+          "200": {
+            "description": "TranslateBrowsePathsToNodeIdsResponseMessage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "TranslateBrowsePathsToNodeIdsResponseMessage",
+                  "properties": {
+                    "NamespaceUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
                       }
                     },
-                    "ServerUris" : {
-                      "type" : "array",
-                      "items" : {
-                        "type" : "string"
+                    "ServerUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
                       }
                     },
-                    "ServiceId" : {
-                      "type" : "integer",
-                      "format" : "uint32"
+                    "ServiceId": {
+                      "type": "integer",
+                      "format": "uint32"
                     },
-                    "Body" : {
-                      "$ref" : "#/components/schemas/TranslateBrowsePathsToNodeIdsResponse"
+                    "Body": {
+                      "$ref": "#/components/schemas/TranslateBrowsePathsToNodeIdsResponse"
                     }
                   }
                 }
@@ -617,1255 +619,1251 @@
       }
     }
   },
-  "components" : {
-    "schemas" : {
-      "LocalizedText" : {
-        "type" : "object",
-        "properties" : {
-          "Locale" : {
-            "type" : "string",
-            "format" : "rfc3066"
+  "components": {
+    "schemas": {
+      "LocalizedText": {
+        "type": "object",
+        "properties": {
+          "Locale": {
+            "type": "string",
+            "format": "rfc3066"
           },
-          "Text" : {
-            "type" : "string"
+          "Text": {
+            "type": "string"
           }
         }
       },
-      "ExtensionObject" : {
-        "type" : "object",
-        "properties" : {
-          "TypeId" : {
-            "type" : "string",
-            "format" : "NodeId"
+      "ExtensionObject": {
+        "type": "object",
+        "properties": {
+          "TypeId": {
+            "type": "string",
+            "format": "NodeId"
           },
-          "Encoding" : {
-            "type" : "integer",
-            "format" : "uint8"
+          "Encoding": {
+            "type": "integer",
+            "format": "uint8"
           },
-          "Body" : {
-            "type" : "object"
+          "Body": {
+            "type": "object"
           }
         }
       },
-      "VariantUnion" : {
-        "title" : "VariantUnion",
-        "oneOf" : [ {
-          "type" : "boolean"
-        }, {
-          "type" : "integer"
-        }, {
-          "type" : "number"
-        }, {
-          "type" : "string"
-        }, {
-          "type" : "object"
-        } ]
-      },
-      "VariantBody" : {
-        "title" : "VariantBody",
-        "type" : "object",
-        "oneOf" : [ {
-          "$ref" : "#/components/schemas/VariantUnion"
-        }, {
-          "type" : "array",
-          "items" : {
-            "$ref" : "#/components/schemas/VariantUnion"
-          }
-        } ]
-      },
-      "Variant" : {
-        "type" : "object",
-        "properties" : {
-          "Type" : {
-            "type" : "integer",
-            "format" : "uint8"
+      "Variant": {
+        "type": "object",
+        "properties": {
+          "Type": {
+            "type": "integer",
+            "format": "uint8"
           },
-          "Body" : {
-            "$ref" : "#/components/schemas/VariantBody"
-          },
-          "Dimensions" : {
-            "type" : "array",
-            "items" : {
-              "type" : "integer",
-              "format" : "uint32"
+          "Body": { },
+          "Dimensions": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "uint32"
             }
           }
         }
       },
-      "DataValue" : {
-        "type" : "object",
-        "properties" : {
-          "Value" : {
-            "$ref" : "#/components/schemas/Variant"
+      "DataValue": {
+        "type": "object",
+        "properties": {
+          "Value": {
+            "$ref": "#/components/schemas/Variant"
           },
-          "StatusCode" : {
-            "type" : "integer",
-            "format" : "StatusCode"
+          "StatusCode": {
+            "type": "integer",
+            "format": "StatusCode"
           },
-          "SourceTimestamp" : {
-            "type" : "string",
-            "format" : "date-time"
+          "SourceTimestamp": {
+            "type": "string",
+            "format": "date-time"
           },
-          "SourcePicoSeconds" : {
-            "type" : "integer",
-            "format" : "uint16"
+          "SourcePicoSeconds": {
+            "type": "integer",
+            "format": "uint16"
           },
-          "ServerTimestamp" : {
-            "type" : "string",
-            "format" : "date-time"
+          "ServerTimestamp": {
+            "type": "string",
+            "format": "date-time"
           },
-          "ServerPicoSeconds" : {
-            "type" : "integer",
-            "format" : "uint16"
+          "ServerPicoSeconds": {
+            "type": "integer",
+            "format": "uint16"
           }
         }
       },
-      "DiagnosticInfo" : {
-        "type" : "object",
-        "properties" : {
-          "SymbolicId" : {
-            "type" : "integer",
-            "format" : "int32"
+      "DiagnosticInfo": {
+        "type": "object",
+        "properties": {
+          "SymbolicId": {
+            "type": "integer",
+            "format": "int32"
           },
-          "NamespaceUri" : {
-            "type" : "integer",
-            "format" : "int32"
+          "NamespaceUri": {
+            "type": "integer",
+            "format": "int32"
           },
-          "Locale" : {
-            "type" : "integer",
-            "format" : "int32"
+          "Locale": {
+            "type": "integer",
+            "format": "int32"
           },
-          "LocalizedText" : {
-            "type" : "integer",
-            "format" : "int32"
+          "LocalizedText": {
+            "type": "integer",
+            "format": "int32"
           },
-          "AdditionalInfo" : {
-            "type" : "string"
+          "AdditionalInfo": {
+            "type": "string"
           },
-          "InnerStatusCode" : {
-            "type" : "integer",
-            "format" : "StatusCode"
+          "InnerStatusCode": {
+            "type": "integer",
+            "format": "StatusCode"
           },
-          "InnerDiagnosticInfo" : {
-            "$ref" : "#/components/schemas/DiagnosticInfo"
+          "InnerDiagnosticInfo": {
+            "$ref": "#/components/schemas/DiagnosticInfo"
           }
         }
       },
-      "Decimal" : {
-        "type" : "object",
-        "properties" : {
-          "Scale" : {
-            "type" : "integer",
-            "format" : "int16"
+      "Decimal": {
+        "type": "object",
+        "properties": {
+          "Scale": {
+            "type": "integer",
+            "format": "int16"
           },
-          "Value" : {
-            "type" : "string",
-            "format" : "uinteger"
+          "Value": {
+            "type": "string",
+            "format": "uinteger"
           }
         }
       },
-      "BaseDataType" : {
-        "$ref" : "#/components/schemas/Variant"
+      "BaseDataType": {
+        "$ref": "#/components/schemas/Variant"
       },
-      "NodeClass" : {
-        "maximum" : 128,
-        "minimum" : 0,
-        "type" : "integer",
-        "description" : "Unspecified=0, Object=1, Variable=2, Method=4, ObjectType=8, VariableType=16, ReferenceType=32, DataType=64, View=128",
-        "format" : "int32"
+      "NodeClass": {
+        "maximum": 128,
+        "minimum": 0,
+        "type": "integer",
+        "description": "Unspecified=0, Object=1, Variable=2, Method=4, ObjectType=8, VariableType=16, ReferenceType=32, DataType=64, View=128",
+        "format": "int32"
       },
-      "IntegerId" : {
-        "type" : "integer",
-        "format" : "uint32"
+      "IntegerId": {
+        "type": "integer",
+        "format": "uint32"
       },
-      "Counter" : {
-        "type" : "integer",
-        "format" : "uint32"
+      "Counter": {
+        "type": "integer",
+        "format": "uint32"
       },
-      "Duration" : {
-        "type" : "number",
-        "format" : "double"
+      "Duration": {
+        "type": "number",
+        "format": "double"
       },
-      "NumericRange" : {
-        "type" : "string"
+      "NumericRange": {
+        "type": "string"
       },
-      "UtcTime" : {
-        "type" : "string",
-        "format" : "date-time"
+      "UtcTime": {
+        "type": "string",
+        "format": "date-time"
       },
-      "SessionAuthenticationToken" : {
-        "type" : "string",
-        "format" : "NodeId"
+      "SessionAuthenticationToken": {
+        "type": "string",
+        "format": "NodeId"
       },
-      "RequestHeader" : {
-        "type" : "object",
-        "properties" : {
-          "AuthenticationToken" : {
-            "type" : "string",
-            "format" : "NodeId"
+      "RequestHeader": {
+        "type": "object",
+        "properties": {
+          "AuthenticationToken": {
+            "type": "string",
+            "format": "NodeId"
           },
-          "Timestamp" : {
-            "type" : "string",
-            "format" : "date-time"
+          "Timestamp": {
+            "type": "string",
+            "format": "date-time"
           },
-          "RequestHandle" : {
-            "type" : "integer",
-            "format" : "uint32"
+          "RequestHandle": {
+            "type": "integer",
+            "format": "uint32"
           },
-          "ReturnDiagnostics" : {
-            "type" : "integer",
-            "format" : "uint32"
+          "ReturnDiagnostics": {
+            "type": "integer",
+            "format": "uint32"
           },
-          "AuditEntryId" : {
-            "type" : "string"
+          "AuditEntryId": {
+            "type": "string"
           },
-          "TimeoutHint" : {
-            "type" : "integer",
-            "format" : "uint32"
+          "TimeoutHint": {
+            "type": "integer",
+            "format": "uint32"
           },
-          "AdditionalHeader" : {
-            "$ref" : "#/components/schemas/ExtensionObject"
+          "AdditionalHeader": {
+            "$ref": "#/components/schemas/ExtensionObject"
           }
         }
       },
-      "ResponseHeader" : {
-        "type" : "object",
-        "properties" : {
-          "Timestamp" : {
-            "type" : "string",
-            "format" : "date-time"
+      "ResponseHeader": {
+        "type": "object",
+        "properties": {
+          "Timestamp": {
+            "type": "string",
+            "format": "date-time"
           },
-          "RequestHandle" : {
-            "type" : "integer",
-            "format" : "uint32"
+          "RequestHandle": {
+            "type": "integer",
+            "format": "uint32"
           },
-          "ServiceResult" : {
-            "type" : "integer",
-            "format" : "StatusCode"
+          "ServiceResult": {
+            "type": "integer",
+            "format": "StatusCode"
           },
-          "ServiceDiagnostics" : {
-            "$ref" : "#/components/schemas/DiagnosticInfo"
+          "ServiceDiagnostics": {
+            "$ref": "#/components/schemas/DiagnosticInfo"
           },
-          "StringTable" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
+          "StringTable": {
+            "type": "array",
+            "items": {
+              "type": "string"
             }
           },
-          "AdditionalHeader" : {
-            "$ref" : "#/components/schemas/ExtensionObject"
+          "AdditionalHeader": {
+            "$ref": "#/components/schemas/ExtensionObject"
           }
         }
       },
-      "BrowseDirection" : {
-        "maximum" : 3,
-        "minimum" : 0,
-        "type" : "integer",
-        "description" : "Forward=0, Inverse=1, Both=2, Invalid=3",
-        "format" : "int32"
+      "BrowseDirection": {
+        "maximum": 3,
+        "minimum": 0,
+        "type": "integer",
+        "description": "Forward=0, Inverse=1, Both=2, Invalid=3",
+        "format": "int32"
       },
-      "ViewDescription" : {
-        "type" : "object",
-        "properties" : {
-          "ViewId" : {
-            "type" : "string",
-            "format" : "NodeId"
+      "ViewDescription": {
+        "type": "object",
+        "properties": {
+          "ViewId": {
+            "type": "string",
+            "format": "NodeId"
           },
-          "Timestamp" : {
-            "type" : "string",
-            "format" : "date-time"
+          "Timestamp": {
+            "type": "string",
+            "format": "date-time"
           },
-          "ViewVersion" : {
-            "type" : "integer",
-            "format" : "uint32"
+          "ViewVersion": {
+            "type": "integer",
+            "format": "uint32"
           }
         }
       },
-      "BrowseDescription" : {
-        "type" : "object",
-        "properties" : {
-          "NodeId" : {
-            "type" : "string",
-            "format" : "NodeId"
+      "BrowseDescription": {
+        "type": "object",
+        "properties": {
+          "NodeId": {
+            "type": "string",
+            "format": "NodeId"
           },
-          "BrowseDirection" : {
-            "type" : "integer",
-            "format" : "BrowseDirection"
+          "BrowseDirection": {
+            "type": "integer",
+            "format": "BrowseDirection"
           },
-          "ReferenceTypeId" : {
-            "type" : "string",
-            "format" : "NodeId"
+          "ReferenceTypeId": {
+            "type": "string",
+            "format": "NodeId"
           },
-          "IncludeSubtypes" : {
-            "type" : "boolean"
+          "IncludeSubtypes": {
+            "type": "boolean"
           },
-          "NodeClassMask" : {
-            "type" : "integer",
-            "format" : "uint32"
+          "NodeClassMask": {
+            "type": "integer",
+            "format": "uint32"
           },
-          "ResultMask" : {
-            "type" : "integer",
-            "format" : "uint32"
+          "ResultMask": {
+            "type": "integer",
+            "format": "uint32"
           }
         }
       },
-      "ReferenceDescription" : {
-        "type" : "object",
-        "properties" : {
-          "ReferenceTypeId" : {
-            "type" : "string",
-            "format" : "NodeId"
+      "ReferenceDescription": {
+        "type": "object",
+        "properties": {
+          "ReferenceTypeId": {
+            "type": "string",
+            "format": "NodeId"
           },
-          "IsForward" : {
-            "type" : "boolean"
+          "IsForward": {
+            "type": "boolean"
           },
-          "NodeId" : {
-            "type" : "string",
-            "format" : "ExpandedNodeId"
+          "NodeId": {
+            "type": "string",
+            "format": "ExpandedNodeId"
           },
-          "BrowseName" : {
-            "type" : "string",
-            "format" : "QualifiedName"
+          "BrowseName": {
+            "type": "string",
+            "format": "QualifiedName"
           },
-          "DisplayName" : {
-            "$ref" : "#/components/schemas/LocalizedText"
+          "DisplayName": {
+            "$ref": "#/components/schemas/LocalizedText"
           },
-          "NodeClass" : {
-            "type" : "integer",
-            "format" : "NodeClass"
+          "NodeClass": {
+            "type": "integer",
+            "format": "NodeClass"
           },
-          "TypeDefinition" : {
-            "type" : "string",
-            "format" : "ExpandedNodeId"
+          "TypeDefinition": {
+            "type": "string",
+            "format": "ExpandedNodeId"
           }
         }
       },
-      "ContinuationPoint" : {
-        "type" : "string",
-        "format" : "byte"
+      "ContinuationPoint": {
+        "type": "string",
+        "format": "byte"
       },
-      "BrowseResult" : {
-        "type" : "object",
-        "properties" : {
-          "StatusCode" : {
-            "type" : "integer",
-            "format" : "StatusCode"
+      "BrowseResult": {
+        "type": "object",
+        "properties": {
+          "StatusCode": {
+            "type": "integer",
+            "format": "StatusCode"
           },
-          "ContinuationPoint" : {
-            "type" : "string",
-            "format" : "byte"
+          "ContinuationPoint": {
+            "type": "string",
+            "format": "byte"
           },
-          "References" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/ReferenceDescription"
-            }
-          }
-        }
-      },
-      "BrowseRequest" : {
-        "type" : "object",
-        "properties" : {
-          "RequestHeader" : {
-            "$ref" : "#/components/schemas/RequestHeader"
-          },
-          "View" : {
-            "$ref" : "#/components/schemas/ViewDescription"
-          },
-          "RequestedMaxReferencesPerNode" : {
-            "type" : "integer",
-            "format" : "uint32"
-          },
-          "NodesToBrowse" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/BrowseDescription"
+          "References": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReferenceDescription"
             }
           }
         }
       },
-      "BrowseResponse" : {
-        "type" : "object",
-        "properties" : {
-          "ResponseHeader" : {
-            "$ref" : "#/components/schemas/ResponseHeader"
+      "BrowseRequest": {
+        "type": "object",
+        "properties": {
+          "RequestHeader": {
+            "$ref": "#/components/schemas/RequestHeader"
           },
-          "Results" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/BrowseResult"
-            }
+          "View": {
+            "$ref": "#/components/schemas/ViewDescription"
           },
-          "DiagnosticInfos" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/DiagnosticInfo"
-            }
-          }
-        }
-      },
-      "BrowseNextRequest" : {
-        "type" : "object",
-        "properties" : {
-          "RequestHeader" : {
-            "$ref" : "#/components/schemas/RequestHeader"
+          "RequestedMaxReferencesPerNode": {
+            "type": "integer",
+            "format": "uint32"
           },
-          "ReleaseContinuationPoints" : {
-            "type" : "boolean"
-          },
-          "ContinuationPoints" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string",
-              "format" : "byte"
+          "NodesToBrowse": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BrowseDescription"
             }
           }
         }
       },
-      "BrowseNextResponse" : {
-        "type" : "object",
-        "properties" : {
-          "ResponseHeader" : {
-            "$ref" : "#/components/schemas/ResponseHeader"
+      "BrowseResponse": {
+        "type": "object",
+        "properties": {
+          "ResponseHeader": {
+            "$ref": "#/components/schemas/ResponseHeader"
           },
-          "Results" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/BrowseResult"
+          "Results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BrowseResult"
             }
           },
-          "DiagnosticInfos" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/DiagnosticInfo"
-            }
-          }
-        }
-      },
-      "RelativePathElement" : {
-        "type" : "object",
-        "properties" : {
-          "ReferenceTypeId" : {
-            "type" : "string",
-            "format" : "NodeId"
-          },
-          "IsInverse" : {
-            "type" : "boolean"
-          },
-          "IncludeSubtypes" : {
-            "type" : "boolean"
-          },
-          "TargetName" : {
-            "type" : "string",
-            "format" : "QualifiedName"
-          }
-        }
-      },
-      "RelativePath" : {
-        "type" : "object",
-        "properties" : {
-          "Elements" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/RelativePathElement"
+          "DiagnosticInfos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosticInfo"
             }
           }
         }
       },
-      "BrowsePath" : {
-        "type" : "object",
-        "properties" : {
-          "StartingNode" : {
-            "type" : "string",
-            "format" : "NodeId"
+      "BrowseNextRequest": {
+        "type": "object",
+        "properties": {
+          "RequestHeader": {
+            "$ref": "#/components/schemas/RequestHeader"
           },
-          "RelativePath" : {
-            "$ref" : "#/components/schemas/RelativePath"
-          }
-        }
-      },
-      "BrowsePathTarget" : {
-        "type" : "object",
-        "properties" : {
-          "TargetId" : {
-            "type" : "string",
-            "format" : "ExpandedNodeId"
+          "ReleaseContinuationPoints": {
+            "type": "boolean"
           },
-          "RemainingPathIndex" : {
-            "type" : "integer",
-            "format" : "uint32"
-          }
-        }
-      },
-      "BrowsePathResult" : {
-        "type" : "object",
-        "properties" : {
-          "StatusCode" : {
-            "type" : "integer",
-            "format" : "StatusCode"
-          },
-          "Targets" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/BrowsePathTarget"
+          "ContinuationPoints": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "byte"
             }
           }
         }
       },
-      "TranslateBrowsePathsToNodeIdsRequest" : {
-        "type" : "object",
-        "properties" : {
-          "RequestHeader" : {
-            "$ref" : "#/components/schemas/RequestHeader"
+      "BrowseNextResponse": {
+        "type": "object",
+        "properties": {
+          "ResponseHeader": {
+            "$ref": "#/components/schemas/ResponseHeader"
           },
-          "BrowsePaths" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/BrowsePath"
+          "Results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BrowseResult"
+            }
+          },
+          "DiagnosticInfos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosticInfo"
             }
           }
         }
       },
-      "TranslateBrowsePathsToNodeIdsResponse" : {
-        "type" : "object",
-        "properties" : {
-          "ResponseHeader" : {
-            "$ref" : "#/components/schemas/ResponseHeader"
+      "RelativePathElement": {
+        "type": "object",
+        "properties": {
+          "ReferenceTypeId": {
+            "type": "string",
+            "format": "NodeId"
           },
-          "Results" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/BrowsePathResult"
-            }
+          "IsInverse": {
+            "type": "boolean"
           },
-          "DiagnosticInfos" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/DiagnosticInfo"
+          "IncludeSubtypes": {
+            "type": "boolean"
+          },
+          "TargetName": {
+            "type": "string",
+            "format": "QualifiedName"
+          }
+        }
+      },
+      "RelativePath": {
+        "type": "object",
+        "properties": {
+          "Elements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RelativePathElement"
             }
           }
         }
       },
-      "FilterOperator" : {
-        "maximum" : 17,
-        "minimum" : 0,
-        "type" : "integer",
-        "description" : "Equals=0, IsNull=1, GreaterThan=2, LessThan=3, GreaterThanOrEqual=4, LessThanOrEqual=5, Like=6, Not=7, Between=8, InList=9, And=10, Or=11, Cast=12, InView=13, OfType=14, RelatedTo=15, BitwiseAnd=16, BitwiseOr=17",
-        "format" : "int32"
-      },
-      "ContentFilterElement" : {
-        "type" : "object",
-        "properties" : {
-          "FilterOperator" : {
-            "type" : "integer",
-            "format" : "FilterOperator"
+      "BrowsePath": {
+        "type": "object",
+        "properties": {
+          "StartingNode": {
+            "type": "string",
+            "format": "NodeId"
           },
-          "FilterOperands" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/ExtensionObject"
+          "RelativePath": {
+            "$ref": "#/components/schemas/RelativePath"
+          }
+        }
+      },
+      "BrowsePathTarget": {
+        "type": "object",
+        "properties": {
+          "TargetId": {
+            "type": "string",
+            "format": "ExpandedNodeId"
+          },
+          "RemainingPathIndex": {
+            "type": "integer",
+            "format": "uint32"
+          }
+        }
+      },
+      "BrowsePathResult": {
+        "type": "object",
+        "properties": {
+          "StatusCode": {
+            "type": "integer",
+            "format": "StatusCode"
+          },
+          "Targets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BrowsePathTarget"
             }
           }
         }
       },
-      "ContentFilter" : {
-        "type" : "object",
-        "properties" : {
-          "Elements" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/ContentFilterElement"
+      "TranslateBrowsePathsToNodeIdsRequest": {
+        "type": "object",
+        "properties": {
+          "RequestHeader": {
+            "$ref": "#/components/schemas/RequestHeader"
+          },
+          "BrowsePaths": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BrowsePath"
             }
           }
         }
       },
-      "FilterOperand" : {
-        "type" : "object"
-      },
-      "SimpleAttributeOperand" : {
-        "type" : "object",
-        "allOf" : [ {
-          "$ref" : "#/components/schemas/FilterOperand"
-        } ],
-        "properties" : {
-          "TypeDefinitionId" : {
-            "type" : "string",
-            "format" : "NodeId"
+      "TranslateBrowsePathsToNodeIdsResponse": {
+        "type": "object",
+        "properties": {
+          "ResponseHeader": {
+            "$ref": "#/components/schemas/ResponseHeader"
           },
-          "BrowsePath" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string",
-              "format" : "QualifiedName"
+          "Results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BrowsePathResult"
             }
           },
-          "AttributeId" : {
-            "type" : "integer",
-            "format" : "uint32"
-          },
-          "IndexRange" : {
-            "type" : "string"
-          }
-        }
-      },
-      "TimestampsToReturn" : {
-        "maximum" : 4,
-        "minimum" : 0,
-        "type" : "integer",
-        "description" : "Source=0, Server=1, Both=2, Neither=3, Invalid=4",
-        "format" : "int32"
-      },
-      "ReadValueId" : {
-        "type" : "object",
-        "properties" : {
-          "NodeId" : {
-            "type" : "string",
-            "format" : "NodeId"
-          },
-          "AttributeId" : {
-            "type" : "integer",
-            "format" : "uint32"
-          },
-          "IndexRange" : {
-            "type" : "string"
-          },
-          "DataEncoding" : {
-            "type" : "string",
-            "format" : "QualifiedName"
-          }
-        }
-      },
-      "ReadRequest" : {
-        "type" : "object",
-        "properties" : {
-          "RequestHeader" : {
-            "$ref" : "#/components/schemas/RequestHeader"
-          },
-          "MaxAge" : {
-            "type" : "number",
-            "format" : "double"
-          },
-          "TimestampsToReturn" : {
-            "type" : "integer",
-            "format" : "TimestampsToReturn"
-          },
-          "NodesToRead" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/ReadValueId"
+          "DiagnosticInfos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosticInfo"
             }
           }
         }
       },
-      "ReadResponse" : {
-        "type" : "object",
-        "properties" : {
-          "ResponseHeader" : {
-            "$ref" : "#/components/schemas/ResponseHeader"
-          },
-          "Results" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/DataValue"
-            }
-          },
-          "DiagnosticInfos" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/DiagnosticInfo"
-            }
-          }
-        }
+      "FilterOperator": {
+        "maximum": 17,
+        "minimum": 0,
+        "type": "integer",
+        "description": "Equals=0, IsNull=1, GreaterThan=2, LessThan=3, GreaterThanOrEqual=4, LessThanOrEqual=5, Like=6, Not=7, Between=8, InList=9, And=10, Or=11, Cast=12, InView=13, OfType=14, RelatedTo=15, BitwiseAnd=16, BitwiseOr=17",
+        "format": "int32"
       },
-      "HistoryReadValueId" : {
-        "type" : "object",
-        "properties" : {
-          "NodeId" : {
-            "type" : "string",
-            "format" : "NodeId"
+      "ContentFilterElement": {
+        "type": "object",
+        "properties": {
+          "FilterOperator": {
+            "type": "integer",
+            "format": "FilterOperator"
           },
-          "IndexRange" : {
-            "type" : "string"
-          },
-          "DataEncoding" : {
-            "type" : "string",
-            "format" : "QualifiedName"
-          },
-          "ContinuationPoint" : {
-            "type" : "string",
-            "format" : "byte"
-          }
-        }
-      },
-      "HistoryReadResult" : {
-        "type" : "object",
-        "properties" : {
-          "StatusCode" : {
-            "type" : "integer",
-            "format" : "StatusCode"
-          },
-          "ContinuationPoint" : {
-            "type" : "string",
-            "format" : "byte"
-          },
-          "HistoryData" : {
-            "$ref" : "#/components/schemas/ExtensionObject"
-          }
-        }
-      },
-      "HistoryReadDetails" : {
-        "type" : "object"
-      },
-      "ReadEventDetails" : {
-        "type" : "object",
-        "allOf" : [ {
-          "$ref" : "#/components/schemas/HistoryReadDetails"
-        } ],
-        "properties" : {
-          "NumValuesPerNode" : {
-            "type" : "integer",
-            "format" : "uint32"
-          },
-          "StartTime" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "EndTime" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "Filter" : {
-            "$ref" : "#/components/schemas/EventFilter"
-          }
-        }
-      },
-      "ReadRawModifiedDetails" : {
-        "type" : "object",
-        "allOf" : [ {
-          "$ref" : "#/components/schemas/HistoryReadDetails"
-        } ],
-        "properties" : {
-          "IsReadModified" : {
-            "type" : "boolean"
-          },
-          "StartTime" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "EndTime" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "NumValuesPerNode" : {
-            "type" : "integer",
-            "format" : "uint32"
-          },
-          "ReturnBounds" : {
-            "type" : "boolean"
-          }
-        }
-      },
-      "ReadProcessedDetails" : {
-        "type" : "object",
-        "allOf" : [ {
-          "$ref" : "#/components/schemas/HistoryReadDetails"
-        } ],
-        "properties" : {
-          "StartTime" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "EndTime" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "ProcessingInterval" : {
-            "type" : "number",
-            "format" : "double"
-          },
-          "AggregateType" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string",
-              "format" : "NodeId"
-            }
-          },
-          "AggregateConfiguration" : {
-            "$ref" : "#/components/schemas/AggregateConfiguration"
-          }
-        }
-      },
-      "ReadAtTimeDetails" : {
-        "type" : "object",
-        "allOf" : [ {
-          "$ref" : "#/components/schemas/HistoryReadDetails"
-        } ],
-        "properties" : {
-          "ReqTimes" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string",
-              "format" : "date-time"
-            }
-          },
-          "UseSimpleBounds" : {
-            "type" : "boolean"
-          }
-        }
-      },
-      "HistoryData" : {
-        "type" : "object",
-        "properties" : {
-          "DataValues" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/DataValue"
+          "FilterOperands": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExtensionObject"
             }
           }
         }
       },
-      "HistoryEvent" : {
-        "type" : "object",
-        "properties" : {
-          "Events" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/HistoryEventFieldList"
+      "ContentFilter": {
+        "type": "object",
+        "properties": {
+          "Elements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContentFilterElement"
             }
           }
         }
       },
-      "HistoryReadRequest" : {
-        "type" : "object",
-        "properties" : {
-          "RequestHeader" : {
-            "$ref" : "#/components/schemas/RequestHeader"
+      "FilterOperand": {
+        "type": "object"
+      },
+      "SimpleAttributeOperand": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/FilterOperand"
+          }
+        ],
+        "properties": {
+          "TypeDefinitionId": {
+            "type": "string",
+            "format": "NodeId"
           },
-          "HistoryReadDetails" : {
-            "$ref" : "#/components/schemas/ExtensionObject"
+          "BrowsePath": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "QualifiedName"
+            }
           },
-          "TimestampsToReturn" : {
-            "type" : "integer",
-            "format" : "TimestampsToReturn"
+          "AttributeId": {
+            "type": "integer",
+            "format": "uint32"
           },
-          "ReleaseContinuationPoints" : {
-            "type" : "boolean"
+          "IndexRange": {
+            "type": "string"
+          }
+        }
+      },
+      "TimestampsToReturn": {
+        "maximum": 4,
+        "minimum": 0,
+        "type": "integer",
+        "description": "Source=0, Server=1, Both=2, Neither=3, Invalid=4",
+        "format": "int32"
+      },
+      "ReadValueId": {
+        "type": "object",
+        "properties": {
+          "NodeId": {
+            "type": "string",
+            "format": "NodeId"
           },
-          "NodesToRead" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/HistoryReadValueId"
+          "AttributeId": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "IndexRange": {
+            "type": "string"
+          },
+          "DataEncoding": {
+            "type": "string",
+            "format": "QualifiedName"
+          }
+        }
+      },
+      "ReadRequest": {
+        "type": "object",
+        "properties": {
+          "RequestHeader": {
+            "$ref": "#/components/schemas/RequestHeader"
+          },
+          "MaxAge": {
+            "type": "number",
+            "format": "double"
+          },
+          "TimestampsToReturn": {
+            "type": "integer",
+            "format": "TimestampsToReturn"
+          },
+          "NodesToRead": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReadValueId"
             }
           }
         }
       },
-      "HistoryReadResponse" : {
-        "type" : "object",
-        "properties" : {
-          "ResponseHeader" : {
-            "$ref" : "#/components/schemas/ResponseHeader"
+      "ReadResponse": {
+        "type": "object",
+        "properties": {
+          "ResponseHeader": {
+            "$ref": "#/components/schemas/ResponseHeader"
           },
-          "Results" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/HistoryReadResult"
+          "Results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataValue"
             }
           },
-          "DiagnosticInfos" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/DiagnosticInfo"
-            }
-          }
-        }
-      },
-      "WriteValue" : {
-        "type" : "object",
-        "properties" : {
-          "NodeId" : {
-            "type" : "string",
-            "format" : "NodeId"
-          },
-          "AttributeId" : {
-            "type" : "integer",
-            "format" : "uint32"
-          },
-          "IndexRange" : {
-            "type" : "string"
-          },
-          "Value" : {
-            "$ref" : "#/components/schemas/DataValue"
-          }
-        }
-      },
-      "WriteRequest" : {
-        "type" : "object",
-        "properties" : {
-          "RequestHeader" : {
-            "$ref" : "#/components/schemas/RequestHeader"
-          },
-          "NodesToWrite" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/WriteValue"
+          "DiagnosticInfos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosticInfo"
             }
           }
         }
       },
-      "WriteResponse" : {
-        "type" : "object",
-        "properties" : {
-          "ResponseHeader" : {
-            "$ref" : "#/components/schemas/ResponseHeader"
+      "HistoryReadValueId": {
+        "type": "object",
+        "properties": {
+          "NodeId": {
+            "type": "string",
+            "format": "NodeId"
           },
-          "Results" : {
-            "type" : "array",
-            "items" : {
-              "type" : "integer",
-              "format" : "StatusCode"
+          "IndexRange": {
+            "type": "string"
+          },
+          "DataEncoding": {
+            "type": "string",
+            "format": "QualifiedName"
+          },
+          "ContinuationPoint": {
+            "type": "string",
+            "format": "byte"
+          }
+        }
+      },
+      "HistoryReadResult": {
+        "type": "object",
+        "properties": {
+          "StatusCode": {
+            "type": "integer",
+            "format": "StatusCode"
+          },
+          "ContinuationPoint": {
+            "type": "string",
+            "format": "byte"
+          },
+          "HistoryData": {
+            "$ref": "#/components/schemas/ExtensionObject"
+          }
+        }
+      },
+      "HistoryReadDetails": {
+        "type": "object"
+      },
+      "ReadEventDetails": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/HistoryReadDetails"
+          }
+        ],
+        "properties": {
+          "NumValuesPerNode": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "StartTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "EndTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "Filter": {
+            "$ref": "#/components/schemas/EventFilter"
+          }
+        }
+      },
+      "ReadRawModifiedDetails": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/HistoryReadDetails"
+          }
+        ],
+        "properties": {
+          "IsReadModified": {
+            "type": "boolean"
+          },
+          "StartTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "EndTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "NumValuesPerNode": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "ReturnBounds": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ReadProcessedDetails": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/HistoryReadDetails"
+          }
+        ],
+        "properties": {
+          "StartTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "EndTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "ProcessingInterval": {
+            "type": "number",
+            "format": "double"
+          },
+          "AggregateType": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "NodeId"
             }
           },
-          "DiagnosticInfos" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/DiagnosticInfo"
+          "AggregateConfiguration": {
+            "$ref": "#/components/schemas/AggregateConfiguration"
+          }
+        }
+      },
+      "ReadAtTimeDetails": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/HistoryReadDetails"
+          }
+        ],
+        "properties": {
+          "ReqTimes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "UseSimpleBounds": {
+            "type": "boolean"
+          }
+        }
+      },
+      "HistoryData": {
+        "type": "object",
+        "properties": {
+          "DataValues": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataValue"
             }
           }
         }
       },
-      "HistoryUpdateDetails" : {
-        "type" : "object"
-      },
-      "UpdateDataDetails" : {
-        "type" : "object",
-        "allOf" : [ {
-          "$ref" : "#/components/schemas/HistoryUpdateDetails"
-        } ],
-        "properties" : {
-          "NodeId" : {
-            "type" : "string",
-            "format" : "NodeId"
-          },
-          "PerformInsertReplace" : {
-            "type" : "integer",
-            "format" : "PerformUpdateType"
-          },
-          "UpdateValues" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/DataValue"
+      "HistoryEvent": {
+        "type": "object",
+        "properties": {
+          "Events": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HistoryEventFieldList"
             }
           }
         }
       },
-      "UpdateEventDetails" : {
-        "type" : "object",
-        "allOf" : [ {
-          "$ref" : "#/components/schemas/HistoryUpdateDetails"
-        } ],
-        "properties" : {
-          "NodeId" : {
-            "type" : "string",
-            "format" : "NodeId"
+      "HistoryReadRequest": {
+        "type": "object",
+        "properties": {
+          "RequestHeader": {
+            "$ref": "#/components/schemas/RequestHeader"
           },
-          "PerformInsertReplace" : {
-            "type" : "integer",
-            "format" : "PerformUpdateType"
+          "HistoryReadDetails": {
+            "$ref": "#/components/schemas/ExtensionObject"
           },
-          "Filter" : {
-            "$ref" : "#/components/schemas/EventFilter"
+          "TimestampsToReturn": {
+            "type": "integer",
+            "format": "TimestampsToReturn"
           },
-          "EventData" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/HistoryEventFieldList"
+          "ReleaseContinuationPoints": {
+            "type": "boolean"
+          },
+          "NodesToRead": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HistoryReadValueId"
             }
           }
         }
       },
-      "HistoryUpdateResult" : {
-        "type" : "object",
-        "properties" : {
-          "StatusCode" : {
-            "type" : "integer",
-            "format" : "StatusCode"
+      "HistoryReadResponse": {
+        "type": "object",
+        "properties": {
+          "ResponseHeader": {
+            "$ref": "#/components/schemas/ResponseHeader"
           },
-          "OperationResults" : {
-            "type" : "array",
-            "items" : {
-              "type" : "integer",
-              "format" : "StatusCode"
+          "Results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HistoryReadResult"
             }
           },
-          "DiagnosticInfos" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/DiagnosticInfo"
+          "DiagnosticInfos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosticInfo"
             }
           }
         }
       },
-      "HistoryUpdateRequest" : {
-        "type" : "object",
-        "properties" : {
-          "RequestHeader" : {
-            "$ref" : "#/components/schemas/RequestHeader"
+      "WriteValue": {
+        "type": "object",
+        "properties": {
+          "NodeId": {
+            "type": "string",
+            "format": "NodeId"
           },
-          "HistoryUpdateDetails" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/ExtensionObject"
+          "AttributeId": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "IndexRange": {
+            "type": "string"
+          },
+          "Value": {
+            "$ref": "#/components/schemas/DataValue"
+          }
+        }
+      },
+      "WriteRequest": {
+        "type": "object",
+        "properties": {
+          "RequestHeader": {
+            "$ref": "#/components/schemas/RequestHeader"
+          },
+          "NodesToWrite": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WriteValue"
             }
           }
         }
       },
-      "HistoryUpdateResponse" : {
-        "type" : "object",
-        "properties" : {
-          "ResponseHeader" : {
-            "$ref" : "#/components/schemas/ResponseHeader"
+      "WriteResponse": {
+        "type": "object",
+        "properties": {
+          "ResponseHeader": {
+            "$ref": "#/components/schemas/ResponseHeader"
           },
-          "Results" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/HistoryUpdateResult"
+          "Results": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "StatusCode"
             }
           },
-          "DiagnosticInfos" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/DiagnosticInfo"
-            }
-          }
-        }
-      },
-      "CallMethodRequest" : {
-        "type" : "object",
-        "properties" : {
-          "ObjectId" : {
-            "type" : "string",
-            "format" : "NodeId"
-          },
-          "MethodId" : {
-            "type" : "string",
-            "format" : "NodeId"
-          },
-          "InputArguments" : {
-            "type" : "array",
-            "items" : {
-              "type" : "object"
+          "DiagnosticInfos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosticInfo"
             }
           }
         }
       },
-      "CallMethodResult" : {
-        "type" : "object",
-        "properties" : {
-          "StatusCode" : {
-            "type" : "integer",
-            "format" : "StatusCode"
+      "HistoryUpdateDetails": {
+        "type": "object"
+      },
+      "UpdateDataDetails": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/HistoryUpdateDetails"
+          }
+        ],
+        "properties": {
+          "NodeId": {
+            "type": "string",
+            "format": "NodeId"
           },
-          "InputArgumentResults" : {
-            "type" : "array",
-            "items" : {
-              "type" : "integer",
-              "format" : "StatusCode"
-            }
+          "PerformInsertReplace": {
+            "type": "integer",
+            "format": "PerformUpdateType"
           },
-          "InputArgumentDiagnosticInfos" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/DiagnosticInfo"
-            }
-          },
-          "OutputArguments" : {
-            "type" : "array",
-            "items" : {
-              "type" : "object"
+          "UpdateValues": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataValue"
             }
           }
         }
       },
-      "CallRequest" : {
-        "type" : "object",
-        "properties" : {
-          "RequestHeader" : {
-            "$ref" : "#/components/schemas/RequestHeader"
+      "UpdateEventDetails": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/HistoryUpdateDetails"
+          }
+        ],
+        "properties": {
+          "NodeId": {
+            "type": "string",
+            "format": "NodeId"
           },
-          "MethodsToCall" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/CallMethodRequest"
+          "PerformInsertReplace": {
+            "type": "integer",
+            "format": "PerformUpdateType"
+          },
+          "Filter": {
+            "$ref": "#/components/schemas/EventFilter"
+          },
+          "EventData": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HistoryEventFieldList"
             }
           }
         }
       },
-      "CallResponse" : {
-        "type" : "object",
-        "properties" : {
-          "ResponseHeader" : {
-            "$ref" : "#/components/schemas/ResponseHeader"
+      "HistoryUpdateResult": {
+        "type": "object",
+        "properties": {
+          "StatusCode": {
+            "type": "integer",
+            "format": "StatusCode"
           },
-          "Results" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/CallMethodResult"
+          "OperationResults": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "StatusCode"
             }
           },
-          "DiagnosticInfos" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/DiagnosticInfo"
-            }
-          }
-        }
-      },
-      "MonitoringFilter" : {
-        "type" : "object"
-      },
-      "EventFilter" : {
-        "type" : "object",
-        "allOf" : [ {
-          "$ref" : "#/components/schemas/MonitoringFilter"
-        } ],
-        "properties" : {
-          "SelectClauses" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/SimpleAttributeOperand"
-            }
-          },
-          "WhereClause" : {
-            "$ref" : "#/components/schemas/ContentFilter"
-          }
-        }
-      },
-      "HistoryEventFieldList" : {
-        "type" : "object",
-        "properties" : {
-          "EventFields" : {
-            "type" : "array",
-            "items" : {
-              "type" : "object"
+          "DiagnosticInfos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosticInfo"
             }
           }
         }
       },
-      "AggregateConfiguration" : {
-        "type" : "object",
-        "properties" : {
-          "UseServerCapabilitiesDefaults" : {
-            "type" : "boolean"
+      "HistoryUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "RequestHeader": {
+            "$ref": "#/components/schemas/RequestHeader"
           },
-          "TreatUncertainAsBad" : {
-            "type" : "boolean"
-          },
-          "PercentDataBad" : {
-            "type" : "integer",
-            "format" : "uint8"
-          },
-          "PercentDataGood" : {
-            "type" : "integer",
-            "format" : "uint8"
-          },
-          "UseSlopedExtrapolation" : {
-            "type" : "boolean"
-          }
-        }
-      },
-      "ModificationInfo" : {
-        "type" : "object",
-        "properties" : {
-          "ModificationTime" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "UpdateType" : {
-            "type" : "integer",
-            "format" : "HistoryUpdateType"
-          },
-          "UserName" : {
-            "type" : "string"
-          }
-        }
-      },
-      "HistoryModifiedData" : {
-        "type" : "object",
-        "allOf" : [ {
-          "$ref" : "#/components/schemas/HistoryData"
-        } ],
-        "properties" : {
-          "ModificationInfos" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/ModificationInfo"
+          "HistoryUpdateDetails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExtensionObject"
             }
           }
         }
       },
-      "HistoryUpdateType" : {
-        "maximum" : 4,
-        "minimum" : 1,
-        "type" : "integer",
-        "description" : "Insert=1, Replace=2, Update=3, Delete=4",
-        "format" : "int32"
-      },
-      "PerformUpdateType" : {
-        "maximum" : 4,
-        "minimum" : 1,
-        "type" : "integer",
-        "description" : "Insert=1, Replace=2, Update=3, Remove=4",
-        "format" : "int32"
-      },
-      "UpdateStructureDataDetails" : {
-        "type" : "object",
-        "allOf" : [ {
-          "$ref" : "#/components/schemas/HistoryUpdateDetails"
-        } ],
-        "properties" : {
-          "NodeId" : {
-            "type" : "string",
-            "format" : "NodeId"
+      "HistoryUpdateResponse": {
+        "type": "object",
+        "properties": {
+          "ResponseHeader": {
+            "$ref": "#/components/schemas/ResponseHeader"
           },
-          "PerformInsertReplace" : {
-            "type" : "integer",
-            "format" : "PerformUpdateType"
+          "Results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HistoryUpdateResult"
+            }
           },
-          "UpdateValues" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/DataValue"
+          "DiagnosticInfos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosticInfo"
             }
           }
         }
       },
-      "Index" : {
-        "type" : "integer",
-        "format" : "uint32"
-      },
-      "ReadAnnotationDataDetails" : {
-        "type" : "object",
-        "allOf" : [ {
-          "$ref" : "#/components/schemas/HistoryReadDetails"
-        } ],
-        "properties" : {
-          "ReqTimes" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string",
-              "format" : "date-time"
+      "CallMethodRequest": {
+        "type": "object",
+        "properties": {
+          "ObjectId": {
+            "type": "string",
+            "format": "NodeId"
+          },
+          "MethodId": {
+            "type": "string",
+            "format": "NodeId"
+          },
+          "InputArguments": {
+            "type": "array",
+            "items": {
+              "type": "object"
             }
           }
         }
       },
-      "ReadEventDetails2" : {
-        "type" : "object",
-        "allOf" : [ {
-          "$ref" : "#/components/schemas/ReadEventDetails"
-        } ],
-        "properties" : {
-          "ReadModified" : {
-            "type" : "boolean"
+      "CallMethodResult": {
+        "type": "object",
+        "properties": {
+          "StatusCode": {
+            "type": "integer",
+            "format": "StatusCode"
+          },
+          "InputArgumentResults": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "StatusCode"
+            }
+          },
+          "InputArgumentDiagnosticInfos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosticInfo"
+            }
+          },
+          "OutputArguments": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "CallRequest": {
+        "type": "object",
+        "properties": {
+          "RequestHeader": {
+            "$ref": "#/components/schemas/RequestHeader"
+          },
+          "MethodsToCall": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CallMethodRequest"
+            }
+          }
+        }
+      },
+      "CallResponse": {
+        "type": "object",
+        "properties": {
+          "ResponseHeader": {
+            "$ref": "#/components/schemas/ResponseHeader"
+          },
+          "Results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CallMethodResult"
+            }
+          },
+          "DiagnosticInfos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosticInfo"
+            }
+          }
+        }
+      },
+      "MonitoringFilter": {
+        "type": "object"
+      },
+      "EventFilter": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/MonitoringFilter"
+          }
+        ],
+        "properties": {
+          "SelectClauses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SimpleAttributeOperand"
+            }
+          },
+          "WhereClause": {
+            "$ref": "#/components/schemas/ContentFilter"
+          }
+        }
+      },
+      "HistoryEventFieldList": {
+        "type": "object",
+        "properties": {
+          "EventFields": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "AggregateConfiguration": {
+        "type": "object",
+        "properties": {
+          "UseServerCapabilitiesDefaults": {
+            "type": "boolean"
+          },
+          "TreatUncertainAsBad": {
+            "type": "boolean"
+          },
+          "PercentDataBad": {
+            "type": "integer",
+            "format": "uint8"
+          },
+          "PercentDataGood": {
+            "type": "integer",
+            "format": "uint8"
+          },
+          "UseSlopedExtrapolation": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ModificationInfo": {
+        "type": "object",
+        "properties": {
+          "ModificationTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "UpdateType": {
+            "type": "integer",
+            "format": "HistoryUpdateType"
+          },
+          "UserName": {
+            "type": "string"
+          }
+        }
+      },
+      "HistoryModifiedData": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/HistoryData"
+          }
+        ],
+        "properties": {
+          "ModificationInfos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ModificationInfo"
+            }
+          }
+        }
+      },
+      "HistoryUpdateType": {
+        "maximum": 4,
+        "minimum": 1,
+        "type": "integer",
+        "description": "Insert=1, Replace=2, Update=3, Delete=4",
+        "format": "int32"
+      },
+      "PerformUpdateType": {
+        "maximum": 4,
+        "minimum": 1,
+        "type": "integer",
+        "description": "Insert=1, Replace=2, Update=3, Remove=4",
+        "format": "int32"
+      },
+      "UpdateStructureDataDetails": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/HistoryUpdateDetails"
+          }
+        ],
+        "properties": {
+          "NodeId": {
+            "type": "string",
+            "format": "NodeId"
+          },
+          "PerformInsertReplace": {
+            "type": "integer",
+            "format": "PerformUpdateType"
+          },
+          "UpdateValues": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataValue"
+            }
+          }
+        }
+      },
+      "Index": {
+        "type": "integer",
+        "format": "uint32"
+      },
+      "ReadAnnotationDataDetails": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/HistoryReadDetails"
+          }
+        ],
+        "properties": {
+          "ReqTimes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        }
+      },
+      "ReadEventDetails2": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ReadEventDetails"
+          }
+        ],
+        "properties": {
+          "ReadModified": {
+            "type": "boolean"
           }
         }
       }
