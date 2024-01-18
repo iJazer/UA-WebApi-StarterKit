@@ -25,7 +25,7 @@ jobs:
           include-prerelease: false
 
       - name: Build with dotnet
-        run: dotnet build --configuration Release -f net6.0 --ucr .\UaRestGateway\UaRestGateway.sln
+        run: dotnet build --configuration Release -f net6.0 .\UaRestGateway\UaRestGateway.sln
         
       - name: dotnet publish
         run: dotnet publish -f net6.0 -c Release -o ${{env.DOTNET_ROOT}}/myapp
