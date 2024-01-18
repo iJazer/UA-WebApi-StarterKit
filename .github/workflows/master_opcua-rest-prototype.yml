@@ -32,13 +32,13 @@ jobs:
         run: dotnet build --configuration Release -f net6.0 .\UaRestGateway\UaRestGateway.sln
         
       - name: dotnet publish
-        run: dotnet publish -f net6.0 -c Release .\UaRestGateway\UaRestGateway.sln 
+        run: dotnet publish -f net6.0 -c Release -o ${{env.DOTNET_ROOT}}/app .\UaRestGateway\UaRestGateway.sln 
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
           name: .net-app
-          path: ${{env.DOTNET_ROOT}}/UaRestGateway
+          path: ${{env.DOTNET_ROOT}}/app
 
   deploy:
     runs-on: windows-latest
