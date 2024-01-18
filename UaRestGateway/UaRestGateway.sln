@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UaRestGateway.Server", "UaR
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "uarestgateway.client", "uarestgateway.client\uarestgateway.client.esproj", "{C50C97F4-C9B1-423B-89FD-0915D3270B7C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UaRestGateway.Console", "UaRestGateway.Console\UaRestGateway.Console.csproj", "{8299B16C-D2DF-4B2A-9348-7E1AB813353C}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opc.Ua.Core", "..\UaStack\Stack\Opc.Ua.Core\Opc.Ua.Core.csproj", "{5A1451D9-F51C-436A-A49F-BEDF9E92B896}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opc.Ua.Security.Certificates", "..\UaStack\Libraries\Opc.Ua.Security.Certificates\Opc.Ua.Security.Certificates.csproj", "{C2C972FD-DA31-4C56-A975-469C2431270B}"
@@ -18,6 +16,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UaStack", "UaStack", "{0678971C-A7F8-48DC-8EEC-6360C8749E77}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opc.Ua.Server", "..\UaStack\Libraries\Opc.Ua.Server\Opc.Ua.Server.csproj", "{68C94C36-761B-4AEB-B62E-01E4D2D5BB25}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opc.Ua.Configuration", "..\UaStack\Libraries\Opc.Ua.Configuration\Opc.Ua.Configuration.csproj", "{5CAB715E-20D7-49F2-BF9E-4F2874D22AA9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,6 @@ Global
 		{C50C97F4-C9B1-423B-89FD-0915D3270B7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C50C97F4-C9B1-423B-89FD-0915D3270B7C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C50C97F4-C9B1-423B-89FD-0915D3270B7C}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{8299B16C-D2DF-4B2A-9348-7E1AB813353C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8299B16C-D2DF-4B2A-9348-7E1AB813353C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8299B16C-D2DF-4B2A-9348-7E1AB813353C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8299B16C-D2DF-4B2A-9348-7E1AB813353C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5A1451D9-F51C-436A-A49F-BEDF9E92B896}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5A1451D9-F51C-436A-A49F-BEDF9E92B896}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A1451D9-F51C-436A-A49F-BEDF9E92B896}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -55,6 +51,10 @@ Global
 		{68C94C36-761B-4AEB-B62E-01E4D2D5BB25}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68C94C36-761B-4AEB-B62E-01E4D2D5BB25}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68C94C36-761B-4AEB-B62E-01E4D2D5BB25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CAB715E-20D7-49F2-BF9E-4F2874D22AA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CAB715E-20D7-49F2-BF9E-4F2874D22AA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CAB715E-20D7-49F2-BF9E-4F2874D22AA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CAB715E-20D7-49F2-BF9E-4F2874D22AA9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +64,7 @@ Global
 		{C2C972FD-DA31-4C56-A975-469C2431270B} = {0678971C-A7F8-48DC-8EEC-6360C8749E77}
 		{561B1A72-D018-485B-AD37-27706E2E78E6} = {0678971C-A7F8-48DC-8EEC-6360C8749E77}
 		{68C94C36-761B-4AEB-B62E-01E4D2D5BB25} = {0678971C-A7F8-48DC-8EEC-6360C8749E77}
+		{5CAB715E-20D7-49F2-BF9E-4F2874D22AA9} = {0678971C-A7F8-48DC-8EEC-6360C8749E77}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6B3FB3A6-051D-402F-8B6D-CF5231EFAFD2}
