@@ -25,6 +25,9 @@ jobs:
           dotnet-version: '8.0.x'
           include-prerelease: false
 
+      - name: Restore npm
+        run: npm install .\UaRestGateway\uarestgateway.client\
+ 
       - name: Build with dotnet
         run: dotnet build --configuration Release -f net6.0 .\UaRestGateway\UaRestGateway.sln
         
