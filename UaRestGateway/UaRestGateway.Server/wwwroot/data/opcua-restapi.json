@@ -14,7 +14,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:4840"
+      "url": "https://opcua-rest-gateway.azurewebsites.net/"
     }
   ],
   "paths": {

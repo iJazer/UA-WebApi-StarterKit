@@ -88,18 +88,17 @@ export const AttributesView = ({ reference, serverId, requestTimeout }: Attribut
    const [values, setValues] = React.useState<NodeAttributeValue[]>([]);
    const name = reference?.DisplayName?.Text ?? reference?.BrowseName ?? reference?.NodeId;
    const theme = useTheme();
-   const context = React.useRef(React.useContext(ApplicationContext));
-   const user = context.current?.userContext?.user;
+   const context = React.useContext(ApplicationContext);
 
    React.useEffect(() => {
       const controller = new AbortController();
       if (reference?.NodeId) {
-         readAttributes(reference, serverId, requestTimeout, controller, user).then((x) => setValues(x ?? []));
+         readAttributes(reference, serverId, requestTimeout, controller, context?.userContext?.user).then((x) => setValues(x ?? []));
       }
       return () => {
          controller.abort();
       }
-   }, [serverId, reference, reference?.NodeId, requestTimeout, user]);
+   }, [serverId, reference, reference?.NodeId, requestTimeout, context?.userContext?.user]);
 
    if (!reference) {
       return (

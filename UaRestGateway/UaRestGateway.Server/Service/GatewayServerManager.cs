@@ -115,6 +115,10 @@ namespace UaRestGateway.Server.Service
         {
             base.OnServerStarted(server);
 
+            server.DiagnosticsNodeManager.DeleteNode(server.DefaultSystemContext, ObjectIds.Aliases);
+            server.DiagnosticsNodeManager.DeleteNode(server.DefaultSystemContext, ObjectIds.Locations);
+            server.DiagnosticsNodeManager.DeleteNode(server.DefaultSystemContext, ObjectIds.Quantities);
+
             // request notifications when the user identity is changed. all valid users are accepted by default.
             server.SessionManager.ImpersonateUser += new ImpersonateEventHandler(SessionManager_ImpersonateUser);
         }

@@ -97,46 +97,48 @@ export interface TreeNodeViewProps {
 type TreeNodeViewState = {
    nodes?: ITreeNode[];
    oldNodes?: ITreeNode[];
+   dirty: boolean;
 };
 
 type TreeNodeViewAction = {
-   type: 'update';
+   type: 'update' | 'clear';
    newNodes?: ITreeNode[];
 };
 
 function treeViewReducer(state: TreeNodeViewState, action: TreeNodeViewAction): TreeNodeViewState {
    switch (action.type) {
+      case 'clear':
+         return { oldNodes: state.oldNodes, nodes: state.nodes, dirty: false };
       case 'update':
-         return { oldNodes: state.nodes, nodes: action.newNodes };
+         return { oldNodes: state.nodes, nodes: action.newNodes, dirty: true };
       default:
          throw new Error();
    }
 }
 
 export const TreeNodeView = ({ serverId, parentId, requestTimeout, selectionId }: TreeNodeViewProps) => {
-   const [state, dispatch] = React.useReducer(treeViewReducer, {});
-   const [user, setUser] = React.useState<Account | undefined>();
-   const context = React.useRef(React.useContext(ApplicationContext));
+   const [state, dispatch] = React.useReducer(treeViewReducer, { dirty: false });
+   const context = React.useContext(ApplicationContext);
 
    React.useEffect(() => {
       const controller = new AbortController();
       if (parentId) {
-         browseChildren(parentId, serverId, requestTimeout, controller, user).then((x) => {
+         console.error('TreeNodeView: ' + parentId);
+         browseChildren(parentId, serverId, requestTimeout, controller, context?.userContext?.user).then((x) => {
             if (x) dispatch({ type: 'update', newNodes: x });
          });
       }
       return () => {
          controller.abort();
       };
-   }, [parentId, serverId, requestTimeout, user]);
+   }, [parentId, serverId, requestTimeout, context?.userContext?.user]);
 
    React.useEffect(() => {
-      context?.current?.update(state.oldNodes, state.nodes);
+      if (state.dirty && context?.update) {
+         context?.update(state.oldNodes, state.nodes);
+         dispatch({ type: 'clear' });
+      }
    }, [state, context]);
-
-   React.useEffect(() => {
-      setUser(context?.current?.userContext?.user);
-   }, [context?.current?.userContext]);
 
    return (
       <React.Fragment>

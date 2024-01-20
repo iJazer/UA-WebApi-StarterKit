@@ -45,6 +45,7 @@ namespace UaRestGateway.Server.Service
     {
         #region Private Fields
         private Dictionary<NodeId, FileManager> m_fileManagers = new();
+        private ushort TestNamespaceIndex => (NamespaceIndexes?.Length > 0) ? NamespaceIndexes[0] : (ushort)0;
         #endregion
 
         #region Constructors
@@ -58,7 +59,7 @@ namespace UaRestGateway.Server.Service
             SystemContext.NodeIdFactory = this;
 
             string[] namespaceUrls = new string[1];
-            namespaceUrls[0] = "tag:opcua-is-great.net,2023:testing";
+            namespaceUrls[0] = "tag:opcua-is-interoperability.net,2024:testing";
             SetNamespaces(namespaceUrls);
         }
         #endregion
@@ -122,9 +123,174 @@ namespace UaRestGateway.Server.Service
             {
                 LoadPredefinedNodes(SystemContext, externalReferences);
 
-                //var tests = CreateTestFolder();
-                //references.Add(new NodeStateReference(Opc.Ua.ReferenceTypeIds.Organizes, false, tests.NodeId));
+                // link root to objects folder.
+                IList<IReference> references = null;
+
+                if (!externalReferences.TryGetValue(Opc.Ua.ObjectIds.ObjectsFolder, out references))
+                {
+                    externalReferences[Opc.Ua.ObjectIds.ObjectsFolder] = references = new List<IReference>();
+                }
+
+                var tests = CreateTestFolder();
+                references.Add(new NodeStateReference(Opc.Ua.ReferenceTypeIds.Organizes, false, tests.NodeId));
             }
+        }
+
+        private bool HasEngineerAccess(ISystemContext context)
+        {
+            OperationContext oc = (context as SystemContext)?.OperationContext as OperationContext;
+
+            if (oc != null)
+            {
+                IUserIdentity user = context.UserIdentity;
+
+                if (user?.GrantedRoleIds.Contains(ObjectIds.WellKnownRole_Engineer) == true)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        protected override ReferenceDescription GetReferenceDescription(ServerSystemContext context, Dictionary<NodeId, NodeState> cache, IReference reference, ContinuationPoint continuationPoint)
+        {
+            var result = base.GetReferenceDescription(context, cache, reference, continuationPoint);
+
+            if (result != null)
+            {
+                if (result.NodeId?.Identifier is string id)
+                {
+                    if (id.Contains("OnlyMemberCanSee") == true)
+                    {
+                        if (!HasEngineerAccess(context))
+                        {
+                            return null;
+                        }
+                    }
+                }
+            }
+                   
+            return result;
+        }
+
+        public override NodeMetadata GetPermissionMetadata(
+            OperationContext context,
+            object targetHandle,
+            BrowseResultMask resultMask,
+            Dictionary<NodeId, List<object>> uniqueNodesServiceAttributesCache,
+            bool permissionsOnly)
+        {
+            var metadata = base.GetPermissionMetadata(
+                context,
+                targetHandle,
+                resultMask,
+                uniqueNodesServiceAttributesCache,
+                permissionsOnly);
+
+            if (metadata != null)
+            {
+                if (metadata.NodeId?.Identifier is string id)
+                {
+                    if (metadata.RolePermissions == null)
+                    {
+                        if (id.Contains("OnlyMemberCanSee") == true)
+                        {
+                            metadata.RolePermissions = new(new RolePermissionType[]
+                            {
+                                new RolePermissionType()
+                                {
+                                    RoleId = ObjectIds.WellKnownRole_Anonymous,
+                                    Permissions = (uint)(PermissionType.None)
+                                },
+                                new RolePermissionType()
+                                {
+                                    RoleId = ObjectIds.WellKnownRole_Engineer,
+                                    Permissions = (uint)(PermissionType.Browse | PermissionType.Read)
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+
+            return metadata;
+        }
+
+        private FolderState CreateTestFolder()
+        {
+            var folder = new FolderState(null);
+
+            folder.Create(
+                SystemContext,
+                new NodeId("SampleFolder", TestNamespaceIndex),
+                new QualifiedName("SampleFolder", TestNamespaceIndex),
+                null,
+                true);
+
+            AddPredefinedNode(SystemContext, folder);
+
+            var variable = new AnalogItemState<double>(folder);
+
+            variable.Create(
+                SystemContext,
+                new NodeId("OnlyMemberCanSee", TestNamespaceIndex),
+                new QualifiedName("OnlyMemberCanSee", TestNamespaceIndex),
+                null,
+                true);
+
+            variable.Definition = null;
+            variable.InstrumentRange = null;
+            variable.ValuePrecision = null;
+            variable.AccessLevel = AccessLevels.CurrentReadOrWrite;
+            variable.UserAccessLevel = AccessLevels.CurrentReadOrWrite;
+
+            variable.Value = 100.0;
+
+            variable.EngineeringUnits.Value = new EUInformation()
+            {
+                DisplayName = "°C",
+                Description = "Celsius",
+                UnitId = 4408652,
+                NamespaceUri = "http://www.opcfoundation.org/UA/units/un/cefact"
+            };
+
+            variable.EURange.Value = new Opc.Ua.Range(-263, 400);
+
+            folder.AddChild(variable);
+            AddPredefinedNode(SystemContext, variable);
+
+            variable = new AnalogItemState<double>(folder);
+
+            variable.Create(
+                SystemContext,
+                new NodeId("AllCanSee", TestNamespaceIndex),
+                new QualifiedName("AllCanSee", TestNamespaceIndex),
+                null,
+                true);
+
+            variable.Definition = null;
+            variable.InstrumentRange = null;
+            variable.ValuePrecision = null;
+            variable.AccessLevel = AccessLevels.CurrentReadOrWrite;
+            variable.UserAccessLevel = AccessLevels.CurrentReadOrWrite;
+
+            variable.Value = 100.0;
+
+            variable.EngineeringUnits.Value = new EUInformation()
+            {
+                DisplayName = "m²",
+                Description = "Meters Squared",
+                UnitId = 5067851,
+                NamespaceUri = "http://www.opcfoundation.org/UA/units/un/cefact"
+            };
+
+            variable.EURange.Value = new Opc.Ua.Range(0, 100000);
+
+            folder.AddChild(variable);
+            AddPredefinedNode(SystemContext, variable);
+
+            return folder;
         }
 
         private class FileManager : IDisposable
@@ -136,7 +302,7 @@ namespace UaRestGateway.Server.Service
 
             private class Handle
             {
-                public NodeId SessionId; 
+                public NodeId SessionId;
                 public FileStream Stream;
                 public uint Position;
             }
@@ -198,7 +364,7 @@ namespace UaRestGateway.Server.Service
                 m_file.Read.OnCall = new ReadMethodStateMethodCallHandler(OnRead);
                 m_file.Write.OnCall = new WriteMethodStateMethodCallHandler(OnWrite);
                 m_file.GetPosition.OnCall = new GetPositionMethodStateMethodCallHandler(OnGetPosition);
-                m_file.SetPosition.OnCall= new SetPositionMethodStateMethodCallHandler(OnSetPosition);
+                m_file.SetPosition.OnCall = new SetPositionMethodStateMethodCallHandler(OnSetPosition);
             }
 
             private Handle Find(ISystemContext _context, uint fileHandle)
@@ -222,8 +388,8 @@ namespace UaRestGateway.Server.Service
             }
 
             private ServiceResult OnSetPosition(
-                ISystemContext _context, 
-                MethodState _method, 
+                ISystemContext _context,
+                MethodState _method,
                 NodeId _objectId,
                 uint fileHandle,
                 ulong position)
@@ -235,9 +401,9 @@ namespace UaRestGateway.Server.Service
 
             private ServiceResult OnGetPosition(
                 ISystemContext _context,
-                MethodState _method, 
-                NodeId _objectId, 
-                uint fileHandle, 
+                MethodState _method,
+                NodeId _objectId,
+                uint fileHandle,
                 ref ulong position)
             {
                 Handle handle = Find(_context, fileHandle);
@@ -247,9 +413,9 @@ namespace UaRestGateway.Server.Service
 
             private ServiceResult OnWrite(
                 ISystemContext _context,
-                MethodState _method, 
-                NodeId _objectId, 
-                uint fileHandle, 
+                MethodState _method,
+                NodeId _objectId,
+                uint fileHandle,
                 byte[] data)
             {
                 Handle handle = Find(_context, fileHandle);
@@ -257,11 +423,11 @@ namespace UaRestGateway.Server.Service
             }
 
             private ServiceResult OnRead(
-                ISystemContext _context, 
-                MethodState _method, 
+                ISystemContext _context,
+                MethodState _method,
                 NodeId _objectId,
-                uint fileHandle, 
-                int length, 
+                uint fileHandle,
+                int length,
                 ref byte[] data)
             {
                 Handle handle = Find(_context, fileHandle);
@@ -275,9 +441,9 @@ namespace UaRestGateway.Server.Service
             }
 
             private ServiceResult OnClose(
-                ISystemContext _context, 
-                MethodState _method, 
-                NodeId _objectId, 
+                ISystemContext _context,
+                MethodState _method,
+                NodeId _objectId,
                 uint fileHandle)
             {
                 Handle handle;
