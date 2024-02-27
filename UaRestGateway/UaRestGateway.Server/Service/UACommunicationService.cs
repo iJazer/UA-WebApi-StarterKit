@@ -1,12 +1,15 @@
 ﻿using System.Text;
 using Opc.Ua;
 using ISession = Opc.Ua.Client.ISession;
+using Opc.Ua.Server;
 
 namespace UaRestGateway.Server.Service
 {
     public interface IUACommunicationService : IHostedService
     {
         Task<ISession> FindSession(string id, string accessToken = "");
+
+        StandardServer ServerApi { get; }
     }
 
     public class UACommunicationService : BackgroundService, IUACommunicationService
@@ -24,6 +27,8 @@ namespace UaRestGateway.Server.Service
             Utils.SilentDispose(m_server);
             base.Dispose();
         }
+
+        public StandardServer ServerApi { get { return m_server.ServerApi; } }
 
         public async Task<ISession> FindSession(string id, string accessToken = "")
         {

@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { call, HandleFactory } from '../opcua-utils';
 import TableContainer from '@mui/material/TableContainer/TableContainer';
 import Table from '@mui/material/Table/Table';
 import TableHead from '@mui/material/TableHead/TableHead';
@@ -13,71 +12,8 @@ import { Skeleton, Typography, useTheme } from '@mui/material';
 import * as OpcUa from '../opcua';
 import * as Web from '../Web';
 import { ApplicationContext } from '../ApplicationProvider';
-import { Account } from '../api';
+import { NodeAttributeValue, readAttributes } from '../opcua-utils';
 
-interface NodeAttributeValue {
-   id: number,
-   reference: OpcUa.ReferenceDescription;
-   attributeId: OpcUa.Attributes;
-   value?: OpcUa.DataValue;
-}
-
-async function readAttributes(
-   reference: OpcUa.ReferenceDescription,
-   serverId?: string,
-   requestTimeout: number = 120000,
-   controller?: AbortController,
-   user?: Account
-): Promise<NodeAttributeValue[] | null> {
-
-   const request: OpcUa.ReadRequestMessage = {
-      Body: {
-         RequestHeader: {
-            Timestamp: new Date(),
-            TimeoutHint: requestTimeout
-         },
-         MaxAge: 0,
-         TimestampsToReturn: OpcUa.TimestampsToReturn.Server,
-         NodesToRead: []
-      }
-   };
-
-   for (const id in OpcUa.Attributes) {
-      request.Body?.NodesToRead?.push(
-         {
-            NodeId: reference.NodeId,
-            AttributeId: Number(OpcUa.Attributes[id])
-         });
-   }
-
-   const response = await call(`/opcua/read${(serverId) ? `?serverId=${serverId}` : ''}`, request, controller, user);
-   if (!response) {
-      return null;
-   }
-   if (response.code) {
-      console.warn(`Read call failed: [${OpcUa.StatusCodes[response.code] ?? response.code}] '${response.message ?? ''}'`);
-      return null;
-   }
-
-   const result: OpcUa.ReadResponse = response.Body
-   const values: NodeAttributeValue[] = [];
-
-   if (result.Results && request.Body?.NodesToRead) {
-      for (let ii = 0; ii < result.Results?.length; ii++) {
-         const x = result.Results[ii];
-         if (x.StatusCode !== OpcUa.StatusCodes.BadAttributeIdInvalid) {
-            values.push({
-               id: HandleFactory.increment(),
-               reference: reference,
-               attributeId: request.Body.NodesToRead[ii].AttributeId ?? 0,
-               value: x
-            });
-         }
-      }
-   }
-
-   return values;
-}
 interface AttributesViewProps {
    reference?: OpcUa.ReferenceDescription
    serverId?: string

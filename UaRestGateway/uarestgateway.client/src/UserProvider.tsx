@@ -44,9 +44,9 @@ export const UserProvider = ({ children }: UserProviderProps) => {
 
    const theme = (themeMode === ThemeModes.Light) ? LightTheme : DarkTheme;
 
-   React.useEffect(() => {
-      console.log(`UserProvider: ${user?.name}`);
-   }, [user]);
+   //React.useEffect(() => {
+   //   console.log(`UserProvider: ${UserLoginStatus[loginStatus]}`);
+   //}, [loginStatus]);
 
    const userContext = {
       user,
@@ -68,6 +68,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
       i18n.changeLanguage(language);
    }, [language]);
 
+
    React.useEffect(() => {
       const controller = new AbortController();
       if (UserLoginStatus.LoggedIn === loginStatus || UserLoginStatus.Unknown === loginStatus) {
@@ -84,6 +85,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
          }
          else {
             setUser(response?.result);
+            setLoginStatus(UserLoginStatus.LoggedIn);
          }
       }
       return function cleanup() {

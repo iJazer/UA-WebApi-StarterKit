@@ -3,6 +3,7 @@
     "title": "UA REST Gateway",
     "subtitle": "A REST API for OPC UA Servers",
     "home": "Home",
+    "monitoring": "Monitoring",
     "swagger": "API",
     "account": "Account",
     "login": "Login",

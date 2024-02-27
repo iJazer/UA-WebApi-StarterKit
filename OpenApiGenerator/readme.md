@@ -1,0 +1,1 @@
+"C:\Program Files\Java\jdk-21\bin\java.exe" -jar openapi-generator-cli.jar generate -g typescript-fetch -i ..\..\nodesets\v105\Schema\Opc.Ua.Services.OpenApi.json -p enumPropertyNaming=PascalCase,modelPropertyNaming=PascalCase -o ..\UaRestGateway\uarestgateway.client\src\opcua 

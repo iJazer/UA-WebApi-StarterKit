@@ -5,6 +5,7 @@ namespace UaRestGateway.Server.Model
 {
     public class WebSession
     {
+
         public string Context { get; set; }
 
         public int? UserId { get; set; }
@@ -22,6 +23,8 @@ namespace UaRestGateway.Server.Model
         public string RefreshToken { get; set; }
 
         public DateTime? ExpiresBy { get; set; }
+
+        public string SecureChannelId { get; set; }
 
         public byte[] ToBytes()
         {

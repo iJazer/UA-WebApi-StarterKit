@@ -7,6 +7,9 @@ using ISession = Opc.Ua.Client.ISession;
 using UaRestGateway.Server.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Extensions;
+using System.Text;
+using Opc.Ua.Server;
 
 namespace UaRestGateway.Server.Controllers
 {
@@ -33,27 +36,45 @@ namespace UaRestGateway.Server.Controllers
             m_communicationService = communicationService;
         }
 
-        private async Task<T> Decode<T>(ISession session)
+        private async Task<T> Decode<T>(IServiceMessageContext context) where T : IEncodeable, new()
         {
             using (var reader = new StreamReader(Request.Body))
             {
                 var json = await reader.ReadToEndAsync();
 
-                using (var decoder = new JsonDecoder(json, session.MessageContext))
+                using (var decoder = new JsonDecoder(json, context))
                 {
-                    decoder.ExtractUrisFromData(true);
-                    return (T)decoder.ReadEncodeable("Body", typeof(T));
+                    decoder.UpdateNamespaceTable = true;
+                    SessionLessServiceMessage message = new SessionLessServiceMessage();
+
+                    message.NamespaceUris = new NamespaceTable(decoder.ReadStringArray(nameof(SessionLessServiceMessage.NamespaceUris)));
+                    message.ServerUris = new StringTable(decoder.ReadStringArray(nameof(SessionLessServiceMessage.ServerUris)));
+                    message.LocaleIds = new StringTable(decoder.ReadStringArray(nameof(SessionLessServiceMessage.LocaleIds)));
+                    message.UrisVersion = decoder.ReadUInt32(nameof(SessionLessServiceMessage.UrisVersion));
+
+                    decoder.SetMappingTables(message.NamespaceUris, message.ServerUris);
+
+                    message.Message = decoder.ReadEncodeable("Body", typeof(T));
+
+                    return (T)message.Message;
                 }
             }
         }
 
-        private Task<IActionResult> Encode<T>(ISession session, T response) where T : IEncodeable
+        private Task<IActionResult> Encode<T>(IServiceMessageContext context, T response) where T : IEncodeable
         {
-            using (var encoder = new JsonEncoder(session.MessageContext, true))
+            using (var encoder = new JsonEncoder(context, true))
             {
                 encoder.UseStringNodeIds = true;
+                encoder.ForceNamespaceUri = true;
                 encoder.ForceNamespaceUriForIndex1 = true;
-                encoder.WriteEncodeable("Body", response, null);
+
+                encoder.WriteStringArray(nameof(SessionLessServiceMessage.NamespaceUris), context.NamespaceUris.ToArray());
+                encoder.WriteStringArray(nameof(SessionLessServiceMessage.ServerUris), context.ServerUris.ToArray());
+                encoder.WriteStringArray(nameof(SessionLessServiceMessage.LocaleIds), null);
+                encoder.WriteUInt32(nameof(SessionLessServiceMessage.UrisVersion), 0);
+                encoder.WriteUInt32("ServiceId", (uint)response.TypeId.Identifier);
+                encoder.WriteEncodeable("Body", response, typeof(T));
 
                 var json = encoder.CloseAndReturnText();
                 return Task.FromResult<IActionResult>(Content(json, "application/json"));
@@ -62,11 +83,13 @@ namespace UaRestGateway.Server.Controllers
 
         private Task<IActionResult> Fault(Exception e)
         {
-            using (var encoder = new JsonEncoder(ServiceMessageContext.GlobalContext, true))
+            IServiceMessageContext context = m_communicationService?.ServerApi?.MessageContext ?? ServiceMessageContext.GlobalContext;
+
+            using (var encoder = new JsonEncoder(context, true))
             {
                 encoder.UseStringNodeIds = true;
+                encoder.ForceNamespaceUri = true;
                 encoder.ForceNamespaceUriForIndex1 = true;
-                encoder.UseStringNodeIds = true;
 
                 var sr = new ServiceResult(e, StatusCodes.BadUnexpectedError);
 
@@ -81,9 +104,7 @@ namespace UaRestGateway.Server.Controllers
                     }
                 };
 
-                encoder.WriteEncodeable("Body", fault, null);
-                var json = encoder.CloseAndReturnText();
-                return Task.FromResult<IActionResult>(Content(json, "application/json"));
+                return Encode<ServiceFault>(context, fault);
             }
         }
 
@@ -118,7 +139,7 @@ namespace UaRestGateway.Server.Controllers
             try
             {
                 var session = await GetSession(serverId);
-                var request = await Decode<ReadRequest>(session);
+                var request = await Decode<ReadRequest>(session.MessageContext);
                 uint requestHandle = request.RequestHeader.RequestHandle;
 
                 var response = await session.ReadAsync(
@@ -129,7 +150,7 @@ namespace UaRestGateway.Server.Controllers
                     CancellationToken.None);
 
                 response.ResponseHeader.RequestHandle = requestHandle;
-                return await Encode(session, response);
+                return await Encode(session.MessageContext, response);
             }
             catch (Exception e)
             {
@@ -144,7 +165,7 @@ namespace UaRestGateway.Server.Controllers
             try
             {
                 var session = await GetSession(serverId);
-                var request = await Decode<WriteRequest>(session);
+                var request = await Decode<WriteRequest>(session.MessageContext);
                 uint requestHandle = request.RequestHeader.RequestHandle;
 
                 var response = await session.WriteAsync(
@@ -153,7 +174,7 @@ namespace UaRestGateway.Server.Controllers
                     CancellationToken.None);
 
                 response.ResponseHeader.RequestHandle = requestHandle;
-                return await Encode(session, response);
+                return await Encode(session.MessageContext, response);
             }
             catch (Exception e)
             {
@@ -168,7 +189,7 @@ namespace UaRestGateway.Server.Controllers
             try
             {
                 var session = await GetSession(serverId);
-                var request = await Decode<CallRequest>(session);
+                var request = await Decode<CallRequest>(session.MessageContext);
                 uint requestHandle = request.RequestHeader.RequestHandle;
 
                 var response = await session.CallAsync(
@@ -177,7 +198,7 @@ namespace UaRestGateway.Server.Controllers
                     CancellationToken.None);
 
                 response.ResponseHeader.RequestHandle = requestHandle;
-                return await Encode(session, response);
+                return await Encode(session.MessageContext, response);
             }
             catch (Exception e)
             {
@@ -192,18 +213,18 @@ namespace UaRestGateway.Server.Controllers
             try
             {
                 var session = await GetSession(serverId);
-                var request = await Decode<BrowseRequest>(session);
+                var request = await Decode<BrowseRequest>(session.MessageContext);
                 uint requestHandle = request.RequestHeader.RequestHandle;
 
                 var response = await session.BrowseAsync(
                     request.RequestHeader,
                     request.View,
                     request.RequestedMaxReferencesPerNode,
-                    request.NodesToBrowse,                     
+                    request.NodesToBrowse,
                     CancellationToken.None);
 
                 response.ResponseHeader.RequestHandle = requestHandle;
-                return await Encode(session, response);
+                return await Encode(session.MessageContext, response);
             }
             catch (Exception e)
             {
@@ -218,7 +239,7 @@ namespace UaRestGateway.Server.Controllers
             try
             {
                 var session = await GetSession(serverId);
-                var request = await Decode<BrowseNextRequest>(session);
+                var request = await Decode<BrowseNextRequest>(session.MessageContext);
                 uint requestHandle = request.RequestHeader.RequestHandle;
 
                 var response = await session.BrowseNextAsync(
@@ -228,7 +249,7 @@ namespace UaRestGateway.Server.Controllers
                     CancellationToken.None);
 
                 response.ResponseHeader.RequestHandle = requestHandle;
-                return await Encode(session, response);
+                return await Encode(session.MessageContext, response);
             }
             catch (Exception e)
             {
@@ -243,7 +264,7 @@ namespace UaRestGateway.Server.Controllers
             try
             {
                 var session = await GetSession(serverId);
-                var request = await Decode<TranslateBrowsePathsToNodeIdsRequest>(session);
+                var request = await Decode<TranslateBrowsePathsToNodeIdsRequest>(session.MessageContext);
                 uint requestHandle = request.RequestHeader.RequestHandle;
 
                 var response = await session.TranslateBrowsePathsToNodeIdsAsync(
@@ -252,7 +273,7 @@ namespace UaRestGateway.Server.Controllers
                     CancellationToken.None);
 
                 response.ResponseHeader.RequestHandle = requestHandle;
-                return await Encode(session, response);
+                return await Encode(session.MessageContext, response);
             }
             catch (Exception e)
             {
@@ -267,7 +288,7 @@ namespace UaRestGateway.Server.Controllers
             try
             {
                 var session = await GetSession(serverId);
-                var request = await Decode<HistoryReadRequest>(session);
+                var request = await Decode<HistoryReadRequest>(session.MessageContext);
                 uint requestHandle = request.RequestHeader.RequestHandle;
 
                 var response = await session.HistoryReadAsync(
@@ -279,7 +300,7 @@ namespace UaRestGateway.Server.Controllers
                     CancellationToken.None);
 
                 response.ResponseHeader.RequestHandle = requestHandle;
-                return await Encode(session, response);
+                return await Encode(session.MessageContext, response);
             }
             catch (Exception e)
             {
@@ -294,7 +315,7 @@ namespace UaRestGateway.Server.Controllers
             try
             {
                 var session = await GetSession(serverId);
-                var request = await Decode<HistoryUpdateRequest>(session);
+                var request = await Decode<HistoryUpdateRequest>(session.MessageContext);
                 uint requestHandle = request.RequestHeader.RequestHandle;
 
                 var response = await session.HistoryUpdateAsync(
@@ -303,7 +324,271 @@ namespace UaRestGateway.Server.Controllers
                     CancellationToken.None);
 
                 response.ResponseHeader.RequestHandle = requestHandle;
-                return await Encode(session, response);
+                return await Encode(session.MessageContext, response);
+            }
+            catch (Exception e)
+            {
+                return await Fault(e);
+            }
+        }
+
+        private StandardServer GetServer()
+        {
+            LoadWebSession();
+
+            var server = m_communicationService.ServerApi;
+            var ed = server.GetEndpoints().Where(x => x.TransportProfileUri == Profiles.HttpsJsonTransport).First();
+            ed.EndpointUrl = $"https://{HttpContext.Request.Host}/opcua";
+
+            SecureChannelContext.Current = new SecureChannelContext(
+                Session.SecureChannelId,
+                ed,
+                RequestEncoding.Json);
+
+            return server;
+        }
+
+        [HttpPost]
+        [Route("createsession")]
+        public async Task<IActionResult> CreateSession()
+        {
+            try
+            {
+                var server = GetServer();
+                var request = await Decode<CreateSessionRequest>(server.MessageContext);
+
+                var responseHeader = server.CreateSession(
+                    request.RequestHeader,
+                    request.ClientDescription,
+                    request.ServerUri,
+                    request.EndpointUrl,
+                    request.SessionName,
+                    request.ClientNonce,
+                    request.ClientCertificate,
+                    request.RequestedSessionTimeout,
+                    request.MaxResponseMessageSize,
+                    out NodeId sessionId,
+                    out NodeId authenticationToken,
+                    out double revisedSessionTimeout,
+                    out byte[] serverNonce,
+                    out byte[] serverCertificate,
+                    out EndpointDescriptionCollection serverEndpoints,
+                    out SignedSoftwareCertificateCollection serverSoftwareCertificates,
+                    out SignatureData serverSignature,
+                    out uint maxRequestMessageSize);
+
+                serverEndpoints = new EndpointDescriptionCollection(new EndpointDescription[] { SecureChannelContext.Current.EndpointDescription });
+
+                var response = new CreateSessionResponse()
+                {
+                    ResponseHeader = responseHeader,
+                    SessionId = sessionId,
+                    AuthenticationToken = authenticationToken,
+                    RevisedSessionTimeout = revisedSessionTimeout,
+                    ServerNonce = serverNonce,
+                    ServerCertificate = serverCertificate,
+                    ServerEndpoints = serverEndpoints,
+                    ServerSoftwareCertificates = serverSoftwareCertificates,
+                    ServerSignature = serverSignature,
+                    MaxRequestMessageSize = maxRequestMessageSize
+                };
+
+                return await Encode(server.MessageContext, response);
+            }
+            catch (Exception e)
+            {
+                return await Fault(e);
+            }
+        }
+
+        [HttpPost]
+        [Route("activatesession")]
+        public async Task<IActionResult> ActivateSession()
+        {
+            try
+            {
+                var server = GetServer();
+                var request = await Decode<ActivateSessionRequest>(server.MessageContext);
+
+                var accessToken = "";
+
+                if (Request.Headers.TryGetValue("Authorization", out var header))
+                {
+                    accessToken = String.Join(" ", header).Trim();
+
+                    if (accessToken.StartsWith(JwtBearerDefaults.AuthenticationScheme))
+                    {
+                        accessToken = accessToken.Substring(JwtBearerDefaults.AuthenticationScheme.Length).Trim();
+                    }
+                }
+
+                var userIdentity = (!String.IsNullOrEmpty(accessToken))
+                    ? new ExtensionObject(new IssuedIdentityToken()
+                    {
+                        PolicyId = SecureChannelContext.Current.EndpointDescription.UserIdentityTokens.Where(x => x.TokenType == UserTokenType.IssuedToken).FirstOrDefault()?.PolicyId,
+                        DecryptedTokenData = new UTF8Encoding(false).GetBytes(accessToken)
+                    })
+                    : null;
+
+                var responseHeader = server.ActivateSession(
+                    request.RequestHeader,
+                    request.ClientSignature,
+                    request.ClientSoftwareCertificates,
+                    request.LocaleIds,
+                    userIdentity,
+                    request.UserTokenSignature,
+                    out byte[] serverNonce,
+                    out StatusCodeCollection results,
+                    out DiagnosticInfoCollection diagnosticInfos);
+
+                var response = new ActivateSessionResponse()
+                {
+                    ResponseHeader = responseHeader,
+                    ServerNonce = serverNonce,
+                    Results = results,
+                    DiagnosticInfos = diagnosticInfos
+                };
+
+                return await Encode(server.MessageContext, response);
+            }
+            catch (Exception e)
+            {
+                return await Fault(e);
+            }
+        }
+
+        [HttpPost]
+        [Route("createsubscription")]
+        public async Task<IActionResult> CreateSubscription()
+        {
+            try
+            {
+                var server = GetServer();
+                var request = await Decode<CreateSubscriptionRequest>(server.MessageContext);
+
+                var responseHeader = server.CreateSubscription(
+                    request.RequestHeader,
+                    request.RequestedPublishingInterval,
+                    request.RequestedLifetimeCount,
+                    request.RequestedMaxKeepAliveCount,
+                    request.MaxNotificationsPerPublish,
+                    request.PublishingEnabled,
+                    request.Priority,
+                    out uint subscriptionId,
+                    out double revisedPublishingInterval,
+                    out uint revisedLifetimeCount,
+                    out uint revisedMaxKeepAliveCount);
+
+                var response = new CreateSubscriptionResponse()
+                {
+                     ResponseHeader = responseHeader,
+                     SubscriptionId = subscriptionId,
+                     RevisedPublishingInterval = revisedPublishingInterval,
+                     RevisedLifetimeCount = revisedLifetimeCount,
+                     RevisedMaxKeepAliveCount = revisedMaxKeepAliveCount
+                };
+
+                return await Encode(server.MessageContext, response);
+            }
+            catch (Exception e)
+            {
+                return await Fault(e);
+            }
+        }
+
+        [HttpPost]
+        [Route("deletesubscriptions")]
+        public async Task<IActionResult> DeleteSubscriptions()
+        {
+            try
+            {
+                var server = GetServer();
+                var request = await Decode<DeleteSubscriptionsRequest>(server.MessageContext);
+
+                var responseHeader = server.DeleteSubscriptions(
+                    request.RequestHeader,
+                    request.SubscriptionIds,
+                    out StatusCodeCollection results,
+                    out DiagnosticInfoCollection diagnosticInfos);
+
+                var response = new DeleteSubscriptionsResponse()
+                {
+                    ResponseHeader = responseHeader,
+                    Results = results,
+                    DiagnosticInfos = diagnosticInfos
+                };
+
+                return await Encode(server.MessageContext, response);
+            }
+            catch (Exception e)
+            {
+                return await Fault(e);
+            }
+        }
+
+        [HttpPost]
+        [Route("publish")]
+        public async Task<IActionResult> Publish()
+        {
+            try
+            {
+                var server = GetServer();
+                var request = await Decode<PublishRequest>(server.MessageContext);
+
+                var responseHeader = server.Publish(
+                    request.RequestHeader,
+                    request.SubscriptionAcknowledgements,
+                    out var subscriptionId,
+                    out var availableSequenceNumbers,
+                    out var moreNotifications,
+                    out var notificationMessage,
+                    out var results,
+                    out var diagnosticInfos);
+
+                var response = new PublishResponse()
+                {
+                    ResponseHeader = responseHeader,
+                    SubscriptionId = subscriptionId,
+                    AvailableSequenceNumbers = availableSequenceNumbers,
+                    MoreNotifications = moreNotifications,
+                    NotificationMessage = notificationMessage,
+                    Results = results,
+                    DiagnosticInfos = diagnosticInfos
+                };
+
+                return await Encode(server.MessageContext, response);
+            }
+            catch (Exception e)
+            {
+                return await Fault(e);
+            }
+        }
+
+        [HttpPost]
+        [Route("createmonitoreditems")]
+        public async Task<IActionResult> CreateMonitoredItems()
+        {
+            try
+            {
+                var server = GetServer();
+                var request = await Decode<CreateMonitoredItemsRequest>(server.MessageContext);
+
+                var responseHeader = server.CreateMonitoredItems(
+                    request.RequestHeader,
+                    request.SubscriptionId,
+                    request.TimestampsToReturn,
+                    request.ItemsToCreate,
+                    out var results,
+                    out var diagnosticInfos);
+
+                var response = new CreateMonitoredItemsResponse()
+                {
+                    ResponseHeader = responseHeader,
+                    Results = results,
+                    DiagnosticInfos = diagnosticInfos
+                };
+
+                return await Encode(server.MessageContext, response);
             }
             catch (Exception e)
             {

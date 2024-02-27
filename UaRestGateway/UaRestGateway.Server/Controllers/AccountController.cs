@@ -185,6 +185,7 @@ namespace UaRestGateway.Server.Controllers
                 session.AccessToken = null;
                 session.RefreshToken = null;
                 session.ExpiresBy = null;
+                session.SecureChannelId = null;
             }
         }
 
@@ -222,6 +223,11 @@ namespace UaRestGateway.Server.Controllers
                 if (body.Id != null && Int32.TryParse(body.Id, out var id))
                 {
                     session.UserId = id;
+
+                    if (session.UserId != id || session.SecureChannelId == null)
+                    {
+                        session.SecureChannelId = Guid.NewGuid().ToString();
+                    }
                 }
 
                 session.UserEmail = body.UserEmail;
@@ -297,6 +303,11 @@ namespace UaRestGateway.Server.Controllers
                 if (Int32.TryParse(body.Id, out var id))
                 {
                     session.UserId = id;
+                }
+
+                if (session.SecureChannelId == null)
+                {
+                    session.SecureChannelId = Guid.NewGuid().ToString();
                 }
 
                 session.UserEmail = body.UserEmail;

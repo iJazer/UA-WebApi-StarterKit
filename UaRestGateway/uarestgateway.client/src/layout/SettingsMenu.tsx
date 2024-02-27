@@ -24,6 +24,7 @@ import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Switch } 
 import { UserContext } from '../UserProvider';
 import { ThemeModes } from '../theme';
 import { SupportedLanguages } from '../i18n';
+import { UserLoginStatus } from '../api';
 export default function SettingsMenu() {
    const context = React.useContext(UserContext);
    const [open, setOpen] = React.useState(false);
@@ -56,12 +57,12 @@ export default function SettingsMenu() {
    };
 
    const login = () => {
-      context.setLoginStatus(1);
+      context.setLoginStatus(UserLoginStatus.InProgress);
       window.location.href = `/api/account/login?context=${window.location.pathname}`;
    };
 
    const logout = () => {
-      context.setLoginStatus(0);
+      context.setLoginStatus(UserLoginStatus.LoggedOut);
       window.location.href = `/api/account/logout?context=${window.location.pathname}`;
    };
 

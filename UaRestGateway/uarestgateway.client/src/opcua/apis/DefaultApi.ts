@@ -15,24 +15,68 @@
 
 import * as runtime from '../runtime';
 import type {
+  ActivateSessionRequestMessage,
+  ActivateSessionResponseMessage,
   BrowseNextRequestMessage,
   BrowseNextResponseMessage,
   BrowseRequestMessage,
   BrowseResponseMessage,
   CallRequestMessage,
   CallResponseMessage,
+  CancelRequestMessage,
+  CancelResponseMessage,
+  CloseSessionRequestMessage,
+  CloseSessionResponseMessage,
+  CreateMonitoredItemsRequestMessage,
+  CreateMonitoredItemsResponseMessage,
+  CreateSessionRequestMessage,
+  CreateSessionResponseMessage,
+  CreateSubscriptionRequestMessage,
+  CreateSubscriptionResponseMessage,
+  DeleteMonitoredItemsRequestMessage,
+  DeleteMonitoredItemsResponseMessage,
+  DeleteSubscriptionsRequestMessage,
+  DeleteSubscriptionsResponseMessage,
+  FindServersRequestMessage,
+  FindServersResponseMessage,
+  GetEndpointsRequestMessage,
+  GetEndpointsResponseMessage,
   HistoryReadRequestMessage,
   HistoryReadResponseMessage,
   HistoryUpdateRequestMessage,
   HistoryUpdateResponseMessage,
+  ModifyMonitoredItemsRequestMessage,
+  ModifyMonitoredItemsResponseMessage,
+  ModifySubscriptionRequestMessage,
+  ModifySubscriptionResponseMessage,
+  PublishRequestMessage,
+  PublishResponseMessage,
   ReadRequestMessage,
   ReadResponseMessage,
+  RegisterNodesRequestMessage,
+  RegisterNodesResponseMessage,
+  RepublishRequestMessage,
+  RepublishResponseMessage,
+  SetMonitoringModeRequestMessage,
+  SetMonitoringModeResponseMessage,
+  SetPublishingModeRequestMessage,
+  SetPublishingModeResponseMessage,
+  SetTriggeringRequestMessage,
+  SetTriggeringResponseMessage,
+  TransferSubscriptionsRequestMessage,
+  TransferSubscriptionsResponseMessage,
   TranslateBrowsePathsToNodeIdsRequestMessage,
   TranslateBrowsePathsToNodeIdsResponseMessage,
+  UnregisterNodesRequestMessage,
+  UnregisterNodesResponseMessage,
   WriteRequestMessage,
   WriteResponseMessage,
 } from '../models/index';
 import {
+    ActivateSessionRequestMessageFromJSON,
+    ActivateSessionRequestMessageToJSON,
+    ActivateSessionResponseMessageFromJSON,
+    ActivateSessionResponseMessageToJSON,
     BrowseNextRequestMessageFromJSON,
     BrowseNextRequestMessageToJSON,
     BrowseNextResponseMessageFromJSON,
@@ -45,6 +89,42 @@ import {
     CallRequestMessageToJSON,
     CallResponseMessageFromJSON,
     CallResponseMessageToJSON,
+    CancelRequestMessageFromJSON,
+    CancelRequestMessageToJSON,
+    CancelResponseMessageFromJSON,
+    CancelResponseMessageToJSON,
+    CloseSessionRequestMessageFromJSON,
+    CloseSessionRequestMessageToJSON,
+    CloseSessionResponseMessageFromJSON,
+    CloseSessionResponseMessageToJSON,
+    CreateMonitoredItemsRequestMessageFromJSON,
+    CreateMonitoredItemsRequestMessageToJSON,
+    CreateMonitoredItemsResponseMessageFromJSON,
+    CreateMonitoredItemsResponseMessageToJSON,
+    CreateSessionRequestMessageFromJSON,
+    CreateSessionRequestMessageToJSON,
+    CreateSessionResponseMessageFromJSON,
+    CreateSessionResponseMessageToJSON,
+    CreateSubscriptionRequestMessageFromJSON,
+    CreateSubscriptionRequestMessageToJSON,
+    CreateSubscriptionResponseMessageFromJSON,
+    CreateSubscriptionResponseMessageToJSON,
+    DeleteMonitoredItemsRequestMessageFromJSON,
+    DeleteMonitoredItemsRequestMessageToJSON,
+    DeleteMonitoredItemsResponseMessageFromJSON,
+    DeleteMonitoredItemsResponseMessageToJSON,
+    DeleteSubscriptionsRequestMessageFromJSON,
+    DeleteSubscriptionsRequestMessageToJSON,
+    DeleteSubscriptionsResponseMessageFromJSON,
+    DeleteSubscriptionsResponseMessageToJSON,
+    FindServersRequestMessageFromJSON,
+    FindServersRequestMessageToJSON,
+    FindServersResponseMessageFromJSON,
+    FindServersResponseMessageToJSON,
+    GetEndpointsRequestMessageFromJSON,
+    GetEndpointsRequestMessageToJSON,
+    GetEndpointsResponseMessageFromJSON,
+    GetEndpointsResponseMessageToJSON,
     HistoryReadRequestMessageFromJSON,
     HistoryReadRequestMessageToJSON,
     HistoryReadResponseMessageFromJSON,
@@ -53,19 +133,63 @@ import {
     HistoryUpdateRequestMessageToJSON,
     HistoryUpdateResponseMessageFromJSON,
     HistoryUpdateResponseMessageToJSON,
+    ModifyMonitoredItemsRequestMessageFromJSON,
+    ModifyMonitoredItemsRequestMessageToJSON,
+    ModifyMonitoredItemsResponseMessageFromJSON,
+    ModifyMonitoredItemsResponseMessageToJSON,
+    ModifySubscriptionRequestMessageFromJSON,
+    ModifySubscriptionRequestMessageToJSON,
+    ModifySubscriptionResponseMessageFromJSON,
+    ModifySubscriptionResponseMessageToJSON,
+    PublishRequestMessageFromJSON,
+    PublishRequestMessageToJSON,
+    PublishResponseMessageFromJSON,
+    PublishResponseMessageToJSON,
     ReadRequestMessageFromJSON,
     ReadRequestMessageToJSON,
     ReadResponseMessageFromJSON,
     ReadResponseMessageToJSON,
+    RegisterNodesRequestMessageFromJSON,
+    RegisterNodesRequestMessageToJSON,
+    RegisterNodesResponseMessageFromJSON,
+    RegisterNodesResponseMessageToJSON,
+    RepublishRequestMessageFromJSON,
+    RepublishRequestMessageToJSON,
+    RepublishResponseMessageFromJSON,
+    RepublishResponseMessageToJSON,
+    SetMonitoringModeRequestMessageFromJSON,
+    SetMonitoringModeRequestMessageToJSON,
+    SetMonitoringModeResponseMessageFromJSON,
+    SetMonitoringModeResponseMessageToJSON,
+    SetPublishingModeRequestMessageFromJSON,
+    SetPublishingModeRequestMessageToJSON,
+    SetPublishingModeResponseMessageFromJSON,
+    SetPublishingModeResponseMessageToJSON,
+    SetTriggeringRequestMessageFromJSON,
+    SetTriggeringRequestMessageToJSON,
+    SetTriggeringResponseMessageFromJSON,
+    SetTriggeringResponseMessageToJSON,
+    TransferSubscriptionsRequestMessageFromJSON,
+    TransferSubscriptionsRequestMessageToJSON,
+    TransferSubscriptionsResponseMessageFromJSON,
+    TransferSubscriptionsResponseMessageToJSON,
     TranslateBrowsePathsToNodeIdsRequestMessageFromJSON,
     TranslateBrowsePathsToNodeIdsRequestMessageToJSON,
     TranslateBrowsePathsToNodeIdsResponseMessageFromJSON,
     TranslateBrowsePathsToNodeIdsResponseMessageToJSON,
+    UnregisterNodesRequestMessageFromJSON,
+    UnregisterNodesRequestMessageToJSON,
+    UnregisterNodesResponseMessageFromJSON,
+    UnregisterNodesResponseMessageToJSON,
     WriteRequestMessageFromJSON,
     WriteRequestMessageToJSON,
     WriteResponseMessageFromJSON,
     WriteResponseMessageToJSON,
 } from '../models/index';
+
+export interface ActivateSessionRequest {
+    activateSessionRequestMessage?: ActivateSessionRequestMessage;
+}
 
 export interface BrowseRequest {
     browseRequestMessage?: BrowseRequestMessage;
@@ -79,6 +203,42 @@ export interface CallRequest {
     callRequestMessage?: CallRequestMessage;
 }
 
+export interface CancelRequest {
+    cancelRequestMessage?: CancelRequestMessage;
+}
+
+export interface CloseSessionRequest {
+    closeSessionRequestMessage?: CloseSessionRequestMessage;
+}
+
+export interface CreateMonitoredItemsRequest {
+    createMonitoredItemsRequestMessage?: CreateMonitoredItemsRequestMessage;
+}
+
+export interface CreateSessionRequest {
+    createSessionRequestMessage?: CreateSessionRequestMessage;
+}
+
+export interface CreateSubscriptionRequest {
+    createSubscriptionRequestMessage?: CreateSubscriptionRequestMessage;
+}
+
+export interface DeleteMonitoredItemsRequest {
+    deleteMonitoredItemsRequestMessage?: DeleteMonitoredItemsRequestMessage;
+}
+
+export interface DeleteSubscriptionsRequest {
+    deleteSubscriptionsRequestMessage?: DeleteSubscriptionsRequestMessage;
+}
+
+export interface FindServersRequest {
+    findServersRequestMessage?: FindServersRequestMessage;
+}
+
+export interface GetEndpointsRequest {
+    getEndpointsRequestMessage?: GetEndpointsRequestMessage;
+}
+
 export interface HistoryReadRequest {
     historyReadRequestMessage?: HistoryReadRequestMessage;
 }
@@ -87,12 +247,52 @@ export interface HistoryUpdateRequest {
     historyUpdateRequestMessage?: HistoryUpdateRequestMessage;
 }
 
+export interface ModifyMonitoredItemsRequest {
+    modifyMonitoredItemsRequestMessage?: ModifyMonitoredItemsRequestMessage;
+}
+
+export interface ModifySubscriptionRequest {
+    modifySubscriptionRequestMessage?: ModifySubscriptionRequestMessage;
+}
+
+export interface PublishRequest {
+    publishRequestMessage?: PublishRequestMessage;
+}
+
 export interface ReadRequest {
     readRequestMessage?: ReadRequestMessage;
 }
 
+export interface RegisterNodesRequest {
+    registerNodesRequestMessage?: RegisterNodesRequestMessage;
+}
+
+export interface RepublishRequest {
+    republishRequestMessage?: RepublishRequestMessage;
+}
+
+export interface SetMonitoringModeRequest {
+    setMonitoringModeRequestMessage?: SetMonitoringModeRequestMessage;
+}
+
+export interface SetPublishingModeRequest {
+    setPublishingModeRequestMessage?: SetPublishingModeRequestMessage;
+}
+
+export interface SetTriggeringRequest {
+    setTriggeringRequestMessage?: SetTriggeringRequestMessage;
+}
+
+export interface TransferSubscriptionsRequest {
+    transferSubscriptionsRequestMessage?: TransferSubscriptionsRequestMessage;
+}
+
 export interface TranslateBrowsePathsToNodeIdsRequest {
     translateBrowsePathsToNodeIdsRequestMessage?: TranslateBrowsePathsToNodeIdsRequestMessage;
+}
+
+export interface UnregisterNodesRequest {
+    unregisterNodesRequestMessage?: UnregisterNodesRequestMessage;
 }
 
 export interface WriteRequest {
@@ -106,6 +306,33 @@ export class DefaultApi extends runtime.BaseAPI {
 
     /**
      */
+    async activateSessionRaw(requestParameters: ActivateSessionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ActivateSessionResponseMessage>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/activatesession`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ActivateSessionRequestMessageToJSON(requestParameters.activateSessionRequestMessage),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ActivateSessionResponseMessageFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async activateSession(requestParameters: ActivateSessionRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ActivateSessionResponseMessage> {
+        const response = await this.activateSessionRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
     async browseRaw(requestParameters: BrowseRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BrowseResponseMessage>> {
         const queryParameters: any = {};
 
@@ -114,7 +341,7 @@ export class DefaultApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/opcua/browse`,
+            path: `/browse`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -141,7 +368,7 @@ export class DefaultApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/opcua/browsenext`,
+            path: `/browsenext`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -168,7 +395,7 @@ export class DefaultApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/opcua/call`,
+            path: `/call`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -187,6 +414,249 @@ export class DefaultApi extends runtime.BaseAPI {
 
     /**
      */
+    async cancelRaw(requestParameters: CancelRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CancelResponseMessage>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/cancel`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CancelRequestMessageToJSON(requestParameters.cancelRequestMessage),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CancelResponseMessageFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async cancel(requestParameters: CancelRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CancelResponseMessage> {
+        const response = await this.cancelRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async closeSessionRaw(requestParameters: CloseSessionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CloseSessionResponseMessage>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/closesession`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CloseSessionRequestMessageToJSON(requestParameters.closeSessionRequestMessage),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CloseSessionResponseMessageFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async closeSession(requestParameters: CloseSessionRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CloseSessionResponseMessage> {
+        const response = await this.closeSessionRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async createMonitoredItemsRaw(requestParameters: CreateMonitoredItemsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateMonitoredItemsResponseMessage>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/createmonitoreditems`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreateMonitoredItemsRequestMessageToJSON(requestParameters.createMonitoredItemsRequestMessage),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateMonitoredItemsResponseMessageFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async createMonitoredItems(requestParameters: CreateMonitoredItemsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateMonitoredItemsResponseMessage> {
+        const response = await this.createMonitoredItemsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async createSessionRaw(requestParameters: CreateSessionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateSessionResponseMessage>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/createsession`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreateSessionRequestMessageToJSON(requestParameters.createSessionRequestMessage),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateSessionResponseMessageFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async createSession(requestParameters: CreateSessionRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateSessionResponseMessage> {
+        const response = await this.createSessionRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async createSubscriptionRaw(requestParameters: CreateSubscriptionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateSubscriptionResponseMessage>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/createsubscription`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreateSubscriptionRequestMessageToJSON(requestParameters.createSubscriptionRequestMessage),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateSubscriptionResponseMessageFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async createSubscription(requestParameters: CreateSubscriptionRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateSubscriptionResponseMessage> {
+        const response = await this.createSubscriptionRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async deleteMonitoredItemsRaw(requestParameters: DeleteMonitoredItemsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<DeleteMonitoredItemsResponseMessage>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/deletemonitoreditems`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: DeleteMonitoredItemsRequestMessageToJSON(requestParameters.deleteMonitoredItemsRequestMessage),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => DeleteMonitoredItemsResponseMessageFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async deleteMonitoredItems(requestParameters: DeleteMonitoredItemsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<DeleteMonitoredItemsResponseMessage> {
+        const response = await this.deleteMonitoredItemsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async deleteSubscriptionsRaw(requestParameters: DeleteSubscriptionsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<DeleteSubscriptionsResponseMessage>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/deletesubscriptions`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: DeleteSubscriptionsRequestMessageToJSON(requestParameters.deleteSubscriptionsRequestMessage),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => DeleteSubscriptionsResponseMessageFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async deleteSubscriptions(requestParameters: DeleteSubscriptionsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<DeleteSubscriptionsResponseMessage> {
+        const response = await this.deleteSubscriptionsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async findServersRaw(requestParameters: FindServersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FindServersResponseMessage>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/findservers`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: FindServersRequestMessageToJSON(requestParameters.findServersRequestMessage),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => FindServersResponseMessageFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async findServers(requestParameters: FindServersRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<FindServersResponseMessage> {
+        const response = await this.findServersRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async getEndpointsRaw(requestParameters: GetEndpointsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetEndpointsResponseMessage>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/getendpoints`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: GetEndpointsRequestMessageToJSON(requestParameters.getEndpointsRequestMessage),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetEndpointsResponseMessageFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async getEndpoints(requestParameters: GetEndpointsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetEndpointsResponseMessage> {
+        const response = await this.getEndpointsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
     async historyReadRaw(requestParameters: HistoryReadRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<HistoryReadResponseMessage>> {
         const queryParameters: any = {};
 
@@ -195,7 +665,7 @@ export class DefaultApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/opcua/historyread`,
+            path: `/historyread`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -222,7 +692,7 @@ export class DefaultApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/opcua/historyupdate`,
+            path: `/historyupdate`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -241,6 +711,87 @@ export class DefaultApi extends runtime.BaseAPI {
 
     /**
      */
+    async modifyMonitoredItemsRaw(requestParameters: ModifyMonitoredItemsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ModifyMonitoredItemsResponseMessage>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/modifymonitoreditems`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ModifyMonitoredItemsRequestMessageToJSON(requestParameters.modifyMonitoredItemsRequestMessage),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ModifyMonitoredItemsResponseMessageFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async modifyMonitoredItems(requestParameters: ModifyMonitoredItemsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ModifyMonitoredItemsResponseMessage> {
+        const response = await this.modifyMonitoredItemsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async modifySubscriptionRaw(requestParameters: ModifySubscriptionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ModifySubscriptionResponseMessage>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/modifysubscription`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ModifySubscriptionRequestMessageToJSON(requestParameters.modifySubscriptionRequestMessage),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ModifySubscriptionResponseMessageFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async modifySubscription(requestParameters: ModifySubscriptionRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ModifySubscriptionResponseMessage> {
+        const response = await this.modifySubscriptionRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async publishRaw(requestParameters: PublishRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PublishResponseMessage>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/publish`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: PublishRequestMessageToJSON(requestParameters.publishRequestMessage),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => PublishResponseMessageFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async publish(requestParameters: PublishRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PublishResponseMessage> {
+        const response = await this.publishRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
     async readRaw(requestParameters: ReadRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ReadResponseMessage>> {
         const queryParameters: any = {};
 
@@ -249,7 +800,7 @@ export class DefaultApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/opcua/read`,
+            path: `/read`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -268,6 +819,168 @@ export class DefaultApi extends runtime.BaseAPI {
 
     /**
      */
+    async registerNodesRaw(requestParameters: RegisterNodesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<RegisterNodesResponseMessage>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/registernodes`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: RegisterNodesRequestMessageToJSON(requestParameters.registerNodesRequestMessage),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => RegisterNodesResponseMessageFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async registerNodes(requestParameters: RegisterNodesRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<RegisterNodesResponseMessage> {
+        const response = await this.registerNodesRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async republishRaw(requestParameters: RepublishRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<RepublishResponseMessage>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/republish`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: RepublishRequestMessageToJSON(requestParameters.republishRequestMessage),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => RepublishResponseMessageFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async republish(requestParameters: RepublishRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<RepublishResponseMessage> {
+        const response = await this.republishRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async setMonitoringModeRaw(requestParameters: SetMonitoringModeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SetMonitoringModeResponseMessage>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/setmonitoringmode`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: SetMonitoringModeRequestMessageToJSON(requestParameters.setMonitoringModeRequestMessage),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SetMonitoringModeResponseMessageFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async setMonitoringMode(requestParameters: SetMonitoringModeRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SetMonitoringModeResponseMessage> {
+        const response = await this.setMonitoringModeRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async setPublishingModeRaw(requestParameters: SetPublishingModeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SetPublishingModeResponseMessage>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/setpublishingmode`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: SetPublishingModeRequestMessageToJSON(requestParameters.setPublishingModeRequestMessage),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SetPublishingModeResponseMessageFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async setPublishingMode(requestParameters: SetPublishingModeRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SetPublishingModeResponseMessage> {
+        const response = await this.setPublishingModeRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async setTriggeringRaw(requestParameters: SetTriggeringRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SetTriggeringResponseMessage>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/settriggering`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: SetTriggeringRequestMessageToJSON(requestParameters.setTriggeringRequestMessage),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SetTriggeringResponseMessageFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async setTriggering(requestParameters: SetTriggeringRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SetTriggeringResponseMessage> {
+        const response = await this.setTriggeringRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async transferSubscriptionsRaw(requestParameters: TransferSubscriptionsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TransferSubscriptionsResponseMessage>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/transfersubscriptions`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: TransferSubscriptionsRequestMessageToJSON(requestParameters.transferSubscriptionsRequestMessage),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => TransferSubscriptionsResponseMessageFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async transferSubscriptions(requestParameters: TransferSubscriptionsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TransferSubscriptionsResponseMessage> {
+        const response = await this.transferSubscriptionsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
     async translateBrowsePathsToNodeIdsRaw(requestParameters: TranslateBrowsePathsToNodeIdsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TranslateBrowsePathsToNodeIdsResponseMessage>> {
         const queryParameters: any = {};
 
@@ -276,7 +989,7 @@ export class DefaultApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/opcua/translate`,
+            path: `/translate`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -295,6 +1008,33 @@ export class DefaultApi extends runtime.BaseAPI {
 
     /**
      */
+    async unregisterNodesRaw(requestParameters: UnregisterNodesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UnregisterNodesResponseMessage>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/unregisternodes`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: UnregisterNodesRequestMessageToJSON(requestParameters.unregisterNodesRequestMessage),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => UnregisterNodesResponseMessageFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async unregisterNodes(requestParameters: UnregisterNodesRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UnregisterNodesResponseMessage> {
+        const response = await this.unregisterNodesRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
     async writeRaw(requestParameters: WriteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<WriteResponseMessage>> {
         const queryParameters: any = {};
 
@@ -303,7 +1043,7 @@ export class DefaultApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/opcua/write`,
+            path: `/write`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,

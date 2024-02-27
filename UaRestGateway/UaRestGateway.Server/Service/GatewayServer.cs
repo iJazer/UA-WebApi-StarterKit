@@ -15,6 +15,8 @@ namespace UaRestGateway.Server.Service
 
         public EndpointDescriptionCollection ServerEndpoints { get; private set; }
 
+        public GatewayServerManager ServerApi { get { return m_server; } }
+
         public async Task Start(ILogger logger, CancellationToken stoppingToken)
         {
             m_application = new ApplicationInstance

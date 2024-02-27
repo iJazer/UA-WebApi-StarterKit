@@ -37,6 +37,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.IdentityModel.Tokens;
 using Opc.Ua;
+using Opc.Ua.Bindings;
 using Opc.Ua.Server;
 using UaRestGateway.Server.Model;
 using StatusCodes = Opc.Ua.StatusCodes;
@@ -54,6 +55,31 @@ namespace UaRestGateway.Server.Service
         }
 
         #region Overridden Methods
+        protected override IList<ServiceHost> InitializeServiceHosts(
+            ApplicationConfiguration configuration,
+            TransportListenerBindings bindingFactory,
+            out ApplicationDescription serverDescription,
+            out EndpointDescriptionCollection endpoints)
+        {
+            var hosts = base.InitializeServiceHosts(configuration, bindingFactory, out serverDescription, out endpoints);
+
+            var templateEndpoint = endpoints.Where(x => x.SecurityMode == MessageSecurityMode.None).FirstOrDefault();
+
+            endpoints.Add(new EndpointDescription()
+            {
+                EndpointUrl = "opc.tcp://localhost:4840",
+                SecurityMode = MessageSecurityMode.None,
+                SecurityPolicyUri = SecurityPolicies.None,
+                TransportProfileUri = Profiles.HttpsJsonTransport,
+                SecurityLevel = 100,
+                Server = serverDescription,
+                ServerCertificate = templateEndpoint.ServerCertificate,
+                UserIdentityTokens = templateEndpoint.UserIdentityTokens.Where(x => x.TokenType == UserTokenType.IssuedToken).ToArray()
+            });
+
+            return hosts;
+        }
+
         protected override MasterNodeManager CreateMasterNodeManager(IServerInternal server, ApplicationConfiguration configuration)
         {
             Utils.Trace("Creating the Node Managers.");

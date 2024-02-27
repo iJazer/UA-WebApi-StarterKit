@@ -121,7 +121,7 @@
         <ua:TokenType>IssuedToken_3</ua:TokenType>
         <ua:IssuedTokenType>http://opcfoundation.org/UA/UserToken#JWT</ua:IssuedTokenType>
         <ua:IssuerEndpointUrl>{"ua:authorityUrl": "https://opcfoundation.org/.well-known/openid-configuration/", "ua:authorityProfileUri": "http://opcfoundation.org/UA-Profile/Security/UserToken/Server/JsonWebToken"}</ua:IssuerEndpointUrl>
-        <ua:SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#Basic256Sha256</ua:SecurityPolicyUri>
+        <ua:SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#None</ua:SecurityPolicyUri>
       </ua:UserTokenPolicy>
       
     </UserTokenPolicies>

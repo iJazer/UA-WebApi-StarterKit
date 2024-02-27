@@ -445,7 +445,12 @@ export enum DataTypeIds {
    ProgramDiagnosticDataType = 'i=894',
    ProgramDiagnostic2DataType = 'i=24033',
    Annotation = 'i=891',
-   ExceptionDeviationFormat = 'i=890'
+   ExceptionDeviationFormat = 'i=890',
+   TestAbstractStructure = 'i=15399',
+   TestConcreteStructure = 'i=15400',
+   TestScalarStructure = 'i=15015',
+   TestArrayStructure = 'i=15016',
+   TestStructure = 'i=15017'
 }
 
 export enum MethodIds {
@@ -976,7 +981,6 @@ export enum MethodIds {
    PublishSubscribe_PubSubConfiguration_ReserveIds = 'i=25474',
    PublishSubscribe_PubSubConfiguration_CloseAndUpdate = 'i=25477',
    PublishSubscribe_Diagnostics_Reset = 'i=17421',
-   PubSubConfigurationType_Write = 'i=25498',
    PubSubConfigurationType_ReserveIds = 'i=25505',
    PubSubConfigurationType_CloseAndUpdate = 'i=25508',
    PublishedDataSetType_DataSetWriterName_Placeholder_Diagnostics_Reset = 'i=18883',
@@ -1489,6 +1493,11 @@ export enum ObjectIds {
    EUInformation_Encoding_DefaultBinary = 'i=889',
    AxisInformation_Encoding_DefaultBinary = 'i=12089',
    Annotation_Encoding_DefaultBinary = 'i=893',
+   TestAbstractStructure_Encoding_DefaultBinary = 'i=15401',
+   TestConcreteStructure_Encoding_DefaultBinary = 'i=15402',
+   TestScalarStructure_Encoding_DefaultBinary = 'i=15024',
+   TestArrayStructure_Encoding_DefaultBinary = 'i=15025',
+   TestStructure_Encoding_DefaultBinary = 'i=15026',
    Union_Encoding_DefaultXml = 'i=12758',
    KeyValuePair_Encoding_DefaultXml = 'i=14802',
    BitFieldDefinition_Encoding_DefaultXml = 'i=32426',
@@ -1721,6 +1730,11 @@ export enum ObjectIds {
    EUInformation_Encoding_DefaultXml = 'i=888',
    AxisInformation_Encoding_DefaultXml = 'i=12081',
    Annotation_Encoding_DefaultXml = 'i=892',
+   TestAbstractStructure_Encoding_DefaultXml = 'i=15403',
+   TestConcreteStructure_Encoding_DefaultXml = 'i=15404',
+   TestScalarStructure_Encoding_DefaultXml = 'i=15232',
+   TestArrayStructure_Encoding_DefaultXml = 'i=15233',
+   TestStructure_Encoding_DefaultXml = 'i=15234',
    Union_Encoding_DefaultJson = 'i=15085',
    KeyValuePair_Encoding_DefaultJson = 'i=15041',
    BitFieldDefinition_Encoding_DefaultJson = 'i=32430',
@@ -1952,7 +1966,12 @@ export enum ObjectIds {
    Range_Encoding_DefaultJson = 'i=15375',
    EUInformation_Encoding_DefaultJson = 'i=15376',
    AxisInformation_Encoding_DefaultJson = 'i=15379',
-   Annotation_Encoding_DefaultJson = 'i=15382'
+   Annotation_Encoding_DefaultJson = 'i=15382',
+   TestAbstractStructure_Encoding_DefaultJson = 'i=15405',
+   TestConcreteStructure_Encoding_DefaultJson = 'i=15431',
+   TestScalarStructure_Encoding_DefaultJson = 'i=15396',
+   TestArrayStructure_Encoding_DefaultJson = 'i=15397',
+   TestStructure_Encoding_DefaultJson = 'i=15398'
 }
 
 export enum ObjectTypeIds {
@@ -2412,6 +2431,7 @@ export enum VariableIds {
    Server_ServerDiagnostics_SessionsDiagnosticsSummary_SessionSecurityDiagnosticsArray = 'i=3708',
    Server_ServerDiagnostics_EnabledFlag = 'i=2294',
    Server_ServerRedundancy_RedundancySupport = 'i=3709',
+   Server_ServerRedundancy_RedundantServerArray = 'i=11313',
    Server_GetMonitoredItems_InputArguments = 'i=11493',
    Server_GetMonitoredItems_OutputArguments = 'i=11494',
    Server_ResendData_InputArguments = 'i=12874',
