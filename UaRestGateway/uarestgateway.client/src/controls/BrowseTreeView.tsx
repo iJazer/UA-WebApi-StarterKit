@@ -11,10 +11,9 @@ import { TreeItem } from '@mui/x-tree-view/TreeItem/TreeItem';
 import { NodeIcon } from './NodeIcon';
 import { browseChildren } from '../opcua-utils';
 export interface BrowseTreeNodeProps {
-   serverId?: string
    parentId?: string
    requestTimeout?: number,
-   selectionId?: number,
+   selectionId?: string,
    onChildrenUpdated?: (oldNodes: IBrowseTreeNode[], newNodes: IBrowseTreeNode[]) => void
 }
 
@@ -40,21 +39,21 @@ function treeViewReducer(state: BrowseTreeNodeState, action: BrowseTreeNodeActio
    }
 }
 
-export const BrowseTreeNode = ({ serverId, parentId, requestTimeout, selectionId }: BrowseTreeNodeProps) => {
+export const BrowseTreeNode = ({ parentId, requestTimeout, selectionId }: BrowseTreeNodeProps) => {
    const [state, dispatch] = React.useReducer(treeViewReducer, { dirty: false });
    const context = React.useContext(ApplicationContext);
 
    React.useEffect(() => {
       const controller = new AbortController();
       if (parentId) {
-         browseChildren(parentId, serverId, requestTimeout, controller, context?.userContext?.user).then((x) => {
+         browseChildren(parentId, requestTimeout, controller, context?.userContext?.user).then((x) => {
             if (x) dispatch({ type: 'update', newNodes: x });
          });
       }
       return () => {
          controller.abort();
       };
-   }, [parentId, serverId, requestTimeout, context?.userContext?.user]);
+   }, [parentId, requestTimeout, context?.userContext?.user]);
 
    React.useEffect(() => {
       if (state.dirty && context?.updateNodes) {
@@ -74,7 +73,6 @@ export const BrowseTreeNode = ({ serverId, parentId, requestTimeout, selectionId
                   icon={<NodeIcon nodeClass={node?.reference?.NodeClass} typeDefinitionId={node?.reference?.TypeDefinition} />}
                >
                   <BrowseTreeNode
-                     serverId={serverId}
                      parentId={node.reference.NodeId}
                      requestTimeout={requestTimeout}
                      selectionId={selectionId}
@@ -85,13 +83,12 @@ export const BrowseTreeNode = ({ serverId, parentId, requestTimeout, selectionId
 };
 
 interface BrowseTreeViewProps {
-   serverId?: string
    rootNodeId?: string
    requestTimeout?: number
    onSelectionChanged?: (node: OpcUa.ReferenceDescription) => void
 }
 
-export const BrowseTreeView = ({ serverId, rootNodeId, requestTimeout, onSelectionChanged }: BrowseTreeViewProps) => {
+export const BrowseTreeView = ({ rootNodeId, requestTimeout, onSelectionChanged }: BrowseTreeViewProps) => {
    const [selectionId, setSelectionId] = React.useState<string | undefined>();
    const context = React.useContext(ApplicationContext);
 
@@ -117,7 +114,6 @@ export const BrowseTreeView = ({ serverId, rootNodeId, requestTimeout, onSelecti
             onNodeToggle={(e: React.SyntheticEvent, nodeIds: string[]) => handleToggle(e, nodeIds)}
          >
             <BrowseTreeNode
-               serverId={serverId}
                parentId={rootNodeId}
                requestTimeout={requestTimeout}
                selectionId={selectionId}

@@ -7,7 +7,6 @@ using ISession = Opc.Ua.Client.ISession;
 using UaRestGateway.Server.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Http.Extensions;
 using System.Text;
 using Opc.Ua.Server;
 
@@ -83,6 +82,8 @@ namespace UaRestGateway.Server.Controllers
 
         private Task<IActionResult> Fault(Exception e)
         {
+            Logger.LogWarning(e, "Fault calling Service.");
+
             IServiceMessageContext context = m_communicationService?.ServerApi?.MessageContext ?? ServiceMessageContext.GlobalContext;
 
             using (var encoder = new JsonEncoder(context, true))
@@ -357,6 +358,8 @@ namespace UaRestGateway.Server.Controllers
                 var server = GetServer();
                 var request = await Decode<CreateSessionRequest>(server.MessageContext);
 
+                // Logger.LogError("CreateSession.Current: {0} {1}", Session.SecureChannelId, SecureChannelContext.Current?.SecureChannelId ?? "null"); 
+
                 var responseHeader = server.CreateSession(
                     request.RequestHeader,
                     request.ClientDescription,
@@ -409,6 +412,8 @@ namespace UaRestGateway.Server.Controllers
             {
                 var server = GetServer();
                 var request = await Decode<ActivateSessionRequest>(server.MessageContext);
+
+                // Logger.LogError("ActivateSession.Current: {0} {1}", Session.SecureChannelId, SecureChannelContext.Current?.SecureChannelId ?? "null");
 
                 var accessToken = "";
 
@@ -466,6 +471,8 @@ namespace UaRestGateway.Server.Controllers
                 var server = GetServer();
                 var request = await Decode<CreateSubscriptionRequest>(server.MessageContext);
 
+                // Logger.LogError("CreateSubscription.Current: {0} {1}", Session.SecureChannelId, SecureChannelContext.Current?.SecureChannelId ?? "null");
+
                 var responseHeader = server.CreateSubscription(
                     request.RequestHeader,
                     request.RequestedPublishingInterval,
@@ -505,6 +512,8 @@ namespace UaRestGateway.Server.Controllers
                 var server = GetServer();
                 var request = await Decode<DeleteSubscriptionsRequest>(server.MessageContext);
 
+                // Logger.LogError("DeleteSubscriptions.Current: {0} {1}", Session.SecureChannelId, SecureChannelContext.Current?.SecureChannelId ?? "null");
+
                 var responseHeader = server.DeleteSubscriptions(
                     request.RequestHeader,
                     request.SubscriptionIds,
@@ -534,6 +543,8 @@ namespace UaRestGateway.Server.Controllers
             {
                 var server = GetServer();
                 var request = await Decode<PublishRequest>(server.MessageContext);
+
+                // Logger.LogError("Publish.Current: {0} {1}", Session.SecureChannelId, SecureChannelContext.Current?.SecureChannelId ?? "null");
 
                 var responseHeader = server.Publish(
                     request.RequestHeader,

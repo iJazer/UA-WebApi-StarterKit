@@ -21,4 +21,4 @@ export const SubscriptionPage = () => {
    );
 };
 
-export default HomePage;
+export default SubscriptionPage;

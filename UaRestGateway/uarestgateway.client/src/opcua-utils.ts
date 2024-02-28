@@ -122,9 +122,10 @@ export async function call(
             'Content-Type': 'application/json',
             'Authorization': (user?.accessToken)?`Bearer ${user?.accessToken}`:''
          },
+         credentials: 'include',
          body: JSON.stringify(request),
          signal: controller?.signal
-      };
+      } as RequestInit;
       // console.info(`call: ${url}`);
       const response = await fetch(url, requestOptions);
       if (timeoutId) clearTimeout(timeoutId);
@@ -161,7 +162,6 @@ export async function call(
 
 export async function browseChildren(
    nodeId: string,
-   serverId?: string,
    requestTimeout: number = 120000,
    controller?: AbortController,
    user?: Account
@@ -184,7 +184,7 @@ export async function browseChildren(
          ]
       }
    };
-   const response = await call(`/opcua/browse${(serverId) ? `?serverId=${serverId}` : ''}`, request, controller, user);
+   const response = await call(`/opcua/browse`, request, controller, user);
    if (!response) {
       return undefined;
    }
@@ -221,7 +221,7 @@ export async function browseChildren(
                ContinuationPoints: continuationPoints
             }
          };
-         const response = await call(`/opcua/browsenext${(serverId) ? `?serverId=${serverId}` : ''}`, request, controller, user);
+         const response = await call(`/opcua/browsenext`, request, controller, user);
          if (!response) {
             return undefined;
          }
@@ -235,9 +235,9 @@ export async function browseChildren(
 
    return nodes;
 }
+
 export async function readAttributes(
    reference: OpcUa.ReferenceDescription,
-   serverId?: string,
    requestTimeout: number = 120000,
    controller?: AbortController,
    user?: Account
@@ -263,7 +263,7 @@ export async function readAttributes(
          });
    }
 
-   const response = await call(`/opcua/read${(serverId) ? `?serverId=${serverId}` : ''}`, request, controller, user);
+   const response = await call(`/opcua/read`, request, controller, user);
    if (!response) {
       return null;
    }
@@ -435,7 +435,7 @@ export async function publish(
       return null;
    }
 
-   const acknowledgements = session.acknowledgements ?? [];
+   const acknowledgements = [];
 
    // console.warn(`SequenceNumber ${response.Body.NotificationMessage.SequenceNumber}`);
 
@@ -458,7 +458,7 @@ export async function publish(
          });
       }
 
-      acknowledgements.push({ SubscriptionId: message.SubscriptionId, SequenceNumber: message.SequenceNumber });
+      acknowledgements.push({ SubscriptionId: response.Body.SubscriptionId, SequenceNumber: message.SequenceNumber });
    }
 
    return {

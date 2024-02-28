@@ -33,6 +33,8 @@ namespace UaRestGateway.Server.Controllers
             {
                 Session = new WebSession();
             }
+
+            // Logger.LogError("Session.UserEmail: {0}", Session.UserEmail);
         }
 
         protected void SaveWebSession()
