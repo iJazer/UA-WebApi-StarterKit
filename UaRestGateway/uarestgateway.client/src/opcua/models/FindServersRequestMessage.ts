@@ -46,12 +46,6 @@ export interface FindServersRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
-     * @type {number}
-     * @memberof FindServersRequestMessage
-     */
-    ServiceId?: number;
-    /**
-     * 
      * @type {FindServersRequest}
      * @memberof FindServersRequestMessage
      */
@@ -80,7 +74,6 @@ export function FindServersRequestMessageFromJSONTyped(json: any, ignoreDiscrimi
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : FindServersRequestFromJSON(json['Body']),
     };
 }
@@ -97,7 +90,6 @@ export function FindServersRequestMessageToJSON(value?: FindServersRequestMessag
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
-        'ServiceId': value.ServiceId,
         'Body': FindServersRequestToJSON(value.Body),
     };
 }

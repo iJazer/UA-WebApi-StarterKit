@@ -40,12 +40,6 @@ export interface TransferSubscriptionsResponseMessage {
     ServerUris?: Array<string>;
     /**
      * 
-     * @type {number}
-     * @memberof TransferSubscriptionsResponseMessage
-     */
-    ServiceId?: number;
-    /**
-     * 
      * @type {TransferSubscriptionsResponse}
      * @memberof TransferSubscriptionsResponseMessage
      */
@@ -73,7 +67,6 @@ export function TransferSubscriptionsResponseMessageFromJSONTyped(json: any, ign
         
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
-        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : TransferSubscriptionsResponseFromJSON(json['Body']),
     };
 }
@@ -89,7 +82,6 @@ export function TransferSubscriptionsResponseMessageToJSON(value?: TransferSubsc
         
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
-        'ServiceId': value.ServiceId,
         'Body': TransferSubscriptionsResponseToJSON(value.Body),
     };
 }

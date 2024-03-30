@@ -46,12 +46,6 @@ export interface DeleteSubscriptionsRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
-     * @type {number}
-     * @memberof DeleteSubscriptionsRequestMessage
-     */
-    ServiceId?: number;
-    /**
-     * 
      * @type {DeleteSubscriptionsRequest}
      * @memberof DeleteSubscriptionsRequestMessage
      */
@@ -80,7 +74,6 @@ export function DeleteSubscriptionsRequestMessageFromJSONTyped(json: any, ignore
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : DeleteSubscriptionsRequestFromJSON(json['Body']),
     };
 }
@@ -97,7 +90,6 @@ export function DeleteSubscriptionsRequestMessageToJSON(value?: DeleteSubscripti
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
-        'ServiceId': value.ServiceId,
         'Body': DeleteSubscriptionsRequestToJSON(value.Body),
     };
 }

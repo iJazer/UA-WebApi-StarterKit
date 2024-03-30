@@ -40,12 +40,6 @@ export interface CloseSessionResponseMessage {
     ServerUris?: Array<string>;
     /**
      * 
-     * @type {number}
-     * @memberof CloseSessionResponseMessage
-     */
-    ServiceId?: number;
-    /**
-     * 
      * @type {CloseSessionResponse}
      * @memberof CloseSessionResponseMessage
      */
@@ -73,7 +67,6 @@ export function CloseSessionResponseMessageFromJSONTyped(json: any, ignoreDiscri
         
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
-        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : CloseSessionResponseFromJSON(json['Body']),
     };
 }
@@ -89,7 +82,6 @@ export function CloseSessionResponseMessageToJSON(value?: CloseSessionResponseMe
         
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
-        'ServiceId': value.ServiceId,
         'Body': CloseSessionResponseToJSON(value.Body),
     };
 }

@@ -46,12 +46,6 @@ export interface BrowseRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
-     * @type {number}
-     * @memberof BrowseRequestMessage
-     */
-    ServiceId?: number;
-    /**
-     * 
      * @type {BrowseRequest}
      * @memberof BrowseRequestMessage
      */
@@ -80,7 +74,6 @@ export function BrowseRequestMessageFromJSONTyped(json: any, ignoreDiscriminator
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : BrowseRequestFromJSON(json['Body']),
     };
 }
@@ -97,7 +90,6 @@ export function BrowseRequestMessageToJSON(value?: BrowseRequestMessage | null):
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
-        'ServiceId': value.ServiceId,
         'Body': BrowseRequestToJSON(value.Body),
     };
 }

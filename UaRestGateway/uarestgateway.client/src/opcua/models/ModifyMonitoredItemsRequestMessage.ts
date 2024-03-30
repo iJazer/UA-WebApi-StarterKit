@@ -46,12 +46,6 @@ export interface ModifyMonitoredItemsRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
-     * @type {number}
-     * @memberof ModifyMonitoredItemsRequestMessage
-     */
-    ServiceId?: number;
-    /**
-     * 
      * @type {ModifyMonitoredItemsRequest}
      * @memberof ModifyMonitoredItemsRequestMessage
      */
@@ -80,7 +74,6 @@ export function ModifyMonitoredItemsRequestMessageFromJSONTyped(json: any, ignor
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : ModifyMonitoredItemsRequestFromJSON(json['Body']),
     };
 }
@@ -97,7 +90,6 @@ export function ModifyMonitoredItemsRequestMessageToJSON(value?: ModifyMonitored
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
-        'ServiceId': value.ServiceId,
         'Body': ModifyMonitoredItemsRequestToJSON(value.Body),
     };
 }

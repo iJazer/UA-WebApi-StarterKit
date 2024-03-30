@@ -40,12 +40,6 @@ export interface BrowseResponseMessage {
     ServerUris?: Array<string>;
     /**
      * 
-     * @type {number}
-     * @memberof BrowseResponseMessage
-     */
-    ServiceId?: number;
-    /**
-     * 
      * @type {BrowseResponse}
      * @memberof BrowseResponseMessage
      */
@@ -73,7 +67,6 @@ export function BrowseResponseMessageFromJSONTyped(json: any, ignoreDiscriminato
         
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
-        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : BrowseResponseFromJSON(json['Body']),
     };
 }
@@ -89,7 +82,6 @@ export function BrowseResponseMessageToJSON(value?: BrowseResponseMessage | null
         
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
-        'ServiceId': value.ServiceId,
         'Body': BrowseResponseToJSON(value.Body),
     };
 }

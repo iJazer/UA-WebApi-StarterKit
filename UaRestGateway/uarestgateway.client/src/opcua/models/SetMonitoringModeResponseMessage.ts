@@ -40,12 +40,6 @@ export interface SetMonitoringModeResponseMessage {
     ServerUris?: Array<string>;
     /**
      * 
-     * @type {number}
-     * @memberof SetMonitoringModeResponseMessage
-     */
-    ServiceId?: number;
-    /**
-     * 
      * @type {SetMonitoringModeResponse}
      * @memberof SetMonitoringModeResponseMessage
      */
@@ -73,7 +67,6 @@ export function SetMonitoringModeResponseMessageFromJSONTyped(json: any, ignoreD
         
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
-        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : SetMonitoringModeResponseFromJSON(json['Body']),
     };
 }
@@ -89,7 +82,6 @@ export function SetMonitoringModeResponseMessageToJSON(value?: SetMonitoringMode
         
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
-        'ServiceId': value.ServiceId,
         'Body': SetMonitoringModeResponseToJSON(value.Body),
     };
 }

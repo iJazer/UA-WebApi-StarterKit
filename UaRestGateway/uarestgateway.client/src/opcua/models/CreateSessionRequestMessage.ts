@@ -46,12 +46,6 @@ export interface CreateSessionRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
-     * @type {number}
-     * @memberof CreateSessionRequestMessage
-     */
-    ServiceId?: number;
-    /**
-     * 
      * @type {CreateSessionRequest}
      * @memberof CreateSessionRequestMessage
      */
@@ -80,7 +74,6 @@ export function CreateSessionRequestMessageFromJSONTyped(json: any, ignoreDiscri
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : CreateSessionRequestFromJSON(json['Body']),
     };
 }
@@ -97,7 +90,6 @@ export function CreateSessionRequestMessageToJSON(value?: CreateSessionRequestMe
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
-        'ServiceId': value.ServiceId,
         'Body': CreateSessionRequestToJSON(value.Body),
     };
 }

@@ -46,14 +46,17 @@
                       "type": "string"
                     }
                   },
-                  "ServiceId": {
-                    "type": "integer",
-                    "format": "uint32"
-                  },
                   "Body": {
                     "$ref": "#/components/schemas/ReadRequest"
                   }
                 }
+              }
+            },
+            "application/gzip": {
+              "schema": {
+                "title": "ReadRequestMessage",
+                "type": "string",
+                "format": "binary"
               }
             }
           }
@@ -78,14 +81,17 @@
                         "type": "string"
                       }
                     },
-                    "ServiceId": {
-                      "type": "integer",
-                      "format": "uint32"
-                    },
                     "Body": {
                       "$ref": "#/components/schemas/ReadResponse"
                     }
                   }
+                }
+              },
+              "application/gzip": {
+                "schema": {
+                  "title": "ReadResponseMessage",
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -121,14 +127,17 @@
                       "type": "string"
                     }
                   },
-                  "ServiceId": {
-                    "type": "integer",
-                    "format": "uint32"
-                  },
                   "Body": {
                     "$ref": "#/components/schemas/WriteRequest"
                   }
                 }
+              }
+            },
+            "application/gzip": {
+              "schema": {
+                "title": "WriteRequestMessage",
+                "type": "string",
+                "format": "binary"
               }
             }
           }
@@ -153,14 +162,17 @@
                         "type": "string"
                       }
                     },
-                    "ServiceId": {
-                      "type": "integer",
-                      "format": "uint32"
-                    },
                     "Body": {
                       "$ref": "#/components/schemas/WriteResponse"
                     }
                   }
+                }
+              },
+              "application/gzip": {
+                "schema": {
+                  "title": "WriteResponseMessage",
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -196,14 +208,17 @@
                       "type": "string"
                     }
                   },
-                  "ServiceId": {
-                    "type": "integer",
-                    "format": "uint32"
-                  },
                   "Body": {
                     "$ref": "#/components/schemas/CallRequest"
                   }
                 }
+              }
+            },
+            "application/gzip": {
+              "schema": {
+                "title": "CallRequestMessage",
+                "type": "string",
+                "format": "binary"
               }
             }
           }
@@ -228,14 +243,17 @@
                         "type": "string"
                       }
                     },
-                    "ServiceId": {
-                      "type": "integer",
-                      "format": "uint32"
-                    },
                     "Body": {
                       "$ref": "#/components/schemas/CallResponse"
                     }
                   }
+                }
+              },
+              "application/gzip": {
+                "schema": {
+                  "title": "CallResponseMessage",
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -271,14 +289,17 @@
                       "type": "string"
                     }
                   },
-                  "ServiceId": {
-                    "type": "integer",
-                    "format": "uint32"
-                  },
                   "Body": {
                     "$ref": "#/components/schemas/HistoryReadRequest"
                   }
                 }
+              }
+            },
+            "application/gzip": {
+              "schema": {
+                "title": "HistoryReadRequestMessage",
+                "type": "string",
+                "format": "binary"
               }
             }
           }
@@ -303,14 +324,17 @@
                         "type": "string"
                       }
                     },
-                    "ServiceId": {
-                      "type": "integer",
-                      "format": "uint32"
-                    },
                     "Body": {
                       "$ref": "#/components/schemas/HistoryReadResponse"
                     }
                   }
+                }
+              },
+              "application/gzip": {
+                "schema": {
+                  "title": "HistoryReadResponseMessage",
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -346,14 +370,17 @@
                       "type": "string"
                     }
                   },
-                  "ServiceId": {
-                    "type": "integer",
-                    "format": "uint32"
-                  },
                   "Body": {
                     "$ref": "#/components/schemas/HistoryUpdateRequest"
                   }
                 }
+              }
+            },
+            "application/gzip": {
+              "schema": {
+                "title": "HistoryUpdateRequestMessage",
+                "type": "string",
+                "format": "binary"
               }
             }
           }
@@ -378,14 +405,17 @@
                         "type": "string"
                       }
                     },
-                    "ServiceId": {
-                      "type": "integer",
-                      "format": "uint32"
-                    },
                     "Body": {
                       "$ref": "#/components/schemas/HistoryUpdateResponse"
                     }
                   }
+                }
+              },
+              "application/gzip": {
+                "schema": {
+                  "title": "HistoryUpdateResponseMessage",
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -421,14 +451,17 @@
                       "type": "string"
                     }
                   },
-                  "ServiceId": {
-                    "type": "integer",
-                    "format": "uint32"
-                  },
                   "Body": {
                     "$ref": "#/components/schemas/BrowseRequest"
                   }
                 }
+              }
+            },
+            "application/gzip": {
+              "schema": {
+                "title": "BrowseRequestMessage",
+                "type": "string",
+                "format": "binary"
               }
             }
           }
@@ -453,14 +486,17 @@
                         "type": "string"
                       }
                     },
-                    "ServiceId": {
-                      "type": "integer",
-                      "format": "uint32"
-                    },
                     "Body": {
                       "$ref": "#/components/schemas/BrowseResponse"
                     }
                   }
+                }
+              },
+              "application/gzip": {
+                "schema": {
+                  "title": "BrowseResponseMessage",
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -496,14 +532,17 @@
                       "type": "string"
                     }
                   },
-                  "ServiceId": {
-                    "type": "integer",
-                    "format": "uint32"
-                  },
                   "Body": {
                     "$ref": "#/components/schemas/BrowseNextRequest"
                   }
                 }
+              }
+            },
+            "application/gzip": {
+              "schema": {
+                "title": "BrowseNextRequestMessage",
+                "type": "string",
+                "format": "binary"
               }
             }
           }
@@ -528,14 +567,17 @@
                         "type": "string"
                       }
                     },
-                    "ServiceId": {
-                      "type": "integer",
-                      "format": "uint32"
-                    },
                     "Body": {
                       "$ref": "#/components/schemas/BrowseNextResponse"
                     }
                   }
+                }
+              },
+              "application/gzip": {
+                "schema": {
+                  "title": "BrowseNextResponseMessage",
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -571,14 +613,17 @@
                       "type": "string"
                     }
                   },
-                  "ServiceId": {
-                    "type": "integer",
-                    "format": "uint32"
-                  },
                   "Body": {
                     "$ref": "#/components/schemas/TranslateBrowsePathsToNodeIdsRequest"
                   }
                 }
+              }
+            },
+            "application/gzip": {
+              "schema": {
+                "title": "TranslateBrowsePathsToNodeIdsRequestMessage",
+                "type": "string",
+                "format": "binary"
               }
             }
           }
@@ -603,14 +648,1637 @@
                         "type": "string"
                       }
                     },
-                    "ServiceId": {
-                      "type": "integer",
-                      "format": "uint32"
-                    },
                     "Body": {
                       "$ref": "#/components/schemas/TranslateBrowsePathsToNodeIdsResponse"
                     }
                   }
+                }
+              },
+              "application/gzip": {
+                "schema": {
+                  "title": "TranslateBrowsePathsToNodeIdsResponseMessage",
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/findservers": {
+      "post": {
+        "operationId": "FindServers",
+        "requestBody": {
+          "description": "FindServersRequestMessage",
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "FindServersRequestMessage",
+                "properties": {
+                  "NamespaceUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "ServerUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "LocaleIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "Body": {
+                    "$ref": "#/components/schemas/FindServersRequest"
+                  }
+                }
+              }
+            },
+            "application/gzip": {
+              "schema": {
+                "title": "FindServersRequestMessage",
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "FindServersResponseMessage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "FindServersResponseMessage",
+                  "properties": {
+                    "NamespaceUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "ServerUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "Body": {
+                      "$ref": "#/components/schemas/FindServersResponse"
+                    }
+                  }
+                }
+              },
+              "application/gzip": {
+                "schema": {
+                  "title": "FindServersResponseMessage",
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/getendpoints": {
+      "post": {
+        "operationId": "GetEndpoints",
+        "requestBody": {
+          "description": "GetEndpointsRequestMessage",
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "GetEndpointsRequestMessage",
+                "properties": {
+                  "NamespaceUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "ServerUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "LocaleIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "Body": {
+                    "$ref": "#/components/schemas/GetEndpointsRequest"
+                  }
+                }
+              }
+            },
+            "application/gzip": {
+              "schema": {
+                "title": "GetEndpointsRequestMessage",
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "GetEndpointsResponseMessage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "GetEndpointsResponseMessage",
+                  "properties": {
+                    "NamespaceUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "ServerUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "Body": {
+                      "$ref": "#/components/schemas/GetEndpointsResponse"
+                    }
+                  }
+                }
+              },
+              "application/gzip": {
+                "schema": {
+                  "title": "GetEndpointsResponseMessage",
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/createsession": {
+      "post": {
+        "operationId": "CreateSession",
+        "requestBody": {
+          "description": "CreateSessionRequestMessage",
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "CreateSessionRequestMessage",
+                "properties": {
+                  "NamespaceUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "ServerUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "LocaleIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "Body": {
+                    "$ref": "#/components/schemas/CreateSessionRequest"
+                  }
+                }
+              }
+            },
+            "application/gzip": {
+              "schema": {
+                "title": "CreateSessionRequestMessage",
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "CreateSessionResponseMessage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "CreateSessionResponseMessage",
+                  "properties": {
+                    "NamespaceUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "ServerUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "Body": {
+                      "$ref": "#/components/schemas/CreateSessionResponse"
+                    }
+                  }
+                }
+              },
+              "application/gzip": {
+                "schema": {
+                  "title": "CreateSessionResponseMessage",
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/activatesession": {
+      "post": {
+        "operationId": "ActivateSession",
+        "requestBody": {
+          "description": "ActivateSessionRequestMessage",
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "ActivateSessionRequestMessage",
+                "properties": {
+                  "NamespaceUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "ServerUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "LocaleIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "Body": {
+                    "$ref": "#/components/schemas/ActivateSessionRequest"
+                  }
+                }
+              }
+            },
+            "application/gzip": {
+              "schema": {
+                "title": "ActivateSessionRequestMessage",
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "ActivateSessionResponseMessage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "ActivateSessionResponseMessage",
+                  "properties": {
+                    "NamespaceUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "ServerUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "Body": {
+                      "$ref": "#/components/schemas/ActivateSessionResponse"
+                    }
+                  }
+                }
+              },
+              "application/gzip": {
+                "schema": {
+                  "title": "ActivateSessionResponseMessage",
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/closesession": {
+      "post": {
+        "operationId": "CloseSession",
+        "requestBody": {
+          "description": "CloseSessionRequestMessage",
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "CloseSessionRequestMessage",
+                "properties": {
+                  "NamespaceUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "ServerUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "LocaleIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "Body": {
+                    "$ref": "#/components/schemas/CloseSessionRequest"
+                  }
+                }
+              }
+            },
+            "application/gzip": {
+              "schema": {
+                "title": "CloseSessionRequestMessage",
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "CloseSessionResponseMessage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "CloseSessionResponseMessage",
+                  "properties": {
+                    "NamespaceUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "ServerUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "Body": {
+                      "$ref": "#/components/schemas/CloseSessionResponse"
+                    }
+                  }
+                }
+              },
+              "application/gzip": {
+                "schema": {
+                  "title": "CloseSessionResponseMessage",
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cancel": {
+      "post": {
+        "operationId": "Cancel",
+        "requestBody": {
+          "description": "CancelRequestMessage",
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "CancelRequestMessage",
+                "properties": {
+                  "NamespaceUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "ServerUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "LocaleIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "Body": {
+                    "$ref": "#/components/schemas/CancelRequest"
+                  }
+                }
+              }
+            },
+            "application/gzip": {
+              "schema": {
+                "title": "CancelRequestMessage",
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "CancelResponseMessage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "CancelResponseMessage",
+                  "properties": {
+                    "NamespaceUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "ServerUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "Body": {
+                      "$ref": "#/components/schemas/CancelResponse"
+                    }
+                  }
+                }
+              },
+              "application/gzip": {
+                "schema": {
+                  "title": "CancelResponseMessage",
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/registernodes": {
+      "post": {
+        "operationId": "RegisterNodes",
+        "requestBody": {
+          "description": "RegisterNodesRequestMessage",
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "RegisterNodesRequestMessage",
+                "properties": {
+                  "NamespaceUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "ServerUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "LocaleIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "Body": {
+                    "$ref": "#/components/schemas/RegisterNodesRequest"
+                  }
+                }
+              }
+            },
+            "application/gzip": {
+              "schema": {
+                "title": "RegisterNodesRequestMessage",
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "RegisterNodesResponseMessage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "RegisterNodesResponseMessage",
+                  "properties": {
+                    "NamespaceUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "ServerUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "Body": {
+                      "$ref": "#/components/schemas/RegisterNodesResponse"
+                    }
+                  }
+                }
+              },
+              "application/gzip": {
+                "schema": {
+                  "title": "RegisterNodesResponseMessage",
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/unregisternodes": {
+      "post": {
+        "operationId": "UnregisterNodes",
+        "requestBody": {
+          "description": "UnregisterNodesRequestMessage",
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "UnregisterNodesRequestMessage",
+                "properties": {
+                  "NamespaceUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "ServerUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "LocaleIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "Body": {
+                    "$ref": "#/components/schemas/UnregisterNodesRequest"
+                  }
+                }
+              }
+            },
+            "application/gzip": {
+              "schema": {
+                "title": "UnregisterNodesRequestMessage",
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "UnregisterNodesResponseMessage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "UnregisterNodesResponseMessage",
+                  "properties": {
+                    "NamespaceUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "ServerUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "Body": {
+                      "$ref": "#/components/schemas/UnregisterNodesResponse"
+                    }
+                  }
+                }
+              },
+              "application/gzip": {
+                "schema": {
+                  "title": "UnregisterNodesResponseMessage",
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/createmonitoreditems": {
+      "post": {
+        "operationId": "CreateMonitoredItems",
+        "requestBody": {
+          "description": "CreateMonitoredItemsRequestMessage",
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "CreateMonitoredItemsRequestMessage",
+                "properties": {
+                  "NamespaceUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "ServerUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "LocaleIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "Body": {
+                    "$ref": "#/components/schemas/CreateMonitoredItemsRequest"
+                  }
+                }
+              }
+            },
+            "application/gzip": {
+              "schema": {
+                "title": "CreateMonitoredItemsRequestMessage",
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "CreateMonitoredItemsResponseMessage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "CreateMonitoredItemsResponseMessage",
+                  "properties": {
+                    "NamespaceUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "ServerUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "Body": {
+                      "$ref": "#/components/schemas/CreateMonitoredItemsResponse"
+                    }
+                  }
+                }
+              },
+              "application/gzip": {
+                "schema": {
+                  "title": "CreateMonitoredItemsResponseMessage",
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/modifymonitoreditems": {
+      "post": {
+        "operationId": "ModifyMonitoredItems",
+        "requestBody": {
+          "description": "ModifyMonitoredItemsRequestMessage",
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "ModifyMonitoredItemsRequestMessage",
+                "properties": {
+                  "NamespaceUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "ServerUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "LocaleIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "Body": {
+                    "$ref": "#/components/schemas/ModifyMonitoredItemsRequest"
+                  }
+                }
+              }
+            },
+            "application/gzip": {
+              "schema": {
+                "title": "ModifyMonitoredItemsRequestMessage",
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "ModifyMonitoredItemsResponseMessage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "ModifyMonitoredItemsResponseMessage",
+                  "properties": {
+                    "NamespaceUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "ServerUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "Body": {
+                      "$ref": "#/components/schemas/ModifyMonitoredItemsResponse"
+                    }
+                  }
+                }
+              },
+              "application/gzip": {
+                "schema": {
+                  "title": "ModifyMonitoredItemsResponseMessage",
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/setmonitoringmode": {
+      "post": {
+        "operationId": "SetMonitoringMode",
+        "requestBody": {
+          "description": "SetMonitoringModeRequestMessage",
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "SetMonitoringModeRequestMessage",
+                "properties": {
+                  "NamespaceUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "ServerUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "LocaleIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "Body": {
+                    "$ref": "#/components/schemas/SetMonitoringModeRequest"
+                  }
+                }
+              }
+            },
+            "application/gzip": {
+              "schema": {
+                "title": "SetMonitoringModeRequestMessage",
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "SetMonitoringModeResponseMessage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "SetMonitoringModeResponseMessage",
+                  "properties": {
+                    "NamespaceUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "ServerUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "Body": {
+                      "$ref": "#/components/schemas/SetMonitoringModeResponse"
+                    }
+                  }
+                }
+              },
+              "application/gzip": {
+                "schema": {
+                  "title": "SetMonitoringModeResponseMessage",
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/settriggering": {
+      "post": {
+        "operationId": "SetTriggering",
+        "requestBody": {
+          "description": "SetTriggeringRequestMessage",
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "SetTriggeringRequestMessage",
+                "properties": {
+                  "NamespaceUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "ServerUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "LocaleIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "Body": {
+                    "$ref": "#/components/schemas/SetTriggeringRequest"
+                  }
+                }
+              }
+            },
+            "application/gzip": {
+              "schema": {
+                "title": "SetTriggeringRequestMessage",
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "SetTriggeringResponseMessage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "SetTriggeringResponseMessage",
+                  "properties": {
+                    "NamespaceUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "ServerUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "Body": {
+                      "$ref": "#/components/schemas/SetTriggeringResponse"
+                    }
+                  }
+                }
+              },
+              "application/gzip": {
+                "schema": {
+                  "title": "SetTriggeringResponseMessage",
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/deletemonitoreditems": {
+      "post": {
+        "operationId": "DeleteMonitoredItems",
+        "requestBody": {
+          "description": "DeleteMonitoredItemsRequestMessage",
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "DeleteMonitoredItemsRequestMessage",
+                "properties": {
+                  "NamespaceUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "ServerUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "LocaleIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "Body": {
+                    "$ref": "#/components/schemas/DeleteMonitoredItemsRequest"
+                  }
+                }
+              }
+            },
+            "application/gzip": {
+              "schema": {
+                "title": "DeleteMonitoredItemsRequestMessage",
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "DeleteMonitoredItemsResponseMessage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "DeleteMonitoredItemsResponseMessage",
+                  "properties": {
+                    "NamespaceUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "ServerUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "Body": {
+                      "$ref": "#/components/schemas/DeleteMonitoredItemsResponse"
+                    }
+                  }
+                }
+              },
+              "application/gzip": {
+                "schema": {
+                  "title": "DeleteMonitoredItemsResponseMessage",
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/createsubscription": {
+      "post": {
+        "operationId": "CreateSubscription",
+        "requestBody": {
+          "description": "CreateSubscriptionRequestMessage",
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "CreateSubscriptionRequestMessage",
+                "properties": {
+                  "NamespaceUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "ServerUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "LocaleIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "Body": {
+                    "$ref": "#/components/schemas/CreateSubscriptionRequest"
+                  }
+                }
+              }
+            },
+            "application/gzip": {
+              "schema": {
+                "title": "CreateSubscriptionRequestMessage",
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "CreateSubscriptionResponseMessage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "CreateSubscriptionResponseMessage",
+                  "properties": {
+                    "NamespaceUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "ServerUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "Body": {
+                      "$ref": "#/components/schemas/CreateSubscriptionResponse"
+                    }
+                  }
+                }
+              },
+              "application/gzip": {
+                "schema": {
+                  "title": "CreateSubscriptionResponseMessage",
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/modifysubscription": {
+      "post": {
+        "operationId": "ModifySubscription",
+        "requestBody": {
+          "description": "ModifySubscriptionRequestMessage",
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "ModifySubscriptionRequestMessage",
+                "properties": {
+                  "NamespaceUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "ServerUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "LocaleIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "Body": {
+                    "$ref": "#/components/schemas/ModifySubscriptionRequest"
+                  }
+                }
+              }
+            },
+            "application/gzip": {
+              "schema": {
+                "title": "ModifySubscriptionRequestMessage",
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "ModifySubscriptionResponseMessage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "ModifySubscriptionResponseMessage",
+                  "properties": {
+                    "NamespaceUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "ServerUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "Body": {
+                      "$ref": "#/components/schemas/ModifySubscriptionResponse"
+                    }
+                  }
+                }
+              },
+              "application/gzip": {
+                "schema": {
+                  "title": "ModifySubscriptionResponseMessage",
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/setpublishingmode": {
+      "post": {
+        "operationId": "SetPublishingMode",
+        "requestBody": {
+          "description": "SetPublishingModeRequestMessage",
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "SetPublishingModeRequestMessage",
+                "properties": {
+                  "NamespaceUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "ServerUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "LocaleIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "Body": {
+                    "$ref": "#/components/schemas/SetPublishingModeRequest"
+                  }
+                }
+              }
+            },
+            "application/gzip": {
+              "schema": {
+                "title": "SetPublishingModeRequestMessage",
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "SetPublishingModeResponseMessage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "SetPublishingModeResponseMessage",
+                  "properties": {
+                    "NamespaceUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "ServerUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "Body": {
+                      "$ref": "#/components/schemas/SetPublishingModeResponse"
+                    }
+                  }
+                }
+              },
+              "application/gzip": {
+                "schema": {
+                  "title": "SetPublishingModeResponseMessage",
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/publish": {
+      "post": {
+        "operationId": "Publish",
+        "requestBody": {
+          "description": "PublishRequestMessage",
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "PublishRequestMessage",
+                "properties": {
+                  "NamespaceUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "ServerUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "LocaleIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "Body": {
+                    "$ref": "#/components/schemas/PublishRequest"
+                  }
+                }
+              }
+            },
+            "application/gzip": {
+              "schema": {
+                "title": "PublishRequestMessage",
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "PublishResponseMessage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "PublishResponseMessage",
+                  "properties": {
+                    "NamespaceUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "ServerUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "Body": {
+                      "$ref": "#/components/schemas/PublishResponse"
+                    }
+                  }
+                }
+              },
+              "application/gzip": {
+                "schema": {
+                  "title": "PublishResponseMessage",
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/republish": {
+      "post": {
+        "operationId": "Republish",
+        "requestBody": {
+          "description": "RepublishRequestMessage",
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "RepublishRequestMessage",
+                "properties": {
+                  "NamespaceUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "ServerUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "LocaleIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "Body": {
+                    "$ref": "#/components/schemas/RepublishRequest"
+                  }
+                }
+              }
+            },
+            "application/gzip": {
+              "schema": {
+                "title": "RepublishRequestMessage",
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "RepublishResponseMessage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "RepublishResponseMessage",
+                  "properties": {
+                    "NamespaceUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "ServerUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "Body": {
+                      "$ref": "#/components/schemas/RepublishResponse"
+                    }
+                  }
+                }
+              },
+              "application/gzip": {
+                "schema": {
+                  "title": "RepublishResponseMessage",
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transfersubscriptions": {
+      "post": {
+        "operationId": "TransferSubscriptions",
+        "requestBody": {
+          "description": "TransferSubscriptionsRequestMessage",
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "TransferSubscriptionsRequestMessage",
+                "properties": {
+                  "NamespaceUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "ServerUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "LocaleIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "Body": {
+                    "$ref": "#/components/schemas/TransferSubscriptionsRequest"
+                  }
+                }
+              }
+            },
+            "application/gzip": {
+              "schema": {
+                "title": "TransferSubscriptionsRequestMessage",
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "TransferSubscriptionsResponseMessage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "TransferSubscriptionsResponseMessage",
+                  "properties": {
+                    "NamespaceUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "ServerUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "Body": {
+                      "$ref": "#/components/schemas/TransferSubscriptionsResponse"
+                    }
+                  }
+                }
+              },
+              "application/gzip": {
+                "schema": {
+                  "title": "TransferSubscriptionsResponseMessage",
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/deletesubscriptions": {
+      "post": {
+        "operationId": "DeleteSubscriptions",
+        "requestBody": {
+          "description": "DeleteSubscriptionsRequestMessage",
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "DeleteSubscriptionsRequestMessage",
+                "properties": {
+                  "NamespaceUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "ServerUris": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "LocaleIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "Body": {
+                    "$ref": "#/components/schemas/DeleteSubscriptionsRequest"
+                  }
+                }
+              }
+            },
+            "application/gzip": {
+              "schema": {
+                "title": "DeleteSubscriptionsRequestMessage",
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "DeleteSubscriptionsResponseMessage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "DeleteSubscriptionsResponseMessage",
+                  "properties": {
+                    "NamespaceUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "ServerUris": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "Body": {
+                      "$ref": "#/components/schemas/DeleteSubscriptionsResponse"
+                    }
+                  }
+                }
+              },
+              "application/gzip": {
+                "schema": {
+                  "title": "DeleteSubscriptionsResponseMessage",
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -631,14 +2299,15 @@
           "Text": {
             "type": "string"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "ExtensionObject": {
         "type": "object",
         "properties": {
           "TypeId": {
             "type": "string",
-            "format": "NodeId"
+            "format": "opcuaNodeId"
           },
           "Encoding": {
             "type": "integer",
@@ -647,7 +2316,8 @@
           "Body": {
             "type": "object"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "Variant": {
         "type": "object",
@@ -664,7 +2334,8 @@
               "format": "uint32"
             }
           }
-        }
+        },
+        "additionalProperties": false
       },
       "DataValue": {
         "type": "object",
@@ -674,7 +2345,7 @@
           },
           "StatusCode": {
             "type": "integer",
-            "format": "StatusCode"
+            "format": "uint32"
           },
           "SourceTimestamp": {
             "type": "string",
@@ -692,7 +2363,8 @@
             "type": "integer",
             "format": "uint16"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "DiagnosticInfo": {
         "type": "object",
@@ -718,12 +2390,13 @@
           },
           "InnerStatusCode": {
             "type": "integer",
-            "format": "StatusCode"
+            "format": "uint32"
           },
           "InnerDiagnosticInfo": {
             "$ref": "#/components/schemas/DiagnosticInfo"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "Decimal": {
         "type": "object",
@@ -736,10 +2409,140 @@
             "type": "string",
             "format": "uinteger"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "BaseDataType": {
         "$ref": "#/components/schemas/Variant"
+      },
+      "PermissionType": {
+        "type": "integer",
+        "description": "Browse=0000, ReadRolePermissions=0001, WriteAttribute=0002, WriteRolePermissions=0003, WriteHistorizing=0004, Read=0005, Write=0006, ReadHistory=0007, InsertHistory=0008, ModifyHistory=0009, DeleteHistory=000A, ReceiveEvents=000B, Call=000C, AddReference=000D, RemoveReference=000E, DeleteNode=000F, AddNode=0010",
+        "format": "uint32"
+      },
+      "RolePermissionType": {
+        "type": "object",
+        "properties": {
+          "RoleId": {
+            "type": "string",
+            "format": "opcuaNodeId"
+          },
+          "Permissions": {
+            "type": "integer",
+            "format": "uint32"
+          }
+        }
+      },
+      "DataTypeDefinition": {
+        "type": "object"
+      },
+      "StructureType": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "type": "integer",
+        "format": "int32",
+        "x-enum-varnames": [
+          "Structure",
+          "StructureWithOptionalFields",
+          "Union",
+          "StructureWithSubtypedValues",
+          "UnionWithSubtypedValues"
+        ]
+      },
+      "StructureDefinition": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/DataTypeDefinition"
+          }
+        ],
+        "properties": {
+          "DefaultEncodingId": {
+            "type": "string",
+            "format": "opcuaNodeId"
+          },
+          "BaseDataType": {
+            "type": "string",
+            "format": "opcuaNodeId"
+          },
+          "StructureType": {
+            "type": "integer",
+            "format": "StructureType"
+          },
+          "Fields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StructureField"
+            }
+          }
+        }
+      },
+      "EnumDefinition": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/DataTypeDefinition"
+          }
+        ],
+        "properties": {
+          "Fields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EnumField"
+            }
+          }
+        }
+      },
+      "StructureField": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "Description": {
+            "$ref": "#/components/schemas/LocalizedText"
+          },
+          "DataType": {
+            "type": "string",
+            "format": "opcuaNodeId"
+          },
+          "ValueRank": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ArrayDimensions": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "uint32"
+            }
+          },
+          "MaxStringLength": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "IsOptional": {
+            "type": "boolean"
+          }
+        }
+      },
+      "EnumField": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/EnumValueType"
+          }
+        ],
+        "properties": {
+          "Name": {
+            "type": "string"
+          }
+        }
       },
       "NodeClass": {
         "enum": [
@@ -786,16 +2589,212 @@
         "type": "string",
         "format": "date-time"
       },
+      "MessageSecurityMode": {
+        "enum": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "type": "integer",
+        "format": "int32",
+        "x-enum-varnames": [
+          "Invalid",
+          "None",
+          "Sign",
+          "SignAndEncrypt"
+        ]
+      },
+      "UserTokenType": {
+        "enum": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "type": "integer",
+        "format": "int32",
+        "x-enum-varnames": [
+          "Anonymous",
+          "UserName",
+          "Certificate",
+          "IssuedToken"
+        ]
+      },
+      "UserTokenPolicy": {
+        "type": "object",
+        "properties": {
+          "PolicyId": {
+            "type": "string"
+          },
+          "TokenType": {
+            "type": "integer",
+            "format": "UserTokenType"
+          },
+          "IssuedTokenType": {
+            "type": "string"
+          },
+          "IssuerEndpointUrl": {
+            "type": "string"
+          },
+          "SecurityPolicyUri": {
+            "type": "string"
+          }
+        }
+      },
+      "ApplicationType": {
+        "enum": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "type": "integer",
+        "format": "int32",
+        "x-enum-varnames": [
+          "Server",
+          "Client",
+          "ClientAndServer",
+          "DiscoveryServer"
+        ]
+      },
+      "ApplicationDescription": {
+        "type": "object",
+        "properties": {
+          "ApplicationUri": {
+            "type": "string"
+          },
+          "ProductUri": {
+            "type": "string"
+          },
+          "ApplicationName": {
+            "$ref": "#/components/schemas/LocalizedText"
+          },
+          "ApplicationType": {
+            "type": "integer",
+            "format": "ApplicationType"
+          },
+          "GatewayServerUri": {
+            "type": "string"
+          },
+          "DiscoveryProfileUri": {
+            "type": "string"
+          },
+          "DiscoveryUrls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ApplicationInstanceCertificate": {
+        "type": "string",
+        "format": "byte"
+      },
+      "EndpointDescription": {
+        "type": "object",
+        "properties": {
+          "EndpointUrl": {
+            "type": "string"
+          },
+          "Server": {
+            "$ref": "#/components/schemas/ApplicationDescription"
+          },
+          "ServerCertificate": {
+            "type": "string",
+            "format": "byte"
+          },
+          "SecurityMode": {
+            "type": "integer",
+            "format": "MessageSecurityMode"
+          },
+          "SecurityPolicyUri": {
+            "type": "string"
+          },
+          "UserIdentityTokens": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserTokenPolicy"
+            }
+          },
+          "TransportProfileUri": {
+            "type": "string"
+          },
+          "SecurityLevel": {
+            "type": "integer",
+            "format": "uint8"
+          }
+        }
+      },
+      "UserIdentityToken": {
+        "type": "object",
+        "properties": {
+          "PolicyId": {
+            "type": "string"
+          }
+        }
+      },
+      "AnonymousIdentityToken": {
+        "type": "object"
+      },
+      "UserNameIdentityToken": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/UserIdentityToken"
+          }
+        ],
+        "properties": {
+          "UserName": {
+            "type": "string"
+          },
+          "Password": {
+            "type": "string",
+            "format": "byte"
+          },
+          "EncryptionAlgorithm": {
+            "type": "string"
+          }
+        }
+      },
+      "X509IdentityToken": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/UserIdentityToken"
+          }
+        ],
+        "properties": {
+          "CertificateData": {
+            "type": "string",
+            "format": "byte"
+          }
+        }
+      },
+      "SignedSoftwareCertificate": {
+        "type": "object",
+        "properties": {
+          "CertificateData": {
+            "type": "string",
+            "format": "byte"
+          },
+          "Signature": {
+            "type": "string",
+            "format": "byte"
+          }
+        }
+      },
       "SessionAuthenticationToken": {
         "type": "string",
-        "format": "NodeId"
+        "format": "opcuaNodeId"
       },
       "RequestHeader": {
         "type": "object",
         "properties": {
           "AuthenticationToken": {
             "type": "string",
-            "format": "NodeId"
+            "format": "opcuaNodeId"
           },
           "Timestamp": {
             "type": "string",
@@ -834,7 +2833,7 @@
           },
           "ServiceResult": {
             "type": "integer",
-            "format": "StatusCode"
+            "format": "uint32"
           },
           "ServiceDiagnostics": {
             "$ref": "#/components/schemas/DiagnosticInfo"
@@ -847,6 +2846,272 @@
           },
           "AdditionalHeader": {
             "$ref": "#/components/schemas/ExtensionObject"
+          }
+        }
+      },
+      "FindServersRequest": {
+        "type": "object",
+        "properties": {
+          "RequestHeader": {
+            "$ref": "#/components/schemas/RequestHeader"
+          },
+          "EndpointUrl": {
+            "type": "string"
+          },
+          "LocaleIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "ServerUris": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "FindServersResponse": {
+        "type": "object",
+        "properties": {
+          "ResponseHeader": {
+            "$ref": "#/components/schemas/ResponseHeader"
+          },
+          "Servers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApplicationDescription"
+            }
+          }
+        }
+      },
+      "GetEndpointsRequest": {
+        "type": "object",
+        "properties": {
+          "RequestHeader": {
+            "$ref": "#/components/schemas/RequestHeader"
+          },
+          "EndpointUrl": {
+            "type": "string"
+          },
+          "LocaleIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "ProfileUris": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "GetEndpointsResponse": {
+        "type": "object",
+        "properties": {
+          "ResponseHeader": {
+            "$ref": "#/components/schemas/ResponseHeader"
+          },
+          "Endpoints": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EndpointDescription"
+            }
+          }
+        }
+      },
+      "SignatureData": {
+        "type": "object",
+        "properties": {
+          "Algorithm": {
+            "type": "string"
+          },
+          "Signature": {
+            "type": "string",
+            "format": "byte"
+          }
+        }
+      },
+      "CreateSessionRequest": {
+        "type": "object",
+        "properties": {
+          "RequestHeader": {
+            "$ref": "#/components/schemas/RequestHeader"
+          },
+          "ClientDescription": {
+            "$ref": "#/components/schemas/ApplicationDescription"
+          },
+          "ServerUri": {
+            "type": "string"
+          },
+          "EndpointUrl": {
+            "type": "string"
+          },
+          "SessionName": {
+            "type": "string"
+          },
+          "ClientNonce": {
+            "type": "string",
+            "format": "byte"
+          },
+          "ClientCertificate": {
+            "type": "string",
+            "format": "byte"
+          },
+          "RequestedSessionTimeout": {
+            "type": "number",
+            "format": "double"
+          },
+          "MaxResponseMessageSize": {
+            "type": "integer",
+            "format": "uint32"
+          }
+        }
+      },
+      "CreateSessionResponse": {
+        "type": "object",
+        "properties": {
+          "ResponseHeader": {
+            "$ref": "#/components/schemas/ResponseHeader"
+          },
+          "SessionId": {
+            "type": "string",
+            "format": "opcuaNodeId"
+          },
+          "AuthenticationToken": {
+            "type": "string",
+            "format": "opcuaNodeId"
+          },
+          "RevisedSessionTimeout": {
+            "type": "number",
+            "format": "double"
+          },
+          "ServerNonce": {
+            "type": "string",
+            "format": "byte"
+          },
+          "ServerCertificate": {
+            "type": "string",
+            "format": "byte"
+          },
+          "ServerEndpoints": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EndpointDescription"
+            }
+          },
+          "ServerSoftwareCertificates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SignedSoftwareCertificate"
+            }
+          },
+          "ServerSignature": {
+            "$ref": "#/components/schemas/SignatureData"
+          },
+          "MaxRequestMessageSize": {
+            "type": "integer",
+            "format": "uint32"
+          }
+        }
+      },
+      "ActivateSessionRequest": {
+        "type": "object",
+        "properties": {
+          "RequestHeader": {
+            "$ref": "#/components/schemas/RequestHeader"
+          },
+          "ClientSignature": {
+            "$ref": "#/components/schemas/SignatureData"
+          },
+          "ClientSoftwareCertificates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SignedSoftwareCertificate"
+            }
+          },
+          "LocaleIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "UserIdentityToken": {
+            "$ref": "#/components/schemas/ExtensionObject"
+          },
+          "UserTokenSignature": {
+            "$ref": "#/components/schemas/SignatureData"
+          }
+        }
+      },
+      "ActivateSessionResponse": {
+        "type": "object",
+        "properties": {
+          "ResponseHeader": {
+            "$ref": "#/components/schemas/ResponseHeader"
+          },
+          "ServerNonce": {
+            "type": "string",
+            "format": "byte"
+          },
+          "Results": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "uint32"
+            }
+          },
+          "DiagnosticInfos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosticInfo"
+            }
+          }
+        }
+      },
+      "CloseSessionRequest": {
+        "type": "object",
+        "properties": {
+          "RequestHeader": {
+            "$ref": "#/components/schemas/RequestHeader"
+          },
+          "DeleteSubscriptions": {
+            "type": "boolean"
+          }
+        }
+      },
+      "CloseSessionResponse": {
+        "type": "object",
+        "properties": {
+          "ResponseHeader": {
+            "$ref": "#/components/schemas/ResponseHeader"
+          }
+        }
+      },
+      "CancelRequest": {
+        "type": "object",
+        "properties": {
+          "RequestHeader": {
+            "$ref": "#/components/schemas/RequestHeader"
+          },
+          "RequestHandle": {
+            "type": "integer",
+            "format": "uint32"
+          }
+        }
+      },
+      "CancelResponse": {
+        "type": "object",
+        "properties": {
+          "ResponseHeader": {
+            "$ref": "#/components/schemas/ResponseHeader"
+          },
+          "CancelCount": {
+            "type": "integer",
+            "format": "uint32"
           }
         }
       },
@@ -871,7 +3136,7 @@
         "properties": {
           "ViewId": {
             "type": "string",
-            "format": "NodeId"
+            "format": "opcuaNodeId"
           },
           "Timestamp": {
             "type": "string",
@@ -888,7 +3153,7 @@
         "properties": {
           "NodeId": {
             "type": "string",
-            "format": "NodeId"
+            "format": "opcuaNodeId"
           },
           "BrowseDirection": {
             "type": "integer",
@@ -896,7 +3161,7 @@
           },
           "ReferenceTypeId": {
             "type": "string",
-            "format": "NodeId"
+            "format": "opcuaNodeId"
           },
           "IncludeSubtypes": {
             "type": "boolean"
@@ -916,18 +3181,18 @@
         "properties": {
           "ReferenceTypeId": {
             "type": "string",
-            "format": "NodeId"
+            "format": "opcuaNodeId"
           },
           "IsForward": {
             "type": "boolean"
           },
           "NodeId": {
             "type": "string",
-            "format": "ExpandedNodeId"
+            "format": "opcuaExpandedNodeId"
           },
           "BrowseName": {
             "type": "string",
-            "format": "QualifiedName"
+            "format": "opcuaQualifiedName"
           },
           "DisplayName": {
             "$ref": "#/components/schemas/LocalizedText"
@@ -938,7 +3203,7 @@
           },
           "TypeDefinition": {
             "type": "string",
-            "format": "ExpandedNodeId"
+            "format": "opcuaExpandedNodeId"
           }
         }
       },
@@ -951,7 +3216,7 @@
         "properties": {
           "StatusCode": {
             "type": "integer",
-            "format": "StatusCode"
+            "format": "uint32"
           },
           "ContinuationPoint": {
             "type": "string",
@@ -1049,7 +3314,7 @@
         "properties": {
           "ReferenceTypeId": {
             "type": "string",
-            "format": "NodeId"
+            "format": "opcuaNodeId"
           },
           "IsInverse": {
             "type": "boolean"
@@ -1059,7 +3324,7 @@
           },
           "TargetName": {
             "type": "string",
-            "format": "QualifiedName"
+            "format": "opcuaQualifiedName"
           }
         }
       },
@@ -1079,7 +3344,7 @@
         "properties": {
           "StartingNode": {
             "type": "string",
-            "format": "NodeId"
+            "format": "opcuaNodeId"
           },
           "RelativePath": {
             "$ref": "#/components/schemas/RelativePath"
@@ -1091,7 +3356,7 @@
         "properties": {
           "TargetId": {
             "type": "string",
-            "format": "ExpandedNodeId"
+            "format": "opcuaExpandedNodeId"
           },
           "RemainingPathIndex": {
             "type": "integer",
@@ -1104,7 +3369,7 @@
         "properties": {
           "StatusCode": {
             "type": "integer",
-            "format": "StatusCode"
+            "format": "uint32"
           },
           "Targets": {
             "type": "array",
@@ -1145,6 +3410,59 @@
             "items": {
               "$ref": "#/components/schemas/DiagnosticInfo"
             }
+          }
+        }
+      },
+      "RegisterNodesRequest": {
+        "type": "object",
+        "properties": {
+          "RequestHeader": {
+            "$ref": "#/components/schemas/RequestHeader"
+          },
+          "NodesToRegister": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "opcuaNodeId"
+            }
+          }
+        }
+      },
+      "RegisterNodesResponse": {
+        "type": "object",
+        "properties": {
+          "ResponseHeader": {
+            "$ref": "#/components/schemas/ResponseHeader"
+          },
+          "RegisteredNodeIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "opcuaNodeId"
+            }
+          }
+        }
+      },
+      "UnregisterNodesRequest": {
+        "type": "object",
+        "properties": {
+          "RequestHeader": {
+            "$ref": "#/components/schemas/RequestHeader"
+          },
+          "NodesToUnregister": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "opcuaNodeId"
+            }
+          }
+        }
+      },
+      "UnregisterNodesResponse": {
+        "type": "object",
+        "properties": {
+          "ResponseHeader": {
+            "$ref": "#/components/schemas/ResponseHeader"
           }
         }
       },
@@ -1221,6 +3539,60 @@
       "FilterOperand": {
         "type": "object"
       },
+      "ElementOperand": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/FilterOperand"
+          }
+        ],
+        "properties": {
+          "Index": {
+            "type": "integer",
+            "format": "uint32"
+          }
+        }
+      },
+      "LiteralOperand": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/FilterOperand"
+          }
+        ],
+        "properties": {
+          "Value": {
+            "type": "object"
+          }
+        }
+      },
+      "AttributeOperand": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/FilterOperand"
+          }
+        ],
+        "properties": {
+          "NodeId": {
+            "type": "string",
+            "format": "opcuaNodeId"
+          },
+          "Alias": {
+            "type": "string"
+          },
+          "BrowsePath": {
+            "$ref": "#/components/schemas/RelativePath"
+          },
+          "AttributeId": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "IndexRange": {
+            "type": "string"
+          }
+        }
+      },
       "SimpleAttributeOperand": {
         "type": "object",
         "allOf": [
@@ -1231,13 +3603,13 @@
         "properties": {
           "TypeDefinitionId": {
             "type": "string",
-            "format": "NodeId"
+            "format": "opcuaNodeId"
           },
           "BrowsePath": {
             "type": "array",
             "items": {
               "type": "string",
-              "format": "QualifiedName"
+              "format": "opcuaQualifiedName"
             }
           },
           "AttributeId": {
@@ -1246,6 +3618,45 @@
           },
           "IndexRange": {
             "type": "string"
+          }
+        }
+      },
+      "ContentFilterElementResult": {
+        "type": "object",
+        "properties": {
+          "StatusCode": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "OperandStatusCodes": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "uint32"
+            }
+          },
+          "OperandDiagnosticInfos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosticInfo"
+            }
+          }
+        }
+      },
+      "ContentFilterResult": {
+        "type": "object",
+        "properties": {
+          "ElementResults": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContentFilterElementResult"
+            }
+          },
+          "ElementDiagnosticInfos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosticInfo"
+            }
           }
         }
       },
@@ -1272,7 +3683,7 @@
         "properties": {
           "NodeId": {
             "type": "string",
-            "format": "NodeId"
+            "format": "opcuaNodeId"
           },
           "AttributeId": {
             "type": "integer",
@@ -1283,7 +3694,7 @@
           },
           "DataEncoding": {
             "type": "string",
-            "format": "QualifiedName"
+            "format": "opcuaQualifiedName"
           }
         }
       },
@@ -1334,14 +3745,14 @@
         "properties": {
           "NodeId": {
             "type": "string",
-            "format": "NodeId"
+            "format": "opcuaNodeId"
           },
           "IndexRange": {
             "type": "string"
           },
           "DataEncoding": {
             "type": "string",
-            "format": "QualifiedName"
+            "format": "opcuaQualifiedName"
           },
           "ContinuationPoint": {
             "type": "string",
@@ -1354,7 +3765,7 @@
         "properties": {
           "StatusCode": {
             "type": "integer",
-            "format": "StatusCode"
+            "format": "uint32"
           },
           "ContinuationPoint": {
             "type": "string",
@@ -1445,7 +3856,7 @@
             "type": "array",
             "items": {
               "type": "string",
-              "format": "NodeId"
+              "format": "opcuaNodeId"
             }
           },
           "AggregateConfiguration": {
@@ -1544,7 +3955,7 @@
         "properties": {
           "NodeId": {
             "type": "string",
-            "format": "NodeId"
+            "format": "opcuaNodeId"
           },
           "AttributeId": {
             "type": "integer",
@@ -1582,7 +3993,7 @@
             "type": "array",
             "items": {
               "type": "integer",
-              "format": "StatusCode"
+              "format": "uint32"
             }
           },
           "DiagnosticInfos": {
@@ -1606,7 +4017,7 @@
         "properties": {
           "NodeId": {
             "type": "string",
-            "format": "NodeId"
+            "format": "opcuaNodeId"
           },
           "PerformInsertReplace": {
             "type": "integer",
@@ -1630,7 +4041,7 @@
         "properties": {
           "NodeId": {
             "type": "string",
-            "format": "NodeId"
+            "format": "opcuaNodeId"
           },
           "PerformInsertReplace": {
             "type": "integer",
@@ -1652,13 +4063,13 @@
         "properties": {
           "StatusCode": {
             "type": "integer",
-            "format": "StatusCode"
+            "format": "uint32"
           },
           "OperationResults": {
             "type": "array",
             "items": {
               "type": "integer",
-              "format": "StatusCode"
+              "format": "uint32"
             }
           },
           "DiagnosticInfos": {
@@ -1708,11 +4119,11 @@
         "properties": {
           "ObjectId": {
             "type": "string",
-            "format": "NodeId"
+            "format": "opcuaNodeId"
           },
           "MethodId": {
             "type": "string",
-            "format": "NodeId"
+            "format": "opcuaNodeId"
           },
           "InputArguments": {
             "type": "array",
@@ -1727,13 +4138,13 @@
         "properties": {
           "StatusCode": {
             "type": "integer",
-            "format": "StatusCode"
+            "format": "uint32"
           },
           "InputArgumentResults": {
             "type": "array",
             "items": {
               "type": "integer",
-              "format": "StatusCode"
+              "format": "uint32"
             }
           },
           "InputArgumentDiagnosticInfos": {
@@ -1784,8 +4195,58 @@
           }
         }
       },
+      "MonitoringMode": {
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "format": "int32",
+        "x-enum-varnames": [
+          "Disabled",
+          "Sampling",
+          "Reporting"
+        ]
+      },
+      "DataChangeTrigger": {
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "format": "int32",
+        "x-enum-varnames": [
+          "Status",
+          "StatusValue",
+          "StatusValueTimestamp"
+        ]
+      },
       "MonitoringFilter": {
         "type": "object"
+      },
+      "DataChangeFilter": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/MonitoringFilter"
+          }
+        ],
+        "properties": {
+          "Trigger": {
+            "type": "integer",
+            "format": "DataChangeTrigger"
+          },
+          "DeadbandType": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "DeadbandValue": {
+            "type": "number",
+            "format": "double"
+          }
+        }
       },
       "EventFilter": {
         "type": "object",
@@ -1806,6 +4267,836 @@
           }
         }
       },
+      "AggregateFilter": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/MonitoringFilter"
+          }
+        ],
+        "properties": {
+          "StartTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "AggregateType": {
+            "type": "string",
+            "format": "opcuaNodeId"
+          },
+          "ProcessingInterval": {
+            "type": "number",
+            "format": "double"
+          },
+          "AggregateConfiguration": {
+            "$ref": "#/components/schemas/AggregateConfiguration"
+          }
+        }
+      },
+      "MonitoringFilterResult": {
+        "type": "object"
+      },
+      "EventFilterResult": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/MonitoringFilterResult"
+          }
+        ],
+        "properties": {
+          "SelectClauseResults": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "uint32"
+            }
+          },
+          "SelectClauseDiagnosticInfos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosticInfo"
+            }
+          },
+          "WhereClauseResult": {
+            "$ref": "#/components/schemas/ContentFilterResult"
+          }
+        }
+      },
+      "AggregateFilterResult": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/MonitoringFilterResult"
+          }
+        ],
+        "properties": {
+          "RevisedStartTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "RevisedProcessingInterval": {
+            "type": "number",
+            "format": "double"
+          },
+          "RevisedAggregateConfiguration": {
+            "$ref": "#/components/schemas/AggregateConfiguration"
+          }
+        }
+      },
+      "MonitoringParameters": {
+        "type": "object",
+        "properties": {
+          "ClientHandle": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "SamplingInterval": {
+            "type": "number",
+            "format": "double"
+          },
+          "Filter": {
+            "$ref": "#/components/schemas/ExtensionObject"
+          },
+          "QueueSize": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "DiscardOldest": {
+            "type": "boolean"
+          }
+        }
+      },
+      "MonitoredItemCreateRequest": {
+        "type": "object",
+        "properties": {
+          "ItemToMonitor": {
+            "$ref": "#/components/schemas/ReadValueId"
+          },
+          "MonitoringMode": {
+            "type": "integer",
+            "format": "MonitoringMode"
+          },
+          "RequestedParameters": {
+            "$ref": "#/components/schemas/MonitoringParameters"
+          }
+        }
+      },
+      "MonitoredItemCreateResult": {
+        "type": "object",
+        "properties": {
+          "StatusCode": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "MonitoredItemId": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "RevisedSamplingInterval": {
+            "type": "number",
+            "format": "double"
+          },
+          "RevisedQueueSize": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "FilterResult": {
+            "$ref": "#/components/schemas/ExtensionObject"
+          }
+        }
+      },
+      "CreateMonitoredItemsRequest": {
+        "type": "object",
+        "properties": {
+          "RequestHeader": {
+            "$ref": "#/components/schemas/RequestHeader"
+          },
+          "SubscriptionId": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "TimestampsToReturn": {
+            "type": "integer",
+            "format": "TimestampsToReturn"
+          },
+          "ItemsToCreate": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MonitoredItemCreateRequest"
+            }
+          }
+        }
+      },
+      "CreateMonitoredItemsResponse": {
+        "type": "object",
+        "properties": {
+          "ResponseHeader": {
+            "$ref": "#/components/schemas/ResponseHeader"
+          },
+          "Results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MonitoredItemCreateResult"
+            }
+          },
+          "DiagnosticInfos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosticInfo"
+            }
+          }
+        }
+      },
+      "MonitoredItemModifyRequest": {
+        "type": "object",
+        "properties": {
+          "MonitoredItemId": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "RequestedParameters": {
+            "$ref": "#/components/schemas/MonitoringParameters"
+          }
+        }
+      },
+      "MonitoredItemModifyResult": {
+        "type": "object",
+        "properties": {
+          "StatusCode": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "RevisedSamplingInterval": {
+            "type": "number",
+            "format": "double"
+          },
+          "RevisedQueueSize": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "FilterResult": {
+            "$ref": "#/components/schemas/ExtensionObject"
+          }
+        }
+      },
+      "ModifyMonitoredItemsRequest": {
+        "type": "object",
+        "properties": {
+          "RequestHeader": {
+            "$ref": "#/components/schemas/RequestHeader"
+          },
+          "SubscriptionId": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "TimestampsToReturn": {
+            "type": "integer",
+            "format": "TimestampsToReturn"
+          },
+          "ItemsToModify": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MonitoredItemModifyRequest"
+            }
+          }
+        }
+      },
+      "ModifyMonitoredItemsResponse": {
+        "type": "object",
+        "properties": {
+          "ResponseHeader": {
+            "$ref": "#/components/schemas/ResponseHeader"
+          },
+          "Results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MonitoredItemModifyResult"
+            }
+          },
+          "DiagnosticInfos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosticInfo"
+            }
+          }
+        }
+      },
+      "SetMonitoringModeRequest": {
+        "type": "object",
+        "properties": {
+          "RequestHeader": {
+            "$ref": "#/components/schemas/RequestHeader"
+          },
+          "SubscriptionId": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "MonitoringMode": {
+            "type": "integer",
+            "format": "MonitoringMode"
+          },
+          "MonitoredItemIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "uint32"
+            }
+          }
+        }
+      },
+      "SetMonitoringModeResponse": {
+        "type": "object",
+        "properties": {
+          "ResponseHeader": {
+            "$ref": "#/components/schemas/ResponseHeader"
+          },
+          "Results": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "uint32"
+            }
+          },
+          "DiagnosticInfos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosticInfo"
+            }
+          }
+        }
+      },
+      "SetTriggeringRequest": {
+        "type": "object",
+        "properties": {
+          "RequestHeader": {
+            "$ref": "#/components/schemas/RequestHeader"
+          },
+          "SubscriptionId": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "TriggeringItemId": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "LinksToAdd": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "uint32"
+            }
+          },
+          "LinksToRemove": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "uint32"
+            }
+          }
+        }
+      },
+      "SetTriggeringResponse": {
+        "type": "object",
+        "properties": {
+          "ResponseHeader": {
+            "$ref": "#/components/schemas/ResponseHeader"
+          },
+          "AddResults": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "uint32"
+            }
+          },
+          "AddDiagnosticInfos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosticInfo"
+            }
+          },
+          "RemoveResults": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "uint32"
+            }
+          },
+          "RemoveDiagnosticInfos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosticInfo"
+            }
+          }
+        }
+      },
+      "DeleteMonitoredItemsRequest": {
+        "type": "object",
+        "properties": {
+          "RequestHeader": {
+            "$ref": "#/components/schemas/RequestHeader"
+          },
+          "SubscriptionId": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "MonitoredItemIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "uint32"
+            }
+          }
+        }
+      },
+      "DeleteMonitoredItemsResponse": {
+        "type": "object",
+        "properties": {
+          "ResponseHeader": {
+            "$ref": "#/components/schemas/ResponseHeader"
+          },
+          "Results": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "uint32"
+            }
+          },
+          "DiagnosticInfos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosticInfo"
+            }
+          }
+        }
+      },
+      "CreateSubscriptionRequest": {
+        "type": "object",
+        "properties": {
+          "RequestHeader": {
+            "$ref": "#/components/schemas/RequestHeader"
+          },
+          "RequestedPublishingInterval": {
+            "type": "number",
+            "format": "double"
+          },
+          "RequestedLifetimeCount": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "RequestedMaxKeepAliveCount": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "MaxNotificationsPerPublish": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "PublishingEnabled": {
+            "type": "boolean"
+          },
+          "Priority": {
+            "type": "integer",
+            "format": "uint8"
+          }
+        }
+      },
+      "CreateSubscriptionResponse": {
+        "type": "object",
+        "properties": {
+          "ResponseHeader": {
+            "$ref": "#/components/schemas/ResponseHeader"
+          },
+          "SubscriptionId": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "RevisedPublishingInterval": {
+            "type": "number",
+            "format": "double"
+          },
+          "RevisedLifetimeCount": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "RevisedMaxKeepAliveCount": {
+            "type": "integer",
+            "format": "uint32"
+          }
+        }
+      },
+      "ModifySubscriptionRequest": {
+        "type": "object",
+        "properties": {
+          "RequestHeader": {
+            "$ref": "#/components/schemas/RequestHeader"
+          },
+          "SubscriptionId": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "RequestedPublishingInterval": {
+            "type": "number",
+            "format": "double"
+          },
+          "RequestedLifetimeCount": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "RequestedMaxKeepAliveCount": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "MaxNotificationsPerPublish": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "Priority": {
+            "type": "integer",
+            "format": "uint8"
+          }
+        }
+      },
+      "ModifySubscriptionResponse": {
+        "type": "object",
+        "properties": {
+          "ResponseHeader": {
+            "$ref": "#/components/schemas/ResponseHeader"
+          },
+          "RevisedPublishingInterval": {
+            "type": "number",
+            "format": "double"
+          },
+          "RevisedLifetimeCount": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "RevisedMaxKeepAliveCount": {
+            "type": "integer",
+            "format": "uint32"
+          }
+        }
+      },
+      "SetPublishingModeRequest": {
+        "type": "object",
+        "properties": {
+          "RequestHeader": {
+            "$ref": "#/components/schemas/RequestHeader"
+          },
+          "PublishingEnabled": {
+            "type": "boolean"
+          },
+          "SubscriptionIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "uint32"
+            }
+          }
+        }
+      },
+      "SetPublishingModeResponse": {
+        "type": "object",
+        "properties": {
+          "ResponseHeader": {
+            "$ref": "#/components/schemas/ResponseHeader"
+          },
+          "Results": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "uint32"
+            }
+          },
+          "DiagnosticInfos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosticInfo"
+            }
+          }
+        }
+      },
+      "NotificationMessage": {
+        "type": "object",
+        "properties": {
+          "SequenceNumber": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "PublishTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "NotificationData": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExtensionObject"
+            }
+          }
+        }
+      },
+      "MonitoredItemNotification": {
+        "type": "object",
+        "properties": {
+          "ClientHandle": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "Value": {
+            "$ref": "#/components/schemas/DataValue"
+          }
+        }
+      },
+      "DataChangeNotification": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/NotificationData"
+          }
+        ],
+        "properties": {
+          "MonitoredItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MonitoredItemNotification"
+            }
+          },
+          "DiagnosticInfos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosticInfo"
+            }
+          }
+        }
+      },
+      "StatusChangeNotification": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/NotificationData"
+          }
+        ],
+        "properties": {
+          "Status": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "DiagnosticInfo": {
+            "$ref": "#/components/schemas/DiagnosticInfo"
+          }
+        }
+      },
+      "SubscriptionAcknowledgement": {
+        "type": "object",
+        "properties": {
+          "SubscriptionId": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "SequenceNumber": {
+            "type": "integer",
+            "format": "uint32"
+          }
+        }
+      },
+      "PublishRequest": {
+        "type": "object",
+        "properties": {
+          "RequestHeader": {
+            "$ref": "#/components/schemas/RequestHeader"
+          },
+          "SubscriptionAcknowledgements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubscriptionAcknowledgement"
+            }
+          }
+        }
+      },
+      "PublishResponse": {
+        "type": "object",
+        "properties": {
+          "ResponseHeader": {
+            "$ref": "#/components/schemas/ResponseHeader"
+          },
+          "SubscriptionId": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "AvailableSequenceNumbers": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "uint32"
+            }
+          },
+          "MoreNotifications": {
+            "type": "boolean"
+          },
+          "NotificationMessage": {
+            "$ref": "#/components/schemas/NotificationMessage"
+          },
+          "Results": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "uint32"
+            }
+          },
+          "DiagnosticInfos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosticInfo"
+            }
+          }
+        }
+      },
+      "RepublishRequest": {
+        "type": "object",
+        "properties": {
+          "RequestHeader": {
+            "$ref": "#/components/schemas/RequestHeader"
+          },
+          "SubscriptionId": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "RetransmitSequenceNumber": {
+            "type": "integer",
+            "format": "uint32"
+          }
+        }
+      },
+      "RepublishResponse": {
+        "type": "object",
+        "properties": {
+          "ResponseHeader": {
+            "$ref": "#/components/schemas/ResponseHeader"
+          },
+          "NotificationMessage": {
+            "$ref": "#/components/schemas/NotificationMessage"
+          }
+        }
+      },
+      "TransferResult": {
+        "type": "object",
+        "properties": {
+          "StatusCode": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "AvailableSequenceNumbers": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "uint32"
+            }
+          }
+        }
+      },
+      "TransferSubscriptionsRequest": {
+        "type": "object",
+        "properties": {
+          "RequestHeader": {
+            "$ref": "#/components/schemas/RequestHeader"
+          },
+          "SubscriptionIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "uint32"
+            }
+          },
+          "SendInitialValues": {
+            "type": "boolean"
+          }
+        }
+      },
+      "TransferSubscriptionsResponse": {
+        "type": "object",
+        "properties": {
+          "ResponseHeader": {
+            "$ref": "#/components/schemas/ResponseHeader"
+          },
+          "Results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TransferResult"
+            }
+          },
+          "DiagnosticInfos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosticInfo"
+            }
+          }
+        }
+      },
+      "DeleteSubscriptionsRequest": {
+        "type": "object",
+        "properties": {
+          "RequestHeader": {
+            "$ref": "#/components/schemas/RequestHeader"
+          },
+          "SubscriptionIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "uint32"
+            }
+          }
+        }
+      },
+      "DeleteSubscriptionsResponse": {
+        "type": "object",
+        "properties": {
+          "ResponseHeader": {
+            "$ref": "#/components/schemas/ResponseHeader"
+          },
+          "Results": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "uint32"
+            }
+          },
+          "DiagnosticInfos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosticInfo"
+            }
+          }
+        }
+      },
+      "EventNotificationList": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/NotificationData"
+          }
+        ],
+        "properties": {
+          "Events": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EventFieldList"
+            }
+          }
+        }
+      },
+      "EventFieldList": {
+        "type": "object",
+        "properties": {
+          "ClientHandle": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "EventFields": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
       "HistoryEventFieldList": {
         "type": "object",
         "properties": {
@@ -1816,6 +5107,26 @@
             }
           }
         }
+      },
+      "IssuedIdentityToken": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/UserIdentityToken"
+          }
+        ],
+        "properties": {
+          "TokenData": {
+            "type": "string",
+            "format": "byte"
+          },
+          "EncryptionAlgorithm": {
+            "type": "string"
+          }
+        }
+      },
+      "NotificationData": {
+        "type": "object"
       },
       "AggregateConfiguration": {
         "type": "object",
@@ -1836,6 +5147,21 @@
           },
           "UseSlopedExtrapolation": {
             "type": "boolean"
+          }
+        }
+      },
+      "EnumValueType": {
+        "type": "object",
+        "properties": {
+          "Value": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "DisplayName": {
+            "$ref": "#/components/schemas/LocalizedText"
+          },
+          "Description": {
+            "$ref": "#/components/schemas/LocalizedText"
           }
         }
       },
@@ -1913,7 +5239,7 @@
         "properties": {
           "NodeId": {
             "type": "string",
-            "format": "NodeId"
+            "format": "opcuaNodeId"
           },
           "PerformInsertReplace": {
             "type": "integer",
@@ -1926,6 +5252,736 @@
             }
           }
         }
+      },
+      "DataSetMetaDataType": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/DataTypeSchemaHeader"
+          }
+        ],
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "Description": {
+            "$ref": "#/components/schemas/LocalizedText"
+          },
+          "Fields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FieldMetaData"
+            }
+          },
+          "DataSetClassId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ConfigurationVersion": {
+            "$ref": "#/components/schemas/ConfigurationVersionDataType"
+          }
+        }
+      },
+      "FieldMetaData": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "Description": {
+            "$ref": "#/components/schemas/LocalizedText"
+          },
+          "FieldFlags": {
+            "type": "integer",
+            "format": "uint16"
+          },
+          "BuiltInType": {
+            "type": "integer",
+            "format": "uint8"
+          },
+          "DataType": {
+            "type": "string",
+            "format": "opcuaNodeId"
+          },
+          "ValueRank": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ArrayDimensions": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "uint32"
+            }
+          },
+          "MaxStringLength": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "DataSetFieldId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Properties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyValuePair"
+            }
+          }
+        }
+      },
+      "DataTypeDescription": {
+        "type": "object",
+        "properties": {
+          "DataTypeId": {
+            "type": "string",
+            "format": "opcuaNodeId"
+          },
+          "Name": {
+            "type": "string",
+            "format": "opcuaQualifiedName"
+          }
+        }
+      },
+      "KeyValuePair": {
+        "type": "object",
+        "properties": {
+          "Key": {
+            "type": "string",
+            "format": "opcuaQualifiedName"
+          },
+          "Value": {
+            "type": "object"
+          }
+        }
+      },
+      "ConfigurationVersionDataType": {
+        "type": "object",
+        "properties": {
+          "MajorVersion": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "MinorVersion": {
+            "type": "integer",
+            "format": "uint32"
+          }
+        }
+      },
+      "PubSubState": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "type": "integer",
+        "format": "int32",
+        "x-enum-varnames": [
+          "Disabled",
+          "Paused",
+          "Operational",
+          "Error",
+          "PreOperational"
+        ]
+      },
+      "SimpleTypeDescription": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/DataTypeDescription"
+          }
+        ],
+        "properties": {
+          "BaseDataType": {
+            "type": "string",
+            "format": "opcuaNodeId"
+          },
+          "BuiltInType": {
+            "type": "integer",
+            "format": "uint8"
+          }
+        }
+      },
+      "BrokerConnectionTransportDataType": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ConnectionTransportDataType"
+          }
+        ],
+        "properties": {
+          "ResourceUri": {
+            "type": "string"
+          },
+          "AuthenticationProfileUri": {
+            "type": "string"
+          }
+        }
+      },
+      "BrokerTransportQualityOfService": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "type": "integer",
+        "format": "int32",
+        "x-enum-varnames": [
+          "NotSpecified",
+          "BestEffort",
+          "AtLeastOnce",
+          "AtMostOnce",
+          "ExactlyOnce"
+        ]
+      },
+      "WriterGroupDataType": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/PubSubGroupDataType"
+          }
+        ],
+        "properties": {
+          "WriterGroupId": {
+            "type": "integer",
+            "format": "uint16"
+          },
+          "PublishingInterval": {
+            "type": "number",
+            "format": "double"
+          },
+          "KeepAliveTime": {
+            "type": "number",
+            "format": "double"
+          },
+          "Priority": {
+            "type": "integer",
+            "format": "uint8"
+          },
+          "LocaleIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "HeaderLayoutUri": {
+            "type": "string"
+          },
+          "TransportSettings": {
+            "$ref": "#/components/schemas/ExtensionObject"
+          },
+          "MessageSettings": {
+            "$ref": "#/components/schemas/ExtensionObject"
+          },
+          "DataSetWriters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataSetWriterDataType"
+            }
+          }
+        }
+      },
+      "StructureDescription": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/DataTypeDescription"
+          }
+        ],
+        "properties": {
+          "StructureDefinition": {
+            "$ref": "#/components/schemas/StructureDefinition"
+          }
+        }
+      },
+      "EnumDescription": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/DataTypeDescription"
+          }
+        ],
+        "properties": {
+          "EnumDefinition": {
+            "$ref": "#/components/schemas/EnumDefinition"
+          },
+          "BuiltInType": {
+            "type": "integer",
+            "format": "uint8"
+          }
+        }
+      },
+      "NetworkAddressDataType": {
+        "type": "object",
+        "properties": {
+          "NetworkInterface": {
+            "type": "string"
+          }
+        }
+      },
+      "ReaderGroupDataType": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/PubSubGroupDataType"
+          }
+        ],
+        "properties": {
+          "TransportSettings": {
+            "$ref": "#/components/schemas/ExtensionObject"
+          },
+          "MessageSettings": {
+            "$ref": "#/components/schemas/ExtensionObject"
+          },
+          "DataSetReaders": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataSetReaderDataType"
+            }
+          }
+        }
+      },
+      "PubSubConfigurationDataType": {
+        "type": "object",
+        "properties": {
+          "PublishedDataSets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublishedDataSetDataType"
+            }
+          },
+          "Connections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PubSubConnectionDataType"
+            }
+          },
+          "Enabled": {
+            "type": "boolean"
+          }
+        }
+      },
+      "DataTypeSchemaHeader": {
+        "type": "object",
+        "properties": {
+          "Namespaces": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "StructureDataTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StructureDescription"
+            }
+          },
+          "EnumDataTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EnumDescription"
+            }
+          },
+          "SimpleDataTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SimpleTypeDescription"
+            }
+          }
+        }
+      },
+      "PublishedDataSetDataType": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "DataSetFolder": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "DataSetMetaData": {
+            "$ref": "#/components/schemas/DataSetMetaDataType"
+          },
+          "ExtensionFields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyValuePair"
+            }
+          },
+          "DataSetSource": {
+            "$ref": "#/components/schemas/ExtensionObject"
+          }
+        }
+      },
+      "PublishedDataSetSourceDataType": {
+        "type": "object"
+      },
+      "DataSetFieldContentMask": {
+        "type": "integer",
+        "description": "StatusCode=0000, SourceTimestamp=0001, ServerTimestamp=0002, SourcePicoSeconds=0003, ServerPicoSeconds=0004, RawData=0005",
+        "format": "uint32"
+      },
+      "DataSetWriterDataType": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "Enabled": {
+            "type": "boolean"
+          },
+          "DataSetWriterId": {
+            "type": "integer",
+            "format": "uint16"
+          },
+          "DataSetFieldContentMask": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "KeyFrameCount": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "DataSetName": {
+            "type": "string"
+          },
+          "DataSetWriterProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyValuePair"
+            }
+          },
+          "TransportSettings": {
+            "$ref": "#/components/schemas/ExtensionObject"
+          },
+          "MessageSettings": {
+            "$ref": "#/components/schemas/ExtensionObject"
+          }
+        }
+      },
+      "DataSetWriterTransportDataType": {
+        "type": "object"
+      },
+      "DataSetWriterMessageDataType": {
+        "type": "object"
+      },
+      "PubSubGroupDataType": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "Enabled": {
+            "type": "boolean"
+          },
+          "SecurityMode": {
+            "type": "integer",
+            "format": "MessageSecurityMode"
+          },
+          "SecurityGroupId": {
+            "type": "string"
+          },
+          "SecurityKeyServices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EndpointDescription"
+            }
+          },
+          "MaxNetworkMessageSize": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "GroupProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyValuePair"
+            }
+          }
+        }
+      },
+      "WriterGroupTransportDataType": {
+        "type": "object"
+      },
+      "WriterGroupMessageDataType": {
+        "type": "object"
+      },
+      "PubSubConnectionDataType": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "Enabled": {
+            "type": "boolean"
+          },
+          "PublisherId": {
+            "type": "object"
+          },
+          "TransportProfileUri": {
+            "type": "string"
+          },
+          "Address": {
+            "$ref": "#/components/schemas/ExtensionObject"
+          },
+          "ConnectionProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyValuePair"
+            }
+          },
+          "TransportSettings": {
+            "$ref": "#/components/schemas/ExtensionObject"
+          },
+          "WriterGroups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WriterGroupDataType"
+            }
+          },
+          "ReaderGroups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReaderGroupDataType"
+            }
+          }
+        }
+      },
+      "ConnectionTransportDataType": {
+        "type": "object"
+      },
+      "ReaderGroupTransportDataType": {
+        "type": "object"
+      },
+      "ReaderGroupMessageDataType": {
+        "type": "object"
+      },
+      "DataSetReaderDataType": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "Enabled": {
+            "type": "boolean"
+          },
+          "PublisherId": {
+            "type": "object"
+          },
+          "WriterGroupId": {
+            "type": "integer",
+            "format": "uint16"
+          },
+          "DataSetWriterId": {
+            "type": "integer",
+            "format": "uint16"
+          },
+          "DataSetMetaData": {
+            "$ref": "#/components/schemas/DataSetMetaDataType"
+          },
+          "DataSetFieldContentMask": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "MessageReceiveTimeout": {
+            "type": "number",
+            "format": "double"
+          },
+          "KeyFrameCount": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "HeaderLayoutUri": {
+            "type": "string"
+          },
+          "SecurityMode": {
+            "type": "integer",
+            "format": "MessageSecurityMode"
+          },
+          "SecurityGroupId": {
+            "type": "string"
+          },
+          "SecurityKeyServices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EndpointDescription"
+            }
+          },
+          "DataSetReaderProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyValuePair"
+            }
+          },
+          "TransportSettings": {
+            "$ref": "#/components/schemas/ExtensionObject"
+          },
+          "MessageSettings": {
+            "$ref": "#/components/schemas/ExtensionObject"
+          },
+          "SubscribedDataSet": {
+            "$ref": "#/components/schemas/ExtensionObject"
+          }
+        }
+      },
+      "DataSetReaderTransportDataType": {
+        "type": "object"
+      },
+      "DataSetReaderMessageDataType": {
+        "type": "object"
+      },
+      "SubscribedDataSetDataType": {
+        "type": "object"
+      },
+      "JsonNetworkMessageContentMask": {
+        "type": "integer",
+        "description": "NetworkMessageHeader=0000, DataSetMessageHeader=0001, SingleDataSetMessage=0002, PublisherId=0003, DataSetClassId=0004, ReplyTo=0005, WriterGroupName=0006",
+        "format": "uint32"
+      },
+      "JsonWriterGroupMessageDataType": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/WriterGroupMessageDataType"
+          }
+        ],
+        "properties": {
+          "NetworkMessageContentMask": {
+            "type": "integer",
+            "format": "uint32"
+          }
+        }
+      },
+      "JsonDataSetMessageContentMask": {
+        "type": "integer",
+        "description": "DataSetWriterId=0000, MetaDataVersion=0001, SequenceNumber=0002, Timestamp=0003, Status=0004, MessageType=0005, DataSetWriterName=0006, ReversibleFieldEncoding=0007, PublisherId=0008, WriterGroupName=0009, MinorVersion=000A",
+        "format": "uint32"
+      },
+      "JsonDataSetWriterMessageDataType": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/DataSetWriterMessageDataType"
+          }
+        ],
+        "properties": {
+          "DataSetMessageContentMask": {
+            "type": "integer",
+            "format": "uint32"
+          }
+        }
+      },
+      "JsonDataSetReaderMessageDataType": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/DataSetReaderMessageDataType"
+          }
+        ],
+        "properties": {
+          "NetworkMessageContentMask": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "DataSetMessageContentMask": {
+            "type": "integer",
+            "format": "uint32"
+          }
+        }
+      },
+      "BrokerWriterGroupTransportDataType": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/WriterGroupTransportDataType"
+          }
+        ],
+        "properties": {
+          "QueueName": {
+            "type": "string"
+          },
+          "ResourceUri": {
+            "type": "string"
+          },
+          "AuthenticationProfileUri": {
+            "type": "string"
+          },
+          "RequestedDeliveryGuarantee": {
+            "type": "integer",
+            "format": "BrokerTransportQualityOfService"
+          }
+        }
+      },
+      "BrokerDataSetWriterTransportDataType": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/DataSetWriterTransportDataType"
+          }
+        ],
+        "properties": {
+          "QueueName": {
+            "type": "string"
+          },
+          "ResourceUri": {
+            "type": "string"
+          },
+          "AuthenticationProfileUri": {
+            "type": "string"
+          },
+          "RequestedDeliveryGuarantee": {
+            "type": "integer",
+            "format": "BrokerTransportQualityOfService"
+          },
+          "MetaDataQueueName": {
+            "type": "string"
+          },
+          "MetaDataUpdateTime": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "BrokerDataSetReaderTransportDataType": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/DataSetReaderTransportDataType"
+          }
+        ],
+        "properties": {
+          "QueueName": {
+            "type": "string"
+          },
+          "ResourceUri": {
+            "type": "string"
+          },
+          "AuthenticationProfileUri": {
+            "type": "string"
+          },
+          "RequestedDeliveryGuarantee": {
+            "type": "integer",
+            "format": "BrokerTransportQualityOfService"
+          },
+          "MetaDataQueueName": {
+            "type": "string"
+          }
+        }
+      },
+      "DataSetFieldFlags": {
+        "type": "integer",
+        "description": "PromotedField=0000",
+        "format": "uint32"
+      },
+      "VersionTime": {
+        "type": "integer",
+        "format": "uint32"
       },
       "ReadAnnotationDataDetails": {
         "type": "object",
@@ -1940,6 +5996,168 @@
             "items": {
               "type": "string",
               "format": "date-time"
+            }
+          }
+        }
+      },
+      "StandaloneSubscribedDataSetDataType": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SubscribedDataSetDataType"
+          }
+        ],
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "DataSetFolder": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "DataSetMetaData": {
+            "$ref": "#/components/schemas/DataSetMetaDataType"
+          },
+          "SubscribedDataSet": {
+            "$ref": "#/components/schemas/ExtensionObject"
+          }
+        }
+      },
+      "SecurityGroupDataType": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "SecurityGroupFolder": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "KeyLifetime": {
+            "type": "number",
+            "format": "double"
+          },
+          "SecurityPolicyUri": {
+            "type": "string"
+          },
+          "MaxFutureKeyCount": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "MaxPastKeyCount": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "SecurityGroupId": {
+            "type": "string"
+          },
+          "RolePermissions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RolePermissionType"
+            }
+          },
+          "GroupProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyValuePair"
+            }
+          }
+        }
+      },
+      "PubSubConfiguration2DataType": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/PubSubConfigurationDataType"
+          }
+        ],
+        "properties": {
+          "SubscribedDataSets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StandaloneSubscribedDataSetDataType"
+            }
+          },
+          "DataSetClasses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataSetMetaDataType"
+            }
+          },
+          "DefaultSecurityKeyServices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EndpointDescription"
+            }
+          },
+          "SecurityGroups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SecurityGroupDataType"
+            }
+          },
+          "PubSubKeyPushTargets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PubSubKeyPushTargetDataType"
+            }
+          },
+          "ConfigurationVersion": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "ConfigurationProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyValuePair"
+            }
+          }
+        }
+      },
+      "PubSubKeyPushTargetDataType": {
+        "type": "object",
+        "properties": {
+          "ApplicationUri": {
+            "type": "string"
+          },
+          "PushTargetFolder": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "EndpointUrl": {
+            "type": "string"
+          },
+          "SecurityPolicyUri": {
+            "type": "string"
+          },
+          "UserTokenType": {
+            "$ref": "#/components/schemas/UserTokenPolicy"
+          },
+          "RequestedKeyCount": {
+            "type": "integer",
+            "format": "uint16"
+          },
+          "RetryInterval": {
+            "type": "number",
+            "format": "double"
+          },
+          "PushTargetProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyValuePair"
+            }
+          },
+          "SecurityGroups": {
+            "type": "array",
+            "items": {
+              "type": "string"
             }
           }
         }

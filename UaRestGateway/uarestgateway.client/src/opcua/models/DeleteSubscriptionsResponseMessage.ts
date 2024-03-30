@@ -40,12 +40,6 @@ export interface DeleteSubscriptionsResponseMessage {
     ServerUris?: Array<string>;
     /**
      * 
-     * @type {number}
-     * @memberof DeleteSubscriptionsResponseMessage
-     */
-    ServiceId?: number;
-    /**
-     * 
      * @type {DeleteSubscriptionsResponse}
      * @memberof DeleteSubscriptionsResponseMessage
      */
@@ -73,7 +67,6 @@ export function DeleteSubscriptionsResponseMessageFromJSONTyped(json: any, ignor
         
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
-        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : DeleteSubscriptionsResponseFromJSON(json['Body']),
     };
 }
@@ -89,7 +82,6 @@ export function DeleteSubscriptionsResponseMessageToJSON(value?: DeleteSubscript
         
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
-        'ServiceId': value.ServiceId,
         'Body': DeleteSubscriptionsResponseToJSON(value.Body),
     };
 }

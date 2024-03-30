@@ -46,12 +46,6 @@ export interface ReadRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
-     * @type {number}
-     * @memberof ReadRequestMessage
-     */
-    ServiceId?: number;
-    /**
-     * 
      * @type {ReadRequest}
      * @memberof ReadRequestMessage
      */
@@ -80,7 +74,6 @@ export function ReadRequestMessageFromJSONTyped(json: any, ignoreDiscriminator: 
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : ReadRequestFromJSON(json['Body']),
     };
 }
@@ -97,7 +90,6 @@ export function ReadRequestMessageToJSON(value?: ReadRequestMessage | null): any
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
-        'ServiceId': value.ServiceId,
         'Body': ReadRequestToJSON(value.Body),
     };
 }

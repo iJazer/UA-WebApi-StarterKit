@@ -40,12 +40,6 @@ export interface SetPublishingModeResponseMessage {
     ServerUris?: Array<string>;
     /**
      * 
-     * @type {number}
-     * @memberof SetPublishingModeResponseMessage
-     */
-    ServiceId?: number;
-    /**
-     * 
      * @type {SetPublishingModeResponse}
      * @memberof SetPublishingModeResponseMessage
      */
@@ -73,7 +67,6 @@ export function SetPublishingModeResponseMessageFromJSONTyped(json: any, ignoreD
         
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
-        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : SetPublishingModeResponseFromJSON(json['Body']),
     };
 }
@@ -89,7 +82,6 @@ export function SetPublishingModeResponseMessageToJSON(value?: SetPublishingMode
         
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
-        'ServiceId': value.ServiceId,
         'Body': SetPublishingModeResponseToJSON(value.Body),
     };
 }

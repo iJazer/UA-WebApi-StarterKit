@@ -3,6 +3,7 @@ import { IBrowseTreeNode } from './ApplicationProvider';
 import { IUserContext } from './UserProvider';
 import { Account } from './api';
 import * as OpcUa from './opcua';
+import * as pako from 'pako';
 
 export class HandleFactory {
    private static counter: number = 0;
@@ -67,18 +68,6 @@ interface IServiceRequestMessage {
    Body?: any;
 }
 
-async function readResponseBody(url: string, response: any) {
-   const content = response.headers.get("Content-Type");
-
-   if (content && content.indexOf("json") < 0) {
-      console.error("URL: " + url);
-      console.error("UnexpectedResponse: " + await response.text());
-      return null;
-   }
-
-   return await response.json();
-}
-
 function toFault(response?: IServiceFaultMessage): IServiceFault | null {
    if (response?.Body?.ResponseHeader) {
       const responseHeader = response.Body.ResponseHeader;
@@ -106,27 +95,102 @@ function toFault(response?: IServiceFaultMessage): IServiceFault | null {
       code: OpcUa.StatusCodes.BadUnknownResponse
    }
 }
+async function fetchData() {
+   const url = 'https://example.com/data';
+
+   // Data to be sent
+   const dataToSend = { key1: 'value1', key2: 'value2' };
+
+   // Convert data to JSON string
+   const jsonData = JSON.stringify(dataToSend);
+
+   // Compress data using gzip
+   const gzippedData = await gzip(jsonData);
+
+   // Send request with compressed data
+   const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+         'Content-Type': 'application/json',
+         'Content-Encoding': 'gzip' // Specify gzip encoding
+      },
+      body: gzippedData
+   });
+
+   // Handle response
+   if (response.ok) {
+      // Unzip the response data
+      const uncompressedData = await gunzip(await response.arrayBuffer());
+      const responseData = JSON.parse(new TextDecoder().decode(uncompressedData));
+      console.log('Response:', responseData);
+   } else {
+      console.error('Error:', response.statusText);
+   }
+}
+
+// Function to gzip data
+
+// Import pako library (for gzip compression)
+
+// Call fetchData function
+fetchData();
+function stringToUtf8ByteArray(str: string) : Uint8Array {
+   const encoder = new TextEncoder();
+   return encoder.encode(str);
+}
+
+async function gzip(data: string): Promise<Uint8Array> {
+   return new Promise((resolve) => {
+      const encoder = new TextEncoder();
+      const compressedData = pako.gzip(encoder.encode(data));
+      resolve(compressedData);
+   });
+}
+
+async function gunzip(data: ArrayBuffer): Promise<Uint8Array> {
+   return new Promise((resolve) => {
+      const inflatedData = pako.inflate(data);
+      resolve(inflatedData);
+   });
+}
+
+async function readResponseBody(url: string, response: any) {
+   console.error("URL: " + url);
+   const content = response.headers.get("Content-Type");
+   if (content && content.indexOf("json") < 0) {
+      console.error("UnexpectedResponse: " + await response.text());
+      return null;
+   }
+   // the fetch library automatically uncompresses gzipped content.
+   return await response.json();
+}
+
 export async function call(
    url: string,
    request: IServiceRequestMessage,
    controller?: AbortController,
-   user?: Account) {
+   user?: Account,
+   compress?: boolean) {
 
    const timeoutId = (request?.Body?.RequestHeader?.TimeoutHint && controller)
       ? setTimeout(() => controller.abort(), request?.Body?.RequestHeader?.TimeoutHint)
       : null;
    try {
+      const json = JSON.stringify(request);
+      const body = (compress) ? await gzip(json) : stringToUtf8ByteArray(json);
       const requestOptions = {
          method: 'POST',
+         mode: 'cors',
+         cache: 'no-cache',
          headers: {
+            ...(compress ? { 'Content-Encoding': 'gzip' } : {}),
             'Content-Type': 'application/json',
-            'Authorization': (user?.accessToken)?`Bearer ${user?.accessToken}`:''
+            'Authorization': (user?.accessToken) ? `Bearer ${user?.accessToken}` : ''
          },
          credentials: 'include',
-         body: JSON.stringify(request),
+         body: body,
          signal: controller?.signal
       } as RequestInit;
-      // console.info(`call: ${url}`);
       const response = await fetch(url, requestOptions);
       if (timeoutId) clearTimeout(timeoutId);
       if (response.ok) {
@@ -184,7 +248,7 @@ export async function browseChildren(
          ]
       }
    };
-   const response = await call(`/opcua/browse`, request, controller, user);
+   const response = await call(`/opcua/browse`, request, controller, user, true);
    if (!response) {
       return undefined;
    }
@@ -221,7 +285,7 @@ export async function browseChildren(
                ContinuationPoints: continuationPoints
             }
          };
-         const response = await call(`/opcua/browsenext`, request, controller, user);
+         const response = await call(`/opcua/browsenext`, request, controller, user, true);
          if (!response) {
             return undefined;
          }
@@ -263,7 +327,7 @@ export async function readAttributes(
          });
    }
 
-   const response = await call(`/opcua/read`, request, controller, user);
+   const response = await call(`/opcua/read`, request, controller, user, true);
    if (!response) {
       return null;
    }
@@ -319,7 +383,7 @@ async function createSession(
       }
    };
 
-   const response = await call(`/opcua/createsession`, request, controller, user);
+   const response = await call(`/opcua/createsession`, request, controller, user, true);
    if (!response) {
       return null;
    }
@@ -355,7 +419,7 @@ async function activateSession(
       }
    };
 
-   const response = await call(`/opcua/activatesession`, request, controller, user);
+   const response = await call(`/opcua/activatesession`, request, controller, user, true);
    if (!response) {
       return null;
    }
@@ -393,7 +457,7 @@ async function createSubscription(
       }
    };
 
-   const response = await call(`/opcua/createsubscription`, request, controller, user);
+   const response = await call(`/opcua/createsubscription`, request, controller, user, true);
    if (!response) {
       return null;
    }
@@ -426,7 +490,7 @@ export async function publish(
       }
    };
 
-   const response = await call(`/opcua/publish`, request, controller, user);
+   const response = await call(`/opcua/publish`, request, controller, user, true);
    if (!response) {
       return null;
    }
@@ -504,7 +568,7 @@ async function createMonitoredItems(
       }
    };
 
-   const response = await call(`/opcua/createmonitoreditems`, request, controller, user);
+   const response = await call(`/opcua/createmonitoreditems`, request, controller, user, true);
    if (!response) {
       return null;
    }

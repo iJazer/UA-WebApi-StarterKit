@@ -46,12 +46,6 @@ export interface PublishRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
-     * @type {number}
-     * @memberof PublishRequestMessage
-     */
-    ServiceId?: number;
-    /**
-     * 
      * @type {PublishRequest}
      * @memberof PublishRequestMessage
      */
@@ -80,7 +74,6 @@ export function PublishRequestMessageFromJSONTyped(json: any, ignoreDiscriminato
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : PublishRequestFromJSON(json['Body']),
     };
 }
@@ -97,7 +90,6 @@ export function PublishRequestMessageToJSON(value?: PublishRequestMessage | null
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
-        'ServiceId': value.ServiceId,
         'Body': PublishRequestToJSON(value.Body),
     };
 }

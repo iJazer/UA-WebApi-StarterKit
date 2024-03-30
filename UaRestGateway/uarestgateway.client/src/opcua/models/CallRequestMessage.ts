@@ -46,12 +46,6 @@ export interface CallRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
-     * @type {number}
-     * @memberof CallRequestMessage
-     */
-    ServiceId?: number;
-    /**
-     * 
      * @type {CallRequest}
      * @memberof CallRequestMessage
      */
@@ -80,7 +74,6 @@ export function CallRequestMessageFromJSONTyped(json: any, ignoreDiscriminator: 
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : CallRequestFromJSON(json['Body']),
     };
 }
@@ -97,7 +90,6 @@ export function CallRequestMessageToJSON(value?: CallRequestMessage | null): any
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
-        'ServiceId': value.ServiceId,
         'Body': CallRequestToJSON(value.Body),
     };
 }

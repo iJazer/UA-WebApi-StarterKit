@@ -46,12 +46,6 @@ export interface RepublishRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
-     * @type {number}
-     * @memberof RepublishRequestMessage
-     */
-    ServiceId?: number;
-    /**
-     * 
      * @type {RepublishRequest}
      * @memberof RepublishRequestMessage
      */
@@ -80,7 +74,6 @@ export function RepublishRequestMessageFromJSONTyped(json: any, ignoreDiscrimina
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : RepublishRequestFromJSON(json['Body']),
     };
 }
@@ -97,7 +90,6 @@ export function RepublishRequestMessageToJSON(value?: RepublishRequestMessage | 
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
-        'ServiceId': value.ServiceId,
         'Body': RepublishRequestToJSON(value.Body),
     };
 }

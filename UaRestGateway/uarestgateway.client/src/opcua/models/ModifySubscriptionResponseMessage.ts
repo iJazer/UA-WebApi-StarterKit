@@ -40,12 +40,6 @@ export interface ModifySubscriptionResponseMessage {
     ServerUris?: Array<string>;
     /**
      * 
-     * @type {number}
-     * @memberof ModifySubscriptionResponseMessage
-     */
-    ServiceId?: number;
-    /**
-     * 
      * @type {ModifySubscriptionResponse}
      * @memberof ModifySubscriptionResponseMessage
      */
@@ -73,7 +67,6 @@ export function ModifySubscriptionResponseMessageFromJSONTyped(json: any, ignore
         
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
-        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : ModifySubscriptionResponseFromJSON(json['Body']),
     };
 }
@@ -89,7 +82,6 @@ export function ModifySubscriptionResponseMessageToJSON(value?: ModifySubscripti
         
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
-        'ServiceId': value.ServiceId,
         'Body': ModifySubscriptionResponseToJSON(value.Body),
     };
 }

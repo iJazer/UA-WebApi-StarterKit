@@ -46,12 +46,6 @@ export interface RegisterNodesRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
-     * @type {number}
-     * @memberof RegisterNodesRequestMessage
-     */
-    ServiceId?: number;
-    /**
-     * 
      * @type {RegisterNodesRequest}
      * @memberof RegisterNodesRequestMessage
      */
@@ -80,7 +74,6 @@ export function RegisterNodesRequestMessageFromJSONTyped(json: any, ignoreDiscri
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : RegisterNodesRequestFromJSON(json['Body']),
     };
 }
@@ -97,7 +90,6 @@ export function RegisterNodesRequestMessageToJSON(value?: RegisterNodesRequestMe
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
-        'ServiceId': value.ServiceId,
         'Body': RegisterNodesRequestToJSON(value.Body),
     };
 }

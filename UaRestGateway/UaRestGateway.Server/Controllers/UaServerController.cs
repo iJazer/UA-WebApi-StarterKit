@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using Opc.Ua.Server;
+using System.IO.Compression;
 
 namespace UaRestGateway.Server.Controllers
 {
@@ -35,9 +36,58 @@ namespace UaRestGateway.Server.Controllers
             m_communicationService = communicationService;
         }
 
+        private static async Task<byte[]> Compress(MemoryStream istrm)
+        {
+            using (var ostrm = new MemoryStream())
+            {
+                using (var zstrm = new GZipStream(ostrm, CompressionMode.Compress))
+                {
+                    await istrm.CopyToAsync(zstrm);
+                    zstrm.Close();
+                    return ostrm.ToArray();
+                }
+            }
+        }
+
+        private static async Task<MemoryStream> Decompress(Stream istrm)
+        {
+            using (var zstrm = new GZipStream(istrm, CompressionMode.Decompress))
+            {
+                var ostrm = new MemoryStream();
+                await zstrm.CopyToAsync(ostrm);
+                ostrm.Position = 0;
+                return ostrm;
+            }
+        }
+
+        private bool IsRequestCompressed()
+        {
+            if (Request.Headers.TryGetValue("Content-Encoding", out var header))
+            {
+                var token = String.Join(" ", header).Trim();
+
+                if (token.Equals("gzip", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private async Task<T> Decode<T>(IServiceMessageContext context) where T : IEncodeable, new()
         {
-            using (var reader = new StreamReader(Request.Body))
+            Stream stream = Request.Body;
+
+            if (IsRequestCompressed())
+            {
+                using (var reader = new StreamReader(Request.Body))
+                {
+                    stream = await Decompress(stream);
+                }
+            }
+
+            using (var reader = new StreamReader(stream))
             {
                 var json = await reader.ReadToEndAsync();
 
@@ -46,13 +96,10 @@ namespace UaRestGateway.Server.Controllers
                     decoder.UpdateNamespaceTable = true;
                     SessionLessServiceMessage message = new SessionLessServiceMessage();
 
-                    message.NamespaceUris = new NamespaceTable(decoder.ReadStringArray(nameof(SessionLessServiceMessage.NamespaceUris)));
-                    message.ServerUris = new StringTable(decoder.ReadStringArray(nameof(SessionLessServiceMessage.ServerUris)));
+                    // message.NamespaceUris = new NamespaceTable(decoder.ReadStringArray(nameof(SessionLessServiceMessage.NamespaceUris)));
+                    // message.ServerUris = new StringTable(decoder.ReadStringArray(nameof(SessionLessServiceMessage.ServerUris)));
                     message.LocaleIds = new StringTable(decoder.ReadStringArray(nameof(SessionLessServiceMessage.LocaleIds)));
-                    message.UrisVersion = decoder.ReadUInt32(nameof(SessionLessServiceMessage.UrisVersion));
-
                     decoder.SetMappingTables(message.NamespaceUris, message.ServerUris);
-
                     message.Message = decoder.ReadEncodeable("Body", typeof(T));
 
                     return (T)message.Message;
@@ -60,27 +107,36 @@ namespace UaRestGateway.Server.Controllers
             }
         }
 
-        private Task<IActionResult> Encode<T>(IServiceMessageContext context, T response) where T : IEncodeable
+        private async Task<IActionResult> Encode<T>(IServiceMessageContext context, T response) where T : IEncodeable
         {
-            using (var encoder = new JsonEncoder(context, true))
+            var stream = new MemoryStream();
+
+            using (var encoder = new JsonEncoder(context, true, stream: stream, leaveOpen: true))
             {
                 encoder.UseStringNodeIds = true;
                 encoder.ForceNamespaceUri = true;
                 encoder.ForceNamespaceUriForIndex1 = true;
 
-                encoder.WriteStringArray(nameof(SessionLessServiceMessage.NamespaceUris), context.NamespaceUris.ToArray());
-                encoder.WriteStringArray(nameof(SessionLessServiceMessage.ServerUris), context.ServerUris.ToArray());
+                // encoder.WriteStringArray(nameof(SessionLessServiceMessage.NamespaceUris), context.NamespaceUris.ToArray());
+                // encoder.WriteStringArray(nameof(SessionLessServiceMessage.ServerUris), context.ServerUris.ToArray());
                 encoder.WriteStringArray(nameof(SessionLessServiceMessage.LocaleIds), null);
-                encoder.WriteUInt32(nameof(SessionLessServiceMessage.UrisVersion), 0);
-                encoder.WriteUInt32("ServiceId", (uint)response.TypeId.Identifier);
                 encoder.WriteEncodeable("Body", response, typeof(T));
 
-                var json = encoder.CloseAndReturnText();
-                return Task.FromResult<IActionResult>(Content(json, "application/json"));
+                encoder.Close();
+                stream.Position = 0;
+
+                if (IsRequestCompressed())
+                {
+                    Response.Headers.Append("Content-Encoding", "gzip");
+                    var compressed = await Compress(stream);
+                    return File(compressed, "application/json");
+                }
+
+                return File(stream, "application/json");
             }
         }
 
-        private Task<IActionResult> Fault(Exception e)
+        private async Task<IActionResult> Fault(Exception e)
         {
             Logger.LogWarning(e, "Fault calling Service.");
 
@@ -105,7 +161,7 @@ namespace UaRestGateway.Server.Controllers
                     }
                 };
 
-                return Encode<ServiceFault>(context, fault);
+                return await Encode<ServiceFault>(context, fault);
             }
         }
 

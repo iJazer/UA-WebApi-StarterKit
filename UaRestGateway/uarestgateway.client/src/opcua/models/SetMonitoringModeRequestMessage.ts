@@ -46,12 +46,6 @@ export interface SetMonitoringModeRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
-     * @type {number}
-     * @memberof SetMonitoringModeRequestMessage
-     */
-    ServiceId?: number;
-    /**
-     * 
      * @type {SetMonitoringModeRequest}
      * @memberof SetMonitoringModeRequestMessage
      */
@@ -80,7 +74,6 @@ export function SetMonitoringModeRequestMessageFromJSONTyped(json: any, ignoreDi
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : SetMonitoringModeRequestFromJSON(json['Body']),
     };
 }
@@ -97,7 +90,6 @@ export function SetMonitoringModeRequestMessageToJSON(value?: SetMonitoringModeR
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
-        'ServiceId': value.ServiceId,
         'Body': SetMonitoringModeRequestToJSON(value.Body),
     };
 }

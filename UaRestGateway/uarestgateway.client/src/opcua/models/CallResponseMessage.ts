@@ -40,12 +40,6 @@ export interface CallResponseMessage {
     ServerUris?: Array<string>;
     /**
      * 
-     * @type {number}
-     * @memberof CallResponseMessage
-     */
-    ServiceId?: number;
-    /**
-     * 
      * @type {CallResponse}
      * @memberof CallResponseMessage
      */
@@ -73,7 +67,6 @@ export function CallResponseMessageFromJSONTyped(json: any, ignoreDiscriminator:
         
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
-        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : CallResponseFromJSON(json['Body']),
     };
 }
@@ -89,7 +82,6 @@ export function CallResponseMessageToJSON(value?: CallResponseMessage | null): a
         
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
-        'ServiceId': value.ServiceId,
         'Body': CallResponseToJSON(value.Body),
     };
 }

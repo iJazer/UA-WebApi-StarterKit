@@ -46,12 +46,6 @@ export interface ActivateSessionRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
-     * @type {number}
-     * @memberof ActivateSessionRequestMessage
-     */
-    ServiceId?: number;
-    /**
-     * 
      * @type {ActivateSessionRequest}
      * @memberof ActivateSessionRequestMessage
      */
@@ -80,7 +74,6 @@ export function ActivateSessionRequestMessageFromJSONTyped(json: any, ignoreDisc
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : ActivateSessionRequestFromJSON(json['Body']),
     };
 }
@@ -97,7 +90,6 @@ export function ActivateSessionRequestMessageToJSON(value?: ActivateSessionReque
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
-        'ServiceId': value.ServiceId,
         'Body': ActivateSessionRequestToJSON(value.Body),
     };
 }

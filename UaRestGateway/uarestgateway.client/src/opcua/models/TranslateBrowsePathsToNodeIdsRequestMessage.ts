@@ -46,12 +46,6 @@ export interface TranslateBrowsePathsToNodeIdsRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
-     * @type {number}
-     * @memberof TranslateBrowsePathsToNodeIdsRequestMessage
-     */
-    ServiceId?: number;
-    /**
-     * 
      * @type {TranslateBrowsePathsToNodeIdsRequest}
      * @memberof TranslateBrowsePathsToNodeIdsRequestMessage
      */
@@ -80,7 +74,6 @@ export function TranslateBrowsePathsToNodeIdsRequestMessageFromJSONTyped(json: a
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : TranslateBrowsePathsToNodeIdsRequestFromJSON(json['Body']),
     };
 }
@@ -97,7 +90,6 @@ export function TranslateBrowsePathsToNodeIdsRequestMessageToJSON(value?: Transl
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
-        'ServiceId': value.ServiceId,
         'Body': TranslateBrowsePathsToNodeIdsRequestToJSON(value.Body),
     };
 }

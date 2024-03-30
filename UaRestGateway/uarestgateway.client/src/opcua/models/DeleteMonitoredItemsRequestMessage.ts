@@ -46,12 +46,6 @@ export interface DeleteMonitoredItemsRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
-     * @type {number}
-     * @memberof DeleteMonitoredItemsRequestMessage
-     */
-    ServiceId?: number;
-    /**
-     * 
      * @type {DeleteMonitoredItemsRequest}
      * @memberof DeleteMonitoredItemsRequestMessage
      */
@@ -80,7 +74,6 @@ export function DeleteMonitoredItemsRequestMessageFromJSONTyped(json: any, ignor
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : DeleteMonitoredItemsRequestFromJSON(json['Body']),
     };
 }
@@ -97,7 +90,6 @@ export function DeleteMonitoredItemsRequestMessageToJSON(value?: DeleteMonitored
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
-        'ServiceId': value.ServiceId,
         'Body': DeleteMonitoredItemsRequestToJSON(value.Body),
     };
 }

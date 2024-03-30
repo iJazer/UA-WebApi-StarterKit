@@ -46,12 +46,6 @@ export interface SetPublishingModeRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
-     * @type {number}
-     * @memberof SetPublishingModeRequestMessage
-     */
-    ServiceId?: number;
-    /**
-     * 
      * @type {SetPublishingModeRequest}
      * @memberof SetPublishingModeRequestMessage
      */
@@ -80,7 +74,6 @@ export function SetPublishingModeRequestMessageFromJSONTyped(json: any, ignoreDi
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : SetPublishingModeRequestFromJSON(json['Body']),
     };
 }
@@ -97,7 +90,6 @@ export function SetPublishingModeRequestMessageToJSON(value?: SetPublishingModeR
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
-        'ServiceId': value.ServiceId,
         'Body': SetPublishingModeRequestToJSON(value.Body),
     };
 }

@@ -448,6 +448,7 @@ export enum DataTypeIds {
    ExceptionDeviationFormat = 'i=890',
    TestAbstractStructure = 'i=15399',
    TestConcreteStructure = 'i=15400',
+   TestEnumeration = 'i=15432',
    TestScalarStructure = 'i=15015',
    TestArrayStructure = 'i=15016',
    TestStructure = 'i=15017'
@@ -3223,6 +3224,7 @@ export enum VariableIds {
    ModelChangeStructureVerbMask_EnumValues = 'i=11942',
    AxisScaleEnumeration_EnumStrings = 'i=12078',
    ExceptionDeviationFormat_EnumStrings = 'i=7614',
+   TestEnumeration_EnumValues = 'i=15433',
    OpcUa_BinarySchema = 'i=7617',
    OpcUa_BinarySchema_NamespaceUri = 'i=7619',
    OpcUa_BinarySchema_Deprecated = 'i=15037',

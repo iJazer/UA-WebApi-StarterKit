@@ -46,12 +46,6 @@ export interface TransferSubscriptionsRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
-     * @type {number}
-     * @memberof TransferSubscriptionsRequestMessage
-     */
-    ServiceId?: number;
-    /**
-     * 
      * @type {TransferSubscriptionsRequest}
      * @memberof TransferSubscriptionsRequestMessage
      */
@@ -80,7 +74,6 @@ export function TransferSubscriptionsRequestMessageFromJSONTyped(json: any, igno
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : TransferSubscriptionsRequestFromJSON(json['Body']),
     };
 }
@@ -97,7 +90,6 @@ export function TransferSubscriptionsRequestMessageToJSON(value?: TransferSubscr
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
-        'ServiceId': value.ServiceId,
         'Body': TransferSubscriptionsRequestToJSON(value.Body),
     };
 }

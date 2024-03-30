@@ -40,12 +40,6 @@ export interface GetEndpointsResponseMessage {
     ServerUris?: Array<string>;
     /**
      * 
-     * @type {number}
-     * @memberof GetEndpointsResponseMessage
-     */
-    ServiceId?: number;
-    /**
-     * 
      * @type {GetEndpointsResponse}
      * @memberof GetEndpointsResponseMessage
      */
@@ -73,7 +67,6 @@ export function GetEndpointsResponseMessageFromJSONTyped(json: any, ignoreDiscri
         
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
-        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : GetEndpointsResponseFromJSON(json['Body']),
     };
 }
@@ -89,7 +82,6 @@ export function GetEndpointsResponseMessageToJSON(value?: GetEndpointsResponseMe
         
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
-        'ServiceId': value.ServiceId,
         'Body': GetEndpointsResponseToJSON(value.Body),
     };
 }

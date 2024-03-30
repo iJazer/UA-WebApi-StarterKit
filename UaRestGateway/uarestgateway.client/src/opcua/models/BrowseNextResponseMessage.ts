@@ -40,12 +40,6 @@ export interface BrowseNextResponseMessage {
     ServerUris?: Array<string>;
     /**
      * 
-     * @type {number}
-     * @memberof BrowseNextResponseMessage
-     */
-    ServiceId?: number;
-    /**
-     * 
      * @type {BrowseNextResponse}
      * @memberof BrowseNextResponseMessage
      */
@@ -73,7 +67,6 @@ export function BrowseNextResponseMessageFromJSONTyped(json: any, ignoreDiscrimi
         
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
-        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : BrowseNextResponseFromJSON(json['Body']),
     };
 }
@@ -89,7 +82,6 @@ export function BrowseNextResponseMessageToJSON(value?: BrowseNextResponseMessag
         
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
-        'ServiceId': value.ServiceId,
         'Body': BrowseNextResponseToJSON(value.Body),
     };
 }

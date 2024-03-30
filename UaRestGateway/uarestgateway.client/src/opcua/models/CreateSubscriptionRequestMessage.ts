@@ -46,12 +46,6 @@ export interface CreateSubscriptionRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
-     * @type {number}
-     * @memberof CreateSubscriptionRequestMessage
-     */
-    ServiceId?: number;
-    /**
-     * 
      * @type {CreateSubscriptionRequest}
      * @memberof CreateSubscriptionRequestMessage
      */
@@ -80,7 +74,6 @@ export function CreateSubscriptionRequestMessageFromJSONTyped(json: any, ignoreD
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : CreateSubscriptionRequestFromJSON(json['Body']),
     };
 }
@@ -97,7 +90,6 @@ export function CreateSubscriptionRequestMessageToJSON(value?: CreateSubscriptio
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
-        'ServiceId': value.ServiceId,
         'Body': CreateSubscriptionRequestToJSON(value.Body),
     };
 }
