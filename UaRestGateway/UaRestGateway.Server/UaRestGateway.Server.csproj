@@ -14,22 +14,35 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\xxx.json" />
+    <Compile Remove="Service\I4AAS\**" />
+    <Content Remove="Service\I4AAS\**" />
+    <EmbeddedResource Remove="Service\I4AAS\**" />
+    <None Remove="Service\I4AAS\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Azure.Identity" Version="1.10.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.2" />
+    <Content Remove="wwwroot\xxx.json" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <EmbeddedResource Include="Service\BatteryPassport\BatteryPassport.PredefinedNodes.uanodes" />
+    <EmbeddedResource Include="Service\WoT\Opc.Ua.WotCon.PredefinedNodes.uanodes" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Azure.Identity" Version="1.11.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.SpaProxy">
-      <Version>8.0.2</Version>
+      <Version>8.0.4</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.2" />
-    <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="7.4.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.4" />
+    <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="7.5.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.4.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.5.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -44,15 +57,27 @@
     <None Update="config\uaserver-configuration.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Service\BatteryPassport\BatteryPassport.Types.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Update="UaRestGateway.sqllite">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Data\BatteryPassportSample.json" />
     <None Include="wwwroot\data\opcua-restapi.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\PublishProfiles\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Include="Service\WoT\Opc.Ua.WotCon.PredefinedNodes.uanodes" />
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">

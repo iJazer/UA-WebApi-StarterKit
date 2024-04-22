@@ -2,7 +2,7 @@ import React from 'react';
 import Box from '@mui/material/Box/Box';
 
 import { BrowseTreeView } from '../controls/BrowseTreeView';
-import AttributesView from '../controls/AttributesView';
+import VariableValueList from '../controls/VariableValueList';
 import { ApplicationContext } from '../ApplicationProvider';
 
 import * as OpcUa from '../opcua';
@@ -11,27 +11,22 @@ import { SessionState } from '../opcua-utils';
 
 export const HomePage = () => {
    const [selection, setSelection] = React.useState<OpcUa.ReferenceDescription | undefined>();
+   const [inProgress, setInProgress] = React.useState<boolean>(false);
    const context = React.useContext(ApplicationContext);
    const loginStatus = context?.userContext.loginStatus ?? UserLoginStatus.Unknown;
    const sessionState = context?.session?.state ?? SessionState.Closed;
-   const callback = context.connect;
-
-   //React.useEffect(() => {
-   //   console.error(`SessionState: ${SessionState[sessionState]}`);
-   //}, [sessionState]);
+   const connect = context.connect;
 
    React.useEffect(() => {
-      const controller = new AbortController();
-      if (loginStatus === UserLoginStatus.LoggedIn && sessionState === SessionState.Closed) {
-         connect();
-      }
-      async function connect() {
-         await callback();
+      //const controller = new AbortController();
+      if (!inProgress && loginStatus === UserLoginStatus.LoggedIn && sessionState === SessionState.Closed) {
+         setInProgress(true);
+         connect().finally(() => setInProgress(false));
       }
       return () => {
-         controller.abort();
+         //controller.abort();
       };
-   }, [loginStatus, sessionState, callback]);
+   }, [inProgress, loginStatus, sessionState, connect]);
 
    return (
       <Box display="flex" p={2} pb={4} sx={{ width: '100%' }}>
@@ -39,7 +34,7 @@ export const HomePage = () => {
             <BrowseTreeView rootNodeId={OpcUa.ObjectIds.RootFolder} onSelectionChanged={(x) => setSelection({ ...x })} />
          </Box>
          <Box flexGrow={1}>
-            <AttributesView reference={selection} />
+            <VariableValueList selection={selection?.NodeId} />
          </Box>
       </Box>
    );

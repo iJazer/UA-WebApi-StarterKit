@@ -21,6 +21,8 @@ export interface IMonitoredItem {
    path: string[],
    name: string,
    nodeId: string,
+   browsePath: string[],
+   resolvedNodeId: string,
    clientHandle: number,
    serverHandle: number,
    attributeId: number,
@@ -95,46 +97,7 @@ function toFault(response?: IServiceFaultMessage): IServiceFault | null {
       code: OpcUa.StatusCodes.BadUnknownResponse
    }
 }
-async function fetchData() {
-   const url = 'https://example.com/data';
-
-   // Data to be sent
-   const dataToSend = { key1: 'value1', key2: 'value2' };
-
-   // Convert data to JSON string
-   const jsonData = JSON.stringify(dataToSend);
-
-   // Compress data using gzip
-   const gzippedData = await gzip(jsonData);
-
-   // Send request with compressed data
-   const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-         'Content-Type': 'application/json',
-         'Content-Encoding': 'gzip' // Specify gzip encoding
-      },
-      body: gzippedData
-   });
-
-   // Handle response
-   if (response.ok) {
-      // Unzip the response data
-      const uncompressedData = await gunzip(await response.arrayBuffer());
-      const responseData = JSON.parse(new TextDecoder().decode(uncompressedData));
-      console.log('Response:', responseData);
-   } else {
-      console.error('Error:', response.statusText);
-   }
-}
-
-// Function to gzip data
-
-// Import pako library (for gzip compression)
-
-// Call fetchData function
-fetchData();
-function stringToUtf8ByteArray(str: string) : Uint8Array {
+function stringToUtf8ByteArray(str: string): Uint8Array {
    const encoder = new TextEncoder();
    return encoder.encode(str);
 }
@@ -147,15 +110,8 @@ async function gzip(data: string): Promise<Uint8Array> {
    });
 }
 
-async function gunzip(data: ArrayBuffer): Promise<Uint8Array> {
-   return new Promise((resolve) => {
-      const inflatedData = pako.inflate(data);
-      resolve(inflatedData);
-   });
-}
-
 async function readResponseBody(url: string, response: any) {
-   console.error("URL: " + url);
+   console.log("URL: " + url);
    const content = response.headers.get("Content-Type");
    if (content && content.indexOf("json") < 0) {
       console.error("UnexpectedResponse: " + await response.text());
@@ -266,8 +222,7 @@ export async function browseChildren(
          if (OpcUa.StatusCode.isGood(x.StatusCode)) {
             nodes.push({
                id: `${y.NodeId}`,
-               reference: y,
-               children: []
+               reference: y
             });
             if (x.ContinuationPoint) {
                continuationPoints.push(x.ContinuationPoint);
@@ -349,6 +304,69 @@ export async function readAttributes(
                attributeId: request.Body.NodesToRead[ii].AttributeId ?? 0,
                value: x
             });
+         }
+      }
+   }
+
+   return values;
+}
+
+export async function readValues(
+   variables: IBrowseTreeNode[],
+   requestTimeout: number = 120000,
+   controller?: AbortController,
+   user?: Account
+): Promise<IBrowseTreeNode[] | null> {
+
+   const request: OpcUa.ReadRequestMessage = {
+      Body: {
+         RequestHeader: {
+            Timestamp: new Date(),
+            TimeoutHint: requestTimeout
+         },
+         MaxAge: 0,
+         TimestampsToReturn: OpcUa.TimestampsToReturn.Server,
+         NodesToRead: []
+      }
+   };
+
+   variables.map(ii => {
+      request.Body?.NodesToRead?.push(
+         {
+            NodeId: ii.id,
+            AttributeId: OpcUa.Attributes.Value
+         });
+      return null;
+   });
+
+   const response = await call(`/opcua/read`, request, controller, user, true);
+   if (!response) {
+      return null;
+   }
+   if (response.code) {
+      console.warn(`Read call failed: [${OpcUa.StatusCodes[response.code] ?? response.code}] '${response.message ?? ''}'`);
+      return null;
+   }
+
+   const result: OpcUa.ReadResponse = response.Body
+   const values: IBrowseTreeNode[] = [];
+
+   if (result.Results && request.Body?.NodesToRead) {
+      for (let ii = 0; ii < result.Results?.length; ii++) {
+         const item = result.Results[ii];
+         if (OpcUa.StatusCode.isBad(item.StatusCode)) {
+            values.push({ ...variables[ii], value: JSON.stringify(item.StatusCode) });
+         }
+         else {
+            if (item.Value?.Type === 21) { // LocalizedText
+               values.push({ ...variables[ii], value: item.Value?.Body?.Text });
+            }
+            else if (item.Value?.Type === 12) { // String
+               values.push({ ...variables[ii], value: item.Value?.Body });
+            }
+            else {
+               values.push({ ...variables[ii], value: JSON.stringify(item.Value?.Body) });
+            }
          }
       }
    }
@@ -475,9 +493,10 @@ async function createSubscription(
 export async function publish(
    user: Account,
    session: ISession,
+   monitoredItems: Map<number, IMonitoredItem>,
    requestTimeout: number,
    controller?: AbortController
-): Promise<ISession | null> {
+): Promise<{ session: ISession, monitoredItems: { clientHandle: number, value?: OpcUa.DataValue }[] } | null> {
 
    const request: OpcUa.PublishRequestMessage = {
       Body: {
@@ -503,6 +522,7 @@ export async function publish(
 
    // console.warn(`SequenceNumber ${response.Body.NotificationMessage.SequenceNumber}`);
 
+   const updates: { clientHandle: number, value?: OpcUa.DataValue }[] = [];
    const message = response.Body.NotificationMessage;
    if (message) {
       const notifications: Array<OpcUa.ExtensionObject> = message.NotificationData;
@@ -512,9 +532,8 @@ export async function publish(
                const dataChange = x.Body as OpcUa.DataChangeNotification;
                if (dataChange.MonitoredItems) {
                   dataChange.MonitoredItems.forEach(y => {
-                     const item = session.monitoredItems?.find(z => z.clientHandle === y.ClientHandle);
-                     if (item && y.Value) {
-                        item.value = y.Value;
+                     if (y.ClientHandle) {
+                        updates.push({ clientHandle: y.ClientHandle ?? 0, value: y.Value });
                      }
                   });
                }
@@ -523,13 +542,64 @@ export async function publish(
       }
 
       acknowledgements.push({ SubscriptionId: response.Body.SubscriptionId, SequenceNumber: message.SequenceNumber });
+
+      return {
+         session: {
+            ...session,
+            lastSequenceNumber: response.Body.NotificationMessage.SequenceNumber,
+            acknowledgements: acknowledgements
+         } as ISession,
+         monitoredItems: updates
+      };
    }
 
-   return {
-      ...session,
-      lastSequenceNumber: response.Body.NotificationMessage.SequenceNumber,
-      acknowledgements: acknowledgements
-   } as ISession;
+   return { session: session, monitoredItems: updates };
+}
+
+export async function readInitialValues(
+   user: Account,
+   monitoredItems: IMonitoredItem[],
+   requestTimeout: number,
+   controller?: AbortController
+): Promise<void | null> {
+
+   const request: OpcUa.ReadRequestMessage = {
+      Body: {
+         RequestHeader: {
+            Timestamp: new Date(),
+            TimeoutHint: requestTimeout
+         },
+         MaxAge: 0,
+         TimestampsToReturn: OpcUa.TimestampsToReturn.Server,
+         NodesToRead: []
+      }
+   };
+
+   monitoredItems.map(ii => {
+      request.Body?.NodesToRead?.push(
+         {
+            NodeId: ii.resolvedNodeId ?? ii.nodeId,
+            AttributeId: OpcUa.Attributes.Value
+         });
+      return null;
+   });
+
+   const response = await call(`/opcua/read`, request, controller, user, true);
+   if (!response) {
+      return null;
+   }
+   if (response.code) {
+      console.warn(`Read call failed: [${OpcUa.StatusCodes[response.code] ?? response.code}] '${response.message ?? ''}'`);
+      return null;
+   }
+
+   const result: OpcUa.ReadResponse = response.Body
+
+   if (result.Results && request.Body?.NodesToRead) {
+      for (let ii = 0; ii < result.Results?.length; ii++) {
+         monitoredItems[ii].value = result.Results[ii];
+      }
+   }
 }
 
 async function createMonitoredItems(
@@ -551,10 +621,11 @@ async function createMonitoredItems(
 
          TimestampsToReturn: OpcUa.TimestampsToReturn.Both,
          ItemsToCreate: monitoredItems.map(item => {
+            if (!item.clientHandle) item.clientHandle = HandleFactory.increment();
             return {
                ItemToMonitor: {
-                  NodeId: item.nodeId,
-                  AttributeId: item.attributeId
+                  NodeId: item.resolvedNodeId ?? item.nodeId,
+                  AttributeId: item.attributeId ?? OpcUa.Attributes.Value
                },
                MonitoringMode: OpcUa.MonitoringMode.Reporting,
                RequestedParameters: {
@@ -586,6 +657,91 @@ async function createMonitoredItems(
    return monitoredItems;
 }
 
+export function stripUris(input: string[]): string[] {
+   const output: string[] = [];
+   if (!input?.length) {
+      return output;
+   }
+   input.forEach(x => {
+      const parts = x.split(';');
+      output.push(parts[parts.length - 1]);
+   });
+   return output;
+}
+
+export async function translateAndSubscribe(
+   user: Account,
+   session: ISession,
+   requestTimeout: number,
+   monitoredItems: IMonitoredItem[],
+   controller?: AbortController
+): Promise<IMonitoredItem[] | null> {
+
+   const request: OpcUa.TranslateBrowsePathsToNodeIdsRequestMessage = {
+      Body: {
+         RequestHeader: {
+            Timestamp: new Date(),
+            TimeoutHint: requestTimeout,
+            AuthenticationToken: session.authenticationToken
+         },
+         BrowsePaths: []
+      }
+   };
+
+   const itemsToTranslate: number[] = [];
+
+   monitoredItems.forEach((monitoredItem: IMonitoredItem, index: number) => {
+      if (monitoredItem.browsePath?.length) {
+         const elements: OpcUa.RelativePathElement[] = [];
+         monitoredItem.browsePath.forEach(element => {
+            elements.push({
+               ReferenceTypeId: OpcUa.ReferenceTypeIds.HierarchicalReferences,
+               IsInverse: false,
+               IncludeSubtypes: true,
+               TargetName: element
+            });
+         });
+         itemsToTranslate.push(index);
+         request.Body?.BrowsePaths?.push({
+            StartingNode: monitoredItem.nodeId,
+            RelativePath: {
+               Elements: elements
+            }
+         });
+      }
+   });
+
+   if (itemsToTranslate.length) {
+      const response = await call(`/opcua/translate`, request, controller, user, true);
+      if (!response) {
+         return null;
+      }
+      if (response.code) {
+         console.warn(`TranslateBrowsePathsToNodeIds call failed: [${OpcUa.StatusCodes[response.code] ?? response.code}] '${response.message ?? ''}'`);
+         return null;
+      }
+      response.Body.Results.forEach((result: OpcUa.BrowsePathResult, index: number) => {
+         if (OpcUa.StatusCode.isGood(result.StatusCode) && result.Targets?.length) {
+            if (result.Targets[0].TargetId && (result.Targets[0].RemainingPathIndex ?? 0) > 255) {
+               const item = monitoredItems[itemsToTranslate[index]];
+               item.resolvedNodeId = result.Targets[0].TargetId;
+               item.attributeId = OpcUa.Attributes.Value;
+               item.serverHandle = 0;
+               item.value = { StatusCode: OpcUa.StatusCodes.BadWaitingForInitialData };
+            }
+         }
+      });
+   }
+
+   await readInitialValues(user, monitoredItems, requestTimeout, controller);
+
+   if (session.state === SessionState.Open) {
+      return await createMonitoredItems(user, session, requestTimeout, monitoredItems, controller);
+   }
+
+   return monitoredItems;
+}
+
 export async function connect(
    context: IUserContext,
    session: ISession,
@@ -601,35 +757,11 @@ export async function connect(
          session = result;
          result = await createSubscription(context.user, result, requestTimeout, controller);
          if (result) {
-            let monitoredItems: IMonitoredItem[] | null = [
-               {
-                  path: ["Server", "ServerStatus", "State"],
-                  name: "State",
-                  nodeId: OpcUa.VariableIds.Server_ServerStatus_State,
-                  attributeId: OpcUa.Attributes.Value,
-                  clientHandle: HandleFactory.increment(),
-                  serverHandle: 0,
-                  value: { StatusCode: OpcUa.StatusCodes.BadWaitingForInitialData }
-               },
-               {
-                  path: ["Server", "ServerStatus", "CurrentTime"],
-                  name: "CurrentTime",
-                  nodeId: OpcUa.VariableIds.Server_ServerStatus_CurrentTime,
-                  attributeId: OpcUa.Attributes.Value,
-                  clientHandle: HandleFactory.increment(),
-                  serverHandle: 0,
-                  value: { StatusCode: OpcUa.StatusCodes.BadWaitingForInitialData }
-               }];
-            monitoredItems = await createMonitoredItems(
-               context.user,
-               result,
-               requestTimeout,
-               monitoredItems,
-               controller);
             return {
                ...session,
+               subscriptionId: result.subscriptionId,
                state: SessionState.Open,
-               monitoredItems: monitoredItems
+               monitoredItems: []
             } as ISession;
          }
       }

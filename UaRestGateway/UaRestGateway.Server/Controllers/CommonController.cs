@@ -31,7 +31,7 @@ namespace UaRestGateway.Server.Controllers
             }
             else
             {
-                Session = new WebSession();
+                Session = new WebSession() { AuthenticationTokens = new(), SecureChannelId = Guid.NewGuid().ToString() };
             }
 
             // Logger.LogError("Session.UserEmail: {0}", Session.UserEmail);

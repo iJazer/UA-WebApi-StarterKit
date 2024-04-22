@@ -12,22 +12,30 @@ import { Skeleton, Typography } from '@mui/material';
 import * as OpcUa from '../opcua';
 import * as Web from '../Web';
 import { ApplicationContext } from '../ApplicationProvider';
+import { IMonitoredItem } from '../opcua-utils';
 
 interface MonitoredItemValueListProps {
    selection?: string
 }
 
 export const MonitoredItemValueList = ({ selection }: MonitoredItemValueListProps) => {
+   const [items, setItems] = React.useState<IMonitoredItem[]>([]);
    const context = React.useContext(ApplicationContext);
+   const monitoredItems = context.monitoredItems;
 
-   const monitorItems = context.session?.monitoredItems?.map((item) => {
-      if (!selection) {
-         return item;
+   React.useEffect(() => {
+      if (monitoredItems) {
+         const filtered = Array.from(monitoredItems.values()).map((item) => {
+            if (!selection) {
+               return item;
+            }
+            return item.path.join('/').startsWith(selection) ? item : undefined;
+         }).filter((x) : x is IMonitoredItem => x !== undefined);
+         setItems(filtered);
       }
-      return item.path.join('/').startsWith(selection) ? item : null; 
-   });
+   }, [monitoredItems, selection]);
 
-   if (!monitorItems?.length) {
+   if (!items?.length) {
       return (
          <Paper elevation={3} sx={{ height: '100%', width: 'auto' }} >
             <Skeleton variant='text' sx={{ fontSize: '1.5rem', mx: '4px' }} ></Skeleton>
@@ -52,11 +60,11 @@ export const MonitoredItemValueList = ({ selection }: MonitoredItemValueListProp
                </TableRow>
             </TableHead>
             <TableBody>
-               {monitorItems?.map((item) => {
-                  if (!item) return null;
+               {items?.map((item) => {
+                  if (!item?.serverHandle) return null;
                   return (
                      <TableRow
-                        key={item?.path.join('/')}
+                        key={item?.serverHandle}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                      >
                         <TableCell>

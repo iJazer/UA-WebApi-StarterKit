@@ -4,6 +4,8 @@ import LabelIcon from '@mui/icons-material/Label';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import FolderIcon from '@mui/icons-material/Folder';
 import DeveloperBoardIcon from '@mui/icons-material/DeveloperBoard';
+import SystemUpdateAltIcon from '@mui/icons-material/SystemUpdateAlt';
+import BookmarksIcon from '@mui/icons-material/Bookmarks';
 
 import * as OpcUa from '../opcua';
 
@@ -17,9 +19,15 @@ export const NodeIcon = ({ nodeClass, typeDefinitionId }: NodeIconProps) => {
       case OpcUa.NodeClass.View:
          return <WidgetsIcon sx={{ color: 'GoldenRod' }} />;
       case OpcUa.NodeClass.Object:
-         return (typeDefinitionId === OpcUa.ObjectTypeIds.FolderType) ? <FolderIcon sx={{ color: 'Gold' }} /> : <WidgetsIcon sx={{ color: 'blue' }} />;
+         return (typeDefinitionId === OpcUa.ObjectTypeIds.FolderType) 
+            ? <FolderIcon sx={{ color: 'Gold' }} />
+            : (typeDefinitionId === OpcUa.ObjectTypeIds.FileType) 
+            ? <SystemUpdateAltIcon sx={{ color: 'blue' }} /> 
+            : <WidgetsIcon sx={{ color: 'blue' }} />;
       case OpcUa.NodeClass.Variable:
-         return <LabelIcon sx={{ color: 'green' }} />;
+         return (typeDefinitionId === OpcUa.VariableTypeIds.PropertyType)
+            ? <LabelIcon sx={{ color: 'green' }} />
+            : <BookmarksIcon sx={{ color: 'navy' }} />;
       case OpcUa.NodeClass.Method:
          return <PlayCircleIcon sx={{ color: 'red' }} />;
       case OpcUa.NodeClass.ObjectType:

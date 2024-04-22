@@ -31,7 +31,7 @@ export const AttributesView = ({ reference, requestTimeout }: AttributesViewProp
          readAttributes(reference, requestTimeout, controller, context?.userContext?.user).then((x) => setValues(x ?? []));
       }
       return () => {
-         controller.abort();
+         //controller.abort();
       }
    }, [reference, reference?.NodeId, requestTimeout, context?.userContext?.user]);
 

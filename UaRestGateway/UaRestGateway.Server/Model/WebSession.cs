@@ -26,6 +26,8 @@ namespace UaRestGateway.Server.Model
 
         public string SecureChannelId { get; set; }
 
+        public Dictionary<string, string> AuthenticationTokens { get; set; }
+
         public byte[] ToBytes()
         {
             string json = JsonSerializer.Serialize(this);

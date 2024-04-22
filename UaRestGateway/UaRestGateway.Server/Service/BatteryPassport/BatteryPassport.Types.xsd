@@ -1,0 +1,231 @@
+<xs:schema
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:ua="http://opcfoundation.org/UA/2008/02/Types.xsd"
+  xmlns:tns="http://opcfoundation.org/UA/BatteryPassport/"
+  targetNamespace="http://opcfoundation.org/UA/BatteryPassport/"
+  elementFormDefault="qualified"
+>
+  <xs:annotation>
+    <xs:appinfo>
+      <ua:Model ModelUri="http://opcfoundation.org/UA/BatteryPassport/" Version="1.00.00" PublicationDate="2024-04-16T01:23:47.8556891Z" />
+    </xs:appinfo>
+  </xs:annotation>
+  
+  <xs:import namespace="http://opcfoundation.org/UA/2008/02/Types.xsd" />
+
+  <xs:complexType name="BatteryPassportDataType">
+    <xs:sequence>
+      <xs:element name="BatteryMaterialsAndComposition" type="tns:BatteryMaterialsAndCompositionDataType" minOccurs="0" nillable="true" />
+      <xs:element name="CarbonFootprint" type="tns:CarbonFootprintDataType" minOccurs="0" nillable="true" />
+      <xs:element name="CircularityAndResourceEfficiency" type="tns:CircularityAndResourceEfficiencyDataType" minOccurs="0" nillable="true" />
+      <xs:element name="Compliance_LabelsAndCertifications" type="tns:Compliance_LabelsAndCertificationsDataType" minOccurs="0" nillable="true" />
+      <xs:element name="GeneralBatteryAndManufacturerInformation" type="tns:GeneralBatteryAndManufacturerInformationDataType" minOccurs="0" nillable="true" />
+      <xs:element name="PerformanceAndDurability" type="tns:PerformanceAndDurabilityDataType" minOccurs="0" nillable="true" />
+      <xs:element name="SupplyChainDueDiligence" type="tns:SupplyChainDueDiligenceDataType" minOccurs="0" nillable="true" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BatteryPassportDataType" type="tns:BatteryPassportDataType" />
+
+  <xs:complexType name="ListOfBatteryPassportDataType">
+    <xs:sequence>
+      <xs:element name="BatteryPassportDataType" type="tns:BatteryPassportDataType" minOccurs="0" maxOccurs="unbounded" nillable="true" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ListOfBatteryPassportDataType" type="tns:ListOfBatteryPassportDataType" nillable="true"></xs:element>
+
+  <xs:complexType name="BatteryMaterialsAndCompositionDataType">
+    <xs:sequence>
+      <xs:element name="CriticalRawMaterials" type="xs:string" minOccurs="0" nillable="true" />
+      <xs:element name="BatteryChemistry" type="xs:string" minOccurs="0" nillable="true" />
+      <xs:element name="NameOfTheCathode_Anode_ElectrolyteMaterials" type="xs:string" minOccurs="0" nillable="true" />
+      <xs:element name="RelatedIdentifiersOfTheCathode_Anode_ElectrolyteMaterials" type="xs:string" minOccurs="0" nillable="true" />
+      <xs:element name="WeightOfTheCathode_Anode_ElectrolyteMaterials" type="xs:double" minOccurs="0" />
+      <xs:element name="NameOfHazardousSubstances" type="xs:string" minOccurs="0" nillable="true" />
+      <xs:element name="HazardClassesAnd_OrCategoriesOfHazardousSubstances" type="xs:string" minOccurs="0" nillable="true" />
+      <xs:element name="RelatedIdentifiersOfHazardousSubstances" type="xs:string" minOccurs="0" nillable="true" />
+      <xs:element name="LocationOfHazardousSubstances" type="xs:string" minOccurs="0" nillable="true" />
+      <xs:element name="ConcentrationRangeOfHazardousSubstances" type="xs:double" minOccurs="0" />
+      <xs:element name="ImpactOfSubstancesOnTheEnvironment_HumanHealth_Safety" type="xs:string" minOccurs="0" nillable="true" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BatteryMaterialsAndCompositionDataType" type="tns:BatteryMaterialsAndCompositionDataType" />
+
+  <xs:complexType name="ListOfBatteryMaterialsAndCompositionDataType">
+    <xs:sequence>
+      <xs:element name="BatteryMaterialsAndCompositionDataType" type="tns:BatteryMaterialsAndCompositionDataType" minOccurs="0" maxOccurs="unbounded" nillable="true" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ListOfBatteryMaterialsAndCompositionDataType" type="tns:ListOfBatteryMaterialsAndCompositionDataType" nillable="true"></xs:element>
+
+  <xs:complexType name="CarbonFootprintDataType">
+    <xs:sequence>
+      <xs:element name="BatteryCarbonFootprint" type="xs:double" minOccurs="0" />
+      <xs:element name="ShareOfBatteryCarbonFootprintPerLifecycleStage_RawMaterialAcquisitionAndPre_Processing" type="xs:double" minOccurs="0" />
+      <xs:element name="ShareOfBatteryCarbonFootprintPerLifecycleStage_MainProductProduction" type="xs:double" minOccurs="0" />
+      <xs:element name="ShareOfBatteryCarbonFootprintPerLifecycleStage_Distribution" type="xs:double" minOccurs="0" />
+      <xs:element name="ShareOfBatteryCarbonFootprintPerLifecycleStage_EndOfLifeAndRecycling" type="xs:double" minOccurs="0" />
+      <xs:element name="CarbonFootprintPerformanceClass" type="xs:string" minOccurs="0" nillable="true" />
+      <xs:element name="WebLinkToPublicCarbonFootprintStudy" type="xs:string" minOccurs="0" nillable="true" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CarbonFootprintDataType" type="tns:CarbonFootprintDataType" />
+
+  <xs:complexType name="ListOfCarbonFootprintDataType">
+    <xs:sequence>
+      <xs:element name="CarbonFootprintDataType" type="tns:CarbonFootprintDataType" minOccurs="0" maxOccurs="unbounded" nillable="true" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ListOfCarbonFootprintDataType" type="tns:ListOfCarbonFootprintDataType" nillable="true"></xs:element>
+
+  <xs:complexType name="CircularityAndResourceEfficiencyDataType">
+    <xs:sequence>
+      <xs:element name="ManualForRemovalOfTheBatteryFromTheAppliance" type="xs:string" minOccurs="0" nillable="true" />
+      <xs:element name="ManualForDisassemblyAndDismantlingOfTheBatteryPack" type="xs:string" minOccurs="0" nillable="true" />
+      <xs:element name="PostalAddressOfSourcesForSpareParts" type="xs:string" minOccurs="0" nillable="true" />
+      <xs:element name="E_MailAddressOfSourcesForSpareParts" type="xs:string" minOccurs="0" nillable="true" />
+      <xs:element name="WebAddressOfSourcesForSpareParts" type="xs:string" minOccurs="0" nillable="true" />
+      <xs:element name="PartNumbersForComponents" type="xs:string" minOccurs="0" nillable="true" />
+      <xs:element name="ExtinguishingAgent" type="xs:string" minOccurs="0" nillable="true" />
+      <xs:element name="SafetyMeasures_Instructions" type="xs:string" minOccurs="0" nillable="true" />
+      <xs:element name="Pre_ConsumerRecycledNickelShare" type="xs:double" minOccurs="0" />
+      <xs:element name="Pre_ConsumerRecycledCobaltShare" type="xs:double" minOccurs="0" />
+      <xs:element name="Pre_ConsumerRecycledLithiumShare" type="xs:double" minOccurs="0" />
+      <xs:element name="Pre_ConsumerRecycledLeadShare" type="xs:double" minOccurs="0" />
+      <xs:element name="Post_ConsumerRecycledNickelShare" type="xs:double" minOccurs="0" />
+      <xs:element name="Post_ConsumerRecycledCobaltShare" type="xs:double" minOccurs="0" />
+      <xs:element name="Post_ConsumerRecycledLithiumShare" type="xs:double" minOccurs="0" />
+      <xs:element name="Post_ConsumerRecycledLeadShare" type="xs:double" minOccurs="0" />
+      <xs:element name="RenewableContentShare" type="xs:double" minOccurs="0" />
+      <xs:element name="RoleOfEnd_UsersInContributingToWastePrevention" type="xs:string" minOccurs="0" nillable="true" />
+      <xs:element name="RoleOfEnd_UsersInContributingToTheSeparateCollectionOfWasteBatteries" type="xs:string" minOccurs="0" nillable="true" />
+      <xs:element name="InformationOnSeparateCollection_TakeBack_CollectionPointsAndPreparingForRe_Use_PreparingForRepurposingAndRecyclingOperations" type="xs:string" minOccurs="0" nillable="true" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CircularityAndResourceEfficiencyDataType" type="tns:CircularityAndResourceEfficiencyDataType" />
+
+  <xs:complexType name="ListOfCircularityAndResourceEfficiencyDataType">
+    <xs:sequence>
+      <xs:element name="CircularityAndResourceEfficiencyDataType" type="tns:CircularityAndResourceEfficiencyDataType" minOccurs="0" maxOccurs="unbounded" nillable="true" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ListOfCircularityAndResourceEfficiencyDataType" type="tns:ListOfCircularityAndResourceEfficiencyDataType" nillable="true"></xs:element>
+
+  <xs:complexType name="Compliance_LabelsAndCertificationsDataType">
+    <xs:sequence>
+      <xs:element name="ResultsOfTestsReports" type="xs:string" minOccurs="0" nillable="true" />
+      <xs:element name="SeparateCollectionSymbol" type="xs:string" minOccurs="0" nillable="true" />
+      <xs:element name="MeaningOfLabelsAndSymbols" type="xs:string" minOccurs="0" nillable="true" />
+      <xs:element name="CadmiumAndLeadSymbols" type="xs:string" minOccurs="0" nillable="true" />
+      <xs:element name="EUDeclarationOfConformity" type="xs:string" minOccurs="0" nillable="true" />
+      <xs:element name="IDOfEUDeclarationOfConformity" type="xs:string" minOccurs="0" nillable="true" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Compliance_LabelsAndCertificationsDataType" type="tns:Compliance_LabelsAndCertificationsDataType" />
+
+  <xs:complexType name="ListOfCompliance_LabelsAndCertificationsDataType">
+    <xs:sequence>
+      <xs:element name="Compliance_LabelsAndCertificationsDataType" type="tns:Compliance_LabelsAndCertificationsDataType" minOccurs="0" maxOccurs="unbounded" nillable="true" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ListOfCompliance_LabelsAndCertificationsDataType" type="tns:ListOfCompliance_LabelsAndCertificationsDataType" nillable="true"></xs:element>
+
+  <xs:complexType name="GeneralBatteryAndManufacturerInformationDataType">
+    <xs:sequence>
+      <xs:element name="BatteryUniqueIdentifier" type="xs:string" minOccurs="0" nillable="true" />
+      <xs:element name="ManufacturersIdentification" type="xs:string" minOccurs="0" nillable="true" />
+      <xs:element name="ManufacturingDate" type="xs:dateTime" minOccurs="0" />
+      <xs:element name="ManufacturingPlace" type="xs:string" minOccurs="0" nillable="true" />
+      <xs:element name="BatteryCategory" type="xs:string" minOccurs="0" nillable="true" />
+      <xs:element name="BatteryWeight" type="xs:double" minOccurs="0" />
+      <xs:element name="BatteryStatus" type="xs:string" minOccurs="0" nillable="true" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GeneralBatteryAndManufacturerInformationDataType" type="tns:GeneralBatteryAndManufacturerInformationDataType" />
+
+  <xs:complexType name="ListOfGeneralBatteryAndManufacturerInformationDataType">
+    <xs:sequence>
+      <xs:element name="GeneralBatteryAndManufacturerInformationDataType" type="tns:GeneralBatteryAndManufacturerInformationDataType" minOccurs="0" maxOccurs="unbounded" nillable="true" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ListOfGeneralBatteryAndManufacturerInformationDataType" type="tns:ListOfGeneralBatteryAndManufacturerInformationDataType" nillable="true"></xs:element>
+
+  <xs:complexType name="PerformanceAndDurabilityDataType">
+    <xs:sequence>
+      <xs:element name="TimeSpentChargingDuringExtremeTemperaturesAboveBoundary" type="xs:long" minOccurs="0" />
+      <xs:element name="TimeSpentChargingDuringExtremeTemperaturesBelowBoundary" type="xs:long" minOccurs="0" />
+      <xs:element name="InformationOnAccidents" type="xs:long" minOccurs="0" />
+      <xs:element name="NumberOfDeepDischargeEvents" type="xs:long" minOccurs="0" />
+      <xs:element name="NumberOfOverchargeEvents" type="xs:long" minOccurs="0" />
+      <xs:element name="CertifiedUsableBatteryEnergy_UBEcertified" type="xs:long" minOccurs="0" />
+      <xs:element name="RemainingUsableBatteryEnergy_UBEmeasured" type="xs:long" minOccurs="0" />
+      <xs:element name="StateOfCertifiedEnergy_SOCE" type="xs:long" minOccurs="0" />
+      <xs:element name="InitialSelf_DischargingRate" type="xs:double" minOccurs="0" />
+      <xs:element name="CurrentSelf_DischargingRate" type="xs:double" minOccurs="0" />
+      <xs:element name="EvolutionOfSelf_DischargingRates" type="xs:long" minOccurs="0" />
+      <xs:element name="RatedCapacity" type="xs:long" minOccurs="0" />
+      <xs:element name="RemainingCapacity" type="xs:long" minOccurs="0" />
+      <xs:element name="CapacityFade" type="xs:long" minOccurs="0" />
+      <xs:element name="StateOfCharge_SoC" type="xs:long" minOccurs="0" />
+      <xs:element name="NominalVoltage" type="xs:long" minOccurs="0" />
+      <xs:element name="MinimumVoltage" type="xs:long" minOccurs="0" />
+      <xs:element name="MaximumVoltage" type="xs:long" minOccurs="0" />
+      <xs:element name="OriginalPowerCapability" type="xs:long" minOccurs="0" />
+      <xs:element name="RemainingPowerCapability" type="xs:long" minOccurs="0" />
+      <xs:element name="PowerCapabilityFade" type="xs:long" minOccurs="0" />
+      <xs:element name="MaximumPermittedBatteryPower" type="xs:long" minOccurs="0" />
+      <xs:element name="RatioBetweenNominalAllowedBatteryPower_W_AndBatteryEnergy_Wh" type="xs:long" minOccurs="0" />
+      <xs:element name="InitialRoundTripEnergyEfficiency" type="xs:long" minOccurs="0" />
+      <xs:element name="RoundTripEnergyEfficiencyAt50_OfCycleLife" type="xs:long" minOccurs="0" />
+      <xs:element name="RemainingRoundTripEnergyEfficiency" type="xs:long" minOccurs="0" />
+      <xs:element name="RoundTripEnergyEfficiencyFade" type="xs:long" minOccurs="0" />
+      <xs:element name="InitialInternalResistanceOnBatteryCellLevel" type="xs:long" minOccurs="0" />
+      <xs:element name="CurrentInternalResistanceOnBatteryCellLevel" type="xs:long" minOccurs="0" />
+      <xs:element name="InternalResistanceIncreaseOnBatteryCellLevel" type="xs:long" minOccurs="0" />
+      <xs:element name="InitialInternalResistanceOnBatteryPackLevel" type="xs:long" minOccurs="0" />
+      <xs:element name="CurrentInternalResistanceOnBatteryPackLevel" type="xs:long" minOccurs="0" />
+      <xs:element name="InitialInternalResistanceOnBatteryModuleLevel" type="xs:long" minOccurs="0" />
+      <xs:element name="CurrentInternalResistanceOnBatteryModuleLevel" type="xs:long" minOccurs="0" />
+      <xs:element name="InternalResistanceIncreaseOnBatteryModuleLevel" type="xs:long" minOccurs="0" />
+      <xs:element name="ExpectedLifetime_NumberOfCharge_DischargeCycles" type="xs:long" minOccurs="0" />
+      <xs:element name="NumberOf_Full_Charge_DischargeCycles" type="xs:long" minOccurs="0" />
+      <xs:element name="Cycle_LifeReferenceTest" type="xs:string" minOccurs="0" nillable="true" />
+      <xs:element name="C_RateOfRelevantCycle_LifeTest" type="xs:double" minOccurs="0" />
+      <xs:element name="EnergyThroughput" type="xs:double" minOccurs="0" />
+      <xs:element name="CapacityThroughput" type="xs:double" minOccurs="0" />
+      <xs:element name="CapacityThresholdForExhaustion" type="xs:long" minOccurs="0" />
+      <xs:element name="SOCEThresholdForExhaustion" type="xs:long" minOccurs="0" />
+      <xs:element name="WarrantyPeriodOfTheBattery" type="xs:long" minOccurs="0" />
+      <xs:element name="DateOfPuttingTheBatteryIntoService" type="xs:dateTime" minOccurs="0" />
+      <xs:element name="TemperatureRangeIdleState_LowerBoundary" type="xs:long" minOccurs="0" />
+      <xs:element name="TemperatureRangeIdleState_UpperBoundary" type="xs:long" minOccurs="0" />
+      <xs:element name="TimeSpentInExtremeTemperaturesAboveBoundary" type="xs:long" minOccurs="0" />
+      <xs:element name="TimeSpentInExtremeTemperaturesBelowBoundary" type="xs:long" minOccurs="0" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PerformanceAndDurabilityDataType" type="tns:PerformanceAndDurabilityDataType" />
+
+  <xs:complexType name="ListOfPerformanceAndDurabilityDataType">
+    <xs:sequence>
+      <xs:element name="PerformanceAndDurabilityDataType" type="tns:PerformanceAndDurabilityDataType" minOccurs="0" maxOccurs="unbounded" nillable="true" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ListOfPerformanceAndDurabilityDataType" type="tns:ListOfPerformanceAndDurabilityDataType" nillable="true"></xs:element>
+
+  <xs:complexType name="SupplyChainDueDiligenceDataType">
+    <xs:sequence>
+      <xs:element name="InformationOfTheDueDiligenceReport" type="xs:string" minOccurs="0" nillable="true" />
+      <xs:element name="ThirdPartySupplyChainAssurances" type="xs:string" minOccurs="0" nillable="true" />
+      <xs:element name="EUTaxonomyDisclosureStatement" type="xs:string" minOccurs="0" nillable="true" />
+      <xs:element name="SustainabilityReport" type="xs:string" minOccurs="0" nillable="true" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SupplyChainDueDiligenceDataType" type="tns:SupplyChainDueDiligenceDataType" />
+
+  <xs:complexType name="ListOfSupplyChainDueDiligenceDataType">
+    <xs:sequence>
+      <xs:element name="SupplyChainDueDiligenceDataType" type="tns:SupplyChainDueDiligenceDataType" minOccurs="0" maxOccurs="unbounded" nillable="true" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ListOfSupplyChainDueDiligenceDataType" type="tns:ListOfSupplyChainDueDiligenceDataType" nillable="true"></xs:element>
+
+</xs:schema>

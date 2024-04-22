@@ -4,30 +4,57 @@ import Box from '@mui/material/Box/Box';
 import { MonitoredItemTreeView } from '../controls/MonitoredItemTreeView';
 import { Toolbar, Typography, useTheme } from '@mui/material';
 import { ApplicationContext } from '../ApplicationProvider';
-import { SessionState } from '../opcua-utils';
+import { IMonitoredItem, SessionState } from '../opcua-utils';
 import { UserLoginStatus } from '../api';
 import MonitoredItemValueList from '../controls/MonitoredItemValueList';
+import * as OpcUa from '../opcua';
 
 export const MonitorPage = () => {
    const [selection, setSelection] = React.useState<string | undefined>();
+   const inProgress = React.useRef(false);
    const theme = useTheme();
    const context = React.useContext(ApplicationContext);
    const loginStatus = context?.userContext.loginStatus ?? UserLoginStatus.Unknown;
    const sessionState = context?.session?.state ?? SessionState.Closed;
-   const callback = context.connect;
+   const monitoredItems = context.monitoredItems;
+   const createMonitoredItems = context.createMonitoredItems;
 
    React.useEffect(() => {
       const controller = new AbortController();
-      if (loginStatus === UserLoginStatus.LoggedIn && sessionState === SessionState.Closed) {
-         connect();
+      if (loginStatus !== UserLoginStatus.LoggedIn || sessionState !== SessionState.Open) {
+         inProgress.current = false;
+         return;
       }
-      async function connect() {
-         await callback();
+      if (monitoredItems?.size) {
+         if (Array.from(monitoredItems?.values()).find((item) => item.nodeId === OpcUa.VariableIds.Server_ServerStatus_CurrentTime)) {
+            inProgress.current = false;
+            return;
+         }
+      }
+      if (inProgress.current) {
+         return;
+      }
+      inProgress.current = true;
+      doCreateMonitoredItems();
+      async function doCreateMonitoredItems() {
+         createMonitoredItems([
+            {
+               path: ["Server", "ServerStatus", "State"],
+               name: "State",
+               nodeId: OpcUa.VariableIds.Server_ServerStatus_State
+            },
+            {
+               path: ["Server", "ServerStatus", "CurrentTime"],
+               name: "CurrentTime",
+               nodeId: OpcUa.VariableIds.Server_ServerStatus_CurrentTime
+            }] as IMonitoredItem[],
+            controller)
+         .catch(() => inProgress.current = false);
       }
       return () => {
-         controller.abort();
+         // controller.abort();
       };
-   }, [loginStatus, sessionState, callback]);
+   }, [inProgress, monitoredItems, createMonitoredItems, loginStatus, sessionState]);
 
    return (
       <Box sx={{ display: 'flex', flexDirection: 'column', m: 0, p: 0, width: '100%' }}>

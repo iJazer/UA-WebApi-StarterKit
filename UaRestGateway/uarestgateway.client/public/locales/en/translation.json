@@ -1,9 +1,10 @@
 ﻿{
   "main": {
-    "title": "UA REST Gateway",
-    "subtitle": "A REST API for OPC UA Servers",
+    "title": "Battery Product Passport",
+    "subtitle": "Integrating Live Data into a Digital Product Passport",
     "home": "Home",
     "monitoring": "Monitoring",
+    "batterypassport": "Battery Passport",
     "swagger": "API",
     "account": "Account",
     "login": "Login",

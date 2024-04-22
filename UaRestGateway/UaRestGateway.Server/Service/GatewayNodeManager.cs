@@ -537,21 +537,7 @@ namespace UaRestGateway.Server.Service
         /// </summary>
         protected override NodeStateCollection LoadPredefinedNodes(ISystemContext context)
         {
-            NodeStateCollection predefinedNodes = new NodeStateCollection();
-
-            Assembly.GetExecutingAssembly()
-                .GetManifestResourceNames()
-                .Where(x => x.EndsWith(".uanodes"))
-                .ToList().ForEach(name =>
-                {
-                    predefinedNodes.LoadFromBinaryResource(
-                        context,
-                        name,
-                        Assembly.GetExecutingAssembly(),
-                        true);
-                });
-
-            return predefinedNodes;
+            return base.LoadPredefinedNodes(context);
         }
         #endregion
     }

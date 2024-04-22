@@ -89,7 +89,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
          }
       }
       return function cleanup() {
-         controller.abort();
+         //controller.abort();
       };
    }, [loginStatus]);
 

@@ -9,6 +9,7 @@ import { NodeIcon } from './NodeIcon';
 
 import * as OpcUa from '../opcua';
 import { ApplicationContext, IApplicationContext } from '../ApplicationProvider';
+import { IMonitoredItem } from '../opcua-utils';
 
 export interface Item {
    path: string[],
@@ -16,8 +17,7 @@ export interface Item {
    children: Item[]
 }
 
-function buildTree(context: IApplicationContext): Item[] | undefined {
-   const monitoredItems = context.session?.monitoredItems;
+function buildTree(monitoredItems: IMonitoredItem[]): Item[] | undefined {
    const root: Item[] = [];
    if (monitoredItems) {
       for (let ii = 0; ii < (monitoredItems?.length ?? 0); ii++) {
@@ -76,7 +76,15 @@ interface MonitoredItemTreeViewListProps {
 }
 
 export const MonitoredItemTreeView = ({ onSelectionChanged }: MonitoredItemTreeViewListProps) => {
+   const [items, setItems] = React.useState<Item[]>([]);
    const context = React.useContext(ApplicationContext);
+   const monitoredItems = context.monitoredItems;
+
+   React.useEffect(() => {
+      if (monitoredItems) {
+         setItems(buildTree(Array.from(monitoredItems.values())) ?? []);
+      }
+   }, [monitoredItems]);
 
    const handleSelect = (_e: React.SyntheticEvent, nodeId: string) => {
       if (onSelectionChanged) {
@@ -87,8 +95,6 @@ export const MonitoredItemTreeView = ({ onSelectionChanged }: MonitoredItemTreeV
    const handleToggle = (_e: React.SyntheticEvent, nodeIds: string[]) => {
       context.setVisibleMonitoredItems(nodeIds);
    }
-
-   const items = buildTree(context);
 
    return (
       <Paper elevation={3} sx={{ minWidth: '300px', minHeight: '600px', mr: '5px', height: '100%', width: 'auto' }}>

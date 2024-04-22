@@ -5,8 +5,8 @@
   xmlns="http://opcfoundation.org/UA/SDK/Configuration.xsd"
 >
   <ApplicationName>OPC UA REST Gateway</ApplicationName>
-  <ApplicationUri>urn:localhost:opcua-rest-starterkit:opcua-rest-gateway</ApplicationUri>
-  <ProductUri>uri:opcfoundation.org:opcua-rest-starterkit:opcua-rest-gateway</ProductUri>
+  <ApplicationUri>tag:localhost,2024-04:opcua-rest-starterkit:opcua-rest-gateway</ApplicationUri>
+  <ProductUri>tag:opcfoundation.org,2024-04:opcua-rest-starterkit:opcua-rest-gateway</ProductUri>
   <ApplicationType>ClientAndServer_2</ApplicationType>
 
   <SecurityConfiguration>
@@ -74,7 +74,7 @@
 
   <ServerConfiguration>
     <BaseAddresses>
-      <ua:String>opc.tcp://localhost:48040</ua:String>
+      <ua:String>opc.tcp://localhost:46040</ua:String>
     </BaseAddresses>
     <SecurityPolicies>
       <ServerSecurityPolicy>

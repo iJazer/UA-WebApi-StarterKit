@@ -74,7 +74,7 @@ namespace UaRestGateway.Server.Service
                 SecurityLevel = 100,
                 Server = serverDescription,
                 ServerCertificate = templateEndpoint.ServerCertificate,
-                UserIdentityTokens = templateEndpoint.UserIdentityTokens.Where(x => x.TokenType == UserTokenType.IssuedToken).ToArray()
+                UserIdentityTokens = templateEndpoint.UserIdentityTokens.Where(x => x.TokenType == UserTokenType.IssuedToken || x.TokenType == UserTokenType.Anonymous).ToArray()
             });
 
             return hosts;
@@ -86,7 +86,9 @@ namespace UaRestGateway.Server.Service
 
             List<INodeManager> nodeManagers = new List<INodeManager>
             {
-                new GatewayNodeManager(server, configuration)
+                new GatewayNodeManager(server, configuration),
+                new DPPNodeManager(server, configuration),
+                new WoTNodeManager(server, configuration)
             };
 
             // create master node manager.

@@ -18,6 +18,7 @@ export interface BrowseTreeNodeProps {
 }
 
 type BrowseTreeNodeState = {
+   parentId?: string;
    nodes?: IBrowseTreeNode[];
    oldNodes?: IBrowseTreeNode[];
    dirty: boolean;
@@ -25,15 +26,16 @@ type BrowseTreeNodeState = {
 
 type BrowseTreeNodeAction = {
    type: 'update' | 'clear';
+   parentId?: string;
    newNodes?: IBrowseTreeNode[];
 };
 
 function treeViewReducer(state: BrowseTreeNodeState, action: BrowseTreeNodeAction): BrowseTreeNodeState {
    switch (action.type) {
       case 'clear':
-         return { oldNodes: state.oldNodes, nodes: state.nodes, dirty: false };
+         return { parentId: state.parentId, oldNodes: state.oldNodes, nodes: state.nodes, dirty: false };
       case 'update':
-         return { oldNodes: state.nodes, nodes: action.newNodes, dirty: true };
+         return { oldNodes: state.nodes, parentId: action.parentId, nodes: action.newNodes, dirty: true };
       default:
          throw new Error();
    }
@@ -47,17 +49,17 @@ export const BrowseTreeNode = ({ parentId, requestTimeout, selectionId }: Browse
       const controller = new AbortController();
       if (parentId) {
          browseChildren(parentId, requestTimeout, controller, context?.userContext?.user).then((x) => {
-            if (x) dispatch({ type: 'update', newNodes: x });
+            if (x) dispatch({ type: 'update', parentId: parentId, newNodes: x });
          });
       }
       return () => {
-         controller.abort();
+         //controller.abort();
       };
    }, [parentId, requestTimeout, context?.userContext?.user]);
 
    React.useEffect(() => {
       if (state.dirty && context?.updateNodes) {
-         context?.updateNodes(state.oldNodes, state.nodes);
+         context?.updateNodes(state.parentId, state.oldNodes, state.nodes);
          dispatch({ type: 'clear' });
       }
    }, [state, context]);
