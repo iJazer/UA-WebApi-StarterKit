@@ -59,7 +59,7 @@ namespace UaRestGateway.Server.Service
             SystemContext.NodeIdFactory = this;
 
             string[] namespaceUrls = new string[1];
-            namespaceUrls[0] = "tag:opcua-is-interoperability.net,2024:testing";
+            namespaceUrls[0] = "urn:opcua-is-interoperability.net:testing";
             SetNamespaces(namespaceUrls);
         }
         #endregion

@@ -5,8 +5,8 @@
   xmlns="http://opcfoundation.org/UA/SDK/Configuration.xsd"
 >
   <ApplicationName>OPC UA REST Gateway</ApplicationName>
-  <ApplicationUri>tag:localhost,2024-04:opcua-rest-starterkit:opcua-rest-gateway</ApplicationUri>
-  <ProductUri>tag:opcfoundation.org,2024-04:opcua-rest-starterkit:opcua-rest-gateway</ProductUri>
+  <ApplicationUri>urn:localhost:opcua-rest-starterkit:opcua-rest-gateway</ApplicationUri>
+  <ProductUri>urn:opcfoundation.org:opcua-rest-starterkit:opcua-rest-gateway</ProductUri>
   <ApplicationType>ClientAndServer_2</ApplicationType>
 
   <SecurityConfiguration>

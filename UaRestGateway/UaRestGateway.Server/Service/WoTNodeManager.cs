@@ -62,7 +62,7 @@ namespace UaRestGateway.Server.Service
             base(server, configuration)
         {
             SystemContext.NodeIdFactory = this;
-            SetNamespaces([Wot.Namespaces.WotCon, "tag:opcfoundation.org,2024-04:wot-connection:"]);
+            SetNamespaces([Wot.Namespaces.WotCon, "urn:opcfoundation.org:wot-connection"]);
             TypeNamespaceIndex = NamespaceIndexes[0];
             InstanceNamespaceIndex = NamespaceIndexes[1];
         }
