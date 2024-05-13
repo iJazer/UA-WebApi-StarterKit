@@ -1,4 +1,5 @@
 
+export const BatteryPassportNamespaceUri = 'http://opcfoundation.org/UA/BatteryPassport/';
 export enum DataTypeIds {
    BatteryPassportDataType = 'nsu=http://opcfoundation.org/UA/BatteryPassport/;i=3857',
    BatteryMaterialsAndCompositionDataType = 'nsu=http://opcfoundation.org/UA/BatteryPassport/;i=3858',
