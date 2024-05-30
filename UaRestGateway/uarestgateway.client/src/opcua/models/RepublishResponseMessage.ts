@@ -40,11 +40,27 @@ export interface RepublishResponseMessage {
     ServerUris?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof RepublishResponseMessage
+     */
+    ServiceId?: RepublishResponseMessageServiceIdEnum;
+    /**
+     * 
      * @type {RepublishResponse}
      * @memberof RepublishResponseMessage
      */
     Body?: RepublishResponse;
 }
+
+
+/**
+ * @export
+ */
+export const RepublishResponseMessageServiceIdEnum = {
+    NUMBER_833: 833
+} as const;
+export type RepublishResponseMessageServiceIdEnum = typeof RepublishResponseMessageServiceIdEnum[keyof typeof RepublishResponseMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the RepublishResponseMessage interface.
@@ -67,6 +83,7 @@ export function RepublishResponseMessageFromJSONTyped(json: any, ignoreDiscrimin
         
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : RepublishResponseFromJSON(json['Body']),
     };
 }
@@ -82,6 +99,7 @@ export function RepublishResponseMessageToJSON(value?: RepublishResponseMessage 
         
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
+        'ServiceId': value.ServiceId,
         'Body': RepublishResponseToJSON(value.Body),
     };
 }

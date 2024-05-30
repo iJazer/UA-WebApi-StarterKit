@@ -40,11 +40,27 @@ export interface TranslateBrowsePathsToNodeIdsResponseMessage {
     ServerUris?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof TranslateBrowsePathsToNodeIdsResponseMessage
+     */
+    ServiceId?: TranslateBrowsePathsToNodeIdsResponseMessageServiceIdEnum;
+    /**
+     * 
      * @type {TranslateBrowsePathsToNodeIdsResponse}
      * @memberof TranslateBrowsePathsToNodeIdsResponseMessage
      */
     Body?: TranslateBrowsePathsToNodeIdsResponse;
 }
+
+
+/**
+ * @export
+ */
+export const TranslateBrowsePathsToNodeIdsResponseMessageServiceIdEnum = {
+    NUMBER_555: 555
+} as const;
+export type TranslateBrowsePathsToNodeIdsResponseMessageServiceIdEnum = typeof TranslateBrowsePathsToNodeIdsResponseMessageServiceIdEnum[keyof typeof TranslateBrowsePathsToNodeIdsResponseMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the TranslateBrowsePathsToNodeIdsResponseMessage interface.
@@ -67,6 +83,7 @@ export function TranslateBrowsePathsToNodeIdsResponseMessageFromJSONTyped(json: 
         
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : TranslateBrowsePathsToNodeIdsResponseFromJSON(json['Body']),
     };
 }
@@ -82,6 +99,7 @@ export function TranslateBrowsePathsToNodeIdsResponseMessageToJSON(value?: Trans
         
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
+        'ServiceId': value.ServiceId,
         'Body': TranslateBrowsePathsToNodeIdsResponseToJSON(value.Body),
     };
 }

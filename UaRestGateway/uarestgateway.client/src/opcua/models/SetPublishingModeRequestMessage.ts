@@ -46,17 +46,34 @@ export interface SetPublishingModeRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof SetPublishingModeRequestMessage
+     */
+    ServiceId?: SetPublishingModeRequestMessageServiceIdEnum;
+    /**
+     * 
      * @type {SetPublishingModeRequest}
      * @memberof SetPublishingModeRequestMessage
      */
-    Body?: SetPublishingModeRequest;
+    Body: SetPublishingModeRequest;
 }
+
+
+/**
+ * @export
+ */
+export const SetPublishingModeRequestMessageServiceIdEnum = {
+    NUMBER_797: 797
+} as const;
+export type SetPublishingModeRequestMessageServiceIdEnum = typeof SetPublishingModeRequestMessageServiceIdEnum[keyof typeof SetPublishingModeRequestMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the SetPublishingModeRequestMessage interface.
  */
 export function instanceOfSetPublishingModeRequestMessage(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "Body" in value;
 
     return isInstance;
 }
@@ -74,7 +91,8 @@ export function SetPublishingModeRequestMessageFromJSONTyped(json: any, ignoreDi
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'Body': !exists(json, 'Body') ? undefined : SetPublishingModeRequestFromJSON(json['Body']),
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
+        'Body': SetPublishingModeRequestFromJSON(json['Body']),
     };
 }
 
@@ -90,6 +108,7 @@ export function SetPublishingModeRequestMessageToJSON(value?: SetPublishingModeR
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
+        'ServiceId': value.ServiceId,
         'Body': SetPublishingModeRequestToJSON(value.Body),
     };
 }

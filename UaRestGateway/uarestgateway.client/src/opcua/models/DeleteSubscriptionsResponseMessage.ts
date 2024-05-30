@@ -40,11 +40,27 @@ export interface DeleteSubscriptionsResponseMessage {
     ServerUris?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof DeleteSubscriptionsResponseMessage
+     */
+    ServiceId?: DeleteSubscriptionsResponseMessageServiceIdEnum;
+    /**
+     * 
      * @type {DeleteSubscriptionsResponse}
      * @memberof DeleteSubscriptionsResponseMessage
      */
     Body?: DeleteSubscriptionsResponse;
 }
+
+
+/**
+ * @export
+ */
+export const DeleteSubscriptionsResponseMessageServiceIdEnum = {
+    NUMBER_848: 848
+} as const;
+export type DeleteSubscriptionsResponseMessageServiceIdEnum = typeof DeleteSubscriptionsResponseMessageServiceIdEnum[keyof typeof DeleteSubscriptionsResponseMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the DeleteSubscriptionsResponseMessage interface.
@@ -67,6 +83,7 @@ export function DeleteSubscriptionsResponseMessageFromJSONTyped(json: any, ignor
         
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : DeleteSubscriptionsResponseFromJSON(json['Body']),
     };
 }
@@ -82,6 +99,7 @@ export function DeleteSubscriptionsResponseMessageToJSON(value?: DeleteSubscript
         
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
+        'ServiceId': value.ServiceId,
         'Body': DeleteSubscriptionsResponseToJSON(value.Body),
     };
 }

@@ -40,11 +40,27 @@ export interface ModifySubscriptionResponseMessage {
     ServerUris?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof ModifySubscriptionResponseMessage
+     */
+    ServiceId?: ModifySubscriptionResponseMessageServiceIdEnum;
+    /**
+     * 
      * @type {ModifySubscriptionResponse}
      * @memberof ModifySubscriptionResponseMessage
      */
     Body?: ModifySubscriptionResponse;
 }
+
+
+/**
+ * @export
+ */
+export const ModifySubscriptionResponseMessageServiceIdEnum = {
+    NUMBER_794: 794
+} as const;
+export type ModifySubscriptionResponseMessageServiceIdEnum = typeof ModifySubscriptionResponseMessageServiceIdEnum[keyof typeof ModifySubscriptionResponseMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the ModifySubscriptionResponseMessage interface.
@@ -67,6 +83,7 @@ export function ModifySubscriptionResponseMessageFromJSONTyped(json: any, ignore
         
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : ModifySubscriptionResponseFromJSON(json['Body']),
     };
 }
@@ -82,6 +99,7 @@ export function ModifySubscriptionResponseMessageToJSON(value?: ModifySubscripti
         
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
+        'ServiceId': value.ServiceId,
         'Body': ModifySubscriptionResponseToJSON(value.Body),
     };
 }

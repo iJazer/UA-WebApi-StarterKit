@@ -7,13 +7,19 @@ import './i18n';
 
 import CssBaseline from '@mui/material/CssBaseline';
 import UserProvider from './UserProvider';
+import SessionProvider from './SessionProvider.tsx';
+import SubscriptionProvider from './SubscriptionProvider.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
    <React.StrictMode>
       <BrowserRouter>
          <UserProvider>
-            <CssBaseline />
-            <App />
+            <SessionProvider>
+               <SubscriptionProvider>
+                  <CssBaseline />
+                  <App />
+               </SubscriptionProvider>
+            </SessionProvider>
          </UserProvider>
       </BrowserRouter>
    </React.StrictMode>

@@ -46,17 +46,34 @@ export interface RegisterNodesRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof RegisterNodesRequestMessage
+     */
+    ServiceId?: RegisterNodesRequestMessageServiceIdEnum;
+    /**
+     * 
      * @type {RegisterNodesRequest}
      * @memberof RegisterNodesRequestMessage
      */
-    Body?: RegisterNodesRequest;
+    Body: RegisterNodesRequest;
 }
+
+
+/**
+ * @export
+ */
+export const RegisterNodesRequestMessageServiceIdEnum = {
+    NUMBER_558: 558
+} as const;
+export type RegisterNodesRequestMessageServiceIdEnum = typeof RegisterNodesRequestMessageServiceIdEnum[keyof typeof RegisterNodesRequestMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the RegisterNodesRequestMessage interface.
  */
 export function instanceOfRegisterNodesRequestMessage(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "Body" in value;
 
     return isInstance;
 }
@@ -74,7 +91,8 @@ export function RegisterNodesRequestMessageFromJSONTyped(json: any, ignoreDiscri
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'Body': !exists(json, 'Body') ? undefined : RegisterNodesRequestFromJSON(json['Body']),
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
+        'Body': RegisterNodesRequestFromJSON(json['Body']),
     };
 }
 
@@ -90,6 +108,7 @@ export function RegisterNodesRequestMessageToJSON(value?: RegisterNodesRequestMe
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
+        'ServiceId': value.ServiceId,
         'Body': RegisterNodesRequestToJSON(value.Body),
     };
 }

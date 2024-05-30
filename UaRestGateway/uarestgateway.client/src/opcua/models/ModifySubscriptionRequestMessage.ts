@@ -46,17 +46,34 @@ export interface ModifySubscriptionRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof ModifySubscriptionRequestMessage
+     */
+    ServiceId?: ModifySubscriptionRequestMessageServiceIdEnum;
+    /**
+     * 
      * @type {ModifySubscriptionRequest}
      * @memberof ModifySubscriptionRequestMessage
      */
-    Body?: ModifySubscriptionRequest;
+    Body: ModifySubscriptionRequest;
 }
+
+
+/**
+ * @export
+ */
+export const ModifySubscriptionRequestMessageServiceIdEnum = {
+    NUMBER_791: 791
+} as const;
+export type ModifySubscriptionRequestMessageServiceIdEnum = typeof ModifySubscriptionRequestMessageServiceIdEnum[keyof typeof ModifySubscriptionRequestMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the ModifySubscriptionRequestMessage interface.
  */
 export function instanceOfModifySubscriptionRequestMessage(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "Body" in value;
 
     return isInstance;
 }
@@ -74,7 +91,8 @@ export function ModifySubscriptionRequestMessageFromJSONTyped(json: any, ignoreD
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'Body': !exists(json, 'Body') ? undefined : ModifySubscriptionRequestFromJSON(json['Body']),
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
+        'Body': ModifySubscriptionRequestFromJSON(json['Body']),
     };
 }
 
@@ -90,6 +108,7 @@ export function ModifySubscriptionRequestMessageToJSON(value?: ModifySubscriptio
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
+        'ServiceId': value.ServiceId,
         'Body': ModifySubscriptionRequestToJSON(value.Body),
     };
 }

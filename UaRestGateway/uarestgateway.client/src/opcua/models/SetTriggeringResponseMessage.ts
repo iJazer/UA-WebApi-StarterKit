@@ -40,11 +40,27 @@ export interface SetTriggeringResponseMessage {
     ServerUris?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof SetTriggeringResponseMessage
+     */
+    ServiceId?: SetTriggeringResponseMessageServiceIdEnum;
+    /**
+     * 
      * @type {SetTriggeringResponse}
      * @memberof SetTriggeringResponseMessage
      */
     Body?: SetTriggeringResponse;
 }
+
+
+/**
+ * @export
+ */
+export const SetTriggeringResponseMessageServiceIdEnum = {
+    NUMBER_776: 776
+} as const;
+export type SetTriggeringResponseMessageServiceIdEnum = typeof SetTriggeringResponseMessageServiceIdEnum[keyof typeof SetTriggeringResponseMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the SetTriggeringResponseMessage interface.
@@ -67,6 +83,7 @@ export function SetTriggeringResponseMessageFromJSONTyped(json: any, ignoreDiscr
         
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : SetTriggeringResponseFromJSON(json['Body']),
     };
 }
@@ -82,6 +99,7 @@ export function SetTriggeringResponseMessageToJSON(value?: SetTriggeringResponse
         
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
+        'ServiceId': value.ServiceId,
         'Body': SetTriggeringResponseToJSON(value.Body),
     };
 }

@@ -3,38 +3,49 @@ import Box from '@mui/material/Box/Box';
 
 import { BrowseTreeView } from '../controls/BrowseTreeView';
 import VariableValueList from '../controls/VariableValueList';
-import { ApplicationContext } from '../ApplicationProvider';
+import SessionStatusBar from '../controls/SessionStatusBar';
 
 import * as OpcUa from '../opcua';
-import { UserLoginStatus } from '../api';
-import { SessionState } from '../opcua-utils';
+import ServerStatusCard from '../controls/ServerStatusCard';
 
 export const HomePage = () => {
    const [selection, setSelection] = React.useState<OpcUa.ReferenceDescription | undefined>();
-   const [inProgress, setInProgress] = React.useState<boolean>(false);
-   const context = React.useContext(ApplicationContext);
-   const loginStatus = context?.userContext.loginStatus ?? UserLoginStatus.Unknown;
-   const sessionState = context?.session?.state ?? SessionState.Closed;
-   const connect = context.connect;
+   const isMounted = React.useRef(false);
 
    React.useEffect(() => {
-      //const controller = new AbortController();
-      if (!inProgress && loginStatus === UserLoginStatus.LoggedIn && sessionState === SessionState.Closed) {
-         setInProgress(true);
-         connect().finally(() => setInProgress(false));
-      }
+      console.error("Mounted");
+      isMounted.current = true;
       return () => {
-         //controller.abort();
+         isMounted.current = false;
+         console.error("Unmounted");
       };
-   }, [inProgress, loginStatus, sessionState, connect]);
+   }, []);
+
+   const selectPanel = React.useCallback((reference?: OpcUa.ReferenceDescription) => {
+      if (!reference) {
+         return <VariableValueList />;
+      }
+      switch (reference.TypeDefinition) {
+         case OpcUa.VariableTypeIds.ServerStatusType: {
+            return <ServerStatusCard rootId={reference.NodeId} />;
+         }
+         default:
+         {
+            return <VariableValueList selection={reference?.NodeId} />;
+         }
+      }
+   }, []);
 
    return (
-      <Box display="flex" p={2} pb={4} sx={{ width: '100%' }}>
-         <Box flexGrow={0}>
-            <BrowseTreeView rootNodeId={OpcUa.ObjectIds.RootFolder} onSelectionChanged={(x) => setSelection({ ...x })} />
-         </Box>
-         <Box flexGrow={1}>
-            <VariableValueList selection={selection?.NodeId} />
+      <Box display="flex" flexDirection="column" p={2} sx={{ width: '100%' }}>
+         <SessionStatusBar />
+         <Box display="flex" p={2} pb={4} sx={{ width: '100%' }}>
+            <Box flexGrow={0}>
+               <BrowseTreeView rootNodeId={OpcUa.ObjectIds.RootFolder} onSelectionChanged={(x) => setSelection({ ...x })} />
+            </Box>
+            <Box flexGrow={1}>
+               {selectPanel(selection)}
+            </Box>
          </Box>
       </Box>
    );

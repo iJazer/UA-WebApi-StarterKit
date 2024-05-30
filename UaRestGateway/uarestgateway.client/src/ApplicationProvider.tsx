@@ -49,7 +49,7 @@ interface ApplicationProviderProps {
 }
 
 export const ApplicationProvider = ({ children }: ApplicationProviderProps) => {
-   const [session, setSession] = React.useState<ISession>({ state: SessionState.Closed });
+   const [session, setSession] = React.useState<ISession>({ state: SessionState.Disconnected });
    const [monitoredItems, setMonitoredItems] = React.useState<Map<number, IMonitoredItem>>(new Map<number, IMonitoredItem>());
    const [visibleMonitoredItems, setVisibleMonitoredItems] = React.useState<string[]>([]);
    const [triggerPublish, setTriggerPublish] = React.useState<boolean>(false);
@@ -65,8 +65,8 @@ export const ApplicationProvider = ({ children }: ApplicationProviderProps) => {
          if (session.state === SessionState.Opening) {
             return true;
          }
-         if (session.state === SessionState.Closed) {
-            setSession({ state: SessionState.Closed });
+         if (session.state === SessionState.Disconnected) {
+            setSession({ state: SessionState.Disconnected });
             setNodes(new Map<string, IBrowseTreeNode>());
             setMonitoredItems(new Map<number, IMonitoredItem>());
             return false;
@@ -149,7 +149,7 @@ export const ApplicationProvider = ({ children }: ApplicationProviderProps) => {
       requestTimeout: defaultRequestTimeout,
       session: session,
       connect: async () => setSession(oldSession => {
-         if (oldSession.state === SessionState.Closed) {
+         if (oldSession.state === SessionState.Disconnected) {
             return { ...oldSession, state: SessionState.Opening };
          }
          return oldSession;

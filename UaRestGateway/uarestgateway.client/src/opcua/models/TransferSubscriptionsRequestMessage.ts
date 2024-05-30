@@ -46,17 +46,34 @@ export interface TransferSubscriptionsRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof TransferSubscriptionsRequestMessage
+     */
+    ServiceId?: TransferSubscriptionsRequestMessageServiceIdEnum;
+    /**
+     * 
      * @type {TransferSubscriptionsRequest}
      * @memberof TransferSubscriptionsRequestMessage
      */
-    Body?: TransferSubscriptionsRequest;
+    Body: TransferSubscriptionsRequest;
 }
+
+
+/**
+ * @export
+ */
+export const TransferSubscriptionsRequestMessageServiceIdEnum = {
+    NUMBER_839: 839
+} as const;
+export type TransferSubscriptionsRequestMessageServiceIdEnum = typeof TransferSubscriptionsRequestMessageServiceIdEnum[keyof typeof TransferSubscriptionsRequestMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the TransferSubscriptionsRequestMessage interface.
  */
 export function instanceOfTransferSubscriptionsRequestMessage(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "Body" in value;
 
     return isInstance;
 }
@@ -74,7 +91,8 @@ export function TransferSubscriptionsRequestMessageFromJSONTyped(json: any, igno
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'Body': !exists(json, 'Body') ? undefined : TransferSubscriptionsRequestFromJSON(json['Body']),
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
+        'Body': TransferSubscriptionsRequestFromJSON(json['Body']),
     };
 }
 
@@ -90,6 +108,7 @@ export function TransferSubscriptionsRequestMessageToJSON(value?: TransferSubscr
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
+        'ServiceId': value.ServiceId,
         'Body': TransferSubscriptionsRequestToJSON(value.Body),
     };
 }

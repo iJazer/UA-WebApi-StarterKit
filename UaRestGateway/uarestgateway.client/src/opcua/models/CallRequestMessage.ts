@@ -46,17 +46,34 @@ export interface CallRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof CallRequestMessage
+     */
+    ServiceId?: CallRequestMessageServiceIdEnum;
+    /**
+     * 
      * @type {CallRequest}
      * @memberof CallRequestMessage
      */
-    Body?: CallRequest;
+    Body: CallRequest;
 }
+
+
+/**
+ * @export
+ */
+export const CallRequestMessageServiceIdEnum = {
+    NUMBER_710: 710
+} as const;
+export type CallRequestMessageServiceIdEnum = typeof CallRequestMessageServiceIdEnum[keyof typeof CallRequestMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the CallRequestMessage interface.
  */
 export function instanceOfCallRequestMessage(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "Body" in value;
 
     return isInstance;
 }
@@ -74,7 +91,8 @@ export function CallRequestMessageFromJSONTyped(json: any, ignoreDiscriminator: 
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'Body': !exists(json, 'Body') ? undefined : CallRequestFromJSON(json['Body']),
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
+        'Body': CallRequestFromJSON(json['Body']),
     };
 }
 
@@ -90,6 +108,7 @@ export function CallRequestMessageToJSON(value?: CallRequestMessage | null): any
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
+        'ServiceId': value.ServiceId,
         'Body': CallRequestToJSON(value.Body),
     };
 }

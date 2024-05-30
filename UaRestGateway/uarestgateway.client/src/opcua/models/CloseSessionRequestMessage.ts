@@ -46,17 +46,34 @@ export interface CloseSessionRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof CloseSessionRequestMessage
+     */
+    ServiceId?: CloseSessionRequestMessageServiceIdEnum;
+    /**
+     * 
      * @type {CloseSessionRequest}
      * @memberof CloseSessionRequestMessage
      */
-    Body?: CloseSessionRequest;
+    Body: CloseSessionRequest;
 }
+
+
+/**
+ * @export
+ */
+export const CloseSessionRequestMessageServiceIdEnum = {
+    NUMBER_471: 471
+} as const;
+export type CloseSessionRequestMessageServiceIdEnum = typeof CloseSessionRequestMessageServiceIdEnum[keyof typeof CloseSessionRequestMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the CloseSessionRequestMessage interface.
  */
 export function instanceOfCloseSessionRequestMessage(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "Body" in value;
 
     return isInstance;
 }
@@ -74,7 +91,8 @@ export function CloseSessionRequestMessageFromJSONTyped(json: any, ignoreDiscrim
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'Body': !exists(json, 'Body') ? undefined : CloseSessionRequestFromJSON(json['Body']),
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
+        'Body': CloseSessionRequestFromJSON(json['Body']),
     };
 }
 
@@ -90,6 +108,7 @@ export function CloseSessionRequestMessageToJSON(value?: CloseSessionRequestMess
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
+        'ServiceId': value.ServiceId,
         'Body': CloseSessionRequestToJSON(value.Body),
     };
 }

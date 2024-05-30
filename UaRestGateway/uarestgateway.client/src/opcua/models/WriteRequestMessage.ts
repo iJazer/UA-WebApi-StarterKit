@@ -46,17 +46,34 @@ export interface WriteRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof WriteRequestMessage
+     */
+    ServiceId?: WriteRequestMessageServiceIdEnum;
+    /**
+     * 
      * @type {WriteRequest}
      * @memberof WriteRequestMessage
      */
-    Body?: WriteRequest;
+    Body: WriteRequest;
 }
+
+
+/**
+ * @export
+ */
+export const WriteRequestMessageServiceIdEnum = {
+    NUMBER_671: 671
+} as const;
+export type WriteRequestMessageServiceIdEnum = typeof WriteRequestMessageServiceIdEnum[keyof typeof WriteRequestMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the WriteRequestMessage interface.
  */
 export function instanceOfWriteRequestMessage(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "Body" in value;
 
     return isInstance;
 }
@@ -74,7 +91,8 @@ export function WriteRequestMessageFromJSONTyped(json: any, ignoreDiscriminator:
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'Body': !exists(json, 'Body') ? undefined : WriteRequestFromJSON(json['Body']),
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
+        'Body': WriteRequestFromJSON(json['Body']),
     };
 }
 
@@ -90,6 +108,7 @@ export function WriteRequestMessageToJSON(value?: WriteRequestMessage | null): a
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
+        'ServiceId': value.ServiceId,
         'Body': WriteRequestToJSON(value.Body),
     };
 }

@@ -46,17 +46,34 @@ export interface FindServersRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof FindServersRequestMessage
+     */
+    ServiceId?: FindServersRequestMessageServiceIdEnum;
+    /**
+     * 
      * @type {FindServersRequest}
      * @memberof FindServersRequestMessage
      */
-    Body?: FindServersRequest;
+    Body: FindServersRequest;
 }
+
+
+/**
+ * @export
+ */
+export const FindServersRequestMessageServiceIdEnum = {
+    NUMBER_420: 420
+} as const;
+export type FindServersRequestMessageServiceIdEnum = typeof FindServersRequestMessageServiceIdEnum[keyof typeof FindServersRequestMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the FindServersRequestMessage interface.
  */
 export function instanceOfFindServersRequestMessage(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "Body" in value;
 
     return isInstance;
 }
@@ -74,7 +91,8 @@ export function FindServersRequestMessageFromJSONTyped(json: any, ignoreDiscrimi
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'Body': !exists(json, 'Body') ? undefined : FindServersRequestFromJSON(json['Body']),
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
+        'Body': FindServersRequestFromJSON(json['Body']),
     };
 }
 
@@ -90,6 +108,7 @@ export function FindServersRequestMessageToJSON(value?: FindServersRequestMessag
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
+        'ServiceId': value.ServiceId,
         'Body': FindServersRequestToJSON(value.Body),
     };
 }

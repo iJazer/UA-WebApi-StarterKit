@@ -28,7 +28,7 @@ namespace UaRestGateway.Server
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
+    
             builder.Services.AddMemoryCache(a =>
             {
                 a.ExpirationScanFrequency = TimeSpan.FromSeconds(600);
@@ -99,6 +99,7 @@ namespace UaRestGateway.Server
             app.UseStaticFiles();
             
             app.UseSession();
+            app.UseWebSockets();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

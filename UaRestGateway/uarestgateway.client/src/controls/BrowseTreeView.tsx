@@ -10,6 +10,7 @@ import { IBrowseTreeNode, ApplicationContext } from '../ApplicationProvider';
 import { TreeItem } from '@mui/x-tree-view/TreeItem/TreeItem';
 import { NodeIcon } from './NodeIcon';
 import { browseChildren } from '../opcua-utils';
+
 export interface BrowseTreeNodeProps {
    parentId?: string
    requestTimeout?: number,
@@ -44,17 +45,21 @@ function treeViewReducer(state: BrowseTreeNodeState, action: BrowseTreeNodeActio
 export const BrowseTreeNode = ({ parentId, requestTimeout, selectionId }: BrowseTreeNodeProps) => {
    const [state, dispatch] = React.useReducer(treeViewReducer, { dirty: false });
    const context = React.useContext(ApplicationContext);
+   const controller = React.useRef(new AbortController());
 
    React.useEffect(() => {
-      const controller = new AbortController();
+      const current = controller.current;
+      return () => {
+         current.abort();
+      };
+   }, []);
+
+   React.useEffect(() => {
       if (parentId) {
          browseChildren(parentId, requestTimeout, controller, context?.userContext?.user).then((x) => {
             if (x) dispatch({ type: 'update', parentId: parentId, newNodes: x });
          });
       }
-      return () => {
-         //controller.abort();
-      };
    }, [parentId, requestTimeout, context?.userContext?.user]);
 
    React.useEffect(() => {

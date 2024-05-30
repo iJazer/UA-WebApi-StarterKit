@@ -40,11 +40,27 @@ export interface UnregisterNodesResponseMessage {
     ServerUris?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof UnregisterNodesResponseMessage
+     */
+    ServiceId?: UnregisterNodesResponseMessageServiceIdEnum;
+    /**
+     * 
      * @type {UnregisterNodesResponse}
      * @memberof UnregisterNodesResponseMessage
      */
     Body?: UnregisterNodesResponse;
 }
+
+
+/**
+ * @export
+ */
+export const UnregisterNodesResponseMessageServiceIdEnum = {
+    NUMBER_567: 567
+} as const;
+export type UnregisterNodesResponseMessageServiceIdEnum = typeof UnregisterNodesResponseMessageServiceIdEnum[keyof typeof UnregisterNodesResponseMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the UnregisterNodesResponseMessage interface.
@@ -67,6 +83,7 @@ export function UnregisterNodesResponseMessageFromJSONTyped(json: any, ignoreDis
         
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : UnregisterNodesResponseFromJSON(json['Body']),
     };
 }
@@ -82,6 +99,7 @@ export function UnregisterNodesResponseMessageToJSON(value?: UnregisterNodesResp
         
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
+        'ServiceId': value.ServiceId,
         'Body': UnregisterNodesResponseToJSON(value.Body),
     };
 }

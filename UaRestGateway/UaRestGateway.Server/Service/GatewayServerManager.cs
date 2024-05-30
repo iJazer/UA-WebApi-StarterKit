@@ -86,9 +86,7 @@ namespace UaRestGateway.Server.Service
 
             List<INodeManager> nodeManagers = new List<INodeManager>
             {
-                new GatewayNodeManager(server, configuration),
-                new DPPNodeManager(server, configuration),
-                new WoTNodeManager(server, configuration)
+                new GatewayNodeManager(server, configuration)
             };
 
             // create master node manager.

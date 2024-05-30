@@ -40,11 +40,27 @@ export interface PublishResponseMessage {
     ServerUris?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof PublishResponseMessage
+     */
+    ServiceId?: PublishResponseMessageServiceIdEnum;
+    /**
+     * 
      * @type {PublishResponse}
      * @memberof PublishResponseMessage
      */
     Body?: PublishResponse;
 }
+
+
+/**
+ * @export
+ */
+export const PublishResponseMessageServiceIdEnum = {
+    NUMBER_827: 827
+} as const;
+export type PublishResponseMessageServiceIdEnum = typeof PublishResponseMessageServiceIdEnum[keyof typeof PublishResponseMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the PublishResponseMessage interface.
@@ -67,6 +83,7 @@ export function PublishResponseMessageFromJSONTyped(json: any, ignoreDiscriminat
         
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : PublishResponseFromJSON(json['Body']),
     };
 }
@@ -82,6 +99,7 @@ export function PublishResponseMessageToJSON(value?: PublishResponseMessage | nu
         
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
+        'ServiceId': value.ServiceId,
         'Body': PublishResponseToJSON(value.Body),
     };
 }

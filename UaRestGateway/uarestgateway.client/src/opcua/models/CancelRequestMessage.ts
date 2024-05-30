@@ -46,17 +46,34 @@ export interface CancelRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof CancelRequestMessage
+     */
+    ServiceId?: CancelRequestMessageServiceIdEnum;
+    /**
+     * 
      * @type {CancelRequest}
      * @memberof CancelRequestMessage
      */
-    Body?: CancelRequest;
+    Body: CancelRequest;
 }
+
+
+/**
+ * @export
+ */
+export const CancelRequestMessageServiceIdEnum = {
+    NUMBER_477: 477
+} as const;
+export type CancelRequestMessageServiceIdEnum = typeof CancelRequestMessageServiceIdEnum[keyof typeof CancelRequestMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the CancelRequestMessage interface.
  */
 export function instanceOfCancelRequestMessage(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "Body" in value;
 
     return isInstance;
 }
@@ -74,7 +91,8 @@ export function CancelRequestMessageFromJSONTyped(json: any, ignoreDiscriminator
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'Body': !exists(json, 'Body') ? undefined : CancelRequestFromJSON(json['Body']),
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
+        'Body': CancelRequestFromJSON(json['Body']),
     };
 }
 
@@ -90,6 +108,7 @@ export function CancelRequestMessageToJSON(value?: CancelRequestMessage | null):
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
+        'ServiceId': value.ServiceId,
         'Body': CancelRequestToJSON(value.Body),
     };
 }

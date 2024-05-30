@@ -46,17 +46,34 @@ export interface CreateSubscriptionRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof CreateSubscriptionRequestMessage
+     */
+    ServiceId?: CreateSubscriptionRequestMessageServiceIdEnum;
+    /**
+     * 
      * @type {CreateSubscriptionRequest}
      * @memberof CreateSubscriptionRequestMessage
      */
-    Body?: CreateSubscriptionRequest;
+    Body: CreateSubscriptionRequest;
 }
+
+
+/**
+ * @export
+ */
+export const CreateSubscriptionRequestMessageServiceIdEnum = {
+    NUMBER_785: 785
+} as const;
+export type CreateSubscriptionRequestMessageServiceIdEnum = typeof CreateSubscriptionRequestMessageServiceIdEnum[keyof typeof CreateSubscriptionRequestMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the CreateSubscriptionRequestMessage interface.
  */
 export function instanceOfCreateSubscriptionRequestMessage(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "Body" in value;
 
     return isInstance;
 }
@@ -74,7 +91,8 @@ export function CreateSubscriptionRequestMessageFromJSONTyped(json: any, ignoreD
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'Body': !exists(json, 'Body') ? undefined : CreateSubscriptionRequestFromJSON(json['Body']),
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
+        'Body': CreateSubscriptionRequestFromJSON(json['Body']),
     };
 }
 
@@ -90,6 +108,7 @@ export function CreateSubscriptionRequestMessageToJSON(value?: CreateSubscriptio
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
+        'ServiceId': value.ServiceId,
         'Body': CreateSubscriptionRequestToJSON(value.Body),
     };
 }

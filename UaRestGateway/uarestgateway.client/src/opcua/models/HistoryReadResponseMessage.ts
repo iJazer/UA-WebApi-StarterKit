@@ -40,11 +40,27 @@ export interface HistoryReadResponseMessage {
     ServerUris?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof HistoryReadResponseMessage
+     */
+    ServiceId?: HistoryReadResponseMessageServiceIdEnum;
+    /**
+     * 
      * @type {HistoryReadResponse}
      * @memberof HistoryReadResponseMessage
      */
     Body?: HistoryReadResponse;
 }
+
+
+/**
+ * @export
+ */
+export const HistoryReadResponseMessageServiceIdEnum = {
+    NUMBER_665: 665
+} as const;
+export type HistoryReadResponseMessageServiceIdEnum = typeof HistoryReadResponseMessageServiceIdEnum[keyof typeof HistoryReadResponseMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the HistoryReadResponseMessage interface.
@@ -67,6 +83,7 @@ export function HistoryReadResponseMessageFromJSONTyped(json: any, ignoreDiscrim
         
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : HistoryReadResponseFromJSON(json['Body']),
     };
 }
@@ -82,6 +99,7 @@ export function HistoryReadResponseMessageToJSON(value?: HistoryReadResponseMess
         
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
+        'ServiceId': value.ServiceId,
         'Body': HistoryReadResponseToJSON(value.Body),
     };
 }

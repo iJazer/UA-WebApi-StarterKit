@@ -40,11 +40,27 @@ export interface GetEndpointsResponseMessage {
     ServerUris?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof GetEndpointsResponseMessage
+     */
+    ServiceId?: GetEndpointsResponseMessageServiceIdEnum;
+    /**
+     * 
      * @type {GetEndpointsResponse}
      * @memberof GetEndpointsResponseMessage
      */
     Body?: GetEndpointsResponse;
 }
+
+
+/**
+ * @export
+ */
+export const GetEndpointsResponseMessageServiceIdEnum = {
+    NUMBER_429: 429
+} as const;
+export type GetEndpointsResponseMessageServiceIdEnum = typeof GetEndpointsResponseMessageServiceIdEnum[keyof typeof GetEndpointsResponseMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the GetEndpointsResponseMessage interface.
@@ -67,6 +83,7 @@ export function GetEndpointsResponseMessageFromJSONTyped(json: any, ignoreDiscri
         
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : GetEndpointsResponseFromJSON(json['Body']),
     };
 }
@@ -82,6 +99,7 @@ export function GetEndpointsResponseMessageToJSON(value?: GetEndpointsResponseMe
         
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
+        'ServiceId': value.ServiceId,
         'Body': GetEndpointsResponseToJSON(value.Body),
     };
 }

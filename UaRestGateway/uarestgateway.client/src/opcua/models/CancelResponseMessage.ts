@@ -40,11 +40,27 @@ export interface CancelResponseMessage {
     ServerUris?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof CancelResponseMessage
+     */
+    ServiceId?: CancelResponseMessageServiceIdEnum;
+    /**
+     * 
      * @type {CancelResponse}
      * @memberof CancelResponseMessage
      */
     Body?: CancelResponse;
 }
+
+
+/**
+ * @export
+ */
+export const CancelResponseMessageServiceIdEnum = {
+    NUMBER_480: 480
+} as const;
+export type CancelResponseMessageServiceIdEnum = typeof CancelResponseMessageServiceIdEnum[keyof typeof CancelResponseMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the CancelResponseMessage interface.
@@ -67,6 +83,7 @@ export function CancelResponseMessageFromJSONTyped(json: any, ignoreDiscriminato
         
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : CancelResponseFromJSON(json['Body']),
     };
 }
@@ -82,6 +99,7 @@ export function CancelResponseMessageToJSON(value?: CancelResponseMessage | null
         
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
+        'ServiceId': value.ServiceId,
         'Body': CancelResponseToJSON(value.Body),
     };
 }

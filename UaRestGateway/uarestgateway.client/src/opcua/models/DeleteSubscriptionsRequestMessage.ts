@@ -46,17 +46,34 @@ export interface DeleteSubscriptionsRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof DeleteSubscriptionsRequestMessage
+     */
+    ServiceId?: DeleteSubscriptionsRequestMessageServiceIdEnum;
+    /**
+     * 
      * @type {DeleteSubscriptionsRequest}
      * @memberof DeleteSubscriptionsRequestMessage
      */
-    Body?: DeleteSubscriptionsRequest;
+    Body: DeleteSubscriptionsRequest;
 }
+
+
+/**
+ * @export
+ */
+export const DeleteSubscriptionsRequestMessageServiceIdEnum = {
+    NUMBER_845: 845
+} as const;
+export type DeleteSubscriptionsRequestMessageServiceIdEnum = typeof DeleteSubscriptionsRequestMessageServiceIdEnum[keyof typeof DeleteSubscriptionsRequestMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the DeleteSubscriptionsRequestMessage interface.
  */
 export function instanceOfDeleteSubscriptionsRequestMessage(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "Body" in value;
 
     return isInstance;
 }
@@ -74,7 +91,8 @@ export function DeleteSubscriptionsRequestMessageFromJSONTyped(json: any, ignore
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'Body': !exists(json, 'Body') ? undefined : DeleteSubscriptionsRequestFromJSON(json['Body']),
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
+        'Body': DeleteSubscriptionsRequestFromJSON(json['Body']),
     };
 }
 
@@ -90,6 +108,7 @@ export function DeleteSubscriptionsRequestMessageToJSON(value?: DeleteSubscripti
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
+        'ServiceId': value.ServiceId,
         'Body': DeleteSubscriptionsRequestToJSON(value.Body),
     };
 }

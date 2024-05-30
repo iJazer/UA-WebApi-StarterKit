@@ -80,23 +80,23 @@ const darkThemeOverrides: ThemeOptions = {
                }
             `
       },
-      MuiButton: {
-         styleOverrides: {
-            root: {
-               backgroundColor: Color.grey[500],
-               borderRadius: '0px',
-               margin: '0px',
-               minHeight: '0px',
-               textTransform: 'unset',
-               '&:hover': {
-                  backgroundColor: Color.grey[50],
-               },
-               '& a': {
-                  color: Color.grey[900]
-               }
-            }
-         }
-      },
+      //MuiButton: {
+      //   styleOverrides: {
+      //      root: {
+      //         backgroundColor: Color.grey[500],
+      //         borderRadius: '0px',
+      //         margin: '0px',
+      //         minHeight: '0px',
+      //         textTransform: 'unset',
+      //         '&:hover': {
+      //            backgroundColor: Color.grey[50],
+      //         },
+      //         '& a': {
+      //            color: Color.grey[900]
+      //         }
+      //      }
+      //   }
+      //},
    }
 };
 

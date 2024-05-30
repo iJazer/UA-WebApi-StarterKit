@@ -40,11 +40,27 @@ export interface RegisterNodesResponseMessage {
     ServerUris?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof RegisterNodesResponseMessage
+     */
+    ServiceId?: RegisterNodesResponseMessageServiceIdEnum;
+    /**
+     * 
      * @type {RegisterNodesResponse}
      * @memberof RegisterNodesResponseMessage
      */
     Body?: RegisterNodesResponse;
 }
+
+
+/**
+ * @export
+ */
+export const RegisterNodesResponseMessageServiceIdEnum = {
+    NUMBER_561: 561
+} as const;
+export type RegisterNodesResponseMessageServiceIdEnum = typeof RegisterNodesResponseMessageServiceIdEnum[keyof typeof RegisterNodesResponseMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the RegisterNodesResponseMessage interface.
@@ -67,6 +83,7 @@ export function RegisterNodesResponseMessageFromJSONTyped(json: any, ignoreDiscr
         
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : RegisterNodesResponseFromJSON(json['Body']),
     };
 }
@@ -82,6 +99,7 @@ export function RegisterNodesResponseMessageToJSON(value?: RegisterNodesResponse
         
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
+        'ServiceId': value.ServiceId,
         'Body': RegisterNodesResponseToJSON(value.Body),
     };
 }

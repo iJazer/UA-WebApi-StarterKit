@@ -46,17 +46,34 @@ export interface PublishRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof PublishRequestMessage
+     */
+    ServiceId?: PublishRequestMessageServiceIdEnum;
+    /**
+     * 
      * @type {PublishRequest}
      * @memberof PublishRequestMessage
      */
-    Body?: PublishRequest;
+    Body: PublishRequest;
 }
+
+
+/**
+ * @export
+ */
+export const PublishRequestMessageServiceIdEnum = {
+    NUMBER_824: 824
+} as const;
+export type PublishRequestMessageServiceIdEnum = typeof PublishRequestMessageServiceIdEnum[keyof typeof PublishRequestMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the PublishRequestMessage interface.
  */
 export function instanceOfPublishRequestMessage(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "Body" in value;
 
     return isInstance;
 }
@@ -74,7 +91,8 @@ export function PublishRequestMessageFromJSONTyped(json: any, ignoreDiscriminato
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'Body': !exists(json, 'Body') ? undefined : PublishRequestFromJSON(json['Body']),
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
+        'Body': PublishRequestFromJSON(json['Body']),
     };
 }
 
@@ -90,6 +108,7 @@ export function PublishRequestMessageToJSON(value?: PublishRequestMessage | null
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
+        'ServiceId': value.ServiceId,
         'Body': PublishRequestToJSON(value.Body),
     };
 }

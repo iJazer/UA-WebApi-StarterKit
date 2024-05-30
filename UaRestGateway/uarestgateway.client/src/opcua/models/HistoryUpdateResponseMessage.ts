@@ -40,11 +40,27 @@ export interface HistoryUpdateResponseMessage {
     ServerUris?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof HistoryUpdateResponseMessage
+     */
+    ServiceId?: HistoryUpdateResponseMessageServiceIdEnum;
+    /**
+     * 
      * @type {HistoryUpdateResponse}
      * @memberof HistoryUpdateResponseMessage
      */
     Body?: HistoryUpdateResponse;
 }
+
+
+/**
+ * @export
+ */
+export const HistoryUpdateResponseMessageServiceIdEnum = {
+    NUMBER_701: 701
+} as const;
+export type HistoryUpdateResponseMessageServiceIdEnum = typeof HistoryUpdateResponseMessageServiceIdEnum[keyof typeof HistoryUpdateResponseMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the HistoryUpdateResponseMessage interface.
@@ -67,6 +83,7 @@ export function HistoryUpdateResponseMessageFromJSONTyped(json: any, ignoreDiscr
         
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : HistoryUpdateResponseFromJSON(json['Body']),
     };
 }
@@ -82,6 +99,7 @@ export function HistoryUpdateResponseMessageToJSON(value?: HistoryUpdateResponse
         
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
+        'ServiceId': value.ServiceId,
         'Body': HistoryUpdateResponseToJSON(value.Body),
     };
 }

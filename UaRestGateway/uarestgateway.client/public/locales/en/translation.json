@@ -1,7 +1,7 @@
 ﻿{
   "main": {
-    "title": "Battery Product Passport",
-    "subtitle": "Integrating Live Data into a Digital Product Passport",
+    "title": "OPC UA Rest Prototype",
+    "subtitle": "OPC UA Communication Using REST APIs",
     "home": "Home",
     "monitoring": "Monitoring",
     "batterypassport": "Battery Passport",

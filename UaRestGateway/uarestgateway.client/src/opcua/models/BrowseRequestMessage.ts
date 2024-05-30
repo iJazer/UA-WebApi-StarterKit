@@ -46,17 +46,34 @@ export interface BrowseRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof BrowseRequestMessage
+     */
+    ServiceId?: BrowseRequestMessageServiceIdEnum;
+    /**
+     * 
      * @type {BrowseRequest}
      * @memberof BrowseRequestMessage
      */
-    Body?: BrowseRequest;
+    Body: BrowseRequest;
 }
+
+
+/**
+ * @export
+ */
+export const BrowseRequestMessageServiceIdEnum = {
+    NUMBER_525: 525
+} as const;
+export type BrowseRequestMessageServiceIdEnum = typeof BrowseRequestMessageServiceIdEnum[keyof typeof BrowseRequestMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the BrowseRequestMessage interface.
  */
 export function instanceOfBrowseRequestMessage(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "Body" in value;
 
     return isInstance;
 }
@@ -74,7 +91,8 @@ export function BrowseRequestMessageFromJSONTyped(json: any, ignoreDiscriminator
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'Body': !exists(json, 'Body') ? undefined : BrowseRequestFromJSON(json['Body']),
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
+        'Body': BrowseRequestFromJSON(json['Body']),
     };
 }
 
@@ -90,6 +108,7 @@ export function BrowseRequestMessageToJSON(value?: BrowseRequestMessage | null):
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
+        'ServiceId': value.ServiceId,
         'Body': BrowseRequestToJSON(value.Body),
     };
 }

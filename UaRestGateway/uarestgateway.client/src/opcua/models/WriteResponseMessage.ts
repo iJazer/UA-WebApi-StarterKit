@@ -40,11 +40,27 @@ export interface WriteResponseMessage {
     ServerUris?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof WriteResponseMessage
+     */
+    ServiceId?: WriteResponseMessageServiceIdEnum;
+    /**
+     * 
      * @type {WriteResponse}
      * @memberof WriteResponseMessage
      */
     Body?: WriteResponse;
 }
+
+
+/**
+ * @export
+ */
+export const WriteResponseMessageServiceIdEnum = {
+    NUMBER_674: 674
+} as const;
+export type WriteResponseMessageServiceIdEnum = typeof WriteResponseMessageServiceIdEnum[keyof typeof WriteResponseMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the WriteResponseMessage interface.
@@ -67,6 +83,7 @@ export function WriteResponseMessageFromJSONTyped(json: any, ignoreDiscriminator
         
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : WriteResponseFromJSON(json['Body']),
     };
 }
@@ -82,6 +99,7 @@ export function WriteResponseMessageToJSON(value?: WriteResponseMessage | null):
         
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
+        'ServiceId': value.ServiceId,
         'Body': WriteResponseToJSON(value.Body),
     };
 }

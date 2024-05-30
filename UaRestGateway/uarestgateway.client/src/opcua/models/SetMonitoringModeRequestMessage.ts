@@ -46,17 +46,34 @@ export interface SetMonitoringModeRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof SetMonitoringModeRequestMessage
+     */
+    ServiceId?: SetMonitoringModeRequestMessageServiceIdEnum;
+    /**
+     * 
      * @type {SetMonitoringModeRequest}
      * @memberof SetMonitoringModeRequestMessage
      */
-    Body?: SetMonitoringModeRequest;
+    Body: SetMonitoringModeRequest;
 }
+
+
+/**
+ * @export
+ */
+export const SetMonitoringModeRequestMessageServiceIdEnum = {
+    NUMBER_767: 767
+} as const;
+export type SetMonitoringModeRequestMessageServiceIdEnum = typeof SetMonitoringModeRequestMessageServiceIdEnum[keyof typeof SetMonitoringModeRequestMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the SetMonitoringModeRequestMessage interface.
  */
 export function instanceOfSetMonitoringModeRequestMessage(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "Body" in value;
 
     return isInstance;
 }
@@ -74,7 +91,8 @@ export function SetMonitoringModeRequestMessageFromJSONTyped(json: any, ignoreDi
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'Body': !exists(json, 'Body') ? undefined : SetMonitoringModeRequestFromJSON(json['Body']),
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
+        'Body': SetMonitoringModeRequestFromJSON(json['Body']),
     };
 }
 
@@ -90,6 +108,7 @@ export function SetMonitoringModeRequestMessageToJSON(value?: SetMonitoringModeR
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
+        'ServiceId': value.ServiceId,
         'Body': SetMonitoringModeRequestToJSON(value.Body),
     };
 }

@@ -57,6 +57,11 @@ export default defineConfig({
          '^/data': {
             target: 'https://localhost:7010/',
             secure: false
+         },
+         '^/stream': {
+            target: 'wss://localhost:7010/',
+            ws: true,
+            secure: false
          }
       },
       port: 44429,

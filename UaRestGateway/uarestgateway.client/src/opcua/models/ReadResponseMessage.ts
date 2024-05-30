@@ -40,11 +40,27 @@ export interface ReadResponseMessage {
     ServerUris?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof ReadResponseMessage
+     */
+    ServiceId?: ReadResponseMessageServiceIdEnum;
+    /**
+     * 
      * @type {ReadResponse}
      * @memberof ReadResponseMessage
      */
     Body?: ReadResponse;
 }
+
+
+/**
+ * @export
+ */
+export const ReadResponseMessageServiceIdEnum = {
+    NUMBER_632: 632
+} as const;
+export type ReadResponseMessageServiceIdEnum = typeof ReadResponseMessageServiceIdEnum[keyof typeof ReadResponseMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the ReadResponseMessage interface.
@@ -67,6 +83,7 @@ export function ReadResponseMessageFromJSONTyped(json: any, ignoreDiscriminator:
         
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : ReadResponseFromJSON(json['Body']),
     };
 }
@@ -82,6 +99,7 @@ export function ReadResponseMessageToJSON(value?: ReadResponseMessage | null): a
         
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
+        'ServiceId': value.ServiceId,
         'Body': ReadResponseToJSON(value.Body),
     };
 }

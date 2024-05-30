@@ -46,17 +46,34 @@ export interface TranslateBrowsePathsToNodeIdsRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof TranslateBrowsePathsToNodeIdsRequestMessage
+     */
+    ServiceId?: TranslateBrowsePathsToNodeIdsRequestMessageServiceIdEnum;
+    /**
+     * 
      * @type {TranslateBrowsePathsToNodeIdsRequest}
      * @memberof TranslateBrowsePathsToNodeIdsRequestMessage
      */
-    Body?: TranslateBrowsePathsToNodeIdsRequest;
+    Body: TranslateBrowsePathsToNodeIdsRequest;
 }
+
+
+/**
+ * @export
+ */
+export const TranslateBrowsePathsToNodeIdsRequestMessageServiceIdEnum = {
+    NUMBER_552: 552
+} as const;
+export type TranslateBrowsePathsToNodeIdsRequestMessageServiceIdEnum = typeof TranslateBrowsePathsToNodeIdsRequestMessageServiceIdEnum[keyof typeof TranslateBrowsePathsToNodeIdsRequestMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the TranslateBrowsePathsToNodeIdsRequestMessage interface.
  */
 export function instanceOfTranslateBrowsePathsToNodeIdsRequestMessage(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "Body" in value;
 
     return isInstance;
 }
@@ -74,7 +91,8 @@ export function TranslateBrowsePathsToNodeIdsRequestMessageFromJSONTyped(json: a
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'Body': !exists(json, 'Body') ? undefined : TranslateBrowsePathsToNodeIdsRequestFromJSON(json['Body']),
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
+        'Body': TranslateBrowsePathsToNodeIdsRequestFromJSON(json['Body']),
     };
 }
 
@@ -90,6 +108,7 @@ export function TranslateBrowsePathsToNodeIdsRequestMessageToJSON(value?: Transl
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
+        'ServiceId': value.ServiceId,
         'Body': TranslateBrowsePathsToNodeIdsRequestToJSON(value.Body),
     };
 }

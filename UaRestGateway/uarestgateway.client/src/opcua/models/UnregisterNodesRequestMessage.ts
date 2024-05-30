@@ -46,17 +46,34 @@ export interface UnregisterNodesRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof UnregisterNodesRequestMessage
+     */
+    ServiceId?: UnregisterNodesRequestMessageServiceIdEnum;
+    /**
+     * 
      * @type {UnregisterNodesRequest}
      * @memberof UnregisterNodesRequestMessage
      */
-    Body?: UnregisterNodesRequest;
+    Body: UnregisterNodesRequest;
 }
+
+
+/**
+ * @export
+ */
+export const UnregisterNodesRequestMessageServiceIdEnum = {
+    NUMBER_564: 564
+} as const;
+export type UnregisterNodesRequestMessageServiceIdEnum = typeof UnregisterNodesRequestMessageServiceIdEnum[keyof typeof UnregisterNodesRequestMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the UnregisterNodesRequestMessage interface.
  */
 export function instanceOfUnregisterNodesRequestMessage(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "Body" in value;
 
     return isInstance;
 }
@@ -74,7 +91,8 @@ export function UnregisterNodesRequestMessageFromJSONTyped(json: any, ignoreDisc
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'Body': !exists(json, 'Body') ? undefined : UnregisterNodesRequestFromJSON(json['Body']),
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
+        'Body': UnregisterNodesRequestFromJSON(json['Body']),
     };
 }
 
@@ -90,6 +108,7 @@ export function UnregisterNodesRequestMessageToJSON(value?: UnregisterNodesReque
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
+        'ServiceId': value.ServiceId,
         'Body': UnregisterNodesRequestToJSON(value.Body),
     };
 }

@@ -46,17 +46,34 @@ export interface SetTriggeringRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof SetTriggeringRequestMessage
+     */
+    ServiceId?: SetTriggeringRequestMessageServiceIdEnum;
+    /**
+     * 
      * @type {SetTriggeringRequest}
      * @memberof SetTriggeringRequestMessage
      */
-    Body?: SetTriggeringRequest;
+    Body: SetTriggeringRequest;
 }
+
+
+/**
+ * @export
+ */
+export const SetTriggeringRequestMessageServiceIdEnum = {
+    NUMBER_773: 773
+} as const;
+export type SetTriggeringRequestMessageServiceIdEnum = typeof SetTriggeringRequestMessageServiceIdEnum[keyof typeof SetTriggeringRequestMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the SetTriggeringRequestMessage interface.
  */
 export function instanceOfSetTriggeringRequestMessage(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "Body" in value;
 
     return isInstance;
 }
@@ -74,7 +91,8 @@ export function SetTriggeringRequestMessageFromJSONTyped(json: any, ignoreDiscri
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'Body': !exists(json, 'Body') ? undefined : SetTriggeringRequestFromJSON(json['Body']),
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
+        'Body': SetTriggeringRequestFromJSON(json['Body']),
     };
 }
 
@@ -90,6 +108,7 @@ export function SetTriggeringRequestMessageToJSON(value?: SetTriggeringRequestMe
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
+        'ServiceId': value.ServiceId,
         'Body': SetTriggeringRequestToJSON(value.Body),
     };
 }

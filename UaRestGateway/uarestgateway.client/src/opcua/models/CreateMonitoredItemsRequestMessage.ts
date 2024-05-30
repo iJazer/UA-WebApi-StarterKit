@@ -46,17 +46,34 @@ export interface CreateMonitoredItemsRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof CreateMonitoredItemsRequestMessage
+     */
+    ServiceId?: CreateMonitoredItemsRequestMessageServiceIdEnum;
+    /**
+     * 
      * @type {CreateMonitoredItemsRequest}
      * @memberof CreateMonitoredItemsRequestMessage
      */
-    Body?: CreateMonitoredItemsRequest;
+    Body: CreateMonitoredItemsRequest;
 }
+
+
+/**
+ * @export
+ */
+export const CreateMonitoredItemsRequestMessageServiceIdEnum = {
+    NUMBER_749: 749
+} as const;
+export type CreateMonitoredItemsRequestMessageServiceIdEnum = typeof CreateMonitoredItemsRequestMessageServiceIdEnum[keyof typeof CreateMonitoredItemsRequestMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the CreateMonitoredItemsRequestMessage interface.
  */
 export function instanceOfCreateMonitoredItemsRequestMessage(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "Body" in value;
 
     return isInstance;
 }
@@ -74,7 +91,8 @@ export function CreateMonitoredItemsRequestMessageFromJSONTyped(json: any, ignor
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'Body': !exists(json, 'Body') ? undefined : CreateMonitoredItemsRequestFromJSON(json['Body']),
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
+        'Body': CreateMonitoredItemsRequestFromJSON(json['Body']),
     };
 }
 
@@ -90,6 +108,7 @@ export function CreateMonitoredItemsRequestMessageToJSON(value?: CreateMonitored
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
+        'ServiceId': value.ServiceId,
         'Body': CreateMonitoredItemsRequestToJSON(value.Body),
     };
 }

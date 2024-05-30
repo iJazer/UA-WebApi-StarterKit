@@ -46,17 +46,34 @@ export interface CreateSessionRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof CreateSessionRequestMessage
+     */
+    ServiceId?: CreateSessionRequestMessageServiceIdEnum;
+    /**
+     * 
      * @type {CreateSessionRequest}
      * @memberof CreateSessionRequestMessage
      */
-    Body?: CreateSessionRequest;
+    Body: CreateSessionRequest;
 }
+
+
+/**
+ * @export
+ */
+export const CreateSessionRequestMessageServiceIdEnum = {
+    NUMBER_459: 459
+} as const;
+export type CreateSessionRequestMessageServiceIdEnum = typeof CreateSessionRequestMessageServiceIdEnum[keyof typeof CreateSessionRequestMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the CreateSessionRequestMessage interface.
  */
 export function instanceOfCreateSessionRequestMessage(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "Body" in value;
 
     return isInstance;
 }
@@ -74,7 +91,8 @@ export function CreateSessionRequestMessageFromJSONTyped(json: any, ignoreDiscri
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'Body': !exists(json, 'Body') ? undefined : CreateSessionRequestFromJSON(json['Body']),
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
+        'Body': CreateSessionRequestFromJSON(json['Body']),
     };
 }
 
@@ -90,6 +108,7 @@ export function CreateSessionRequestMessageToJSON(value?: CreateSessionRequestMe
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
+        'ServiceId': value.ServiceId,
         'Body': CreateSessionRequestToJSON(value.Body),
     };
 }

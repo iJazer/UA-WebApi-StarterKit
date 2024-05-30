@@ -40,11 +40,27 @@ export interface CloseSessionResponseMessage {
     ServerUris?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof CloseSessionResponseMessage
+     */
+    ServiceId?: CloseSessionResponseMessageServiceIdEnum;
+    /**
+     * 
      * @type {CloseSessionResponse}
      * @memberof CloseSessionResponseMessage
      */
     Body?: CloseSessionResponse;
 }
+
+
+/**
+ * @export
+ */
+export const CloseSessionResponseMessageServiceIdEnum = {
+    NUMBER_474: 474
+} as const;
+export type CloseSessionResponseMessageServiceIdEnum = typeof CloseSessionResponseMessageServiceIdEnum[keyof typeof CloseSessionResponseMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the CloseSessionResponseMessage interface.
@@ -67,6 +83,7 @@ export function CloseSessionResponseMessageFromJSONTyped(json: any, ignoreDiscri
         
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : CloseSessionResponseFromJSON(json['Body']),
     };
 }
@@ -82,6 +99,7 @@ export function CloseSessionResponseMessageToJSON(value?: CloseSessionResponseMe
         
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
+        'ServiceId': value.ServiceId,
         'Body': CloseSessionResponseToJSON(value.Body),
     };
 }

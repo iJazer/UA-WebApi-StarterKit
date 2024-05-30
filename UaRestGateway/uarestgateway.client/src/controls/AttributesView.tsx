@@ -24,14 +24,18 @@ export const AttributesView = ({ reference, requestTimeout }: AttributesViewProp
    const name = reference?.DisplayName?.Text ?? reference?.BrowseName ?? reference?.NodeId;
    const theme = useTheme();
    const context = React.useContext(ApplicationContext);
+   const controller = React.useRef(new AbortController());
 
    React.useEffect(() => {
-      const controller = new AbortController();
-      if (reference?.NodeId) {
-         readAttributes(reference, requestTimeout, controller, context?.userContext?.user).then((x) => setValues(x ?? []));
-      }
+      const current = controller.current;
       return () => {
-         //controller.abort();
+         current.abort();
+      };
+   }, []);
+
+   React.useEffect(() => {
+      if (reference?.NodeId) {
+         readAttributes(reference, requestTimeout, controller.current, context?.userContext?.user).then((x) => setValues(x ?? []));
       }
    }, [reference, reference?.NodeId, requestTimeout, context?.userContext?.user]);
 

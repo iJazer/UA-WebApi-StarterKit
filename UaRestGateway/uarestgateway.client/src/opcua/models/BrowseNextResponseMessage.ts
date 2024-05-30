@@ -40,11 +40,27 @@ export interface BrowseNextResponseMessage {
     ServerUris?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof BrowseNextResponseMessage
+     */
+    ServiceId?: BrowseNextResponseMessageServiceIdEnum;
+    /**
+     * 
      * @type {BrowseNextResponse}
      * @memberof BrowseNextResponseMessage
      */
     Body?: BrowseNextResponse;
 }
+
+
+/**
+ * @export
+ */
+export const BrowseNextResponseMessageServiceIdEnum = {
+    NUMBER_534: 534
+} as const;
+export type BrowseNextResponseMessageServiceIdEnum = typeof BrowseNextResponseMessageServiceIdEnum[keyof typeof BrowseNextResponseMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the BrowseNextResponseMessage interface.
@@ -67,6 +83,7 @@ export function BrowseNextResponseMessageFromJSONTyped(json: any, ignoreDiscrimi
         
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : BrowseNextResponseFromJSON(json['Body']),
     };
 }
@@ -82,6 +99,7 @@ export function BrowseNextResponseMessageToJSON(value?: BrowseNextResponseMessag
         
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
+        'ServiceId': value.ServiceId,
         'Body': BrowseNextResponseToJSON(value.Body),
     };
 }

@@ -40,11 +40,27 @@ export interface ModifyMonitoredItemsResponseMessage {
     ServerUris?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof ModifyMonitoredItemsResponseMessage
+     */
+    ServiceId?: ModifyMonitoredItemsResponseMessageServiceIdEnum;
+    /**
+     * 
      * @type {ModifyMonitoredItemsResponse}
      * @memberof ModifyMonitoredItemsResponseMessage
      */
     Body?: ModifyMonitoredItemsResponse;
 }
+
+
+/**
+ * @export
+ */
+export const ModifyMonitoredItemsResponseMessageServiceIdEnum = {
+    NUMBER_764: 764
+} as const;
+export type ModifyMonitoredItemsResponseMessageServiceIdEnum = typeof ModifyMonitoredItemsResponseMessageServiceIdEnum[keyof typeof ModifyMonitoredItemsResponseMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the ModifyMonitoredItemsResponseMessage interface.
@@ -67,6 +83,7 @@ export function ModifyMonitoredItemsResponseMessageFromJSONTyped(json: any, igno
         
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : ModifyMonitoredItemsResponseFromJSON(json['Body']),
     };
 }
@@ -82,6 +99,7 @@ export function ModifyMonitoredItemsResponseMessageToJSON(value?: ModifyMonitore
         
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
+        'ServiceId': value.ServiceId,
         'Body': ModifyMonitoredItemsResponseToJSON(value.Body),
     };
 }

@@ -40,11 +40,27 @@ export interface FindServersResponseMessage {
     ServerUris?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof FindServersResponseMessage
+     */
+    ServiceId?: FindServersResponseMessageServiceIdEnum;
+    /**
+     * 
      * @type {FindServersResponse}
      * @memberof FindServersResponseMessage
      */
     Body?: FindServersResponse;
 }
+
+
+/**
+ * @export
+ */
+export const FindServersResponseMessageServiceIdEnum = {
+    NUMBER_423: 423
+} as const;
+export type FindServersResponseMessageServiceIdEnum = typeof FindServersResponseMessageServiceIdEnum[keyof typeof FindServersResponseMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the FindServersResponseMessage interface.
@@ -67,6 +83,7 @@ export function FindServersResponseMessageFromJSONTyped(json: any, ignoreDiscrim
         
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : FindServersResponseFromJSON(json['Body']),
     };
 }
@@ -82,6 +99,7 @@ export function FindServersResponseMessageToJSON(value?: FindServersResponseMess
         
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
+        'ServiceId': value.ServiceId,
         'Body': FindServersResponseToJSON(value.Body),
     };
 }

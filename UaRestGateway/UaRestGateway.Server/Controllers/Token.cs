@@ -1,4 +1,10 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.IO.Compression;
+using System.Text;
+using System.Text.Json.Serialization;
+using Microsoft.EntityFrameworkCore.Sqlite.Query.Internal;
+using Opc.Ua;
+using Opc.Ua.Server;
+using UaRestGateway.Server.Service;
 
 namespace UaRestGateway.Server.Controllers
 {
@@ -15,5 +21,12 @@ namespace UaRestGateway.Server.Controllers
 
         [JsonPropertyName("refresh_token")]
         public string RefreshToken { get; set; }
+    }
+
+    public class CacheSessions
+    {
+        public string SecureChannelId { get; set; }
+
+        public Dictionary<string, string> AuthenticationTokens { get; set; }
     }
 }

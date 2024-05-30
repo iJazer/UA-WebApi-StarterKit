@@ -46,17 +46,34 @@ export interface BrowseNextRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof BrowseNextRequestMessage
+     */
+    ServiceId?: BrowseNextRequestMessageServiceIdEnum;
+    /**
+     * 
      * @type {BrowseNextRequest}
      * @memberof BrowseNextRequestMessage
      */
-    Body?: BrowseNextRequest;
+    Body: BrowseNextRequest;
 }
+
+
+/**
+ * @export
+ */
+export const BrowseNextRequestMessageServiceIdEnum = {
+    NUMBER_531: 531
+} as const;
+export type BrowseNextRequestMessageServiceIdEnum = typeof BrowseNextRequestMessageServiceIdEnum[keyof typeof BrowseNextRequestMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the BrowseNextRequestMessage interface.
  */
 export function instanceOfBrowseNextRequestMessage(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "Body" in value;
 
     return isInstance;
 }
@@ -74,7 +91,8 @@ export function BrowseNextRequestMessageFromJSONTyped(json: any, ignoreDiscrimin
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'Body': !exists(json, 'Body') ? undefined : BrowseNextRequestFromJSON(json['Body']),
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
+        'Body': BrowseNextRequestFromJSON(json['Body']),
     };
 }
 
@@ -90,6 +108,7 @@ export function BrowseNextRequestMessageToJSON(value?: BrowseNextRequestMessage 
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
+        'ServiceId': value.ServiceId,
         'Body': BrowseNextRequestToJSON(value.Body),
     };
 }

@@ -46,17 +46,34 @@ export interface ActivateSessionRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof ActivateSessionRequestMessage
+     */
+    ServiceId?: ActivateSessionRequestMessageServiceIdEnum;
+    /**
+     * 
      * @type {ActivateSessionRequest}
      * @memberof ActivateSessionRequestMessage
      */
-    Body?: ActivateSessionRequest;
+    Body: ActivateSessionRequest;
 }
+
+
+/**
+ * @export
+ */
+export const ActivateSessionRequestMessageServiceIdEnum = {
+    NUMBER_465: 465
+} as const;
+export type ActivateSessionRequestMessageServiceIdEnum = typeof ActivateSessionRequestMessageServiceIdEnum[keyof typeof ActivateSessionRequestMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the ActivateSessionRequestMessage interface.
  */
 export function instanceOfActivateSessionRequestMessage(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "Body" in value;
 
     return isInstance;
 }
@@ -74,7 +91,8 @@ export function ActivateSessionRequestMessageFromJSONTyped(json: any, ignoreDisc
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'Body': !exists(json, 'Body') ? undefined : ActivateSessionRequestFromJSON(json['Body']),
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
+        'Body': ActivateSessionRequestFromJSON(json['Body']),
     };
 }
 
@@ -90,6 +108,7 @@ export function ActivateSessionRequestMessageToJSON(value?: ActivateSessionReque
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
+        'ServiceId': value.ServiceId,
         'Body': ActivateSessionRequestToJSON(value.Body),
     };
 }

@@ -46,17 +46,34 @@ export interface RepublishRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof RepublishRequestMessage
+     */
+    ServiceId?: RepublishRequestMessageServiceIdEnum;
+    /**
+     * 
      * @type {RepublishRequest}
      * @memberof RepublishRequestMessage
      */
-    Body?: RepublishRequest;
+    Body: RepublishRequest;
 }
+
+
+/**
+ * @export
+ */
+export const RepublishRequestMessageServiceIdEnum = {
+    NUMBER_830: 830
+} as const;
+export type RepublishRequestMessageServiceIdEnum = typeof RepublishRequestMessageServiceIdEnum[keyof typeof RepublishRequestMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the RepublishRequestMessage interface.
  */
 export function instanceOfRepublishRequestMessage(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "Body" in value;
 
     return isInstance;
 }
@@ -74,7 +91,8 @@ export function RepublishRequestMessageFromJSONTyped(json: any, ignoreDiscrimina
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'Body': !exists(json, 'Body') ? undefined : RepublishRequestFromJSON(json['Body']),
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
+        'Body': RepublishRequestFromJSON(json['Body']),
     };
 }
 
@@ -90,6 +108,7 @@ export function RepublishRequestMessageToJSON(value?: RepublishRequestMessage | 
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
+        'ServiceId': value.ServiceId,
         'Body': RepublishRequestToJSON(value.Body),
     };
 }

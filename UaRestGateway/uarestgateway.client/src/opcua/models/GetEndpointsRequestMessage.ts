@@ -46,17 +46,34 @@ export interface GetEndpointsRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof GetEndpointsRequestMessage
+     */
+    ServiceId?: GetEndpointsRequestMessageServiceIdEnum;
+    /**
+     * 
      * @type {GetEndpointsRequest}
      * @memberof GetEndpointsRequestMessage
      */
-    Body?: GetEndpointsRequest;
+    Body: GetEndpointsRequest;
 }
+
+
+/**
+ * @export
+ */
+export const GetEndpointsRequestMessageServiceIdEnum = {
+    NUMBER_426: 426
+} as const;
+export type GetEndpointsRequestMessageServiceIdEnum = typeof GetEndpointsRequestMessageServiceIdEnum[keyof typeof GetEndpointsRequestMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the GetEndpointsRequestMessage interface.
  */
 export function instanceOfGetEndpointsRequestMessage(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "Body" in value;
 
     return isInstance;
 }
@@ -74,7 +91,8 @@ export function GetEndpointsRequestMessageFromJSONTyped(json: any, ignoreDiscrim
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'Body': !exists(json, 'Body') ? undefined : GetEndpointsRequestFromJSON(json['Body']),
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
+        'Body': GetEndpointsRequestFromJSON(json['Body']),
     };
 }
 
@@ -90,6 +108,7 @@ export function GetEndpointsRequestMessageToJSON(value?: GetEndpointsRequestMess
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
+        'ServiceId': value.ServiceId,
         'Body': GetEndpointsRequestToJSON(value.Body),
     };
 }

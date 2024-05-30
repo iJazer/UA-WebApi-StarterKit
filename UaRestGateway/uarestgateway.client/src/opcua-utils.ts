@@ -11,10 +11,24 @@ export class HandleFactory {
       return ++this.counter;
    }
 }
+
 export enum SessionState {
+   Disconnected = 0,
+   Connecting = 1,
+   NoSession = 2,
+   Creating = 3,
+   Activating = 4,
+   SessionActive = 5,
+   Error = 6
+}
+
+export enum SubscriptionState {
+
+
    Closed = 0,
    Opening = 1,
-   Open = 2
+   Open = 2,
+   Error = 3
 }
 
 export interface IMonitoredItem {
@@ -319,6 +333,7 @@ export async function readValues(
 ): Promise<IBrowseTreeNode[] | null> {
 
    const request: OpcUa.ReadRequestMessage = {
+      ServiceId: OpcUa.ReadRequestMessageServiceIdEnum.NUMBER_629,
       Body: {
          RequestHeader: {
             Timestamp: new Date(),
@@ -381,6 +396,7 @@ async function createSession(
    const uuid = window.crypto.randomUUID();
 
    const request: OpcUa.CreateSessionRequestMessage = {
+      ServiceId: OpcUa.CreateSessionRequestMessageServiceIdEnum.NUMBER_459,
       Body: {
          RequestHeader: {
             Timestamp: new Date(),
@@ -427,6 +443,7 @@ async function activateSession(
    controller?: AbortController
 ): Promise<ISession | null> {
    const request: OpcUa.ActivateSessionRequestMessage = {
+      ServiceId: OpcUa.ActivateSessionRequestMessageServiceIdEnum.NUMBER_465,
       Body: {
          RequestHeader: {
             Timestamp: new Date(),
@@ -460,6 +477,7 @@ async function createSubscription(
 ): Promise<ISession | null> {
 
    const request: OpcUa.CreateSubscriptionRequestMessage = {
+      ServiceId: OpcUa.CreateSubscriptionRequestMessageServiceIdEnum.NUMBER_785,
       Body: {
          RequestHeader: {
             Timestamp: new Date(),
@@ -564,6 +582,7 @@ export async function readInitialValues(
 ): Promise<void | null> {
 
    const request: OpcUa.ReadRequestMessage = {
+      ServiceId: OpcUa.ReadRequestMessageServiceIdEnum.NUMBER_629,
       Body: {
          RequestHeader: {
             Timestamp: new Date(),
@@ -611,6 +630,7 @@ async function createMonitoredItems(
 ): Promise<IMonitoredItem[] | null> {
 
    const request: OpcUa.CreateMonitoredItemsRequestMessage = {
+      ServiceId: OpcUa.CreateMonitoredItemsRequestMessageServiceIdEnum.NUMBER_749,
       Body: {
          RequestHeader: {
             Timestamp: new Date(),
@@ -678,6 +698,7 @@ export async function translateAndSubscribe(
 ): Promise<IMonitoredItem[] | null> {
 
    const request: OpcUa.TranslateBrowsePathsToNodeIdsRequestMessage = {
+      ServiceId: OpcUa.TranslateBrowsePathsToNodeIdsRequestMessageServiceIdEnum.NUMBER_552,
       Body: {
          RequestHeader: {
             Timestamp: new Date(),

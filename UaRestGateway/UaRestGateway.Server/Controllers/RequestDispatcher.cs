@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using Opc.Ua.Server;
 using System.IO.Compression;
+using System.Net.WebSockets;
 
 namespace UaRestGateway.Server.Controllers
 {
@@ -37,6 +38,13 @@ namespace UaRestGateway.Server.Controllers
         {
             m_cache = cache;
             m_communicationService = communicationService;
+        }
+
+        class CacheSessions
+        {
+            public string SecureChannelId { get; set; }
+
+            public Dictionary<string, string> AuthenticationTokens { get; set; }
         }
 
         private static async Task<byte[]> Compress(MemoryStream istrm)
@@ -78,7 +86,7 @@ namespace UaRestGateway.Server.Controllers
             return false;
         }
 
-        private async Task<T> Decode<T>(IServiceMessageContext context) where T : IEncodeable, IServiceRequest, new()
+        private async Task<T> Decode<T>(IServiceMessageContext context) where T : class, IEncodeable, IServiceRequest, new()
         {
             Stream stream = Request.Body;
 
@@ -90,6 +98,11 @@ namespace UaRestGateway.Server.Controllers
                 }
             }
 
+            return await Decode(context, stream, typeof(T)) as T;
+        }
+
+        private async Task<IServiceRequest> Decode(IServiceMessageContext context, Stream stream, System.Type expectedType = null)
+        {
             using (var reader = new StreamReader(stream))
             {
                 var json = await reader.ReadToEndAsync();
@@ -101,11 +114,28 @@ namespace UaRestGateway.Server.Controllers
 
                     // message.NamespaceUris = new NamespaceTable(decoder.ReadStringArray(nameof(SessionLessServiceMessage.NamespaceUris)));
                     // message.ServerUris = new StringTable(decoder.ReadStringArray(nameof(SessionLessServiceMessage.ServerUris)));
-                    message.LocaleIds = new StringTable(decoder.ReadStringArray(nameof(SessionLessServiceMessage.LocaleIds)));
-                    decoder.SetMappingTables(message.NamespaceUris, message.ServerUris);
-                    message.Message = decoder.ReadEncodeable("Body", typeof(T));
+                    // decoder.SetMappingTables(message.NamespaceUris, message.ServerUris);
 
-                    var request = (T)message.Message;
+                    message.LocaleIds = new StringTable(decoder.ReadStringArray(nameof(SessionLessServiceMessage.LocaleIds)));
+
+                    var serviceId = decoder.ReadNodeId("ServiceId");
+                    var serviceType = decoder.Context.Factory.GetSystemType(serviceId);
+
+                    if (serviceType == null)
+                    {
+                        serviceType = expectedType;
+                    }
+                    else    
+                    {
+                        if (expectedType != null && !expectedType.IsAssignableFrom(serviceType))
+                        {
+                            throw new ServiceResultException(StatusCodes.BadDecodingError, "Unexpected service type.");
+                        }
+                    }
+
+                    message.Message = decoder.ReadEncodeable("Body", serviceType);
+
+                    var request = message.Message as IServiceRequest;
 
                     if (NodeId.IsNull(request.RequestHeader.AuthenticationToken))
                     {
@@ -116,6 +146,7 @@ namespace UaRestGateway.Server.Controllers
                 }
             }
         }
+
 
         private async Task<IActionResult> Encode<T>(IServiceMessageContext context, T response) where T : IEncodeable
         {
@@ -175,6 +206,54 @@ namespace UaRestGateway.Server.Controllers
             }
         }
 
+        // GET api/values
+        [HttpGet]
+        [Route("ws")]
+        public async Task Get()
+        {
+            try
+            {
+                var context = ControllerContext.HttpContext;
+                var isSocketRequest = context.WebSockets.IsWebSocketRequest;
+
+                if (isSocketRequest)
+                {
+                    WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync();
+                    await ProcessMessages(context, webSocket);
+                }
+                else
+                {
+                    context.Response.StatusCode = 400;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "Error in StreamController");
+            }
+        }
+
+        private async Task ProcessMessages(HttpContext context, WebSocket webSocket)
+        {
+            var server = GetServer();
+
+            using (var istrm = new MemoryStream())
+            {
+                var buffer = new byte[1024];
+                WebSocketReceiveResult result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+                istrm.Write(buffer, 0, result.Count);
+
+                while (!result.CloseStatus.HasValue && !result.EndOfMessage)
+                {
+                    result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+                    istrm.Write(buffer, 0, result.Count);
+                }
+
+                istrm.Position = 0;
+                var request = await Decode(server.MessageContext, istrm);
+                istrm.Close();
+            }
+        }
+
         [HttpPost]
         [Route("read")]
         public async Task<IActionResult> Read()
@@ -182,10 +261,6 @@ namespace UaRestGateway.Server.Controllers
             try
             {
                 var server = GetServer();
-
-                MessageUtils.Read(server.MessageContext, Request.Body, );
-
-
                 var request = await Decode<ReadRequest>(server.MessageContext);
 
                 if (NodeId.IsNull(request.RequestHeader.AuthenticationToken))

@@ -46,17 +46,34 @@ export interface HistoryReadRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof HistoryReadRequestMessage
+     */
+    ServiceId?: HistoryReadRequestMessageServiceIdEnum;
+    /**
+     * 
      * @type {HistoryReadRequest}
      * @memberof HistoryReadRequestMessage
      */
-    Body?: HistoryReadRequest;
+    Body: HistoryReadRequest;
 }
+
+
+/**
+ * @export
+ */
+export const HistoryReadRequestMessageServiceIdEnum = {
+    NUMBER_662: 662
+} as const;
+export type HistoryReadRequestMessageServiceIdEnum = typeof HistoryReadRequestMessageServiceIdEnum[keyof typeof HistoryReadRequestMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the HistoryReadRequestMessage interface.
  */
 export function instanceOfHistoryReadRequestMessage(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "Body" in value;
 
     return isInstance;
 }
@@ -74,7 +91,8 @@ export function HistoryReadRequestMessageFromJSONTyped(json: any, ignoreDiscrimi
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'Body': !exists(json, 'Body') ? undefined : HistoryReadRequestFromJSON(json['Body']),
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
+        'Body': HistoryReadRequestFromJSON(json['Body']),
     };
 }
 
@@ -90,6 +108,7 @@ export function HistoryReadRequestMessageToJSON(value?: HistoryReadRequestMessag
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
+        'ServiceId': value.ServiceId,
         'Body': HistoryReadRequestToJSON(value.Body),
     };
 }

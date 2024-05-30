@@ -40,11 +40,27 @@ export interface ActivateSessionResponseMessage {
     ServerUris?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof ActivateSessionResponseMessage
+     */
+    ServiceId?: ActivateSessionResponseMessageServiceIdEnum;
+    /**
+     * 
      * @type {ActivateSessionResponse}
      * @memberof ActivateSessionResponseMessage
      */
     Body?: ActivateSessionResponse;
 }
+
+
+/**
+ * @export
+ */
+export const ActivateSessionResponseMessageServiceIdEnum = {
+    NUMBER_468: 468
+} as const;
+export type ActivateSessionResponseMessageServiceIdEnum = typeof ActivateSessionResponseMessageServiceIdEnum[keyof typeof ActivateSessionResponseMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the ActivateSessionResponseMessage interface.
@@ -67,6 +83,7 @@ export function ActivateSessionResponseMessageFromJSONTyped(json: any, ignoreDis
         
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : ActivateSessionResponseFromJSON(json['Body']),
     };
 }
@@ -82,6 +99,7 @@ export function ActivateSessionResponseMessageToJSON(value?: ActivateSessionResp
         
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
+        'ServiceId': value.ServiceId,
         'Body': ActivateSessionResponseToJSON(value.Body),
     };
 }

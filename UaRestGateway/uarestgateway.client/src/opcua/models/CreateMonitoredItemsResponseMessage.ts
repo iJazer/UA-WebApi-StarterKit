@@ -40,11 +40,27 @@ export interface CreateMonitoredItemsResponseMessage {
     ServerUris?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof CreateMonitoredItemsResponseMessage
+     */
+    ServiceId?: CreateMonitoredItemsResponseMessageServiceIdEnum;
+    /**
+     * 
      * @type {CreateMonitoredItemsResponse}
      * @memberof CreateMonitoredItemsResponseMessage
      */
     Body?: CreateMonitoredItemsResponse;
 }
+
+
+/**
+ * @export
+ */
+export const CreateMonitoredItemsResponseMessageServiceIdEnum = {
+    NUMBER_752: 752
+} as const;
+export type CreateMonitoredItemsResponseMessageServiceIdEnum = typeof CreateMonitoredItemsResponseMessageServiceIdEnum[keyof typeof CreateMonitoredItemsResponseMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the CreateMonitoredItemsResponseMessage interface.
@@ -67,6 +83,7 @@ export function CreateMonitoredItemsResponseMessageFromJSONTyped(json: any, igno
         
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
         'Body': !exists(json, 'Body') ? undefined : CreateMonitoredItemsResponseFromJSON(json['Body']),
     };
 }
@@ -82,6 +99,7 @@ export function CreateMonitoredItemsResponseMessageToJSON(value?: CreateMonitore
         
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
+        'ServiceId': value.ServiceId,
         'Body': CreateMonitoredItemsResponseToJSON(value.Body),
     };
 }

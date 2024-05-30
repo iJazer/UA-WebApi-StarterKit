@@ -46,17 +46,34 @@ export interface ReadRequestMessage {
     LocaleIds?: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof ReadRequestMessage
+     */
+    ServiceId?: ReadRequestMessageServiceIdEnum;
+    /**
+     * 
      * @type {ReadRequest}
      * @memberof ReadRequestMessage
      */
-    Body?: ReadRequest;
+    Body: ReadRequest;
 }
+
+
+/**
+ * @export
+ */
+export const ReadRequestMessageServiceIdEnum = {
+    NUMBER_629: 629
+} as const;
+export type ReadRequestMessageServiceIdEnum = typeof ReadRequestMessageServiceIdEnum[keyof typeof ReadRequestMessageServiceIdEnum];
+
 
 /**
  * Check if a given object implements the ReadRequestMessage interface.
  */
 export function instanceOfReadRequestMessage(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "Body" in value;
 
     return isInstance;
 }
@@ -74,7 +91,8 @@ export function ReadRequestMessageFromJSONTyped(json: any, ignoreDiscriminator: 
         'NamespaceUris': !exists(json, 'NamespaceUris') ? undefined : json['NamespaceUris'],
         'ServerUris': !exists(json, 'ServerUris') ? undefined : json['ServerUris'],
         'LocaleIds': !exists(json, 'LocaleIds') ? undefined : json['LocaleIds'],
-        'Body': !exists(json, 'Body') ? undefined : ReadRequestFromJSON(json['Body']),
+        'ServiceId': !exists(json, 'ServiceId') ? undefined : json['ServiceId'],
+        'Body': ReadRequestFromJSON(json['Body']),
     };
 }
 
@@ -90,6 +108,7 @@ export function ReadRequestMessageToJSON(value?: ReadRequestMessage | null): any
         'NamespaceUris': value.NamespaceUris,
         'ServerUris': value.ServerUris,
         'LocaleIds': value.LocaleIds,
+        'ServiceId': value.ServiceId,
         'Body': ReadRequestToJSON(value.Body),
     };
 }
