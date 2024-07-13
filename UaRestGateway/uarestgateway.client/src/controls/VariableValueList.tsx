@@ -10,47 +10,33 @@ import Paper from '@mui/material/Paper/Paper';
 import { Skeleton, Typography } from '@mui/material';
 
 import * as OpcUa from '../opcua';
-import { ApplicationContext, IBrowseTreeNode } from '../ApplicationProvider';
-import { readValues } from '../opcua-utils';
+import { ApplicationContext } from '../ApplicationProvider';
+import DataValueDisplay from './DataValueDisplay';
+import { IBrowsedNode } from '../service/IBrowsedNode';
 
 interface VariableValueListProps {
-   selection?: string,
-   requestTimeout?: number
+   rootId?: string
 }
 
-export const VariableValueList = ({ selection, requestTimeout }: VariableValueListProps) => {
-   const [variables, setVariables] = React.useState<IBrowseTreeNode[]>([]);
-   const [dirty, setDirty] = React.useState<boolean>(false);
-   const context = React.useContext(ApplicationContext);
+export const VariableValueList = ({ rootId }: VariableValueListProps) => {
+   const [variables, setVariables] = React.useState<IBrowsedNode[]>([]);
+   const { nodes, lastUpdatedNode, readValues } = React.useContext(ApplicationContext);
 
    React.useEffect(() => {
-      const list: IBrowseTreeNode[] = [];
-      if (selection) {
-         const children = Array.from(context.nodes.values()).filter((x) => x.parentId === selection);
+      const variableIds: string[] = [];
+      if (rootId) {
+         const children = Array.from(nodes.values()).filter((x) => x.parentId === rootId);
          if (children) {
             children.forEach((child) => {
                if (child?.reference?.NodeClass === OpcUa.NodeClass.Variable) {
-                  list.push(child);
+                  variableIds.push(child.id);
                }
             });
          }
+         readValues(variableIds).then((values) => setVariables(values ?? []));
       }
-      setVariables(list);
-      setDirty(true);
-   }, [selection, context?.nodes]);
 
-   React.useEffect(() => {
-      const controller = new AbortController();
-      if (dirty && variables?.length) {
-         readValues(variables, requestTimeout, controller, context?.userContext?.user).then((x) => {
-            setDirty(false);
-            setVariables(x ?? []);
-         });
-      }
-      return () => {
-         //controller.abort();
-      }
-   }, [dirty, variables, requestTimeout, context?.userContext?.user]);
+   }, [rootId, readValues, lastUpdatedNode, nodes]);
 
    if (!variables?.length) {
       return (
@@ -86,7 +72,7 @@ export const VariableValueList = ({ selection, requestTimeout }: VariableValueLi
                            <Typography variant='body1' sx={{ minWidth: '300px' }}>{item.reference.DisplayName?.Text}</Typography>
                         </TableCell>
                         <TableCell>
-                           <Typography variant='body1' sx={{ minWidth: '300px' }}>{item?.value}</Typography>
+                           <DataValueDisplay value={item.value} />
                         </TableCell>
                      </TableRow>
                   );

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using System.Net;
 using System.Text.Json;
 using UaRestGateway.Server.Model;
@@ -24,9 +25,10 @@ namespace UaRestGateway.Server.Controllers
         public AccountController(
             IConfiguration configuration,
             ILogger<AccountController> logger,
-            DatabaseContext context)
+            DatabaseContext context,
+            IMemoryCache cache)
         :
-            base(configuration, logger, context)
+            base(configuration, logger, context, cache, null)
         {
             BaseUrl = Configuration.GetValue<string>("OAuth2BaseUrl");
             ClientId = Configuration.GetValue<string>("OAuth2ClientId");

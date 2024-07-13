@@ -1,7 +1,9 @@
 import * as React from 'react';
 import * as OpcUa from './opcua';
 import { SessionContext } from './SessionProvider';
-import { HandleFactory, SubscriptionState, SessionState } from './opcua-utils';
+import { SubscriptionState } from './service/SubscriptionState';
+import { HandleFactory } from './service/HandleFactory';
+import { SessionState } from './service/SessionState';
 
 export interface IMonitoredItem {
    nodeId: string,
@@ -236,7 +238,7 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
       if (lastCompletedRequest?.clientHandle === componentHandle) {
          if (lastCompletedRequest?.response?.ServiceId === OpcUa.CreateSubscriptionResponseMessageServiceIdEnum.NUMBER_788) {
             const csrm = lastCompletedRequest.response as OpcUa.CreateSubscriptionResponseMessage;
-            if (!csrm?.Body?.ResponseHeader?.ServiceResult) {
+            if (csrm?.Body?.ResponseHeader && !csrm.Body.ResponseHeader.ServiceResult) {
                m.current.subscriptionId = csrm?.Body?.SubscriptionId;
                m.current.subscriptionState = SubscriptionState.Open;
                setSubscriptionState(m.current.subscriptionState);
@@ -267,13 +269,11 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
                            const item = m.current.monitoredItems.get(ii.ClientHandle ?? 0);
                            if (item) {
                               item.value = ii.Value;
-                              console.error("DataChangeNotification: ClientHandle: ", ii.ClientHandle);
                            }
                         });
                      }
                   });
                }
-               console.error("SubscriptionProvider: Sequence Number: ", prm.Body?.NotificationMessage?.SequenceNumber);
                publish();
                return prm.Body?.NotificationMessage?.SequenceNumber ?? 1;
             });
@@ -335,10 +335,6 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
       deleteMonitoredItems(items);
    }, [deleteMonitoredItems]);
 
-   React.useEffect(() => {
-      console.error("subscribe is changed.");
-   }, [subscribe]);
-
    const setIsSubscriptionEnabledImpl = React.useCallback((value: boolean) => {
       if (m.current.isEnabled === value) {
          return;
@@ -355,28 +351,16 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
       }
    }, [createSubscription, deleteSubscription, sessionState]);
 
-   React.useEffect(() => {
-      console.error("setIsSubscriptionEnabled is changed.");
-   }, [setIsSubscriptionEnabledImpl]);
-
    const setPublishingIntervalImpl = React.useCallback((value: number) => {
       m.current.publishingInterval = value;
       setPublishingInterval(m.current.publishingInterval);
    }, []);
 
-   React.useEffect(() => {
-      console.error("setPublishingInterval is changed.");
-   }, [setPublishingIntervalImpl]);
-
    const setSamplingIntervalImpl = React.useCallback((value: number) => {
       m.current.samplingInterval = value;
       setSamplingInterval(m.current.samplingInterval);
    }, []);
-
-   React.useEffect(() => {
-      console.error("setSamplingInterval is changed.");
-   }, [setSamplingIntervalImpl]);
-
+   
    const subscriptionContext = {
       isSubscriptionEnabled,
       setIsSubscriptionEnabled: setIsSubscriptionEnabledImpl,

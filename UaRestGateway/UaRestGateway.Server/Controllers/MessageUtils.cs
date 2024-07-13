@@ -134,9 +134,31 @@ namespace UaRestGateway.Server.Controllers
             }
         }
 
-        public static async Task<IServiceRequest> Decode(IServiceMessageContext context, Stream stream, System.Type expectedType = null)
+        public static async Task<IServiceRequest> Decode<T>(IServiceMessageContext context, Stream stream, bool? compressed = null) where T : IServiceRequest
         {
-            using (var reader = new StreamReader(stream))
+            var mstrm = stream;
+
+            if (compressed == null)
+            {
+                mstrm = new MemoryStream();
+                await stream.CopyToAsync(mstrm);
+                mstrm.Position = 0;
+
+                if (mstrm.ReadByte() == 0x1F && mstrm.ReadByte() == 0x8B)
+                {
+                    mstrm = await Decompress(mstrm);
+                }
+                else
+                {
+                    mstrm.Position = 0;
+                }
+            }
+            else if (compressed == true)
+            {
+                mstrm = await Decompress(stream);
+            }
+
+            using (var reader = new StreamReader(mstrm))
             {
                 var json = await reader.ReadToEndAsync();
 
@@ -156,14 +178,7 @@ namespace UaRestGateway.Server.Controllers
 
                     if (serviceType == null)
                     {
-                        serviceType = expectedType;
-                    }
-                    else
-                    {
-                        if (expectedType != null && !expectedType.IsAssignableFrom(serviceType))
-                        {
-                            throw new ServiceResultException(Opc.Ua.StatusCodes.BadDecodingError, "Unexpected service type.");
-                        }
+                        serviceType = typeof(T);
                     }
 
                     message.Message = decoder.ReadEncodeable("Body", serviceType);
@@ -173,7 +188,7 @@ namespace UaRestGateway.Server.Controllers
             }
         }
 
-        public static Task<MemoryStream> Encode<T>(IServiceMessageContext context, T response, bool compress = false) where T : IEncodeable
+        public static async Task<MemoryStream> Encode<T>(IServiceMessageContext context, T response, bool compress = false) where T : IEncodeable
         {
             var stream = new MemoryStream();
 
@@ -191,7 +206,12 @@ namespace UaRestGateway.Server.Controllers
                 stream.Position = 0;
             }
 
-            return Task.FromResult(stream);
+            if (compress)
+            {
+                return new MemoryStream(await Compress(stream));
+            }
+
+            return stream;
         }
 
         public static IServiceResponse Fault(IServiceRequest request, Exception e)
@@ -220,8 +240,7 @@ namespace UaRestGateway.Server.Controllers
         public static Task<IServiceResponse> CloseSession(
             SessionContext context,
             StandardServer server,
-            CloseSessionRequest request,
-            NodeId authenticationToken = null)
+            CloseSessionRequest request)
         {
             try
             {
@@ -229,7 +248,7 @@ namespace UaRestGateway.Server.Controllers
 
                 if (NodeId.IsNull(request.RequestHeader.AuthenticationToken))
                 {
-                    request.RequestHeader.AuthenticationToken = authenticationToken;
+                    request.RequestHeader.AuthenticationToken = context.AuthenticationToken;
                 }
 
                 var responseHeader = server.CloseSession(
@@ -252,8 +271,7 @@ namespace UaRestGateway.Server.Controllers
         public static Task<IServiceResponse> Read(
             SessionContext context,
             StandardServer server,
-            ReadRequest request,
-            NodeId authenticationToken = null)
+            ReadRequest request)
         {
             try
             {
@@ -261,7 +279,7 @@ namespace UaRestGateway.Server.Controllers
 
                 if (NodeId.IsNull(request.RequestHeader.AuthenticationToken))
                 {
-                    request.RequestHeader.AuthenticationToken = authenticationToken;
+                    request.RequestHeader.AuthenticationToken = context.AuthenticationToken;
                 }
 
                 var responseHeader = server.Read(
@@ -290,8 +308,7 @@ namespace UaRestGateway.Server.Controllers
         public static Task<IServiceResponse> Write(
             SessionContext context,
             StandardServer server,
-            WriteRequest request,
-            NodeId authenticationToken = null)
+            WriteRequest request)
         {
             try
             {
@@ -299,7 +316,7 @@ namespace UaRestGateway.Server.Controllers
 
                 if (NodeId.IsNull(request.RequestHeader.AuthenticationToken))
                 {
-                    request.RequestHeader.AuthenticationToken = authenticationToken;
+                    request.RequestHeader.AuthenticationToken = context.AuthenticationToken;
                 }
 
                 var responseHeader = server.Write(
@@ -326,8 +343,7 @@ namespace UaRestGateway.Server.Controllers
         public static Task<IServiceResponse> Call(
             SessionContext context,
             StandardServer server,
-            CallRequest request,
-            NodeId authenticationToken = null)
+            CallRequest request)
         {
             try
             {
@@ -335,7 +351,7 @@ namespace UaRestGateway.Server.Controllers
 
                 if (NodeId.IsNull(request.RequestHeader.AuthenticationToken))
                 {
-                    request.RequestHeader.AuthenticationToken = authenticationToken;
+                    request.RequestHeader.AuthenticationToken = context.AuthenticationToken;
                 }
 
                 var responseHeader = server.Call(
@@ -362,8 +378,7 @@ namespace UaRestGateway.Server.Controllers
         public static Task<IServiceResponse> Browse(
             SessionContext context,
             StandardServer server,
-            BrowseRequest request,
-            NodeId authenticationToken = null)
+            BrowseRequest request)
         {
             try
             {
@@ -371,7 +386,7 @@ namespace UaRestGateway.Server.Controllers
 
                 if (NodeId.IsNull(request.RequestHeader.AuthenticationToken))
                 {
-                    request.RequestHeader.AuthenticationToken = authenticationToken;
+                    request.RequestHeader.AuthenticationToken = context.AuthenticationToken;
                 }
 
                 var responseHeader = server.Browse(
@@ -400,8 +415,7 @@ namespace UaRestGateway.Server.Controllers
         public static Task<IServiceResponse> BrowseNext(
             SessionContext context,
             StandardServer server,
-            BrowseNextRequest request,
-            NodeId authenticationToken = null)
+            BrowseNextRequest request)
         {
             try
             {
@@ -409,7 +423,7 @@ namespace UaRestGateway.Server.Controllers
 
                 if (NodeId.IsNull(request.RequestHeader.AuthenticationToken))
                 {
-                    request.RequestHeader.AuthenticationToken = authenticationToken;
+                    request.RequestHeader.AuthenticationToken = context.AuthenticationToken;
                 }
 
                 var responseHeader = server.BrowseNext(
@@ -437,8 +451,7 @@ namespace UaRestGateway.Server.Controllers
         public static Task<IServiceResponse> TranslateBrowsePathsToNodeIds(
             SessionContext context,
             StandardServer server,
-            TranslateBrowsePathsToNodeIdsRequest request,
-            NodeId authenticationToken = null)
+            TranslateBrowsePathsToNodeIdsRequest request)
         {
             try
             {
@@ -446,7 +459,7 @@ namespace UaRestGateway.Server.Controllers
 
                 if (NodeId.IsNull(request.RequestHeader.AuthenticationToken))
                 {
-                    request.RequestHeader.AuthenticationToken = authenticationToken;
+                    request.RequestHeader.AuthenticationToken = context.AuthenticationToken;
                 }
 
                 var responseHeader = server.TranslateBrowsePathsToNodeIds(
@@ -473,8 +486,7 @@ namespace UaRestGateway.Server.Controllers
         public static Task<IServiceResponse> HistoryRead(
             SessionContext context,
             StandardServer server,
-            HistoryReadRequest request,
-            NodeId authenticationToken = null)
+            HistoryReadRequest request)
         {
             try
             {
@@ -482,7 +494,7 @@ namespace UaRestGateway.Server.Controllers
 
                 if (NodeId.IsNull(request.RequestHeader.AuthenticationToken))
                 {
-                    request.RequestHeader.AuthenticationToken = authenticationToken;
+                    request.RequestHeader.AuthenticationToken = context.AuthenticationToken;
                 }
 
                 var responseHeader = server.HistoryRead(
@@ -512,8 +524,7 @@ namespace UaRestGateway.Server.Controllers
         public static Task<IServiceResponse> HistoryUpdate(
             SessionContext context,
             StandardServer server,
-            HistoryUpdateRequest request,
-            NodeId authenticationToken = null)
+            HistoryUpdateRequest request)
         {
             try
             {
@@ -521,7 +532,7 @@ namespace UaRestGateway.Server.Controllers
 
                 if (NodeId.IsNull(request.RequestHeader.AuthenticationToken))
                 {
-                    request.RequestHeader.AuthenticationToken = authenticationToken;
+                    request.RequestHeader.AuthenticationToken = context.AuthenticationToken;
                 }
 
                 var responseHeader = server.HistoryUpdate(

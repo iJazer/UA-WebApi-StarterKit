@@ -1,90 +1,14 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { IBrowseTreeNode } from './ApplicationProvider';
-import { IUserContext } from './UserProvider';
-import { Account } from './api';
+  /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as OpcUa from './opcua';
 import * as pako from 'pako';
-
-export class HandleFactory {
-   private static counter: number = 0;
-   public static increment(): number {
-      return ++this.counter;
-   }
-}
-
-export enum SessionState {
-   Disconnected = 0,
-   Connecting = 1,
-   NoSession = 2,
-   Creating = 3,
-   Activating = 4,
-   SessionActive = 5,
-   Error = 6
-}
-
-export enum SubscriptionState {
-
-
-   Closed = 0,
-   Opening = 1,
-   Open = 2,
-   Error = 3
-}
-
-export interface IMonitoredItem {
-   path: string[],
-   name: string,
-   nodeId: string,
-   browsePath: string[],
-   resolvedNodeId: string,
-   clientHandle: number,
-   serverHandle: number,
-   attributeId: number,
-   value: OpcUa.DataValue
-}
-
-export interface ISession {
-   state: SessionState,
-   sessionId?: string,
-   serverNonce?: string,
-   authenticationToken?: string,
-   subscriptionId?: number,
-   lastSequenceNumber?: number,
-   acknowledgements?: OpcUa.SubscriptionAcknowledgement[],
-   monitoredItems?: IMonitoredItem[]
-}
-
-export interface NodeAttributeValue {
-   id: number,
-   reference: OpcUa.ReferenceDescription;
-   attributeId: OpcUa.Attributes;
-   value?: OpcUa.DataValue;
-}
-
-export interface IServiceFault {
-   code?: number;
-   message?: string;
-}
-
-interface ServiceFault {
-   ResponseHeader?: OpcUa.ResponseHeader;
-}
-
-interface IServiceFaultMessage {
-   NamespaceUris?: Array<string>;
-   ServerUris?: Array<string>;
-   ServiceId?: number;
-   Body: ServiceFault;
-}
-
-interface IServiceRequestMessage {
-   NamespaceUris?: Array<string>;
-   ServerUris?: Array<string>;
-   ServiceId?: number;
-   Body?: any;
-}
-
-function toFault(response?: IServiceFaultMessage): IServiceFault | null {
+import { Account } from './user/Account';
+import { IResponseMessage } from './service/IResponseMessage';
+import { ICompletedRequest } from './service/ICompletedRequest';
+import { IBrowsedNode } from './service/IBrowsedNode';
+import { IReadResult } from './service/IReadResult';
+import { HandleFactory } from './service/HandleFactory';
+import { IReadValueId } from './service/IReadValueId';
+function toFault(request: ICompletedRequest, response?: IResponseMessage): ICompletedRequest | null {
    if (response?.Body?.ResponseHeader) {
       const responseHeader = response.Body.ResponseHeader;
       if (!responseHeader.ServiceResult || responseHeader.ServiceResult === 0) {
@@ -93,7 +17,7 @@ function toFault(response?: IServiceFaultMessage): IServiceFault | null {
       const stringTable = response.Body?.ResponseHeader?.StringTable;
       const serviceDiagnostics = response.Body?.ResponseHeader?.ServiceDiagnostics;
       if (!stringTable?.length || !serviceDiagnostics) {
-         return { code: responseHeader.ServiceResult };
+         return { ...request, code: responseHeader.ServiceResult };
       }
       let message = '';
       if ((serviceDiagnostics?.SymbolicId && serviceDiagnostics?.SymbolicId > 0) || serviceDiagnostics?.SymbolicId === 0) {
@@ -103,14 +27,17 @@ function toFault(response?: IServiceFaultMessage): IServiceFault | null {
          message += `'${stringTable?.[serviceDiagnostics?.LocalizedText]}'`;
       }
       return {
+         ...request,
          code: responseHeader.ServiceResult,
          message: message
       }
    }
    return {
+      ...request,
       code: OpcUa.StatusCodes.BadUnknownResponse
    }
 }
+
 function stringToUtf8ByteArray(str: string): Uint8Array {
    const encoder = new TextEncoder();
    return encoder.encode(str);
@@ -137,11 +64,11 @@ async function readResponseBody(url: string, response: any) {
 
 export async function call(
    url: string,
-   request: IServiceRequestMessage,
+   result: ICompletedRequest,
    controller?: AbortController,
    user?: Account,
    compress?: boolean) {
-
+   const request = result.request;
    const timeoutId = (request?.Body?.RequestHeader?.TimeoutHint && controller)
       ? setTimeout(() => controller.abort(), request?.Body?.RequestHeader?.TimeoutHint)
       : null;
@@ -165,7 +92,7 @@ export async function call(
       if (timeoutId) clearTimeout(timeoutId);
       if (response.ok) {
          const body = await readResponseBody(url, response);
-         const fault = toFault(body);
+         const fault = toFault(result, body);
          if (fault) {
             return fault;
          }
@@ -197,9 +124,10 @@ export async function call(
 export async function browseChildren(
    nodeId: string,
    requestTimeout: number = 120000,
-   controller?: AbortController,
    user?: Account
-): Promise<IBrowseTreeNode[] | undefined> {
+): Promise<IBrowsedNode[] | undefined> {
+
+   const controller: AbortController = new AbortController();
    const request: OpcUa.BrowseRequestMessage = {
       Body: {
          RequestHeader: {
@@ -218,7 +146,8 @@ export async function browseChildren(
          ]
       }
    };
-   const response = await call(`/opcua/browse`, request, controller, user, true);
+   const result: ICompletedRequest = { clientHandle: HandleFactory.increment(), request };
+   const response = await call(`/opcua/browse`, result, controller, user, true);
    if (!response) {
       return undefined;
    }
@@ -226,13 +155,12 @@ export async function browseChildren(
       console.warn(`Browse call failed: [${OpcUa.StatusCodes[response.code] ?? response.code}] '${response.message ?? ''}'`);
       return undefined;
    }
-   const nodes: IBrowseTreeNode[] = [];
+   const nodes: IBrowsedNode[] = [];
    let continuationPoints: string[] = [];
-   let result: OpcUa.BrowseResponse = response.Body;
-
+   let body: OpcUa.BrowseResponse = response.Body;
    do {
       continuationPoints = [];
-      result.Results?.forEach(x => x.References?.forEach((y) => {
+      body.Results?.forEach(x => x.References?.forEach((y) => {
          if (OpcUa.StatusCode.isGood(x.StatusCode)) {
             nodes.push({
                id: `${y.NodeId}`,
@@ -254,7 +182,8 @@ export async function browseChildren(
                ContinuationPoints: continuationPoints
             }
          };
-         const response = await call(`/opcua/browsenext`, request, controller, user, true);
+         result.request = request;
+         const response = await call(`/opcua/browsenext`, result, controller, user, true);
          if (!response) {
             return undefined;
          }
@@ -262,7 +191,7 @@ export async function browseChildren(
             console.warn(`BrowseNext call failed: [${OpcUa.StatusCodes[response.code] ?? response.code}] '${response.message ?? ''}'`);
             return undefined;
          }
-         result = response.Body;
+         body = response.Body;
       }
    } while (continuationPoints.length > 0);
 
@@ -272,10 +201,10 @@ export async function browseChildren(
 export async function readAttributes(
    reference: OpcUa.ReferenceDescription,
    requestTimeout: number = 120000,
-   controller?: AbortController,
    user?: Account
-): Promise<NodeAttributeValue[] | null> {
+): Promise<IReadResult[] | null> {
 
+   const controller: AbortController = new AbortController();
    const request: OpcUa.ReadRequestMessage = {
       Body: {
          RequestHeader: {
@@ -287,7 +216,6 @@ export async function readAttributes(
          NodesToRead: []
       }
    };
-
    for (const id in OpcUa.Attributes) {
       request.Body?.NodesToRead?.push(
          {
@@ -295,8 +223,7 @@ export async function readAttributes(
             AttributeId: Number(OpcUa.Attributes[id])
          });
    }
-
-   const response = await call(`/opcua/read`, request, controller, user, true);
+   const response = await call(`/opcua/read`, { clientHandle: HandleFactory.increment(), request }, controller, user, true);
    if (!response) {
       return null;
    }
@@ -304,34 +231,31 @@ export async function readAttributes(
       console.warn(`Read call failed: [${OpcUa.StatusCodes[response.code] ?? response.code}] '${response.message ?? ''}'`);
       return null;
    }
-
-   const result: OpcUa.ReadResponse = response.Body
-   const values: NodeAttributeValue[] = [];
-
-   if (result.Results && request.Body?.NodesToRead) {
-      for (let ii = 0; ii < result.Results?.length; ii++) {
-         const x = result.Results[ii];
+   const body: OpcUa.ReadResponse = response.Body
+   const values: IReadResult[] = [];
+   if (body.Results && request.Body?.NodesToRead) {
+      for (let ii = 0; ii < body.Results?.length; ii++) {
+         const x = body.Results[ii];
          if (x.StatusCode !== OpcUa.StatusCodes.BadAttributeIdInvalid) {
             values.push({
                id: HandleFactory.increment(),
-               reference: reference,
+               nodeId: reference.NodeId ?? '',
                attributeId: request.Body.NodesToRead[ii].AttributeId ?? 0,
                value: x
             });
          }
       }
    }
-
    return values;
 }
 
 export async function readValues(
-   variables: IBrowseTreeNode[],
-   requestTimeout: number = 120000,
-   controller?: AbortController,
+   variableIds: string[],
+   requestTimeout: number,
    user?: Account
-): Promise<IBrowseTreeNode[] | null> {
+): Promise<IReadResult[] | null> {
 
+   const controller: AbortController = new AbortController();
    const request: OpcUa.ReadRequestMessage = {
       ServiceId: OpcUa.ReadRequestMessageServiceIdEnum.NUMBER_629,
       Body: {
@@ -340,452 +264,143 @@ export async function readValues(
             TimeoutHint: requestTimeout
          },
          MaxAge: 0,
-         TimestampsToReturn: OpcUa.TimestampsToReturn.Server,
-         NodesToRead: []
-      }
-   };
-
-   variables.map(ii => {
-      request.Body?.NodesToRead?.push(
-         {
-            NodeId: ii.id,
-            AttributeId: OpcUa.Attributes.Value
-         });
-      return null;
-   });
-
-   const response = await call(`/opcua/read`, request, controller, user, true);
-   if (!response) {
-      return null;
-   }
-   if (response.code) {
-      console.warn(`Read call failed: [${OpcUa.StatusCodes[response.code] ?? response.code}] '${response.message ?? ''}'`);
-      return null;
-   }
-
-   const result: OpcUa.ReadResponse = response.Body
-   const values: IBrowseTreeNode[] = [];
-
-   if (result.Results && request.Body?.NodesToRead) {
-      for (let ii = 0; ii < result.Results?.length; ii++) {
-         const item = result.Results[ii];
-         if (OpcUa.StatusCode.isBad(item.StatusCode)) {
-            values.push({ ...variables[ii], value: JSON.stringify(item.StatusCode) });
-         }
-         else {
-            if (item.Value?.Type === 21) { // LocalizedText
-               values.push({ ...variables[ii], value: item.Value?.Body?.Text });
-            }
-            else if (item.Value?.Type === 12) { // String
-               values.push({ ...variables[ii], value: item.Value?.Body });
-            }
-            else {
-               values.push({ ...variables[ii], value: JSON.stringify(item.Value?.Body) });
-            }
-         }
-      }
-   }
-
-   return values;
-}
-async function createSession(
-   user: Account,
-   requestTimeout: number,
-   controller?: AbortController
-): Promise<ISession | null> {
-   const uuid = window.crypto.randomUUID();
-
-   const request: OpcUa.CreateSessionRequestMessage = {
-      ServiceId: OpcUa.CreateSessionRequestMessageServiceIdEnum.NUMBER_459,
-      Body: {
-         RequestHeader: {
-            Timestamp: new Date(),
-            TimeoutHint: requestTimeout
-         },
-         ClientDescription: {
-            ApplicationUri: 'urn:localhost:UA:uarestgateway.client',
-            ProductUri: 'uarestgateway.client',
-            ApplicationName: { Text: 'uarestgateway.client' },
-            ApplicationType: OpcUa.ApplicationType.Client
-         },
-         EndpointUrl: window.location.href.split('?')[0],
-         SessionName: uuid,
-         ClientNonce: undefined,
-         ClientCertificate: undefined,
-         RequestedSessionTimeout: 120000,
-         MaxResponseMessageSize: 8 * 1014 * 1024
-      }
-   };
-
-   const response = await call(`/opcua/createsession`, request, controller, user, true);
-   if (!response) {
-      return null;
-   }
-   if (response.code) {
-      console.warn(`CreateSession call failed: [${OpcUa.StatusCodes[response.code] ?? response.code}] '${response.message ?? ''}'`);
-      return null;
-   }
-
-   response.Body.ServerNonce = response.Body.ServerNonce ?? new Uint8Array(0);
-
-   return {
-      sessionId: response.Body.SessionId,
-      serverNonce: response.Body.ServerNonce.toString(),
-      authenticationToken: response.Body.AuthenticationToken
-   } as ISession;
-}
-
-async function activateSession(
-   user: Account,
-   session: ISession,
-   language: string,
-   requestTimeout: number,
-   controller?: AbortController
-): Promise<ISession | null> {
-   const request: OpcUa.ActivateSessionRequestMessage = {
-      ServiceId: OpcUa.ActivateSessionRequestMessageServiceIdEnum.NUMBER_465,
-      Body: {
-         RequestHeader: {
-            Timestamp: new Date(),
-            TimeoutHint: requestTimeout,
-            AuthenticationToken: session.authenticationToken
-         },
-         LocaleIds: [language ?? " en"]
-      }
-   };
-
-   const response = await call(`/opcua/activatesession`, request, controller, user, true);
-   if (!response) {
-      return null;
-   }
-   if (response.code) {
-      console.warn(`ActivateSession call failed: [${OpcUa.StatusCodes[response.code] ?? response.code}] '${response.message ?? ''}'`);
-      return null;
-   }
-
-   return {
-      ...session,
-      serverNonce: response.Body.ServerNonce.toString(),
-   } as ISession;
-}
-
-async function createSubscription(
-   user: Account,
-   session: ISession,
-   requestTimeout: number,
-   controller?: AbortController
-): Promise<ISession | null> {
-
-   const request: OpcUa.CreateSubscriptionRequestMessage = {
-      ServiceId: OpcUa.CreateSubscriptionRequestMessageServiceIdEnum.NUMBER_785,
-      Body: {
-         RequestHeader: {
-            Timestamp: new Date(),
-            TimeoutHint: requestTimeout,
-            AuthenticationToken: session.authenticationToken
-         },
-         RequestedPublishingInterval: 1000,
-         RequestedLifetimeCount: 60,
-         RequestedMaxKeepAliveCount: 10,
-         MaxNotificationsPerPublish: 1000,
-         PublishingEnabled: true,
-         Priority: 100,
-      }
-   };
-
-   const response = await call(`/opcua/createsubscription`, request, controller, user, true);
-   if (!response) {
-      return null;
-   }
-   if (response.code) {
-      console.warn(`CreateSubscription call failed: [${OpcUa.StatusCodes[response.code] ?? response.code}] '${response.message ?? ''}'`);
-      return null;
-   }
-
-   return {
-      ...session,
-      subscriptionId: response.Body.SubscriptionId ?? 0
-   } as ISession;
-}
-
-export async function publish(
-   user: Account,
-   session: ISession,
-   monitoredItems: Map<number, IMonitoredItem>,
-   requestTimeout: number,
-   controller?: AbortController
-): Promise<{ session: ISession, monitoredItems: { clientHandle: number, value?: OpcUa.DataValue }[] } | null> {
-
-   const request: OpcUa.PublishRequestMessage = {
-      Body: {
-         RequestHeader: {
-            Timestamp: new Date(),
-            TimeoutHint: requestTimeout,
-            AuthenticationToken: session.authenticationToken
-         },
-         SubscriptionAcknowledgements: session.acknowledgements ?? [],
-      }
-   };
-
-   const response = await call(`/opcua/publish`, request, controller, user, true);
-   if (!response) {
-      return null;
-   }
-   if (response.code) {
-      console.warn(`Publish call failed: [${OpcUa.StatusCodes[response.code] ?? response.code}] '${response.message ?? ''}'`);
-      return null;
-   }
-
-   const acknowledgements = [];
-
-   // console.warn(`SequenceNumber ${response.Body.NotificationMessage.SequenceNumber}`);
-
-   const updates: { clientHandle: number, value?: OpcUa.DataValue }[] = [];
-   const message = response.Body.NotificationMessage;
-   if (message) {
-      const notifications: Array<OpcUa.ExtensionObject> = message.NotificationData;
-      if (notifications) {
-         notifications.forEach(x => {
-            if (x.TypeId === OpcUa.DataTypeIds.DataChangeNotification) {
-               const dataChange = x.Body as OpcUa.DataChangeNotification;
-               if (dataChange.MonitoredItems) {
-                  dataChange.MonitoredItems.forEach(y => {
-                     if (y.ClientHandle) {
-                        updates.push({ clientHandle: y.ClientHandle ?? 0, value: y.Value });
-                     }
-                  });
-               }
-            }
-         });
-      }
-
-      acknowledgements.push({ SubscriptionId: response.Body.SubscriptionId, SequenceNumber: message.SequenceNumber });
-
-      return {
-         session: {
-            ...session,
-            lastSequenceNumber: response.Body.NotificationMessage.SequenceNumber,
-            acknowledgements: acknowledgements
-         } as ISession,
-         monitoredItems: updates
-      };
-   }
-
-   return { session: session, monitoredItems: updates };
-}
-
-export async function readInitialValues(
-   user: Account,
-   monitoredItems: IMonitoredItem[],
-   requestTimeout: number,
-   controller?: AbortController
-): Promise<void | null> {
-
-   const request: OpcUa.ReadRequestMessage = {
-      ServiceId: OpcUa.ReadRequestMessageServiceIdEnum.NUMBER_629,
-      Body: {
-         RequestHeader: {
-            Timestamp: new Date(),
-            TimeoutHint: requestTimeout
-         },
-         MaxAge: 0,
-         TimestampsToReturn: OpcUa.TimestampsToReturn.Server,
-         NodesToRead: []
-      }
-   };
-
-   monitoredItems.map(ii => {
-      request.Body?.NodesToRead?.push(
-         {
-            NodeId: ii.resolvedNodeId ?? ii.nodeId,
-            AttributeId: OpcUa.Attributes.Value
-         });
-      return null;
-   });
-
-   const response = await call(`/opcua/read`, request, controller, user, true);
-   if (!response) {
-      return null;
-   }
-   if (response.code) {
-      console.warn(`Read call failed: [${OpcUa.StatusCodes[response.code] ?? response.code}] '${response.message ?? ''}'`);
-      return null;
-   }
-
-   const result: OpcUa.ReadResponse = response.Body
-
-   if (result.Results && request.Body?.NodesToRead) {
-      for (let ii = 0; ii < result.Results?.length; ii++) {
-         monitoredItems[ii].value = result.Results[ii];
-      }
-   }
-}
-
-async function createMonitoredItems(
-   user: Account,
-   session: ISession,
-   requestTimeout: number,
-   monitoredItems: IMonitoredItem[],
-   controller?: AbortController
-): Promise<IMonitoredItem[] | null> {
-
-   const request: OpcUa.CreateMonitoredItemsRequestMessage = {
-      ServiceId: OpcUa.CreateMonitoredItemsRequestMessageServiceIdEnum.NUMBER_749,
-      Body: {
-         RequestHeader: {
-            Timestamp: new Date(),
-            TimeoutHint: requestTimeout,
-            AuthenticationToken: session.authenticationToken
-         },
-         SubscriptionId: session.subscriptionId ?? 0,
-
          TimestampsToReturn: OpcUa.TimestampsToReturn.Both,
-         ItemsToCreate: monitoredItems.map(item => {
-            if (!item.clientHandle) item.clientHandle = HandleFactory.increment();
-            return {
-               ItemToMonitor: {
-                  NodeId: item.resolvedNodeId ?? item.nodeId,
-                  AttributeId: item.attributeId ?? OpcUa.Attributes.Value
-               },
-               MonitoringMode: OpcUa.MonitoringMode.Reporting,
-               RequestedParameters: {
-                  ClientHandle: item.clientHandle,
-                  SamplingInterval: 1000,
-                  QueueSize: 0,
-                  DiscardOldest: true
-               }
-            } as OpcUa.MonitoredItemCreateRequest;
-         })
+         NodesToRead: []
       }
    };
-
-   const response = await call(`/opcua/createmonitoreditems`, request, controller, user, true);
-   if (!response) {
-      return null;
-   }
-   if (response.code) {
-      console.warn(`CreateMonitoredItems call failed: [${OpcUa.StatusCodes[response.code] ?? response.code}] '${response.message ?? ''}'`);
-      return null;
-   }
-
-   response.Body.Results.forEach((result: OpcUa.MonitoredItemCreateResult, index: number) => {
-      if (OpcUa.StatusCode.isGood(result.StatusCode)) {
-         monitoredItems[index].serverHandle = result.MonitoredItemId ?? 0;
-      }
-   });
-
-   return monitoredItems;
-}
-
-export function stripUris(input: string[]): string[] {
-   const output: string[] = [];
-   if (!input?.length) {
-      return output;
-   }
-   input.forEach(x => {
-      const parts = x.split(';');
-      output.push(parts[parts.length - 1]);
-   });
-   return output;
-}
-
-export async function translateAndSubscribe(
-   user: Account,
-   session: ISession,
-   requestTimeout: number,
-   monitoredItems: IMonitoredItem[],
-   controller?: AbortController
-): Promise<IMonitoredItem[] | null> {
-
-   const request: OpcUa.TranslateBrowsePathsToNodeIdsRequestMessage = {
-      ServiceId: OpcUa.TranslateBrowsePathsToNodeIdsRequestMessageServiceIdEnum.NUMBER_552,
-      Body: {
-         RequestHeader: {
-            Timestamp: new Date(),
-            TimeoutHint: requestTimeout,
-            AuthenticationToken: session.authenticationToken
-         },
-         BrowsePaths: []
-      }
-   };
-
-   const itemsToTranslate: number[] = [];
-
-   monitoredItems.forEach((monitoredItem: IMonitoredItem, index: number) => {
-      if (monitoredItem.browsePath?.length) {
-         const elements: OpcUa.RelativePathElement[] = [];
-         monitoredItem.browsePath.forEach(element => {
-            elements.push({
-               ReferenceTypeId: OpcUa.ReferenceTypeIds.HierarchicalReferences,
-               IsInverse: false,
-               IncludeSubtypes: true,
-               TargetName: element
-            });
+   variableIds.map(ii => {
+      request.Body?.NodesToRead?.push(
+         {
+            NodeId: ii,
+            AttributeId: OpcUa.Attributes.Value
          });
-         itemsToTranslate.push(index);
-         request.Body?.BrowsePaths?.push({
-            StartingNode: monitoredItem.nodeId,
-            RelativePath: {
-               Elements: elements
-            }
-         });
-      }
+      return null;
    });
-
-   if (itemsToTranslate.length) {
-      const response = await call(`/opcua/translate`, request, controller, user, true);
+   const values: IReadResult[] = [];
+   if (request.Body?.NodesToRead?.length) {
+      const response = await call(`/opcua/read`, { clientHandle: HandleFactory.increment(), request }, controller, user, true);
       if (!response) {
          return null;
       }
       if (response.code) {
-         console.warn(`TranslateBrowsePathsToNodeIds call failed: [${OpcUa.StatusCodes[response.code] ?? response.code}] '${response.message ?? ''}'`);
+         console.warn(`Read call failed: [${OpcUa.StatusCodes[response.code] ?? response.code}] '${response.message ?? ''}'`);
          return null;
       }
-      response.Body.Results.forEach((result: OpcUa.BrowsePathResult, index: number) => {
-         if (OpcUa.StatusCode.isGood(result.StatusCode) && result.Targets?.length) {
-            if (result.Targets[0].TargetId && (result.Targets[0].RemainingPathIndex ?? 0) > 255) {
-               const item = monitoredItems[itemsToTranslate[index]];
-               item.resolvedNodeId = result.Targets[0].TargetId;
-               item.attributeId = OpcUa.Attributes.Value;
-               item.serverHandle = 0;
-               item.value = { StatusCode: OpcUa.StatusCodes.BadWaitingForInitialData };
-            }
+      const body: OpcUa.ReadResponse = response.Body
+      if (body.Results && request.Body?.NodesToRead) {
+         for (let ii = 0; ii < body.Results?.length; ii++) {
+            const item = body.Results[ii];
+            values.push({
+               id: HandleFactory.increment(),
+               nodeId: variableIds[ii] ?? '',
+               attributeId: request.Body.NodesToRead[ii].AttributeId ?? 0,
+               value: item
+            });
+         }
+      }
+   }
+   return values;
+}
+
+export async function translateAndReadValues(
+   nodesToRead: IReadValueId[],
+   requestTimeout: number,
+   user?: Account
+): Promise<IReadResult[] | null> {
+   const controller: AbortController = new AbortController();
+   const browsePaths: OpcUa.BrowsePath[] = [];
+   const nodesToTranslate: IReadValueId[] = [];
+   const values: IReadResult[] = [];
+   nodesToRead.forEach((item) => {
+      values.push({
+         id: values.length,
+         nodeId: item.resolvedNodeId ?? item.nodeId,
+         attributeId: item.attributeId ?? OpcUa.Attributes.Value,
+         value: { StatusCode: OpcUa.StatusCodes.BadNodeIdUnknown }
+      } as IReadResult);  
+      if (item.resolvedNodeId) {
+         return;
+      }
+      if (!item.path?.length) {
+         item.resolvedNodeId = item.nodeId;
+         return;
+      }
+      browsePaths.push({
+         StartingNode: item.nodeId,
+         RelativePath: {
+            Elements: item.path?.map((path) => {
+               return {
+                  ReferenceTypeId: OpcUa.ReferenceTypeIds.HierarchicalReferences,
+                  IsInverse: false,
+                  IncludeSubtypes: true,
+                  TargetName: path
+               }
+            })
+         }
+      });
+      nodesToTranslate.push(item);
+   });
+   if (browsePaths.length) {
+      const request: OpcUa.TranslateBrowsePathsToNodeIdsRequestMessage = {
+         ServiceId: OpcUa.TranslateBrowsePathsToNodeIdsRequestMessageServiceIdEnum.NUMBER_552,
+         Body: {
+            RequestHeader: {
+               Timestamp: new Date(),
+               TimeoutHint: requestTimeout
+            },
+            BrowsePaths: browsePaths
+         }
+      };
+      const response= await call(`/opcua/translate`, { clientHandle: HandleFactory.increment(), request }, controller, user, true);
+      if (!response) {
+         return null;
+      }
+      if (response.code) {
+         console.warn(`Translate call failed: [${OpcUa.StatusCodes[response.code] ?? response.code}] '${response.message ?? ''}'`);
+         return null;
+      }
+      const body : OpcUa.TranslateBrowsePathsToNodeIdsResponse = response.Body;
+      body.Results?.forEach((item, index) => {
+         if (!item.StatusCode && item?.Targets?.at(0)?.RemainingPathIndex === 4294967295) {
+            nodesToTranslate[index].resolvedNodeId = item.Targets[0].TargetId;
          }
       });
    }
-
-   await readInitialValues(user, monitoredItems, requestTimeout, controller);
-
-   if (session.state === SessionState.Open) {
-      return await createMonitoredItems(user, session, requestTimeout, monitoredItems, controller);
-   }
-
-   return monitoredItems;
-}
-
-export async function connect(
-   context: IUserContext,
-   session: ISession,
-   requestTimeout: number,
-   controller?: AbortController
-): Promise<ISession | null> {
-
-   let result = await createSession(context.user, requestTimeout, controller);
-   if (result) {
-      session = result;
-      await activateSession(context.user, result, context.language, requestTimeout, controller);
-      if (result) {
-         session = result;
-         result = await createSubscription(context.user, result, requestTimeout, controller);
-         if (result) {
-            return {
-               ...session,
-               subscriptionId: result.subscriptionId,
-               state: SessionState.Open,
-               monitoredItems: []
-            } as ISession;
-         }
+   const valuesToRead: OpcUa.ReadValueId[] = [];
+   nodesToRead.forEach((item) => {
+      if (!item.resolvedNodeId) {
+         return;
       }
+      valuesToRead.push({
+         NodeId: item.resolvedNodeId,
+         AttributeId: item.attributeId ?? OpcUa.Attributes.Value
+      });
+      item.id = valuesToRead.length;
+   });
+   if (valuesToRead.length) {
+      const request: OpcUa.ReadRequestMessage = {
+         ServiceId: OpcUa.ReadRequestMessageServiceIdEnum.NUMBER_629,
+         Body: {
+            RequestHeader: {
+               Timestamp: new Date(),
+               TimeoutHint: requestTimeout
+            },
+            MaxAge: 0,
+            NodesToRead: valuesToRead
+         }
+      };
+      const response = await call(`/opcua/read`, { clientHandle: HandleFactory.increment(), request }, controller, user, true);
+      if (!response) {
+         return null;
+      }
+      if (response.code) {
+         console.warn(`Read call failed: [${OpcUa.StatusCodes[response.code] ?? response.code}] '${response.message ?? ''}'`);
+         return null;
+      }
+      const body: OpcUa.ReadResponse = response.Body;
+      values.forEach((item) => {
+         item.value = body.Results?.at(item.id);
+      });
    }
-   return null;
+   return values;
 }

@@ -53,7 +53,7 @@ export async function readResponseBody(url: string, response: any) {
    return await response.json();
 }
 
-export async function httpGet(url: string, controller: AbortController) {
+export async function httpGet(url: string, controller?: AbortController) {
    try {
       console.info(`httpGet ${url}`);
       const response = await fetch(url, (controller) ? { signal: controller.signal } : {});

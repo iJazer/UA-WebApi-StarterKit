@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -6,72 +7,36 @@ import { TreeView } from '@mui/x-tree-view/TreeView/TreeView';
 import Paper from '@mui/material/Paper/Paper';
 
 import * as OpcUa from '../opcua';
-import { IBrowseTreeNode, ApplicationContext } from '../ApplicationProvider';
+import { ApplicationContext } from '../ApplicationProvider';
 import { TreeItem } from '@mui/x-tree-view/TreeItem/TreeItem';
 import { NodeIcon } from './NodeIcon';
-import { browseChildren } from '../opcua-utils';
+import { IBrowsedNode } from '../service/IBrowsedNode';
 
 export interface BrowseTreeNodeProps {
    parentId?: string
-   requestTimeout?: number,
    selectionId?: string,
-   onChildrenUpdated?: (oldNodes: IBrowseTreeNode[], newNodes: IBrowseTreeNode[]) => void
+   onChildrenUpdated?: (oldNodes: IBrowsedNode[], newNodes: IBrowsedNode[]) => void,
+   onSelectionChanged?: (node: OpcUa.ReferenceDescription) => void
 }
 
-type BrowseTreeNodeState = {
-   parentId?: string;
-   nodes?: IBrowseTreeNode[];
-   oldNodes?: IBrowseTreeNode[];
-   dirty: boolean;
-};
-
-type BrowseTreeNodeAction = {
-   type: 'update' | 'clear';
-   parentId?: string;
-   newNodes?: IBrowseTreeNode[];
-};
-
-function treeViewReducer(state: BrowseTreeNodeState, action: BrowseTreeNodeAction): BrowseTreeNodeState {
-   switch (action.type) {
-      case 'clear':
-         return { parentId: state.parentId, oldNodes: state.oldNodes, nodes: state.nodes, dirty: false };
-      case 'update':
-         return { oldNodes: state.nodes, parentId: action.parentId, nodes: action.newNodes, dirty: true };
-      default:
-         throw new Error();
-   }
-}
-
-export const BrowseTreeNode = ({ parentId, requestTimeout, selectionId }: BrowseTreeNodeProps) => {
-   const [state, dispatch] = React.useReducer(treeViewReducer, { dirty: false });
-   const context = React.useContext(ApplicationContext);
-   const controller = React.useRef(new AbortController());
+export const BrowseTreeNode = ({ parentId, selectionId, onSelectionChanged }: BrowseTreeNodeProps) => {
+   const [children, setChildren] = React.useState<IBrowsedNode[]>([]);
+   const { browseChildren, visibleNodes, nodes } = React.useContext(ApplicationContext);
 
    React.useEffect(() => {
-      const current = controller.current;
-      return () => {
-         current.abort();
-      };
-   }, []);
-
-   React.useEffect(() => {
-      if (parentId) {
-         browseChildren(parentId, requestTimeout, controller, context?.userContext?.user).then((x) => {
-            if (x) dispatch({ type: 'update', parentId: parentId, newNodes: x });
+      if (browseChildren && parentId && selectionId === parentId) {
+         browseChildren(parentId, 0).then((x) => {
+            setChildren(x);
          });
       }
-   }, [parentId, requestTimeout, context?.userContext?.user]);
-
-   React.useEffect(() => {
-      if (state.dirty && context?.updateNodes) {
-         context?.updateNodes(state.parentId, state.oldNodes, state.nodes);
-         dispatch({ type: 'clear' });
-      }
-   }, [state, context]);
+   }, [browseChildren, visibleNodes, selectionId, parentId, nodes, onSelectionChanged]);
 
    return (
       <React.Fragment>
-         {state.nodes?.map((node) => {
+         {children?.map((node) => {
+            if (!node?.reference?.NodeId) {
+               return null;
+            }
             return (
                <TreeItem
                   key={node.id}
@@ -81,8 +46,8 @@ export const BrowseTreeNode = ({ parentId, requestTimeout, selectionId }: Browse
                >
                   <BrowseTreeNode
                      parentId={node.reference.NodeId}
-                     requestTimeout={requestTimeout}
                      selectionId={selectionId}
+                     onSelectionChanged={onSelectionChanged}
                   />
                </TreeItem>)
          })}
@@ -91,24 +56,25 @@ export const BrowseTreeNode = ({ parentId, requestTimeout, selectionId }: Browse
 
 interface BrowseTreeViewProps {
    rootNodeId?: string
-   requestTimeout?: number
    onSelectionChanged?: (node: OpcUa.ReferenceDescription) => void
 }
 
-export const BrowseTreeView = ({ rootNodeId, requestTimeout, onSelectionChanged }: BrowseTreeViewProps) => {
+export const BrowseTreeView = ({ rootNodeId, onSelectionChanged }: BrowseTreeViewProps) => {
    const [selectionId, setSelectionId] = React.useState<string | undefined>();
-   const context = React.useContext(ApplicationContext);
+   const { visibleNodes, setVisibleNodes, nodes } = React.useContext(ApplicationContext);
 
    const handleNodeSelect = React.useCallback((_e: React.SyntheticEvent, nodeId: string) => {
-      const treeNode: IBrowseTreeNode | undefined = context.nodes.get(nodeId);
+      console.error(`SELECT node ${nodeId}`);
+      const treeNode: IBrowsedNode | undefined = nodes.get(nodeId);
       if (treeNode && onSelectionChanged) {
          onSelectionChanged(treeNode.reference);
       }
       setSelectionId(treeNode?.id);
-   }, [onSelectionChanged, context]);
+   }, [onSelectionChanged, nodes]);
 
    const handleToggle = (_e: React.SyntheticEvent, nodeIds: string[]) => {
-      context.setVisibleNodes(nodeIds);
+      console.error(`TOGGLE node ${nodeIds.join()}`);
+      setVisibleNodes(nodeIds);
    }
 
    return (
@@ -116,14 +82,14 @@ export const BrowseTreeView = ({ rootNodeId, requestTimeout, onSelectionChanged 
          <TreeView
             defaultCollapseIcon={<ExpandMoreIcon />}
             defaultExpandIcon={<ChevronRightIcon />}
-            expanded={context.visibleNodes}
+            expanded={visibleNodes}
             onNodeSelect={(e: React.SyntheticEvent, nodeId: string) => handleNodeSelect(e, nodeId)}
             onNodeToggle={(e: React.SyntheticEvent, nodeIds: string[]) => handleToggle(e, nodeIds)}
          >
             <BrowseTreeNode
                parentId={rootNodeId}
-               requestTimeout={requestTimeout}
-               selectionId={selectionId}
+               selectionId={selectionId ?? rootNodeId}
+               onSelectionChanged={onSelectionChanged}
             />
          </TreeView>
       </Paper>

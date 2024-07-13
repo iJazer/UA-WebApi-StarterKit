@@ -2,11 +2,10 @@ import * as React from 'react';
 import i18n from "i18next";
 
 import { ThemeProvider } from '@mui/material/styles';
-
 import { DarkTheme, LightTheme, ThemeModes } from './theme';
-import { Account, UserLoginStatus } from './api';
 
 import * as Web from "./Web";
+import { Account, UserLoginStatus } from './user';
 
 export const DefaultUserName = 'Anonymous';
 
@@ -19,7 +18,7 @@ export interface IUserContext {
    setThemeMode: (value: ThemeModes) => void,
    language: string,
    setLanguage: (value: string) => void,
-};
+}
 
 export const UserContext = React.createContext<IUserContext>({
    user: {},
@@ -68,14 +67,12 @@ export const UserProvider = ({ children }: UserProviderProps) => {
       i18n.changeLanguage(language);
    }, [language]);
 
-
    React.useEffect(() => {
-      const controller = new AbortController();
       if (UserLoginStatus.LoggedIn === loginStatus || UserLoginStatus.Unknown === loginStatus) {
          fetch();
       }
       async function fetch() {
-         const response = await Web.httpGet(`/api/account/current`, controller);
+         const response = await Web.httpGet(`/api/account/current`);
          if (response?.errorCode) {
             if (!response.silent) {
                setUser({ name: DefaultUserName });
@@ -88,9 +85,6 @@ export const UserProvider = ({ children }: UserProviderProps) => {
             setLoginStatus(UserLoginStatus.LoggedIn);
          }
       }
-      return function cleanup() {
-         //controller.abort();
-      };
    }, [loginStatus]);
 
    return (

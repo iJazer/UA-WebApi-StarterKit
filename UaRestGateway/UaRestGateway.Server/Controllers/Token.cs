@@ -23,7 +23,7 @@ namespace UaRestGateway.Server.Controllers
         public string RefreshToken { get; set; }
     }
 
-    public class CacheSessions
+    public class CachedSessions
     {
         public string SecureChannelId { get; set; }
 

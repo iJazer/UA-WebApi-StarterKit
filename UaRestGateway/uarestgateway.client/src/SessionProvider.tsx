@@ -1,34 +1,15 @@
-import * as React from 'react';
+ import * as React from 'react';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 import { UserContext } from './UserProvider';
-import { UserLoginStatus } from './api';
 import * as OpcUa from './opcua';
-import { HandleFactory, SessionState } from './opcua-utils';
+import { UserLoginStatus } from './user';
+import { IRequestMessage } from './service/IRequestMessage';
+import { IResponseMessage } from './service/IResponseMessage';
+import { ICompletedRequest } from './service/ICompletedRequest';
+import { SessionState } from './service/SessionState';
+import { HandleFactory } from './service/HandleFactory';
 
 const DefaultServerUrl = `wss://${location.host}/stream`;
-
-export interface IRequestBody {
-   RequestHeader?: OpcUa.RequestHeader
-}
-export interface IRequestMessage {
-   ServiceId?: number,
-   Body: IRequestBody
-}
-
-export interface IResponseBody {
-   ResponseHeader?: OpcUa.ResponseHeader
-}
-
-export interface IResponseMessage {
-   ServiceId?: number,
-   Body: IResponseBody
-}
-
-export interface ICompletedRequest {
-   clientHandle: number,
-   request: IRequestMessage,
-   response?: IResponseMessage
-}
 
 export interface ISessionContext {
    serverUrl: string,
@@ -100,6 +81,7 @@ export const SessionProvider = ({ children }: SessionProps) => {
       (isEnabled) ? serverUrl : null,
       {
          share: true,
+         protocols: (user?.accessToken) ? ["opcua+uajson", `opcua+token+${user?.accessToken}`] : ["opcua+uajson"],
          shouldReconnect: () => {
             return isEnabled;
          }
@@ -245,10 +227,6 @@ export const SessionProvider = ({ children }: SessionProps) => {
          return;
       }
    }, [createSession, deleteSession]);
-
-   React.useEffect(() => {
-      console.error("setIsSessionEnabled is changed.");
-   }, [setIsSessionEnabledImpl]);
 
    const sessionContext = {
       serverUrl: m.current.serverUrl,

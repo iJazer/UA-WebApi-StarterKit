@@ -15,35 +15,33 @@ import { translateAndReadValues } from '../opcua-utils';
 import { IReadValueId } from '../service/IReadValueId';
 import { UserContext } from '../UserProvider';
 
-interface ServerStatusCardProps {
+import DownloadIcon from '@mui/icons-material/Download';
+import UploadIcon from '@mui/icons-material/Upload';
+
+interface FileCardProps {
    rootId?: string
 }
 
-enum ServerStatusField {
-   Undefined,
-   ProductName,
-   ProductUri,
-   ManufacturerName,
-   SoftwareVersion,
-   BuildDate,
-   State,
-   StartTime,
-   CurrentTime,
-   StateEnumStrings
+enum FileCardField {
+   Size,
+   OpenCount,
+   MimeType,
+   MaxByteStringLength,
+   LastModifiedTime
 }
 
-interface ServerStatusCardInternals {
+interface FileCardInternals {
    clientHandle: number,
    monitoredItems: IMonitoredItem[],
    mounted: boolean,
    disposed: boolean
 }
 
-export const ServerStatusCard = ({ rootId }: ServerStatusCardProps) => {
+export const FileCard = ({ rootId }: FileCardProps) => {
    const { user } = React.useContext(UserContext);
    const [counter, setCounter] = React.useState<number>(1);
 
-   const m = React.useRef<ServerStatusCardInternals>({
+   const m = React.useRef<FileCardInternals>({
       clientHandle: HandleFactory.increment(),
       monitoredItems: [],
       mounted: true,
@@ -82,51 +80,33 @@ export const ServerStatusCard = ({ rootId }: ServerStatusCardProps) => {
       if (rootId) {
          const items = [];
          items.push({
-            subscriberHandle: ServerStatusField.ProductName,
+            subscriberHandle: FileCardField.Size,
             nodeId: rootId,
-            path: [OpcUa.BrowseNames.BuildInfo, OpcUa.BrowseNames.ProductName]
+            path: [OpcUa.BrowseNames.Size]
          });
          items.push({
-            subscriberHandle: ServerStatusField.ProductUri,
+            subscriberHandle: FileCardField.OpenCount,
             nodeId: rootId,
-            path: [OpcUa.BrowseNames.BuildInfo, OpcUa.BrowseNames.ProductUri]
+            path: [OpcUa.BrowseNames.OpenCount]
          });
          items.push({
-            subscriberHandle: ServerStatusField.ManufacturerName,
+            subscriberHandle: FileCardField.MimeType,
             nodeId: rootId,
-            path: [OpcUa.BrowseNames.BuildInfo, OpcUa.BrowseNames.ManufacturerName]
+            path: [OpcUa.BrowseNames.MimeType]
          });
          items.push({
-            subscriberHandle: ServerStatusField.SoftwareVersion,
+            subscriberHandle: FileCardField.MaxByteStringLength,
             nodeId: rootId,
-            path: [OpcUa.BrowseNames.BuildInfo, OpcUa.BrowseNames.SoftwareVersion]
+            path: [OpcUa.BrowseNames.MaxByteStringLength]
          });
          items.push({
-            subscriberHandle: ServerStatusField.BuildDate,
+            subscriberHandle: FileCardField.LastModifiedTime,
             nodeId: rootId,
-            path: [OpcUa.BrowseNames.BuildInfo, OpcUa.BrowseNames.BuildDate]
-         });
-         items.push({
-            subscriberHandle: ServerStatusField.State,
-            nodeId: rootId,
-            path: [OpcUa.BrowseNames.State]
-         });
-         items.push({
-            subscriberHandle: ServerStatusField.StartTime,
-            nodeId: rootId,
-            path: [OpcUa.BrowseNames.StartTime]
-         });
-         items.push({
-            subscriberHandle: ServerStatusField.CurrentTime,
-            nodeId: rootId,
-            path: [OpcUa.BrowseNames.CurrentTime]
-         });
-         items.push({
-            subscriberHandle: ServerStatusField.StateEnumStrings,
-            nodeId: OpcUa.VariableIds.ServerState_EnumStrings
+            path: [OpcUa.BrowseNames.LastModifiedTime]
          });
          m.current.monitoredItems = items;
       }
+
    }, [rootId, unsubscribe]);
 
    React.useEffect(() => {
@@ -153,13 +133,13 @@ export const ServerStatusCard = ({ rootId }: ServerStatusCardProps) => {
                      item.value = result.value;
                   }
                });
-               setCounter(counter => counter + 1);
+               setCounter(x => x + 1);
             }
          });
       }
    }, [subscriptionState, subscribe, user]);
 
-   const getValue = React.useCallback((field: ServerStatusField) => {
+   const getValue = React.useCallback((field: FileCardField) => {
       return m.current.monitoredItems.find(x => x.subscriberHandle === field)?.value;
    }, []);
 
@@ -173,36 +153,19 @@ export const ServerStatusCard = ({ rootId }: ServerStatusCardProps) => {
             <Table sx={{ m: 0, p: 0 }}>
                <TableBody>
                   <TableRow>
-                     <TableCell><Typography variant="body1" sx={{ fontWeight: 'bolder' }}>Product Name</Typography></TableCell>
-                     <TableCell><DataValueDisplay value={getValue(ServerStatusField.ProductName)} /></TableCell>
+                     <TableCell colSpan={2}><DownloadIcon /><UploadIcon /></TableCell>
                   </TableRow>
                   <TableRow>
-                     <TableCell><Typography variant="body1" sx={{ fontWeight: 'bolder' }}>Product URI</Typography></TableCell>
-                     <TableCell><DataValueDisplay value={getValue(ServerStatusField.ProductUri)} /></TableCell>
+                     <TableCell><Typography variant="body1" sx={{ fontWeight: 'bolder' }}>Media Type</Typography></TableCell>
+                     <TableCell><DataValueDisplay value={getValue(FileCardField.MimeType)} /></TableCell>
                   </TableRow>
                   <TableRow>
-                     <TableCell><Typography variant="body1" sx={{ fontWeight: 'bolder' }}>Manufacturer Name</Typography></TableCell>
-                     <TableCell><DataValueDisplay value={getValue(ServerStatusField.ManufacturerName)} /></TableCell>
+                     <TableCell><Typography variant="body1" sx={{ fontWeight: 'bolder' }}>Size (bytes)</Typography></TableCell>
+                     <TableCell><DataValueDisplay value={getValue(FileCardField.Size)} /></TableCell>
                   </TableRow>
                   <TableRow>
-                     <TableCell><Typography variant="body1" sx={{ fontWeight: 'bolder' }}>SoftwareVersion</Typography></TableCell>
-                     <TableCell><DataValueDisplay value={getValue(ServerStatusField.SoftwareVersion)} /></TableCell>
-                  </TableRow>
-                  <TableRow>
-                     <TableCell><Typography variant="body1" sx={{ fontWeight: 'bolder' }}>Build Date</Typography></TableCell>
-                     <TableCell><DataValueDisplay value={getValue(ServerStatusField.BuildDate)} /></TableCell>
-                  </TableRow>
-                  <TableRow>
-                     <TableCell><Typography variant="body1" sx={{ fontWeight: 'bolder' }}>Server State</Typography></TableCell>
-                     <TableCell><DataValueDisplay value={getValue(ServerStatusField.State)} /></TableCell>
-                  </TableRow>
-                  <TableRow>
-                     <TableCell><Typography variant="body1" sx={{ fontWeight: 'bolder' }}>Start Time</Typography></TableCell>
-                     <TableCell><DataValueDisplay value={getValue(ServerStatusField.StartTime)} /></TableCell>
-                  </TableRow>
-                  <TableRow>
-                     <TableCell><Typography variant="body1" sx={{ fontWeight: 'bolder' }}>Server Time</Typography></TableCell>
-                     <TableCell><DataValueDisplay value={getValue(ServerStatusField.CurrentTime)} /></TableCell>
+                     <TableCell><Typography variant="body1" sx={{ fontWeight: 'bolder' }}>Last Modified Time </Typography></TableCell>
+                     <TableCell><DataValueDisplay value={getValue(FileCardField.LastModifiedTime)} /></TableCell>
                   </TableRow>
                </TableBody>
             </Table>
@@ -211,4 +174,4 @@ export const ServerStatusCard = ({ rootId }: ServerStatusCardProps) => {
    );
 }
 
-export default ServerStatusCard;
+export default FileCard;

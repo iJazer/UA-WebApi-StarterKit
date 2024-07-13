@@ -8,18 +8,15 @@ using Opc.Ua;
 using Opc.Ua.Server;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Runtime.CompilerServices;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace UaRestGateway.Server.Controllers
 {
     [Route("[controller]")]
     public class StreamController : CommonController
     {
-        private readonly object m_lock = new();
-        private readonly IMemoryCache m_cache;
-        private readonly IUACommunicationService m_communicationService;
-        private readonly Dictionary<string, ISession> m_sessions = new();
-        private NodeId m_authenticationToken;
-
         public StreamController(
             IConfiguration configuration,
             ILogger<UaServerController> logger,
@@ -27,10 +24,48 @@ namespace UaRestGateway.Server.Controllers
             IMemoryCache cache,
             IUACommunicationService communicationService)
         :
-            base(configuration, logger, context)
+            base(configuration, logger, context, cache, communicationService)
         {
-            m_cache = cache;
-            m_communicationService = communicationService;
+        }
+
+        private ClaimsPrincipal VerifyToken(string token)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var validationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = false,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = false,
+                ValidIssuer = "https://opcfoundation.org",
+                IssuerSigningKeyResolver = (s, securityToken, identifier, parameters) =>
+                {
+                    var cache = HttpContext.RequestServices.GetRequiredService<IMemoryCache>();
+
+                    if (!cache.TryGetValue(nameof(TokenValidationParameters.IssuerSigningKey), out JsonWebKey key))
+                    {
+                        using (var client = new HttpClient())
+                        {
+                            var response = client.GetAsync(parameters.ValidIssuer + "/.well-known/keys").ConfigureAwait(false).GetAwaiter().GetResult();
+                            response.EnsureSuccessStatusCode();
+
+                            string json = response.Content.ReadAsStringAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                            var keyset = new JsonWebKeySet(json);
+                            key = keyset.Keys.FirstOrDefault();
+
+                            cache.Set(
+                                nameof(TokenValidationParameters.IssuerSigningKey),
+                                key,
+                                new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(1)));
+                        }
+                    }
+
+                    return new[] { key };
+                }
+            };
+
+            var principal = tokenHandler.ValidateToken(token, validationParameters, out SecurityToken validatedToken);
+            return principal;
         }
 
         // GET api/values
@@ -44,8 +79,34 @@ namespace UaRestGateway.Server.Controllers
 
                 if (isSocketRequest)
                 {
-                    WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync();
-                    await ProcessMessages(context, webSocket);
+                    var protocols = context.WebSockets.WebSocketRequestedProtocols;
+
+                    string selectedProtocol = "opcua+uajson";
+
+                    if (protocols == null || !protocols.Contains(selectedProtocol))
+                    {
+                        selectedProtocol = null;
+                    }
+
+                    var accessToken = protocols.Where(p => p.StartsWith("opcua+token+")).FirstOrDefault();  
+                    
+                    if (accessToken != null)
+                    {
+                        accessToken = accessToken.Substring("opcua+token+".Length);
+
+                        try
+                        {
+                            var principal = VerifyToken(accessToken);
+                        }
+                        catch (Exception e)
+                        {
+                            Logger.LogError(e, "Error verifying token.");
+                            accessToken = null;
+                        }
+                    }
+
+                    WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync(selectedProtocol);
+                    await ProcessMessages(context, webSocket, accessToken);
                 }
                 else
                 {
@@ -58,97 +119,13 @@ namespace UaRestGateway.Server.Controllers
             }
         }
 
-        private StandardServer GetServer(HttpContext context)
+        private async Task ProcessMessages(HttpContext httpContext, WebSocket webSocket, string accessToken)
         {
-            LoadWebSession();
-
-            var server = m_communicationService.ServerApi;
-
-            var sessions = m_cache.GetOrCreate<CacheSessions>("CS", (ii) =>
-            {
-                return new CacheSessions()
-                {
-                    AuthenticationTokens = new Dictionary<string, string>()
-                };
-            });
-
-            var accessToken = "";
-
-            if (context.Request.Headers.TryGetValue("Authorization", out var header))
-            {
-                accessToken = String.Join(" ", header).Trim();
-
-                if (accessToken.StartsWith(JwtBearerDefaults.AuthenticationScheme))
-                {
-                    accessToken = accessToken.Substring(JwtBearerDefaults.AuthenticationScheme.Length).Trim();
-                }
-            }
-
-            lock (m_lock)
-            {
-                var ed = server.GetEndpoints().Where(x => x.TransportProfileUri == Profiles.HttpsJsonTransport).First();
-                ed.EndpointUrl = $"https://{context.Request.Host}/opcua";
-
-                SessionContext sessionContext = new SessionContext()
-                {
-                    ChannelContext = new SecureChannelContext(
-                        Guid.NewGuid().ToString(),
-                        ed,
-                        RequestEncoding.Json)
-                };
-
-                if (!sessions.AuthenticationTokens.TryGetValue(accessToken, out var authenticationToken))
-                {
-                    try
-                    {
-                        authenticationToken = MessageUtils.CreateDefaultSession(sessionContext, m_communicationService.ServerApi, accessToken);
-                        sessions.AuthenticationTokens[accessToken] = authenticationToken;
-                    }
-                    catch (Exception e)
-                    {
-                        Logger.LogError(e, "CreateDefaultSession failed.");
-                    }
-                }
-
-                m_authenticationToken = NodeId.Parse(server.CurrentInstance.MessageContext, authenticationToken);
-
-                if (server.CurrentInstance.SessionManager.GetSession(m_authenticationToken) == null)
-                {
-                    try
-                    {
-                        authenticationToken = MessageUtils.CreateDefaultSession(sessionContext, m_communicationService.ServerApi, accessToken);
-                        sessions.AuthenticationTokens[accessToken] = authenticationToken;
-                    }
-                    catch (Exception e)
-                    {
-                        Logger.LogError(e, "CreateDefaultSession failed.");
-                    }
-
-                    m_authenticationToken = NodeId.Parse(server.CurrentInstance.MessageContext, authenticationToken);
-                }
-            }
-
-            return server;
-        }
-
-        private async Task ProcessMessages(HttpContext httpContext, WebSocket webSocket)
-        {
-            var server = GetServer(httpContext);
-
-            var ed = server.GetEndpoints().Where(x => x.TransportProfileUri == Profiles.HttpsJsonTransport).First();
-            ed.EndpointUrl = $"https://{httpContext.Request.Host}/opcua";
-
-            SessionContext sessionContext = new SessionContext()
-            {
-                ChannelContext = new SecureChannelContext(
-                    Guid.NewGuid().ToString(),
-                    ed,
-                    RequestEncoding.Json)
-            };
+            var sessionContext = GetSessionContext(httpContext, accessToken);
 
             while (webSocket.State == WebSocketState.Open)
             {
-                await DispatchMessage(server, httpContext, sessionContext, webSocket);
+                await DispatchMessage(Server, httpContext, sessionContext, webSocket);
             }
         }
 
@@ -203,7 +180,7 @@ namespace UaRestGateway.Server.Controllers
 
             try
             {
-                request = await MessageUtils.Decode(server.MessageContext, stream);
+                request = await MessageUtils.Decode<IServiceRequest>(server.MessageContext, stream);
             }
             catch (Exception e)
             {

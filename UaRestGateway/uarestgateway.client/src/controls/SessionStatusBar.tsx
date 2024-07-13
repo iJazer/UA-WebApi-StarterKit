@@ -6,11 +6,13 @@ import { Button, Toolbar, Typography, useTheme } from '@mui/material';
 
 import * as OpcUa from '../opcua';
 import * as Web from '../Web';
-import { SessionState, HandleFactory, SubscriptionState } from '../opcua-utils';
 import { SessionContext } from '../SessionProvider';
 
 import { styled } from '@mui/material/styles';
 import { IMonitoredItem, SubscriptionContext } from '../SubscriptionProvider';
+import { HandleFactory } from '../service/HandleFactory';
+import { SubscriptionState } from '../service/SubscriptionState';
+import { SessionState } from '../service/SessionState';
 
 const CustomButton = styled(Button)(({ theme }) => ({
    paddingLeft: 0,

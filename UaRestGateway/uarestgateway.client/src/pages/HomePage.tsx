@@ -10,16 +10,6 @@ import ServerStatusCard from '../controls/ServerStatusCard';
 
 export const HomePage = () => {
    const [selection, setSelection] = React.useState<OpcUa.ReferenceDescription | undefined>();
-   const isMounted = React.useRef(false);
-
-   React.useEffect(() => {
-      console.error("Mounted");
-      isMounted.current = true;
-      return () => {
-         isMounted.current = false;
-         console.error("Unmounted");
-      };
-   }, []);
 
    const selectPanel = React.useCallback((reference?: OpcUa.ReferenceDescription) => {
       if (!reference) {
@@ -31,17 +21,19 @@ export const HomePage = () => {
          }
          default:
          {
-            return <VariableValueList selection={reference?.NodeId} />;
+            return <VariableValueList rootId={reference?.NodeId} />;
          }
       }
    }, []);
+
+   const onSelectionChanged = React.useCallback((x: OpcUa.ReferenceDescription | undefined) => setSelection({ ...x }), []);
 
    return (
       <Box display="flex" flexDirection="column" p={2} sx={{ width: '100%' }}>
          <SessionStatusBar />
          <Box display="flex" p={2} pb={4} sx={{ width: '100%' }}>
             <Box flexGrow={0}>
-               <BrowseTreeView rootNodeId={OpcUa.ObjectIds.RootFolder} onSelectionChanged={(x) => setSelection({ ...x })} />
+               <BrowseTreeView rootNodeId={OpcUa.ObjectIds.RootFolder} onSelectionChanged={onSelectionChanged} />
             </Box>
             <Box flexGrow={1}>
                {selectPanel(selection)}

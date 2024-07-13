@@ -102,7 +102,7 @@ export enum StatusCodes {
    BadServerUriInvalid = 0x804F0000,
    BadServerNameMissing = 0x80500000,
    BadDiscoveryUrlMissing = 0x80510000,
-   BadSempahoreFileMissing = 0x80520000,
+   BadSemaphoreFileMissing = 0x80520000,
    BadRequestTypeInvalid = 0x80530000,
    BadSecurityModeRejected = 0x80540000,
    BadSecurityPolicyRejected = 0x80550000,

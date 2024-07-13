@@ -1,209 +1,109 @@
 import * as React from 'react';
-import * as OpcUa from './opcua';
-import { IUserContext, UserContext } from './UserProvider';
-import { HandleFactory, IMonitoredItem, ISession, SessionState, connect, publish, translateAndSubscribe } from './opcua-utils';
-
-export interface IBrowseTreeNode {
-   id: string,
-   reference: OpcUa.ReferenceDescription;
-   value?: string;
-   parentId?: string;
-}
+import { UserContext } from './UserProvider';
+import * as Utils from './opcua-utils';
+import { IBrowsedNode } from './service/IBrowsedNode';
+import { IReadValueId } from './service/IReadValueId';
 
 export interface IApplicationContext {
-   userContext: IUserContext,
-   serverId?: string,
-   requestTimeout: number,
-   session?: ISession,
-   connect: () => Promise<void>,
-   disconnect: () => Promise<void>,
-   visibleMonitoredItems: string[],
-   setVisibleMonitoredItems: (items: string[]) => void,
+   nodes: Map<string, IBrowsedNode>,
+   lastUpdatedNode?: string,
    visibleNodes: string[],
    setVisibleNodes: (items: string[]) => void,
-   nodes: Map<string, IBrowseTreeNode>
-   updateNodes: (parentId? : string, oldNodes?: IBrowseTreeNode[], newNodes?: IBrowseTreeNode[]) => void,
-   monitoredItems?: Map<number, IMonitoredItem>,
-   createMonitoredItems: (monitoredItem: IMonitoredItem[], controller: AbortController) => Promise<void>
+   requestTimeout: number,
+   setRequestTimeout: (requestTimeout: number) => void,
+   browseChildren: (parentId: string, maxAge: number) => Promise<IBrowsedNode[]>,
+   readValues: (nodeIds: string[]) => Promise<IBrowsedNode[]>,
+   readPathsAndValues: (nodeIds: IReadValueId[]) => Promise<IBrowsedNode[]>
 }
 
 export const ApplicationContext = React.createContext<IApplicationContext>({
-   userContext: {} as IUserContext,
-   serverId: undefined,
-   requestTimeout: 120000,
-   session: undefined,
-   connect: async () => { },
-   disconnect: async () => { },
-   visibleMonitoredItems: [],
-   setVisibleMonitoredItems: () => { },
+   nodes: new Map<string, IBrowsedNode>(),
    visibleNodes: [],
    setVisibleNodes: () => { },
-   nodes: new Map<string, IBrowseTreeNode>(),
-   updateNodes: () => { },
-   monitoredItems: new Map<number, IMonitoredItem>(),
-   createMonitoredItems: async () => { }
+   requestTimeout: 120000,
+   setRequestTimeout: () => { },
+   browseChildren: (): Promise<IBrowsedNode[]> => Promise.resolve([]),
+   readValues: (): Promise<IBrowsedNode[]> => Promise.resolve([]),
+   readPathsAndValues: (): Promise<IBrowsedNode[]> => Promise.resolve([])
 });
 
 interface ApplicationProviderProps {
    children?: React.ReactNode
 }
 
+interface ApplicationInternals {
+   nodes: Map<string, IBrowsedNode>,
+   requestTimeout: number
+}
+
 export const ApplicationProvider = ({ children }: ApplicationProviderProps) => {
-   const [session, setSession] = React.useState<ISession>({ state: SessionState.Disconnected });
-   const [monitoredItems, setMonitoredItems] = React.useState<Map<number, IMonitoredItem>>(new Map<number, IMonitoredItem>());
-   const [visibleMonitoredItems, setVisibleMonitoredItems] = React.useState<string[]>([]);
-   const [triggerPublish, setTriggerPublish] = React.useState<boolean>(false);
-   const [triggerConnect, setTriggerConnect] = React.useState<boolean>(false);
    const [visibleNodes, setVisibleNodes] = React.useState<string[]>([]);
-   const [nodes, setNodes] = React.useState<Map<string, IBrowseTreeNode>>(new Map<string, IBrowseTreeNode>());
-   const userContext = React.useContext(UserContext);
-   const defaultRequestTimeout = 120000;
-   const defaultPublishInterval = 2000;
+   const [lastUpdatedNode, setLastUpdatedNode] = React.useState<string>();
+   const [requestTimeout, setRequestTimeout] = React.useState<number>(60000);
+   const { user } = React.useContext(UserContext);
 
-   React.useEffect(() => {
-      setTriggerConnect(current => {
-         if (session.state === SessionState.Opening) {
-            return true;
+   const m = React.useRef<ApplicationInternals>({
+      nodes: new Map<string, IBrowsedNode>(),
+      requestTimeout: 60000
+   });
+
+   const browseChildren = React.useCallback(async (parentId: string, maxAge: number): Promise<IBrowsedNode[]> => {
+      const cache = Array.from(m.current.nodes.values());
+      const node = cache.find((node) => node.id === parentId);
+      if (maxAge && node && node.lastUpdated && (new Date().getTime() - node.lastUpdated.getTime()) < maxAge) {
+         return cache.filter((node) => node.parentId === parentId);
+      }
+      const children = await Utils.browseChildren(parentId, m.current.requestTimeout, user);
+      if (!children) {
+         return [];
+      }
+      const oldChildren = cache.filter((node) => node.parentId === parentId);
+      oldChildren.forEach((child) => m.current.nodes.delete(child.id));
+      children.forEach((child) => {
+         const existing = oldChildren.find((node) => node.id === child.id);
+         if (existing) {
+            m.current.nodes.set(child.id, { ...existing, reference: child.reference, parentId, lastUpdated: new Date() });
          }
-         if (session.state === SessionState.Disconnected) {
-            setSession({ state: SessionState.Disconnected });
-            setNodes(new Map<string, IBrowseTreeNode>());
-            setMonitoredItems(new Map<number, IMonitoredItem>());
-            return false;
+         else {
+            child.parentId = parentId;
+            child.lastUpdated = new Date();
+            m.current.nodes.set(child.id, child);
          }
-         return current;
+         setLastUpdatedNode(child.id);
       });
-   }, [session.state]);
+      return Array.from(m.current.nodes.values()).filter((node) => node.parentId === parentId);
+   }, [user]);
 
-   React.useEffect(() => {
-      let interval: NodeJS.Timeout | undefined;
-      if (session.state === SessionState.Open) {
-         interval = setInterval(() => setTriggerPublish(true), defaultPublishInterval);
-      } else if (interval) {
-         clearInterval(interval);
+   const readValues = React.useCallback(async (nodeIds: string[]): Promise<IBrowsedNode[]> => {
+      const values = await Utils.readValues(nodeIds, m.current.requestTimeout, user);
+      if (!values) {
+         return [];
       }
-      return () => clearInterval(interval);
-   }, [session.state]);
-
-   React.useEffect(() => {
-      let controller: AbortController | undefined = undefined;
-      if (triggerConnect) {
-         doConnect();
+      const results: IBrowsedNode[] = [];
+      for (let ii = 0; ii < values.length; ii++) {
+         const value = values[ii];
+         const node = m.current.nodes.get(value.nodeId);
+         if (node) {
+            node.value = value.value;
+            setLastUpdatedNode(value.nodeId);
+            results.push(node);
+         }
+         else {
+            results.push({ id: value.nodeId, reference: { NodeId: value.nodeId }, value: value.value });
+         }
       }
-      async function doConnect() {
-         controller = new AbortController();
-         setSession(oldSession => {
-            connect(userContext, oldSession, defaultRequestTimeout, controller).then(newSession => {
-               if (newSession) {
-                  setSession(newSession);
-               }
-            });
-            return oldSession;
-         });
-         setTriggerConnect(false);
-      }
-      return () => {
-        // if (controller) controller.abort();
-      }
-   }, [triggerConnect, userContext]);
-
-   React.useEffect(() => {
-      let controller: AbortController | undefined = undefined;
-      if (triggerPublish) {
-         doPublish();
-      }
-      async function doPublish() {
-         controller = new AbortController();
-         publish(userContext?.user, session, monitoredItems, defaultRequestTimeout, controller)
-            .then(result => {
-               if (result) {
-                  if (result.session) {
-                     setSession(result.session);
-                  }
-                  if (result.monitoredItems) {
-                     setMonitoredItems(existing => {
-                        const updated = new Map<number, IMonitoredItem>(existing);
-                        result.monitoredItems.forEach(ii => {
-                           const item = updated.get(ii.clientHandle);
-                           if (item) {
-                              item.value = ii.value ?? {};
-                           }
-                        });
-                        return updated;
-                     });
-                  }
-               }
-            })
-            .finally(() => {
-               setTriggerPublish(false);
-            });
-      }
-      return () => {
-         // if (controller) controller.abort();
-      }
-   }, [triggerPublish, session, userContext?.user, monitoredItems]);
+      return results;
+   }, [user]);
 
    const context = {
-      userContext: userContext,
-      serverId: undefined,
-      requestTimeout: defaultRequestTimeout,
-      session: session,
-      connect: async () => setSession(oldSession => {
-         if (oldSession.state === SessionState.Disconnected) {
-            return { ...oldSession, state: SessionState.Opening };
-         }
-         return oldSession;
-      }),
-      disconnect: async () => { },
-      visibleMonitoredItems: visibleMonitoredItems,
-      setVisibleMonitoredItems: (items: string[]) => setVisibleMonitoredItems(items),
-      visibleNodes: visibleNodes,
-      setVisibleNodes: (items: string[]) => setVisibleNodes(items),
-      nodes,
-      updateNodes: (parentId?: string, oldNodes?: IBrowseTreeNode[], newNodes?: IBrowseTreeNode[]) => {
-         setNodes((existing: Map<string, IBrowseTreeNode>) => {
-            if (!oldNodes?.length && !newNodes?.length) return existing;
-            const updated = new Map(existing);
-            if (oldNodes) {
-               const nodesToDelete = (newNodes) ? oldNodes.map(x => newNodes?.find(y => y.id === x.id)) : oldNodes;
-               nodesToDelete.forEach(x => { if (x) updated.delete(x.id); });
-            }
-            if (newNodes) {
-               const nodesToAdd = (oldNodes) ? newNodes.map(x => oldNodes?.find(y => y.id === x.id)) : newNodes;
-               nodesToAdd.forEach(x => {
-                  if (x) {
-                     updated.set(x.id, { ...x, parentId: parentId });
-                  }
-               });
-            }
-            return updated;
-         });
-      },
-      monitoredItems: monitoredItems,
-      createMonitoredItems: async (newMonitoredItems: IMonitoredItem[], controller: AbortController) => {
-         setMonitoredItems((existing: Map<number, IMonitoredItem>) => {
-            const updated = new Map<number, IMonitoredItem>(existing);
-            newMonitoredItems.forEach(ii => {
-               ii.clientHandle = HandleFactory.increment();
-               updated.set(ii.clientHandle, ii);
-            });
-            return updated;
-         });
-         const results = await translateAndSubscribe(userContext.user, session, defaultRequestTimeout, newMonitoredItems, controller);
-         if (results) {
-            setMonitoredItems((existing: Map<number, IMonitoredItem>) => {
-               const updated = new Map<number, IMonitoredItem>(existing);
-               results.forEach(ii => {
-                  const item = updated.get(ii.clientHandle);
-                  if (item) {
-                     item.serverHandle = ii.serverHandle;
-                  }
-               });
-               // Array.from(updated.values()).forEach(ii => { if (!ii.serverHandle) updated.delete(ii.clientHandle); });
-               return updated;
-            });
-         }
-      },
+      nodes: m.current.nodes,
+      lastUpdatedNode,
+      visibleNodes,
+      setVisibleNodes,
+      requestTimeout,
+      setRequestTimeout,
+      browseChildren,
+      readValues
    } as IApplicationContext;
 
    return (

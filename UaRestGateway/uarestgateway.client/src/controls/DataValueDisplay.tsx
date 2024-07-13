@@ -1,6 +1,11 @@
-import { Box, SxProps, Theme, Typography } from '@mui/material';
+import React from 'react';
+
+import { Box, Stack, SxProps, Table, TableBody, TableCell, TableRow, Theme, Typography, styled } from '@mui/material';
 import { format } from 'date-fns'
 import * as OpcUa from '../opcua';
+
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 
 interface DataValueDisplayProps {
    value?: OpcUa.DataValue
@@ -54,17 +59,62 @@ function toText(value?: OpcUa.Variant): string {
       case OpcUa.BuiltInType.NodeId:
       case OpcUa.BuiltInType.ExpandedNodeId:
       case OpcUa.BuiltInType.QualifiedName:
-      {
-         return `${value.Body}`;
-      }
+         {
+            return `${value.Body}`;
+         }
       default:
-      {
-         return JSON.stringify(value.Body);
-      }
+         {
+            return JSON.stringify(value.Body);
+         }
    }
 }
 
+function toBuiltInType(value?: unknown): OpcUa.BuiltInType {
+   if (value === undefined) {
+      return OpcUa.BuiltInType.Null;
+   }
+   if (typeof value === 'number') {
+      return OpcUa.BuiltInType.Double;
+   }
+   if (typeof value === 'boolean') {
+      return OpcUa.BuiltInType.Boolean;
+   }
+   if (typeof value === 'string') {
+      return OpcUa.BuiltInType.String;
+   }
+   if (Array.isArray(value)) {
+      return toBuiltInType(value.at(0));
+   }
+   return OpcUa.BuiltInType.ExtensionObject;
+}
+
+function toVariant(value?: unknown): OpcUa.Variant {
+   return { Type: toBuiltInType(value), Body: value } as OpcUa.Variant;
+}
+
+const CustomTable = styled(Table)(({ theme }) => ({
+   border: '2px solid ' + theme.palette.primary.main,
+   marginBottom: '4px'
+}));
+
+const CustomTableRow = styled(TableRow)(({ theme }) => ({
+   '&:nth-of-type(even)': {
+      background: theme.palette.background.default,
+   },
+   '&:nth-of-type(odd)': {
+      background: theme.palette.background.paper,
+   },
+   '& th, td': {
+      paddingLeft: '4px',
+      paddingRight: '4px',
+      paddingTop: '1px',
+      paddingBottom: '1px',
+   }
+}));
+
 export const DataValueDisplay = ({ value, sx }: DataValueDisplayProps) => {
+   const [expanded, setExpanded] = React.useState<boolean>(false);
+
    if (!value) {
       return null;
    }
@@ -78,10 +128,67 @@ export const DataValueDisplay = ({ value, sx }: DataValueDisplayProps) => {
    if (Array.isArray(value.Value?.Body)) {
       const array = value.Value.Body;
       return (
-         <Box ml={6} sx={{ flexGrow: 0, display: 'flex' }}>
-            <Typography sx={sx}>
-               {toText({ Type: value.Value.Type, Body: array.at(0) }) + '...'}
-            </Typography>
+         <Box sx={{ flexGrow: 0, display: 'flex' }}>
+            <Stack>
+               {
+                  array.map((item, index) => {
+                     if (index && !expanded) {
+                        return null;
+                     }
+                     return (
+                        <Box key={index} sx={{ display: 'flex' }}>
+                           <Box sx={{ minWidth: 30 }}>
+                              {
+                                 (!index) ? (expanded)
+                                    ? <ExpandLessIcon onClick={() => setExpanded(false)} />
+                                    : <ExpandMoreIcon onClick={() => setExpanded(true)} />
+                                    : null
+                              }
+                           </Box>
+                           <DataValueDisplay value={{ Value: { Type: value.Value?.Type, Body: item }}} />
+                        </Box>
+                     );
+                  })
+               }
+            </Stack>
+         </Box>
+      );
+   }
+   if (value.Value?.Type === OpcUa.BuiltInType.ExtensionObject) {
+      const target = value.Value.Body?.Body ?? value.Value.Body ?? {};
+      const keys = Object.keys(target);
+      return (
+         <Box sx={{ flexGrow: 0, display: 'flex' }}>
+            {
+               (expanded)
+                  ? <ExpandLessIcon onClick={() => setExpanded(false)} />
+                  : <ExpandMoreIcon onClick={() => setExpanded(true)} />
+            }
+            {
+               <CustomTable>
+                  <TableBody>
+                     {
+                        keys.map((ii, index) => {
+                           if (!expanded && index) {
+                              return;
+                           }
+                           return (
+                              <CustomTableRow key={ii}>
+                                 <TableCell>
+                                    <Typography sx={{ ...sx, fontWeight: 'bolder' }}>
+                                       {ii}
+                                    </Typography>
+                                 </TableCell>
+                                 <TableCell>
+                                    <DataValueDisplay value={{ Value: toVariant(target[ii]) }} />
+                                 </TableCell>
+                              </CustomTableRow>
+                           );
+                        })
+                     }
+                  </TableBody>
+               </CustomTable>
+            }
          </Box>
       );
    }

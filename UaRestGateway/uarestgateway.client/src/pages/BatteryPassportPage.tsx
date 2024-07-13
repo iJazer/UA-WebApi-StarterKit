@@ -8,7 +8,7 @@ import { Box, styled } from '@mui/material';
 import MuiAccordion, { AccordionProps } from '@mui/material/Accordion';
 import MuiAccordionSummary, { AccordionSummaryProps } from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
-import { IMonitoredItem, SessionState, browseChildren, translateAndSubscribe } from '../opcua-utils';
+import { IMonitoredItem, browseChildren } from '../opcua-utils';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';

@@ -121,43 +121,6 @@ const lightThemeOverrides: ThemeOptions = {
          letterSpacing: '0.0125rem',
          textRendering: 'optimizeLegibility'
       },
-      bold: {
-         fontWeight: 'bold',
-         fontSize: '1.125rem',
-         lineHeight: '1.55556',
-         letterSpacing: '0.0125rem',
-         textRendering: 'optimizeLegibility'
-      },
-      error: {
-         color: 'red',
-         fontWeight: 'bold',
-         fontSize: '1.125rem',
-         lineHeight: '1.55556',
-         letterSpacing: '0.0125rem',
-         textRendering: 'optimizeLegibility'
-      },
-      italic: {
-         fontWeight: 'bold',
-         fontStyle: 'italic',
-         fontSize: '1.125rem',
-         lineHeight: '1.55556',
-         letterSpacing: '0.0125rem',
-         textRendering: 'optimizeLegibility'
-      },
-      superscript: {
-         verticalAlign: 'super',
-         fontSize: '0.675rem',
-         lineHeight: '1.55556',
-         letterSpacing: '0.0125rem',
-         textRendering: 'optimizeLegibility'
-      },
-      subscript: {
-         verticalAlign: 'sub',
-         fontSize: '0.675rem',
-         lineHeight: '1.55556',
-         letterSpacing: '0.0125rem',
-         textRendering: 'optimizeLegibility'
-      },
       list: {
          marginBottom: "0"
       },
@@ -208,6 +171,16 @@ const lightThemeOverrides: ThemeOptions = {
                }
                div .scrollable::-webkit-scrollbar-thumb {
                  background: #888;
+               }
+               tr:nth-of-type(even) {
+                   background: #F2F2F2;
+               }
+               tr:nth-of-type(odd) {
+                   background: #FFF;
+               }
+               th, td {
+                   padding-left: 1rem;
+                   padding-right: 1rem;
                }
             `
       },

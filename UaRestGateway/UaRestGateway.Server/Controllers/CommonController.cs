@@ -1,26 +1,46 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Runtime.CompilerServices;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
+using Opc.Ua;
+using Opc.Ua.Server;
 using UaRestGateway.Server.Model;
+using UaRestGateway.Server.Service;
 
 namespace UaRestGateway.Server.Controllers
 {
     public class CommonController : ControllerBase
     {
+        private readonly static object m_lock = new();
+        private readonly IMemoryCache m_cache;
+        private readonly IUACommunicationService m_communicationService;
+        private readonly Dictionary<string, ISession> m_sessions = new();
+ 
         protected IConfiguration Configuration { get; private set; }
 
         protected ILogger Logger { get; private set; }
 
         protected WebSession Session { get; private set; }
 
+        protected StandardServer Server => m_communicationService.ServerApi;
+
         protected string ConnectionString { get; private set; }
 
         protected DatabaseContext DB { get; private set; }
 
-        public CommonController(IConfiguration configuration, ILogger logger, DatabaseContext db)
+        public CommonController(
+            IConfiguration configuration, 
+            ILogger logger, 
+            DatabaseContext db,
+            IMemoryCache cache,
+            IUACommunicationService communicationService)
         {
             Configuration = configuration;
             Logger = logger;
             ConnectionString = Configuration.GetConnectionString("DatabaseContext");
             DB = db;
+            m_cache = cache;
+            m_communicationService = communicationService;
         }
 
         protected void LoadWebSession()
@@ -33,8 +53,6 @@ namespace UaRestGateway.Server.Controllers
             {
                 Session = new WebSession() { AuthenticationTokens = new(), SecureChannelId = Guid.NewGuid().ToString() };
             }
-
-            // Logger.LogError("Session.UserEmail: {0}", Session.UserEmail);
         }
 
         protected void SaveWebSession()
@@ -96,8 +114,97 @@ namespace UaRestGateway.Server.Controllers
                 ErrorText = text
             };
         }
-    }
 
+        protected string GetAccessToken(HttpContext context)
+        {
+            var accessToken = "";
+
+            if (context.Request.Headers.TryGetValue("Authorization", out var header))
+            {
+                accessToken = String.Join(" ", header).Trim();
+
+                if (accessToken.StartsWith(JwtBearerDefaults.AuthenticationScheme))
+                {
+                    accessToken = accessToken.Substring(JwtBearerDefaults.AuthenticationScheme.Length).Trim();
+                }
+            }
+
+            return accessToken;
+        }
+
+        protected CachedSessions GetCacheSessions(HttpContext context)
+        {
+            LoadWebSession();
+
+            var sessions = m_cache.GetOrCreate<CachedSessions>("CS", (ii) =>
+            {
+                return new CachedSessions()
+                {
+                    SecureChannelId = Guid.NewGuid().ToString(),
+                    AuthenticationTokens = new Dictionary<string, string>()
+                };
+            });
+
+            return sessions;
+        }
+
+        protected SessionContext GetSessionContext(HttpContext context, string accessToken = null)
+        {
+            lock (m_lock)
+            {
+                accessToken = (accessToken != null) ? accessToken : GetAccessToken(context);
+
+                var ed = Server.GetEndpoints().Where(x => x.TransportProfileUri == Profiles.HttpsJsonTransport).First();
+                ed.EndpointUrl = $"https://{context.Request.Host}/opcua";
+
+                var sessions = GetCacheSessions(context);
+
+                SessionContext sessionContext = new SessionContext()
+                {
+                    ChannelContext = new SecureChannelContext(
+                        sessions.SecureChannelId,
+                        ed,
+                        RequestEncoding.Json)
+                };
+
+                // see if a session for the specified access token already exists.
+                if (!sessions.AuthenticationTokens.TryGetValue(accessToken, out var authenticationToken))
+                {
+                    try
+                    {
+                        authenticationToken = MessageUtils.CreateDefaultSession(sessionContext, m_communicationService.ServerApi, accessToken);
+                        sessions.AuthenticationTokens[accessToken] = authenticationToken;
+                        SaveWebSession();
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.LogError(e, "CreateDefaultSession failed.");
+                    }
+                }
+
+                var nodeId = NodeId.Parse(Server.CurrentInstance.MessageContext, authenticationToken);
+
+                // verify that the previously created session is still valid.
+                if (Server.CurrentInstance.SessionManager.GetSession(nodeId) == null)
+                {
+                    try
+                    {
+                        authenticationToken = MessageUtils.CreateDefaultSession(sessionContext, m_communicationService.ServerApi, accessToken);
+                        sessions.AuthenticationTokens[accessToken] = authenticationToken;
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.LogError(e, "CreateDefaultSession failed.");
+                    }
+
+                    nodeId = NodeId.Parse(Server.CurrentInstance.MessageContext, authenticationToken);
+                }
+
+                sessionContext.AuthenticationToken = nodeId;
+                return sessionContext;
+            }
+        }
+    }
 
     public class ApiResponse<T>
     {

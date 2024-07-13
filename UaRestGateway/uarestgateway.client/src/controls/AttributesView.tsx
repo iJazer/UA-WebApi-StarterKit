@@ -11,8 +11,9 @@ import { Skeleton, Typography, useTheme } from '@mui/material';
 
 import * as OpcUa from '../opcua';
 import * as Web from '../Web';
-import { ApplicationContext } from '../ApplicationProvider';
-import { NodeAttributeValue, readAttributes } from '../opcua-utils';
+import { readAttributes } from '../opcua-utils';
+import { IReadResult } from '../service/IReadResult';
+import { UserContext } from '../UserProvider';
 
 interface AttributesViewProps {
    reference?: OpcUa.ReferenceDescription
@@ -20,24 +21,16 @@ interface AttributesViewProps {
 }
 
 export const AttributesView = ({ reference, requestTimeout }: AttributesViewProps) => {
-   const [values, setValues] = React.useState<NodeAttributeValue[]>([]);
+   const [values, setValues] = React.useState<IReadResult[]>([]);
    const name = reference?.DisplayName?.Text ?? reference?.BrowseName ?? reference?.NodeId;
    const theme = useTheme();
-   const context = React.useContext(ApplicationContext);
-   const controller = React.useRef(new AbortController());
-
-   React.useEffect(() => {
-      const current = controller.current;
-      return () => {
-         current.abort();
-      };
-   }, []);
+   const { user } = React.useContext(UserContext);
 
    React.useEffect(() => {
       if (reference?.NodeId) {
-         readAttributes(reference, requestTimeout, controller.current, context?.userContext?.user).then((x) => setValues(x ?? []));
+         readAttributes(reference, requestTimeout, user).then((x) => setValues(x ?? []));
       }
-   }, [reference, reference?.NodeId, requestTimeout, context?.userContext?.user]);
+   }, [reference, reference?.NodeId, requestTimeout, user]);
 
    if (!reference) {
       return (
@@ -75,7 +68,7 @@ export const AttributesView = ({ reference, requestTimeout }: AttributesViewProp
                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
                      <TableCell>
-                        <Typography variant='body1'>{OpcUa.Attributes[value.attributeId]}</Typography>
+                        <Typography variant='body1'>{OpcUa.Attributes[value.attributeId ?? 0]}</Typography>
                      </TableCell>
                      <TableCell>
                         <Typography variant='body1'>{Web.dateToLocalTime(value.value?.SourceTimestamp ?? value.value?.ServerTimestamp)}</Typography>

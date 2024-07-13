@@ -24,4 +24,10 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\controls\FileCard.tsx" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\controls\FileCard.tsx" />
+  </ItemGroup>
 </Project>

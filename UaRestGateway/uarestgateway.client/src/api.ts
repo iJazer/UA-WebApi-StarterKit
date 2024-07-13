@@ -1,10 +1,3 @@
-export enum UserLoginStatus {
-   Unknown = -1,
-   LoggedOut = 0,
-   InProgress = 1,
-   LoggedIn = 2
-}
-
 export enum ReleaseStatus {
    Invalid = 0,
    Draft = 1,
@@ -72,21 +65,4 @@ export interface TaskResult extends BaseRecord {
    time?: string
    severity?: TaskResultSeverity
    message?: string
-}
-
-export enum MembershipType {
-   NonMember = 0,
-   Logo = 1,
-   NonVoting = 2,
-   EndUser = 3,
-   Corporate = 4
-}
-
-export interface Account extends NamedRecord {
-   email?: string
-   gitHubId?: string
-   companyName?: string
-   membershipType?: MembershipType,
-   currentGitHubUser?: string
-   accessToken?: string
 }

@@ -24,7 +24,7 @@ import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Switch } 
 import { UserContext } from '../UserProvider';
 import { ThemeModes } from '../theme';
 import { SupportedLanguages } from '../i18n';
-import { UserLoginStatus } from '../api';
+import { UserLoginStatus } from '../user';
 export default function SettingsMenu() {
    const context = React.useContext(UserContext);
    const [open, setOpen] = React.useState(false);
