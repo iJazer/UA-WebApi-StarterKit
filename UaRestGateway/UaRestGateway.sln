@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opc.Ua.Server", "..\UaStack
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opc.Ua.Configuration", "..\UaStack\Libraries\Opc.Ua.Configuration\Opc.Ua.Configuration.csproj", "{5CAB715E-20D7-49F2-BF9E-4F2874D22AA9}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opc.Ua.JsonEncoder.Tests", "..\UaStack\Tests\Opc.Ua.JsonEncoder.Tests\Opc.Ua.JsonEncoder.Tests.csproj", "{BD1E0EF2-0849-470D-91DB-1589E2E804CC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{5CAB715E-20D7-49F2-BF9E-4F2874D22AA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5CAB715E-20D7-49F2-BF9E-4F2874D22AA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5CAB715E-20D7-49F2-BF9E-4F2874D22AA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD1E0EF2-0849-470D-91DB-1589E2E804CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD1E0EF2-0849-470D-91DB-1589E2E804CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD1E0EF2-0849-470D-91DB-1589E2E804CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD1E0EF2-0849-470D-91DB-1589E2E804CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -65,6 +71,7 @@ Global
 		{561B1A72-D018-485B-AD37-27706E2E78E6} = {0678971C-A7F8-48DC-8EEC-6360C8749E77}
 		{68C94C36-761B-4AEB-B62E-01E4D2D5BB25} = {0678971C-A7F8-48DC-8EEC-6360C8749E77}
 		{5CAB715E-20D7-49F2-BF9E-4F2874D22AA9} = {0678971C-A7F8-48DC-8EEC-6360C8749E77}
+		{BD1E0EF2-0849-470D-91DB-1589E2E804CC} = {0678971C-A7F8-48DC-8EEC-6360C8749E77}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6B3FB3A6-051D-402F-8B6D-CF5231EFAFD2}

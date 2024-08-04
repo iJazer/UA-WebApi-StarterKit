@@ -8,6 +8,7 @@ import { IBrowsedNode } from './service/IBrowsedNode';
 import { IReadResult } from './service/IReadResult';
 import { HandleFactory } from './service/HandleFactory';
 import { IReadValueId } from './service/IReadValueId';
+
 function toFault(request: ICompletedRequest, response?: IResponseMessage): ICompletedRequest | null {
    if (response?.Body?.ResponseHeader) {
       const responseHeader = response.Body.ResponseHeader;
@@ -51,15 +52,33 @@ async function gzip(data: string): Promise<Uint8Array> {
    });
 }
 
-async function readResponseBody(url: string, response: any) {
-   console.log("URL: " + url);
+async function readResponseBody(url: string, response: Response) {
    const content = response.headers.get("Content-Type");
    if (content && content.indexOf("json") < 0) {
       console.error("UnexpectedResponse: " + await response.text());
       return null;
    }
-   // the fetch library automatically uncompresses gzipped content.
-   return await response.json();
+   return await response.clone().json();
+
+   //const data = await response.arrayBuffer();
+   //const view = new DataView(data);
+   //console.log("URL: " + url + "[Size=" + view.byteLength + "]");
+
+   //if (view.byteLength < 2) {
+   //   console.error("EmptyBody!");
+   //   return null;
+   //}
+
+   //let json = undefined;
+   //if (view.getUint8(0) === 0x1f && view.getUint8(1) === 0x8b) {
+   //   const decompressed = pako.deflate(new Uint8Array(data));
+   //   json = new TextDecoder().decode(decompressed);
+   //}
+   //else {
+   //   json = new TextDecoder().decode(data);
+   //}
+
+   //return JSON.parse(json);
 }
 
 export async function call(

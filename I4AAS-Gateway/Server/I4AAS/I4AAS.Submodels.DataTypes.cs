@@ -1,5 +1,5 @@
 /* ========================================================================
- * Copyright (c) 2005-2021 The OPC Foundation, Inc. All rights reserved.
+ * Copyright (c) 2005-2024 The OPC Foundation, Inc. All rights reserved.
  *
  * OPC Foundation MIT License 1.00
  *
@@ -43,7 +43,7 @@ namespace I4AAS.Submodels
     /// <exclude />
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Opc.Ua.ModelCompiler", "1.0.0.0")]
     [DataContract(Namespace = I4AAS.Submodels.Namespaces.I4AASXsd)]
-    public partial class SubmodelDataType : IEncodeable, IJsonEncodeable
+    public abstract partial class SubmodelDataType : IEncodeable, IJsonEncodeable
     {
         #region Constructors
         /// <remarks />

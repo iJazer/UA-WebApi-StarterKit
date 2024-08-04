@@ -5,7 +5,7 @@ export function Swagger() {
 
    return (
       <div>
-         <SwaggerUI url="/data/opcua-restapi.json" />
+         <SwaggerUI url="/data/opc.ua.openapi.allservices.json" />
       </div>
    );
 }

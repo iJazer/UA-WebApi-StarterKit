@@ -72,9 +72,6 @@
 
   <ItemGroup>
     <None Include="Data\BatteryPassportSample.json" />
-    <None Include="wwwroot\data\opcua-restapi.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
   <ItemGroup>

@@ -64,7 +64,7 @@ export const BrowseTreeView = ({ rootNodeId, onSelectionChanged }: BrowseTreeVie
    const { visibleNodes, setVisibleNodes, nodes } = React.useContext(ApplicationContext);
 
    const handleNodeSelect = React.useCallback((_e: React.SyntheticEvent, nodeId: string) => {
-      console.error(`SELECT node ${nodeId}`);
+      //console.error(`SELECT node ${nodeId}`);
       const treeNode: IBrowsedNode | undefined = nodes.get(nodeId);
       if (treeNode && onSelectionChanged) {
          onSelectionChanged(treeNode.reference);
@@ -73,7 +73,7 @@ export const BrowseTreeView = ({ rootNodeId, onSelectionChanged }: BrowseTreeVie
    }, [onSelectionChanged, nodes]);
 
    const handleToggle = (_e: React.SyntheticEvent, nodeIds: string[]) => {
-      console.error(`TOGGLE node ${nodeIds.join()}`);
+      //console.error(`TOGGLE node ${nodeIds.join()}`);
       setVisibleNodes(nodeIds);
    }
 

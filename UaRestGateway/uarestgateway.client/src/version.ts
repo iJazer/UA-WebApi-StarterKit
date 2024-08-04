@@ -1,1 +1,1 @@
-export const BuildVersion : string = '[2024-07-12-2416]';
+export const BuildVersion : string = '[2024-08-04-2438]';

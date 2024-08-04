@@ -194,10 +194,6 @@ namespace UaRestGateway.Server.Controllers
 
             using (var encoder = new JsonEncoder(context, true, stream: stream, leaveOpen: true))
             {
-                encoder.UseStringNodeIds = true;
-                encoder.ForceNamespaceUri = true;
-                encoder.ForceNamespaceUriForIndex1 = true;
-
                 encoder.WriteStringArray(nameof(SessionLessServiceMessage.LocaleIds), null);
                 encoder.WriteUInt32(nameof(SessionLessServiceMessage.ServiceId), (uint)response.TypeId.Identifier);
                 encoder.WriteEncodeable("Body", response, typeof(T));
