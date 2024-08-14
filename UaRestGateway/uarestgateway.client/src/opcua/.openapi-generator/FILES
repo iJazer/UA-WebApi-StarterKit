@@ -10,6 +10,7 @@ models/AggregateFilter.ts
 models/AggregateFilterResult.ts
 models/ApplicationDescription.ts
 models/ApplicationType.ts
+models/Argument.ts
 models/AttributeOperand.ts
 models/BrokerConnectionTransportDataType.ts
 models/BrokerDataSetReaderTransportDataType.ts
@@ -80,6 +81,7 @@ models/DeleteSubscriptionsRequestMessage.ts
 models/DeleteSubscriptionsResponse.ts
 models/DeleteSubscriptionsResponseMessage.ts
 models/DiagnosticInfo.ts
+models/EUInformation.ts
 models/ElementOperand.ts
 models/EndpointDescription.ts
 models/EnumDefinition.ts
@@ -156,6 +158,7 @@ models/PublishRequestMessage.ts
 models/PublishResponse.ts
 models/PublishResponseMessage.ts
 models/PublishedDataSetDataType.ts
+models/Range.ts
 models/ReadAnnotationDataDetails.ts
 models/ReadAtTimeDetails.ts
 models/ReadEventDetails.ts
