@@ -81,8 +81,8 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
 
    const m = React.useRef<SubscriptionInternals>({
       isEnabled: false,
-      publishingInterval: 10000,
-      samplingInterval: 10000,
+      publishingInterval: 5000,
+      samplingInterval: 1000,
       subscriptionState: SubscriptionState.Closed,
       monitoredItems: new Map<number, IMonitoredItem>(),
       acknowledgements: [],
@@ -206,7 +206,6 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
          sendRequest(request, state.clientHandle);
       }
    }, [sendRequest]);
-
 
    const deleteMonitoredItems = React.useCallback((items: IMonitoredItem[]) => {
       const itemsToDelete: number[] = [];
@@ -332,6 +331,11 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
    }, [translate, createMonitoredItems]);
 
    const unsubscribe = React.useCallback((items: IMonitoredItem[]) => {
+      items.forEach((item) => {
+         if (item.itemHandle) {
+            m.current.monitoredItems.delete(item.itemHandle);
+         }
+      });
       deleteMonitoredItems(items);
    }, [deleteMonitoredItems]);
 

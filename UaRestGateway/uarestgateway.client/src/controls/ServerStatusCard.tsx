@@ -15,6 +15,117 @@ import { translateAndReadValues } from '../opcua-utils';
 import { IReadValueId } from '../service/IReadValueId';
 import { UserContext } from '../UserProvider';
 
+interface TypeDefinitionCardProps {
+   children?: React.ReactNode,
+   variables: IMonitoredItem[],
+   onValueUpdate: () => void
+}
+
+interface TypeDefinitionCardInternals {
+   clientHandle: number,
+   monitoredItems: IMonitoredItem[],
+   mounted: boolean,
+   cleanedUp: boolean
+}
+
+const TypeDefinitionCard: React.FC<TypeDefinitionCardProps> = ({ children, variables, onValueUpdate }: TypeDefinitionCardProps) => {
+   const { user } = React.useContext(UserContext);
+
+   const m = React.useRef<TypeDefinitionCardInternals>({
+      clientHandle: HandleFactory.increment(),
+      monitoredItems: [],
+      mounted: true,
+      cleanedUp: false
+   });
+
+   // Set flags to trigger clean up when component is unmounted
+   React.useEffect(() => {
+      const state = m.current;
+      return () => {
+         state.mounted = false;
+         state.cleanedUp = false;
+      };
+   }, []);
+
+   // The hook to access active subscription.
+   const {
+      subscriptionState,
+      subscribe,
+      unsubscribe,
+      lastSequenceNumber
+   } = React.useContext(SubscriptionContext);
+
+   // Unsubscribe when component is unmounted
+   React.useEffect(() => {
+      const state = m.current;
+      return () => {
+         if (!state.mounted && !state.cleanedUp && state.monitoredItems.length) {
+            unsubscribe(state.monitoredItems, state.clientHandle);
+            state.cleanedUp = true;
+         }
+      };
+   }, [unsubscribe]);
+
+   // Handle state changes to the subscription.
+   React.useEffect(() => {
+      if (subscriptionState === SubscriptionState.Open) {
+         const itemsToCreate = m.current.monitoredItems.filter(item => !item.itemHandle);
+         if (itemsToCreate.length) {
+            subscribe(itemsToCreate, m.current.clientHandle);
+         }
+      }
+      else {
+         unsubscribe(m.current.monitoredItems, m.current.clientHandle);
+         m.current.monitoredItems = [];
+      }
+   }, [subscriptionState, subscribe, unsubscribe]);
+
+   // Update the monitored items when the monitoredItems prop changes.
+   React.useEffect(() => {
+      const items: IMonitoredItem[] = m.current.monitoredItems;
+      unsubscribe(items, m.current.clientHandle);
+      m.current.monitoredItems = variables;
+      if (subscriptionState === SubscriptionState.Open) {
+         subscribe(m.current.monitoredItems, m.current.clientHandle);
+      }
+   }, [variables, subscriptionState, unsubscribe, subscribe]);
+
+   // Trigger render when a publish response is received.
+   React.useEffect(() => {
+      onValueUpdate();
+   }, [lastSequenceNumber, onValueUpdate]);
+
+   // Read the initial value. 
+   React.useEffect(() => {
+      async function read(variables: IMonitoredItem[]) {
+         const nodesToRead: IReadValueId[] = variables.map(x => {
+            return {
+               id: x.subscriberHandle,
+               nodeId: x.nodeId,
+               path: x.path,
+               attributeId: OpcUa.Attributes.Value
+            } as IReadValueId;
+         });
+         const results = await translateAndReadValues(nodesToRead, 60000, user);
+         if (results) {
+            results.forEach((result) => {
+               const mi = variables.find(x => x.subscriberHandle === result.id)
+               if (mi) {
+                  mi.value = result.value;
+               }
+            });
+            // Trigger render after updating the monitored items.
+            onValueUpdate();
+         }
+      }
+      if (variables) {
+         read(variables);
+      }
+   }, [variables, user, onValueUpdate]);
+
+   return (<React.Fragment>{children}</React.Fragment>);
+}
+
 interface ServerStatusCardProps {
    rootId?: string
 }
@@ -32,55 +143,13 @@ enum ServerStatusField {
    StateEnumStrings
 }
 
-interface ServerStatusCardInternals {
-   clientHandle: number,
-   monitoredItems: IMonitoredItem[],
-   mounted: boolean,
-   disposed: boolean
-}
-
 export const ServerStatusCard = ({ rootId }: ServerStatusCardProps) => {
-   const { user } = React.useContext(UserContext);
+   const [variables, setVariables] = React.useState<IMonitoredItem[]>([]);
    const [counter, setCounter] = React.useState<number>(1);
 
-   const m = React.useRef<ServerStatusCardInternals>({
-      clientHandle: HandleFactory.increment(),
-      monitoredItems: [],
-      mounted: true,
-      disposed: false
-   });
-
    React.useEffect(() => {
-      const state = m.current;
-      return () => {
-         state.mounted = false;
-         state.disposed = false;
-      };
-   }, []);
-
-   const {
-      subscriptionState,
-      subscribe,
-      unsubscribe
-   } = React.useContext(SubscriptionContext);
-
-   React.useEffect(() => {
-      const state = m.current;
-      return () => {
-         if (!state.mounted && !state.disposed && state.monitoredItems.length) {
-            unsubscribe(state.monitoredItems, state.clientHandle);
-            state.disposed = true;
-         }
-      };
-   }, [unsubscribe]);
-
-   React.useEffect(() => {
-      if (m.current.monitoredItems.length) {
-         unsubscribe(m.current.monitoredItems, m.current.clientHandle);
-         m.current.monitoredItems = [];
-      }
+      const items = [];
       if (rootId) {
-         const items = [];
          items.push({
             subscriberHandle: ServerStatusField.ProductName,
             nodeId: rootId,
@@ -125,89 +194,61 @@ export const ServerStatusCard = ({ rootId }: ServerStatusCardProps) => {
             subscriberHandle: ServerStatusField.StateEnumStrings,
             nodeId: OpcUa.VariableIds.ServerState_EnumStrings
          });
-         m.current.monitoredItems = items;
       }
-   }, [rootId, unsubscribe]);
-
-   React.useEffect(() => {
-      if (subscriptionState === SubscriptionState.Open) {
-         const itemsToCreate = m.current.monitoredItems.filter(item => !item.itemHandle);
-         if (itemsToCreate.length) {
-            subscribe(itemsToCreate, m.current.clientHandle);
-         }
-      }
-      else {
-         const nodesToRead: IReadValueId[] = m.current.monitoredItems.map(x => {
-            return {
-               nodeId: x.nodeId,
-               path: x.path,
-               resolvedNodeId: x.resolvedNodeId,
-               attributeId: OpcUa.Attributes.Value
-            } as IReadValueId;
-         });
-         translateAndReadValues(nodesToRead, 60000, user).then((results) => {
-            if (results) {
-               results.forEach((result, index) => {
-                  const item = m.current.monitoredItems.at(index)
-                  if (item) {
-                     item.value = result.value;
-                  }
-               });
-               setCounter(counter => counter + 1);
-            }
-         });
-      }
-   }, [subscriptionState, subscribe, user]);
+      setVariables(items);
+   }, [rootId]);
 
    const getValue = React.useCallback((field: ServerStatusField) => {
-      return m.current.monitoredItems.find(x => x.subscriberHandle === field)?.value;
-   }, []);
+      return variables.find(x => x.subscriberHandle === field)?.value;
+   }, [variables]);
 
-   if (!rootId) {
-      return null;
-   }
+   const valueUpdated = React.useCallback(() => {
+      setCounter(counter => counter + 1);
+   },[]);
 
    return (
-      <Card sx={{ m: 4, mr: 20 }}>
-         <CardContent sx={{ p: 0 }}>
-            <Table sx={{ m: 0, p: 0 }}>
-               <TableBody>
-                  <TableRow>
-                     <TableCell><Typography variant="body1" sx={{ fontWeight: 'bolder' }}>Product Name</Typography></TableCell>
-                     <TableCell><DataValueDisplay value={getValue(ServerStatusField.ProductName)} /></TableCell>
-                  </TableRow>
-                  <TableRow>
-                     <TableCell><Typography variant="body1" sx={{ fontWeight: 'bolder' }}>Product URI</Typography></TableCell>
-                     <TableCell><DataValueDisplay value={getValue(ServerStatusField.ProductUri)} /></TableCell>
-                  </TableRow>
-                  <TableRow>
-                     <TableCell><Typography variant="body1" sx={{ fontWeight: 'bolder' }}>Manufacturer Name</Typography></TableCell>
-                     <TableCell><DataValueDisplay value={getValue(ServerStatusField.ManufacturerName)} /></TableCell>
-                  </TableRow>
-                  <TableRow>
-                     <TableCell><Typography variant="body1" sx={{ fontWeight: 'bolder' }}>SoftwareVersion</Typography></TableCell>
-                     <TableCell><DataValueDisplay value={getValue(ServerStatusField.SoftwareVersion)} /></TableCell>
-                  </TableRow>
-                  <TableRow>
-                     <TableCell><Typography variant="body1" sx={{ fontWeight: 'bolder' }}>Build Date</Typography></TableCell>
-                     <TableCell><DataValueDisplay value={getValue(ServerStatusField.BuildDate)} /></TableCell>
-                  </TableRow>
-                  <TableRow>
-                     <TableCell><Typography variant="body1" sx={{ fontWeight: 'bolder' }}>Server State</Typography></TableCell>
-                     <TableCell><DataValueDisplay value={getValue(ServerStatusField.State)} /></TableCell>
-                  </TableRow>
-                  <TableRow>
-                     <TableCell><Typography variant="body1" sx={{ fontWeight: 'bolder' }}>Start Time</Typography></TableCell>
-                     <TableCell><DataValueDisplay value={getValue(ServerStatusField.StartTime)} /></TableCell>
-                  </TableRow>
-                  <TableRow>
-                     <TableCell><Typography variant="body1" sx={{ fontWeight: 'bolder' }}>Server Time</Typography></TableCell>
-                     <TableCell><DataValueDisplay value={getValue(ServerStatusField.CurrentTime)} /></TableCell>
-                  </TableRow>
-               </TableBody>
-            </Table>
-         </CardContent>
-      </Card>
+      <TypeDefinitionCard variables={variables} onValueUpdate={valueUpdated} >
+         <Card sx={{ m: 4, mr: 20 }}>
+            <CardContent sx={{ p: 0 }}>
+               <Table sx={{ m: 0, p: 0 }}>
+                  <TableBody>
+                     <TableRow>
+                        <TableCell><Typography variant="body1" sx={{ fontWeight: 'bolder' }}>Product Name</Typography></TableCell>
+                        <TableCell><DataValueDisplay value={getValue(ServerStatusField.ProductName)} /></TableCell>
+                     </TableRow>
+                     <TableRow>
+                        <TableCell><Typography variant="body1" sx={{ fontWeight: 'bolder' }}>Product URI</Typography></TableCell>
+                        <TableCell><DataValueDisplay value={getValue(ServerStatusField.ProductUri)} /></TableCell>
+                     </TableRow>
+                     <TableRow>
+                        <TableCell><Typography variant="body1" sx={{ fontWeight: 'bolder' }}>Manufacturer Name</Typography></TableCell>
+                        <TableCell><DataValueDisplay value={getValue(ServerStatusField.ManufacturerName)} /></TableCell>
+                     </TableRow>
+                     <TableRow>
+                        <TableCell><Typography variant="body1" sx={{ fontWeight: 'bolder' }}>SoftwareVersion</Typography></TableCell>
+                        <TableCell><DataValueDisplay value={getValue(ServerStatusField.SoftwareVersion)} /></TableCell>
+                     </TableRow>
+                     <TableRow>
+                        <TableCell><Typography variant="body1" sx={{ fontWeight: 'bolder' }}>Build Date</Typography></TableCell>
+                        <TableCell><DataValueDisplay value={getValue(ServerStatusField.BuildDate)} /></TableCell>
+                     </TableRow>
+                     <TableRow>
+                        <TableCell><Typography variant="body1" sx={{ fontWeight: 'bolder' }}>Server State</Typography></TableCell>
+                        <TableCell><DataValueDisplay value={getValue(ServerStatusField.State)} /></TableCell>
+                     </TableRow>
+                     <TableRow>
+                        <TableCell><Typography variant="body1" sx={{ fontWeight: 'bolder' }}>Start Time</Typography></TableCell>
+                        <TableCell><DataValueDisplay value={getValue(ServerStatusField.StartTime)} /></TableCell>
+                     </TableRow>
+                     <TableRow>
+                        <TableCell><Typography variant="body1" sx={{ fontWeight: 'bolder' }}>Server Time</Typography></TableCell>
+                        <TableCell><DataValueDisplay value={getValue(ServerStatusField.CurrentTime)} /></TableCell>
+                     </TableRow>
+                  </TableBody>
+               </Table>
+            </CardContent>
+         </Card>
+      </TypeDefinitionCard>
    );
 }
 

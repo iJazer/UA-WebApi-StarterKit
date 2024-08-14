@@ -332,7 +332,7 @@ export async function translateAndReadValues(
    const values: IReadResult[] = [];
    nodesToRead.forEach((item) => {
       values.push({
-         id: values.length,
+         id: item.id ?? values.length,
          nodeId: item.resolvedNodeId ?? item.nodeId,
          attributeId: item.attributeId ?? OpcUa.Attributes.Value,
          value: { StatusCode: OpcUa.StatusCodes.BadNodeIdUnknown }
@@ -386,7 +386,8 @@ export async function translateAndReadValues(
       });
    }
    const valuesToRead: OpcUa.ReadValueId[] = [];
-   nodesToRead.forEach((item) => {
+   const subsetOfResults: (IReadResult | undefined)[] = []; 
+   nodesToRead.forEach((item, index) => {
       if (!item.resolvedNodeId) {
          return;
       }
@@ -395,6 +396,7 @@ export async function translateAndReadValues(
          AttributeId: item.attributeId ?? OpcUa.Attributes.Value
       });
       item.id = valuesToRead.length;
+      subsetOfResults.push(values.at(index));
    });
    if (valuesToRead.length) {
       const request: OpcUa.ReadRequestMessage = {
@@ -417,8 +419,10 @@ export async function translateAndReadValues(
          return null;
       }
       const body: OpcUa.ReadResponse = response.Body;
-      values.forEach((item) => {
-         item.value = body.Results?.at(item.id);
+      subsetOfResults.forEach((item, index) => {
+         if (item?.value) {
+            item.value = body.Results?.at(index);
+         }
       });
    }
    return values;
