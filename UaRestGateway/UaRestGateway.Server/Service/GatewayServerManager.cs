@@ -74,7 +74,7 @@ namespace UaRestGateway.Server.Service
                 SecurityLevel = 100,
                 Server = serverDescription,
                 ServerCertificate = templateEndpoint.ServerCertificate,
-                UserIdentityTokens = templateEndpoint.UserIdentityTokens.Where(x => x.TokenType == UserTokenType.IssuedToken || x.TokenType == UserTokenType.Anonymous).ToArray()
+                UserIdentityTokens = templateEndpoint.UserIdentityTokens.Where(x => x.TokenType == UserTokenType.IssuedToken || x.TokenType == UserTokenType.UserName || x.TokenType == UserTokenType.Anonymous).ToArray()
             });
 
             return hosts;
@@ -309,10 +309,27 @@ namespace UaRestGateway.Server.Service
         /// </summary>
         private IUserIdentity VerifyPassword(UserNameIdentityToken userNameToken)
         {
-            throw ServiceResultException.Create(StatusCodes.BadIdentityTokenRejected,
-                "Security token is not a valid username token. An empty password is not accepted.");
+            switch (userNameToken.UserName)
+            {
+                case "user1":
+                    if (userNameToken.DecryptedPassword != "password1")
+                    {
+                        throw new ServiceResultException(StatusCodes.BadIdentityTokenRejected);
+                    }
+                    break;
 
-            // return new UserIdentity(userNameToken);
+                case "user2":
+                    if (userNameToken.DecryptedPassword != "password2")
+                    {
+                        throw new ServiceResultException(StatusCodes.BadIdentityTokenRejected);
+                    }
+                    break;
+
+                default:
+                    throw new ServiceResultException(StatusCodes.BadIdentityTokenRejected);
+            }
+
+            return new UserIdentity(userNameToken);
         }
 
         /// <summary>

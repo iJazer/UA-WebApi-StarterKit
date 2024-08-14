@@ -7,9 +7,6 @@ using ISession = Opc.Ua.Client.ISession;
 using UaRestGateway.Server.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using System.Text;
-using Opc.Ua.Server;
-using System.IO.Compression;
 
 namespace UaRestGateway.Server.Controllers
 {

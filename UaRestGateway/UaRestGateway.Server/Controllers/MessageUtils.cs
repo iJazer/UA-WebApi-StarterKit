@@ -36,102 +36,127 @@ namespace UaRestGateway.Server.Controllers
             StandardServer server,
             string accessToken)
         {
-            try
+            SecureChannelContext.Current = context.ChannelContext;
+
+            var request = new CreateSessionRequest()
             {
-                SecureChannelContext.Current = context.ChannelContext;
-
-                var request = new CreateSessionRequest()
+                RequestHeader = new RequestHeader()
                 {
-                    RequestHeader = new RequestHeader()
-                    {
-                        Timestamp = DateTime.UtcNow,
-                        RequestHandle = 0,
-                        ReturnDiagnostics = 0,
-                        TimeoutHint = 60000
-                    },
-                    ClientDescription = new ApplicationDescription()
-                    {
-                        ApplicationUri = $"urn:{System.Net.Dns.GetHostName().ToLower()}:UA:UaRestGateway:Client",
-                        ProductUri = "UaRestGateway",
-                        ApplicationName = new LocalizedText("UaRestGateway"),
-                        ApplicationType = ApplicationType.Client
-                    },
-                    ServerUri = server.CurrentInstance.NamespaceUris.GetString(1),
-                    EndpointUrl = "opc.tcp://localhost:46040",
-                    SessionName = "UaRestGateway:InternalClient",
-                    RequestedSessionTimeout = 30000,
-                    MaxResponseMessageSize = 0
-                };
+                    Timestamp = DateTime.UtcNow,
+                    RequestHandle = 0,
+                    ReturnDiagnostics = 0,
+                    TimeoutHint = 60000
+                },
+                ClientDescription = new ApplicationDescription()
+                {
+                    ApplicationUri = $"urn:{System.Net.Dns.GetHostName().ToLower()}:UA:UaRestGateway:Client",
+                    ProductUri = "UaRestGateway",
+                    ApplicationName = new LocalizedText("UaRestGateway"),
+                    ApplicationType = ApplicationType.Client
+                },
+                ServerUri = server.CurrentInstance.NamespaceUris.GetString(1),
+                EndpointUrl = "opc.tcp://localhost:46040",
+                SessionName = "UaRestGateway:InternalClient",
+                RequestedSessionTimeout = 30000,
+                MaxResponseMessageSize = 0
+            };
 
-                var responseHeader = server.CreateSession(
-                    request.RequestHeader,
-                    request.ClientDescription,
-                    request.ServerUri,
-                    request.EndpointUrl,
-                    request.SessionName,
-                    request.ClientNonce,
-                    request.ClientCertificate,
-                    request.RequestedSessionTimeout,
-                    request.MaxResponseMessageSize,
-                    out NodeId sessionId,
-                    out NodeId authenticationToken,
-                    out double revisedSessionTimeout,
-                    out byte[] serverNonce,
-                    out byte[] serverCertificate,
-                    out EndpointDescriptionCollection serverEndpoints,
-                    out SignedSoftwareCertificateCollection serverSoftwareCertificates,
-                    out SignatureData serverSignature,
-                    out uint maxRequestMessageSize);
+            var responseHeader = server.CreateSession(
+                request.RequestHeader,
+                request.ClientDescription,
+                request.ServerUri,
+                request.EndpointUrl,
+                request.SessionName,
+                request.ClientNonce,
+                request.ClientCertificate,
+                request.RequestedSessionTimeout,
+                request.MaxResponseMessageSize,
+                out NodeId sessionId,
+                out NodeId authenticationToken,
+                out double revisedSessionTimeout,
+                out byte[] serverNonce,
+                out byte[] serverCertificate,
+                out EndpointDescriptionCollection serverEndpoints,
+                out SignedSoftwareCertificateCollection serverSoftwareCertificates,
+                out SignatureData serverSignature,
+                out uint maxRequestMessageSize);
 
-                var userIdentity = (!String.IsNullOrEmpty(accessToken))
-                    ? new ExtensionObject(new IssuedIdentityToken()
+            ExtensionObject userIdentity = null;
+
+            if (accessToken != null)
+            {
+                if (accessToken.StartsWith("Bearer"))
+                {
+                    accessToken = accessToken.Substring("Bearer".Length).Trim();
+
+                    userIdentity = new ExtensionObject(new IssuedIdentityToken()
                     {
                         PolicyId = SecureChannelContext.Current.EndpointDescription.UserIdentityTokens.Where(x => x.TokenType == UserTokenType.IssuedToken).FirstOrDefault()?.PolicyId,
                         DecryptedTokenData = new UTF8Encoding(false).GetBytes(accessToken)
-                    })
-                    : null;
+                    });
+                }
 
-                var request2 = new ActivateSessionRequest()
+                if (accessToken.StartsWith("Basic"))
                 {
-                    RequestHeader = new RequestHeader()
+                    accessToken = accessToken.Substring("Basic".Length).Trim();
+                    accessToken = new UTF8Encoding().GetString(Convert.FromBase64String(accessToken));
+
+                    var userName = accessToken;
+                    var password = "";
+
+                    int index = accessToken.IndexOf(':');
+
+                    if (index != -1)
                     {
-                        Timestamp = DateTime.UtcNow,
-                        RequestHandle = 0,
-                        ReturnDiagnostics = 0,
-                        TimeoutHint = 60000,
-                        AuthenticationToken = authenticationToken
-                    },
-                    ClientSignature = new SignatureData(),
-                    ClientSoftwareCertificates = new SignedSoftwareCertificateCollection(),
-                    LocaleIds = new StringCollection(),
-                    UserTokenSignature = new SignatureData()
-                };
+                        userName = accessToken.Substring(0, index);
+                        password = accessToken.Substring(index + 1);
+                    }
 
-                responseHeader = server.ActivateSession(
-                    request2.RequestHeader,
-                    request2.ClientSignature,
-                    request2.ClientSoftwareCertificates,
-                    request2.LocaleIds,
-                    userIdentity,
-                    request2.UserTokenSignature,
-                    out serverNonce,
-                    out StatusCodeCollection results,
-                    out DiagnosticInfoCollection diagnosticInfos);
-
-                var response = new ActivateSessionResponse()
-                {
-                    ResponseHeader = responseHeader,
-                    ServerNonce = serverNonce,
-                    Results = results,
-                    DiagnosticInfos = diagnosticInfos
-                };
-
-                return authenticationToken.Format(server.CurrentInstance.MessageContext, true);
+                    userIdentity = new ExtensionObject(new UserNameIdentityToken()
+                    {
+                        PolicyId = SecureChannelContext.Current.EndpointDescription.UserIdentityTokens.Where(x => x.TokenType == UserTokenType.UserName).FirstOrDefault()?.PolicyId,
+                        UserName = userName,
+                        DecryptedPassword = password
+                    });
+                }
             }
-            catch (Exception)
+
+            var request2 = new ActivateSessionRequest()
             {
-                return null;
-            }
+                RequestHeader = new RequestHeader()
+                {
+                    Timestamp = DateTime.UtcNow,
+                    RequestHandle = 0,
+                    ReturnDiagnostics = 0,
+                    TimeoutHint = 60000,
+                    AuthenticationToken = authenticationToken
+                },
+                ClientSignature = new SignatureData(),
+                ClientSoftwareCertificates = new SignedSoftwareCertificateCollection(),
+                LocaleIds = new StringCollection(),
+                UserTokenSignature = new SignatureData()
+            };
+
+            responseHeader = server.ActivateSession(
+                request2.RequestHeader,
+                request2.ClientSignature,
+                request2.ClientSoftwareCertificates,
+                request2.LocaleIds,
+                userIdentity,
+                request2.UserTokenSignature,
+                out serverNonce,
+                out StatusCodeCollection results,
+                out DiagnosticInfoCollection diagnosticInfos);
+
+            var response = new ActivateSessionResponse()
+            {
+                ResponseHeader = responseHeader,
+                ServerNonce = serverNonce,
+                Results = results,
+                DiagnosticInfos = diagnosticInfos
+            };
+
+            return authenticationToken.Format(server.CurrentInstance.MessageContext, true);
         }
 
         public static async Task<IServiceRequest> Decode<T>(IServiceMessageContext context, Stream stream, bool? compressed = null) where T : IServiceRequest

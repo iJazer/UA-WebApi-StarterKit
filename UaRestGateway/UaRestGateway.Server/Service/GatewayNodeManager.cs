@@ -29,11 +29,6 @@
 
 using Opc.Ua;
 using Opc.Ua.Server;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
 using StatusCodes = Opc.Ua.StatusCodes;
 
 namespace UaRestGateway.Server.Service
@@ -46,6 +41,7 @@ namespace UaRestGateway.Server.Service
         #region Private Fields
         private Dictionary<NodeId, FileManager> m_fileManagers = new();
         private ushort TestNamespaceIndex => (NamespaceIndexes?.Length > 0) ? NamespaceIndexes[0] : (ushort)0;
+        private Timer m_simulationTimer;
         #endregion
 
         #region Constructors
@@ -57,7 +53,6 @@ namespace UaRestGateway.Server.Service
             base(server, configuration)
         {
             SystemContext.NodeIdFactory = this;
-
             string[] namespaceUrls = new string[1];
             namespaceUrls[0] = "urn:opcua-is-interoperability.net:testing";
             SetNamespaces(namespaceUrls);
@@ -72,6 +67,12 @@ namespace UaRestGateway.Server.Service
         {
             if (disposing)
             {
+                if (m_simulationTimer != null)
+                {
+                    m_simulationTimer.Dispose();
+                    m_simulationTimer = null;
+                }
+
                 lock (Lock)
                 {
                     foreach (var manager in m_fileManagers.Values)
@@ -144,7 +145,7 @@ namespace UaRestGateway.Server.Service
             {
                 IUserIdentity user = context.UserIdentity;
 
-                if (user?.GrantedRoleIds.Contains(ObjectIds.WellKnownRole_Engineer) == true)
+                if (user?.GrantedRoleIds.Contains(ObjectIds.WellKnownRole_AuthenticatedUser) == true)
                 {
                     return true;
                 }
@@ -161,7 +162,7 @@ namespace UaRestGateway.Server.Service
             {
                 if (result.NodeId?.Identifier is string id)
                 {
-                    if (id.Contains("OnlyMemberCanSee") == true)
+                    if (id.Contains("Reset") == true)
                     {
                         if (!HasEngineerAccess(context))
                         {
@@ -194,7 +195,7 @@ namespace UaRestGateway.Server.Service
                 {
                     if (metadata.RolePermissions == null)
                     {
-                        if (id.Contains("OnlyMemberCanSee") == true)
+                        if (id.Contains("Reset") == true)
                         {
                             metadata.RolePermissions = new(new RolePermissionType[]
                             {
@@ -205,8 +206,13 @@ namespace UaRestGateway.Server.Service
                                 },
                                 new RolePermissionType()
                                 {
+                                    RoleId = ObjectIds.WellKnownRole_AuthenticatedUser,
+                                    Permissions = (uint)(PermissionType.Browse | PermissionType.Read | PermissionType.Call)
+                                },
+                                new RolePermissionType()
+                                {
                                     RoleId = ObjectIds.WellKnownRole_Engineer,
-                                    Permissions = (uint)(PermissionType.Browse | PermissionType.Read)
+                                    Permissions = (uint)(PermissionType.Browse | PermissionType.Read | PermissionType.Call)
                                 }
                             });
                         }
@@ -217,37 +223,36 @@ namespace UaRestGateway.Server.Service
             return metadata;
         }
 
-        private FolderState CreateTestFolder()
+        private BaseObjectState CreateTestFolder()
         {
-            var folder = new FolderState(null);
+            var folder = new BaseObjectState(null);
 
             folder.Create(
                 SystemContext,
-                new NodeId("SampleFolder", TestNamespaceIndex),
-                new QualifiedName("SampleFolder", TestNamespaceIndex),
+                new NodeId("Data", TestNamespaceIndex),
+                new QualifiedName("Data", TestNamespaceIndex),
                 null,
                 true);
 
             AddPredefinedNode(SystemContext, folder);
 
-            var variable = new AnalogItemState<double>(folder);
+            var temperature = new AnalogItemState<double>(folder);
 
-            variable.Create(
+            temperature.Create(
                 SystemContext,
-                new NodeId("OnlyMemberCanSee", TestNamespaceIndex),
-                new QualifiedName("OnlyMemberCanSee", TestNamespaceIndex),
+                new NodeId("Temperature", TestNamespaceIndex),
+                new QualifiedName("Temperature", TestNamespaceIndex),
                 null,
                 true);
 
-            variable.Definition = null;
-            variable.InstrumentRange = null;
-            variable.ValuePrecision = null;
-            variable.AccessLevel = AccessLevels.CurrentReadOrWrite;
-            variable.UserAccessLevel = AccessLevels.CurrentReadOrWrite;
+            temperature.Definition = null;
+            temperature.InstrumentRange = null;
+            temperature.ValuePrecision = null;
+            temperature.AccessLevel = AccessLevels.CurrentReadOrWrite;
+            temperature.UserAccessLevel = AccessLevels.CurrentReadOrWrite;
+            temperature.Value = 25.0;
 
-            variable.Value = 100.0;
-
-            variable.EngineeringUnits.Value = new EUInformation()
+            temperature.EngineeringUnits.Value = new EUInformation()
             {
                 DisplayName = "°C",
                 Description = "Celsius",
@@ -255,40 +260,136 @@ namespace UaRestGateway.Server.Service
                 NamespaceUri = "http://www.opcfoundation.org/UA/units/un/cefact"
             };
 
-            variable.EURange.Value = new Opc.Ua.Range(-263, 400);
+            temperature.EURange.Value = new Opc.Ua.Range(-263, 400);
 
-            folder.AddChild(variable);
-            AddPredefinedNode(SystemContext, variable);
+            folder.AddChild(temperature);
+            AddPredefinedNode(SystemContext, temperature);
 
-            variable = new AnalogItemState<double>(folder);
+            var pressure = new AnalogItemState<double>(folder);
 
-            variable.Create(
+            pressure.Create(
                 SystemContext,
-                new NodeId("AllCanSee", TestNamespaceIndex),
-                new QualifiedName("AllCanSee", TestNamespaceIndex),
+                new NodeId("Pressure", TestNamespaceIndex),
+                new QualifiedName("Pressure", TestNamespaceIndex),
                 null,
                 true);
 
-            variable.Definition = null;
-            variable.InstrumentRange = null;
-            variable.ValuePrecision = null;
-            variable.AccessLevel = AccessLevels.CurrentReadOrWrite;
-            variable.UserAccessLevel = AccessLevels.CurrentReadOrWrite;
+            pressure.Definition = null;
+            pressure.InstrumentRange = null;
+            pressure.ValuePrecision = null;
+            pressure.AccessLevel = AccessLevels.CurrentReadOrWrite;
+            pressure.UserAccessLevel = AccessLevels.CurrentReadOrWrite;
+            pressure.Value = 103.0;
 
-            variable.Value = 100.0;
-
-            variable.EngineeringUnits.Value = new EUInformation()
+            pressure.EngineeringUnits.Value = new EUInformation()
             {
-                DisplayName = "m²",
-                Description = "Meters Squared",
-                UnitId = 5067851,
+                DisplayName = "kPa",
+                Description = "kilopascal",
+                UnitId = 4935745,
                 NamespaceUri = "http://www.opcfoundation.org/UA/units/un/cefact"
             };
 
-            variable.EURange.Value = new Opc.Ua.Range(0, 100000);
+            pressure.EURange.Value = new Opc.Ua.Range(0, 250);
 
-            folder.AddChild(variable);
-            AddPredefinedNode(SystemContext, variable);
+            folder.AddChild(pressure);
+            AddPredefinedNode(SystemContext, pressure);
+
+            var method = new MethodState(folder);
+            method.ReferenceTypeId = ReferenceTypeIds.HasComponent;
+
+            method.InputArguments = new PropertyState<Argument[]>(method)
+            {
+                ReferenceTypeId = ReferenceTypeIds.HasProperty,
+                SymbolicName = BrowseNames.InputArguments,
+                BrowseName = BrowseNames.InputArguments,
+                DisplayName = BrowseNames.InputArguments
+            };
+
+            method.OutputArguments = new PropertyState<Argument[]>(method)
+            {
+                ReferenceTypeId = ReferenceTypeIds.HasProperty,
+                SymbolicName = BrowseNames.OutputArguments,
+                BrowseName = BrowseNames.OutputArguments,
+                DisplayName = BrowseNames.OutputArguments
+            };
+
+            method.Create(
+                SystemContext,
+                new NodeId("Reset", TestNamespaceIndex),
+                new QualifiedName("Reset", TestNamespaceIndex),
+                null,
+                true);
+
+            method.OnCallMethod2 += (context, methodToCall, objectId, inputArguments, outputArguments) =>
+            {
+                if (inputArguments.Count != 2 || outputArguments.Count != 2)
+                {
+                    return StatusCodes.BadArgumentsMissing;
+                }
+
+                lock (Lock)
+                {
+                    double oldTemperature = temperature.Value;
+                    double oldPressure = pressure.Value;
+
+                    temperature.Value = (double)inputArguments[0];
+                    pressure.Value = (double)inputArguments[1];
+
+                    outputArguments[0] = oldTemperature;
+                    outputArguments[1] = oldPressure;
+                }
+
+                return ServiceResult.Good;
+            };
+
+            method.InputArguments.Value = new Argument[] {
+                new Argument() {
+                    Name = "NewTemperature",
+                    DataType = DataTypeIds.Double,
+                    ValueRank = ValueRanks.Scalar,
+                    Description = "The new temperature"
+                },
+                new Argument() {
+                    Name = "NewPressure",
+                    DataType = DataTypeIds.Double,
+                    ValueRank = ValueRanks.Scalar,
+                    Description = "The new pressure"
+                }
+            };
+
+            method.OutputArguments.Value = new Argument[] {
+                new Argument() {
+                    Name = "OldTemperature",
+                    DataType = DataTypeIds.Double,
+                    ValueRank = ValueRanks.Scalar,
+                    Description = "The old temperature"
+                },
+                new Argument() {
+                    Name = "OldPressure",
+                    DataType = DataTypeIds.Double,
+                    ValueRank = ValueRanks.Scalar,
+                    Description = "The old pressure"
+                }
+            };
+
+            folder.AddChild(method);
+            AddPredefinedNode(SystemContext, method);
+
+            m_simulationTimer = new Timer(
+                (state) => 
+                {
+                    lock (Lock)
+                    {
+                        temperature.Value = Math.Round(Math.Round(temperature.Value, 0) + Random.Shared.NextDouble() - 0.5, 2);
+                        pressure.Value = Math.Round(Math.Round(pressure.Value, 0) + Random.Shared.NextDouble() - 0.5, 2);
+        }
+
+                    temperature.ClearChangeMasks(SystemContext, false);
+                    pressure.ClearChangeMasks(SystemContext, false);
+                }, 
+                null, 
+                1000, 
+                1000);
 
             return folder;
         }

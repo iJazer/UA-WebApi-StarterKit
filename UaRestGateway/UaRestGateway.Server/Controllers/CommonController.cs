@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Features.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Opc.Ua;
@@ -122,11 +123,6 @@ namespace UaRestGateway.Server.Controllers
             if (context.Request.Headers.TryGetValue("Authorization", out var header))
             {
                 accessToken = String.Join(" ", header).Trim();
-
-                if (accessToken.StartsWith(JwtBearerDefaults.AuthenticationScheme))
-                {
-                    accessToken = accessToken.Substring(JwtBearerDefaults.AuthenticationScheme.Length).Trim();
-                }
             }
 
             return accessToken;
@@ -178,6 +174,20 @@ namespace UaRestGateway.Server.Controllers
                     }
                     catch (Exception e)
                     {
+                        var sre = e as ServiceResultException;
+
+                        if (sre != null)
+                        {
+                            switch (sre.StatusCode)
+                            {
+                                case Opc.Ua.StatusCodes.BadIdentityTokenInvalid:
+                                case Opc.Ua.StatusCodes.BadIdentityTokenRejected:
+                                {
+                                    throw sre;
+                                }
+                            }
+                        }
+
                         Logger.LogError(e, "CreateDefaultSession failed.");
                     }
                 }
