@@ -7,8 +7,8 @@ try
 {
     var client = new OpcUaClient()
     {
-        BaseUrl = new Uri("https://opcua-rest-dashboard.azurewebsites.net/opcua/")
-        // BaseUrl = new Uri("https://localhost:44429/opcua/")
+        // BaseUrl = new Uri("https://opcua-rest-dashboard.azurewebsites.net/opcua/")
+        BaseUrl = new Uri("https://localhost:44429/opcua/")
     };
 
     client.SetUserName("user1", "password1");

@@ -31,10 +31,10 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="activateSessionRequestMessage">ActivateSessionRequestMessage (optional)</param>
+        /// <param name="activateSessionRequest">ActivateSessionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ActivateSessionResponseMessage</returns>
-        ActivateSessionResponseMessage ActivateSession(ActivateSessionRequestMessage? activateSessionRequestMessage = default(ActivateSessionRequestMessage?), int operationIndex = 0);
+        /// <returns>ActivateSessionResponse</returns>
+        ActivateSessionResponse ActivateSession(ActivateSessionRequest? activateSessionRequest = default(ActivateSessionRequest?), int operationIndex = 0);
 
         /// <summary>
         /// 
@@ -43,18 +43,18 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="activateSessionRequestMessage">ActivateSessionRequestMessage (optional)</param>
+        /// <param name="activateSessionRequest">ActivateSessionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of ActivateSessionResponseMessage</returns>
-        ApiResponse<ActivateSessionResponseMessage> ActivateSessionWithHttpInfo(ActivateSessionRequestMessage? activateSessionRequestMessage = default(ActivateSessionRequestMessage?), int operationIndex = 0);
+        /// <returns>ApiResponse of ActivateSessionResponse</returns>
+        ApiResponse<ActivateSessionResponse> ActivateSessionWithHttpInfo(ActivateSessionRequest? activateSessionRequest = default(ActivateSessionRequest?), int operationIndex = 0);
         /// <summary>
         /// 
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="browseRequestMessage">BrowseRequestMessage (optional)</param>
+        /// <param name="browseRequest">BrowseRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>BrowseResponseMessage</returns>
-        BrowseResponseMessage Browse(BrowseRequestMessage? browseRequestMessage = default(BrowseRequestMessage?), int operationIndex = 0);
+        /// <returns>BrowseResponse</returns>
+        BrowseResponse Browse(BrowseRequest? browseRequest = default(BrowseRequest?), int operationIndex = 0);
 
         /// <summary>
         /// 
@@ -63,18 +63,18 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="browseRequestMessage">BrowseRequestMessage (optional)</param>
+        /// <param name="browseRequest">BrowseRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of BrowseResponseMessage</returns>
-        ApiResponse<BrowseResponseMessage> BrowseWithHttpInfo(BrowseRequestMessage? browseRequestMessage = default(BrowseRequestMessage?), int operationIndex = 0);
+        /// <returns>ApiResponse of BrowseResponse</returns>
+        ApiResponse<BrowseResponse> BrowseWithHttpInfo(BrowseRequest? browseRequest = default(BrowseRequest?), int operationIndex = 0);
         /// <summary>
         /// 
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="browseNextRequestMessage">BrowseNextRequestMessage (optional)</param>
+        /// <param name="browseNextRequest">BrowseNextRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>BrowseNextResponseMessage</returns>
-        BrowseNextResponseMessage BrowseNext(BrowseNextRequestMessage? browseNextRequestMessage = default(BrowseNextRequestMessage?), int operationIndex = 0);
+        /// <returns>BrowseNextResponse</returns>
+        BrowseNextResponse BrowseNext(BrowseNextRequest? browseNextRequest = default(BrowseNextRequest?), int operationIndex = 0);
 
         /// <summary>
         /// 
@@ -83,18 +83,18 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="browseNextRequestMessage">BrowseNextRequestMessage (optional)</param>
+        /// <param name="browseNextRequest">BrowseNextRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of BrowseNextResponseMessage</returns>
-        ApiResponse<BrowseNextResponseMessage> BrowseNextWithHttpInfo(BrowseNextRequestMessage? browseNextRequestMessage = default(BrowseNextRequestMessage?), int operationIndex = 0);
+        /// <returns>ApiResponse of BrowseNextResponse</returns>
+        ApiResponse<BrowseNextResponse> BrowseNextWithHttpInfo(BrowseNextRequest? browseNextRequest = default(BrowseNextRequest?), int operationIndex = 0);
         /// <summary>
         /// 
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="callRequestMessage">CallRequestMessage (optional)</param>
+        /// <param name="callRequest">CallRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>CallResponseMessage</returns>
-        CallResponseMessage Call(CallRequestMessage? callRequestMessage = default(CallRequestMessage?), int operationIndex = 0);
+        /// <returns>CallResponse</returns>
+        CallResponse Call(CallRequest? callRequest = default(CallRequest?), int operationIndex = 0);
 
         /// <summary>
         /// 
@@ -103,18 +103,18 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="callRequestMessage">CallRequestMessage (optional)</param>
+        /// <param name="callRequest">CallRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of CallResponseMessage</returns>
-        ApiResponse<CallResponseMessage> CallWithHttpInfo(CallRequestMessage? callRequestMessage = default(CallRequestMessage?), int operationIndex = 0);
+        /// <returns>ApiResponse of CallResponse</returns>
+        ApiResponse<CallResponse> CallWithHttpInfo(CallRequest? callRequest = default(CallRequest?), int operationIndex = 0);
         /// <summary>
         /// 
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="cancelRequestMessage">CancelRequestMessage (optional)</param>
+        /// <param name="cancelRequest">CancelRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>CancelResponseMessage</returns>
-        CancelResponseMessage Cancel(CancelRequestMessage? cancelRequestMessage = default(CancelRequestMessage?), int operationIndex = 0);
+        /// <returns>CancelResponse</returns>
+        CancelResponse Cancel(CancelRequest? cancelRequest = default(CancelRequest?), int operationIndex = 0);
 
         /// <summary>
         /// 
@@ -123,18 +123,18 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="cancelRequestMessage">CancelRequestMessage (optional)</param>
+        /// <param name="cancelRequest">CancelRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of CancelResponseMessage</returns>
-        ApiResponse<CancelResponseMessage> CancelWithHttpInfo(CancelRequestMessage? cancelRequestMessage = default(CancelRequestMessage?), int operationIndex = 0);
+        /// <returns>ApiResponse of CancelResponse</returns>
+        ApiResponse<CancelResponse> CancelWithHttpInfo(CancelRequest? cancelRequest = default(CancelRequest?), int operationIndex = 0);
         /// <summary>
         /// 
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="closeSessionRequestMessage">CloseSessionRequestMessage (optional)</param>
+        /// <param name="closeSessionRequest">CloseSessionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>CloseSessionResponseMessage</returns>
-        CloseSessionResponseMessage CloseSession(CloseSessionRequestMessage? closeSessionRequestMessage = default(CloseSessionRequestMessage?), int operationIndex = 0);
+        /// <returns>CloseSessionResponse</returns>
+        CloseSessionResponse CloseSession(CloseSessionRequest? closeSessionRequest = default(CloseSessionRequest?), int operationIndex = 0);
 
         /// <summary>
         /// 
@@ -143,18 +143,18 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="closeSessionRequestMessage">CloseSessionRequestMessage (optional)</param>
+        /// <param name="closeSessionRequest">CloseSessionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of CloseSessionResponseMessage</returns>
-        ApiResponse<CloseSessionResponseMessage> CloseSessionWithHttpInfo(CloseSessionRequestMessage? closeSessionRequestMessage = default(CloseSessionRequestMessage?), int operationIndex = 0);
+        /// <returns>ApiResponse of CloseSessionResponse</returns>
+        ApiResponse<CloseSessionResponse> CloseSessionWithHttpInfo(CloseSessionRequest? closeSessionRequest = default(CloseSessionRequest?), int operationIndex = 0);
         /// <summary>
         /// 
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="createMonitoredItemsRequestMessage">CreateMonitoredItemsRequestMessage (optional)</param>
+        /// <param name="createMonitoredItemsRequest">CreateMonitoredItemsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>CreateMonitoredItemsResponseMessage</returns>
-        CreateMonitoredItemsResponseMessage CreateMonitoredItems(CreateMonitoredItemsRequestMessage? createMonitoredItemsRequestMessage = default(CreateMonitoredItemsRequestMessage?), int operationIndex = 0);
+        /// <returns>CreateMonitoredItemsResponse</returns>
+        CreateMonitoredItemsResponse CreateMonitoredItems(CreateMonitoredItemsRequest? createMonitoredItemsRequest = default(CreateMonitoredItemsRequest?), int operationIndex = 0);
 
         /// <summary>
         /// 
@@ -163,18 +163,18 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="createMonitoredItemsRequestMessage">CreateMonitoredItemsRequestMessage (optional)</param>
+        /// <param name="createMonitoredItemsRequest">CreateMonitoredItemsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of CreateMonitoredItemsResponseMessage</returns>
-        ApiResponse<CreateMonitoredItemsResponseMessage> CreateMonitoredItemsWithHttpInfo(CreateMonitoredItemsRequestMessage? createMonitoredItemsRequestMessage = default(CreateMonitoredItemsRequestMessage?), int operationIndex = 0);
+        /// <returns>ApiResponse of CreateMonitoredItemsResponse</returns>
+        ApiResponse<CreateMonitoredItemsResponse> CreateMonitoredItemsWithHttpInfo(CreateMonitoredItemsRequest? createMonitoredItemsRequest = default(CreateMonitoredItemsRequest?), int operationIndex = 0);
         /// <summary>
         /// 
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="createSessionRequestMessage">CreateSessionRequestMessage (optional)</param>
+        /// <param name="createSessionRequest">CreateSessionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>CreateSessionResponseMessage</returns>
-        CreateSessionResponseMessage CreateSession(CreateSessionRequestMessage? createSessionRequestMessage = default(CreateSessionRequestMessage?), int operationIndex = 0);
+        /// <returns>CreateSessionResponse</returns>
+        CreateSessionResponse CreateSession(CreateSessionRequest? createSessionRequest = default(CreateSessionRequest?), int operationIndex = 0);
 
         /// <summary>
         /// 
@@ -183,18 +183,18 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="createSessionRequestMessage">CreateSessionRequestMessage (optional)</param>
+        /// <param name="createSessionRequest">CreateSessionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of CreateSessionResponseMessage</returns>
-        ApiResponse<CreateSessionResponseMessage> CreateSessionWithHttpInfo(CreateSessionRequestMessage? createSessionRequestMessage = default(CreateSessionRequestMessage?), int operationIndex = 0);
+        /// <returns>ApiResponse of CreateSessionResponse</returns>
+        ApiResponse<CreateSessionResponse> CreateSessionWithHttpInfo(CreateSessionRequest? createSessionRequest = default(CreateSessionRequest?), int operationIndex = 0);
         /// <summary>
         /// 
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="createSubscriptionRequestMessage">CreateSubscriptionRequestMessage (optional)</param>
+        /// <param name="createSubscriptionRequest">CreateSubscriptionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>CreateSubscriptionResponseMessage</returns>
-        CreateSubscriptionResponseMessage CreateSubscription(CreateSubscriptionRequestMessage? createSubscriptionRequestMessage = default(CreateSubscriptionRequestMessage?), int operationIndex = 0);
+        /// <returns>CreateSubscriptionResponse</returns>
+        CreateSubscriptionResponse CreateSubscription(CreateSubscriptionRequest? createSubscriptionRequest = default(CreateSubscriptionRequest?), int operationIndex = 0);
 
         /// <summary>
         /// 
@@ -203,18 +203,18 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="createSubscriptionRequestMessage">CreateSubscriptionRequestMessage (optional)</param>
+        /// <param name="createSubscriptionRequest">CreateSubscriptionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of CreateSubscriptionResponseMessage</returns>
-        ApiResponse<CreateSubscriptionResponseMessage> CreateSubscriptionWithHttpInfo(CreateSubscriptionRequestMessage? createSubscriptionRequestMessage = default(CreateSubscriptionRequestMessage?), int operationIndex = 0);
+        /// <returns>ApiResponse of CreateSubscriptionResponse</returns>
+        ApiResponse<CreateSubscriptionResponse> CreateSubscriptionWithHttpInfo(CreateSubscriptionRequest? createSubscriptionRequest = default(CreateSubscriptionRequest?), int operationIndex = 0);
         /// <summary>
         /// 
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="deleteMonitoredItemsRequestMessage">DeleteMonitoredItemsRequestMessage (optional)</param>
+        /// <param name="deleteMonitoredItemsRequest">DeleteMonitoredItemsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>DeleteMonitoredItemsResponseMessage</returns>
-        DeleteMonitoredItemsResponseMessage DeleteMonitoredItems(DeleteMonitoredItemsRequestMessage? deleteMonitoredItemsRequestMessage = default(DeleteMonitoredItemsRequestMessage?), int operationIndex = 0);
+        /// <returns>DeleteMonitoredItemsResponse</returns>
+        DeleteMonitoredItemsResponse DeleteMonitoredItems(DeleteMonitoredItemsRequest? deleteMonitoredItemsRequest = default(DeleteMonitoredItemsRequest?), int operationIndex = 0);
 
         /// <summary>
         /// 
@@ -223,18 +223,18 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="deleteMonitoredItemsRequestMessage">DeleteMonitoredItemsRequestMessage (optional)</param>
+        /// <param name="deleteMonitoredItemsRequest">DeleteMonitoredItemsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of DeleteMonitoredItemsResponseMessage</returns>
-        ApiResponse<DeleteMonitoredItemsResponseMessage> DeleteMonitoredItemsWithHttpInfo(DeleteMonitoredItemsRequestMessage? deleteMonitoredItemsRequestMessage = default(DeleteMonitoredItemsRequestMessage?), int operationIndex = 0);
+        /// <returns>ApiResponse of DeleteMonitoredItemsResponse</returns>
+        ApiResponse<DeleteMonitoredItemsResponse> DeleteMonitoredItemsWithHttpInfo(DeleteMonitoredItemsRequest? deleteMonitoredItemsRequest = default(DeleteMonitoredItemsRequest?), int operationIndex = 0);
         /// <summary>
         /// 
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="deleteSubscriptionsRequestMessage">DeleteSubscriptionsRequestMessage (optional)</param>
+        /// <param name="deleteSubscriptionsRequest">DeleteSubscriptionsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>DeleteSubscriptionsResponseMessage</returns>
-        DeleteSubscriptionsResponseMessage DeleteSubscriptions(DeleteSubscriptionsRequestMessage? deleteSubscriptionsRequestMessage = default(DeleteSubscriptionsRequestMessage?), int operationIndex = 0);
+        /// <returns>DeleteSubscriptionsResponse</returns>
+        DeleteSubscriptionsResponse DeleteSubscriptions(DeleteSubscriptionsRequest? deleteSubscriptionsRequest = default(DeleteSubscriptionsRequest?), int operationIndex = 0);
 
         /// <summary>
         /// 
@@ -243,18 +243,18 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="deleteSubscriptionsRequestMessage">DeleteSubscriptionsRequestMessage (optional)</param>
+        /// <param name="deleteSubscriptionsRequest">DeleteSubscriptionsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of DeleteSubscriptionsResponseMessage</returns>
-        ApiResponse<DeleteSubscriptionsResponseMessage> DeleteSubscriptionsWithHttpInfo(DeleteSubscriptionsRequestMessage? deleteSubscriptionsRequestMessage = default(DeleteSubscriptionsRequestMessage?), int operationIndex = 0);
+        /// <returns>ApiResponse of DeleteSubscriptionsResponse</returns>
+        ApiResponse<DeleteSubscriptionsResponse> DeleteSubscriptionsWithHttpInfo(DeleteSubscriptionsRequest? deleteSubscriptionsRequest = default(DeleteSubscriptionsRequest?), int operationIndex = 0);
         /// <summary>
         /// 
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="findServersRequestMessage">FindServersRequestMessage (optional)</param>
+        /// <param name="findServersRequest">FindServersRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>FindServersResponseMessage</returns>
-        FindServersResponseMessage FindServers(FindServersRequestMessage? findServersRequestMessage = default(FindServersRequestMessage?), int operationIndex = 0);
+        /// <returns>FindServersResponse</returns>
+        FindServersResponse FindServers(FindServersRequest? findServersRequest = default(FindServersRequest?), int operationIndex = 0);
 
         /// <summary>
         /// 
@@ -263,18 +263,18 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="findServersRequestMessage">FindServersRequestMessage (optional)</param>
+        /// <param name="findServersRequest">FindServersRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of FindServersResponseMessage</returns>
-        ApiResponse<FindServersResponseMessage> FindServersWithHttpInfo(FindServersRequestMessage? findServersRequestMessage = default(FindServersRequestMessage?), int operationIndex = 0);
+        /// <returns>ApiResponse of FindServersResponse</returns>
+        ApiResponse<FindServersResponse> FindServersWithHttpInfo(FindServersRequest? findServersRequest = default(FindServersRequest?), int operationIndex = 0);
         /// <summary>
         /// 
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="getEndpointsRequestMessage">GetEndpointsRequestMessage (optional)</param>
+        /// <param name="getEndpointsRequest">GetEndpointsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>GetEndpointsResponseMessage</returns>
-        GetEndpointsResponseMessage GetEndpoints(GetEndpointsRequestMessage? getEndpointsRequestMessage = default(GetEndpointsRequestMessage?), int operationIndex = 0);
+        /// <returns>GetEndpointsResponse</returns>
+        GetEndpointsResponse GetEndpoints(GetEndpointsRequest? getEndpointsRequest = default(GetEndpointsRequest?), int operationIndex = 0);
 
         /// <summary>
         /// 
@@ -283,18 +283,18 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="getEndpointsRequestMessage">GetEndpointsRequestMessage (optional)</param>
+        /// <param name="getEndpointsRequest">GetEndpointsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of GetEndpointsResponseMessage</returns>
-        ApiResponse<GetEndpointsResponseMessage> GetEndpointsWithHttpInfo(GetEndpointsRequestMessage? getEndpointsRequestMessage = default(GetEndpointsRequestMessage?), int operationIndex = 0);
+        /// <returns>ApiResponse of GetEndpointsResponse</returns>
+        ApiResponse<GetEndpointsResponse> GetEndpointsWithHttpInfo(GetEndpointsRequest? getEndpointsRequest = default(GetEndpointsRequest?), int operationIndex = 0);
         /// <summary>
         /// 
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="historyReadRequestMessage">HistoryReadRequestMessage (optional)</param>
+        /// <param name="historyReadRequest">HistoryReadRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>HistoryReadResponseMessage</returns>
-        HistoryReadResponseMessage HistoryRead(HistoryReadRequestMessage? historyReadRequestMessage = default(HistoryReadRequestMessage?), int operationIndex = 0);
+        /// <returns>HistoryReadResponse</returns>
+        HistoryReadResponse HistoryRead(HistoryReadRequest? historyReadRequest = default(HistoryReadRequest?), int operationIndex = 0);
 
         /// <summary>
         /// 
@@ -303,18 +303,18 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="historyReadRequestMessage">HistoryReadRequestMessage (optional)</param>
+        /// <param name="historyReadRequest">HistoryReadRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of HistoryReadResponseMessage</returns>
-        ApiResponse<HistoryReadResponseMessage> HistoryReadWithHttpInfo(HistoryReadRequestMessage? historyReadRequestMessage = default(HistoryReadRequestMessage?), int operationIndex = 0);
+        /// <returns>ApiResponse of HistoryReadResponse</returns>
+        ApiResponse<HistoryReadResponse> HistoryReadWithHttpInfo(HistoryReadRequest? historyReadRequest = default(HistoryReadRequest?), int operationIndex = 0);
         /// <summary>
         /// 
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="historyUpdateRequestMessage">HistoryUpdateRequestMessage (optional)</param>
+        /// <param name="historyUpdateRequest">HistoryUpdateRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>HistoryUpdateResponseMessage</returns>
-        HistoryUpdateResponseMessage HistoryUpdate(HistoryUpdateRequestMessage? historyUpdateRequestMessage = default(HistoryUpdateRequestMessage?), int operationIndex = 0);
+        /// <returns>HistoryUpdateResponse</returns>
+        HistoryUpdateResponse HistoryUpdate(HistoryUpdateRequest? historyUpdateRequest = default(HistoryUpdateRequest?), int operationIndex = 0);
 
         /// <summary>
         /// 
@@ -323,18 +323,18 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="historyUpdateRequestMessage">HistoryUpdateRequestMessage (optional)</param>
+        /// <param name="historyUpdateRequest">HistoryUpdateRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of HistoryUpdateResponseMessage</returns>
-        ApiResponse<HistoryUpdateResponseMessage> HistoryUpdateWithHttpInfo(HistoryUpdateRequestMessage? historyUpdateRequestMessage = default(HistoryUpdateRequestMessage?), int operationIndex = 0);
+        /// <returns>ApiResponse of HistoryUpdateResponse</returns>
+        ApiResponse<HistoryUpdateResponse> HistoryUpdateWithHttpInfo(HistoryUpdateRequest? historyUpdateRequest = default(HistoryUpdateRequest?), int operationIndex = 0);
         /// <summary>
         /// 
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="modifyMonitoredItemsRequestMessage">ModifyMonitoredItemsRequestMessage (optional)</param>
+        /// <param name="modifyMonitoredItemsRequest">ModifyMonitoredItemsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ModifyMonitoredItemsResponseMessage</returns>
-        ModifyMonitoredItemsResponseMessage ModifyMonitoredItems(ModifyMonitoredItemsRequestMessage? modifyMonitoredItemsRequestMessage = default(ModifyMonitoredItemsRequestMessage?), int operationIndex = 0);
+        /// <returns>ModifyMonitoredItemsResponse</returns>
+        ModifyMonitoredItemsResponse ModifyMonitoredItems(ModifyMonitoredItemsRequest? modifyMonitoredItemsRequest = default(ModifyMonitoredItemsRequest?), int operationIndex = 0);
 
         /// <summary>
         /// 
@@ -343,18 +343,18 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="modifyMonitoredItemsRequestMessage">ModifyMonitoredItemsRequestMessage (optional)</param>
+        /// <param name="modifyMonitoredItemsRequest">ModifyMonitoredItemsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of ModifyMonitoredItemsResponseMessage</returns>
-        ApiResponse<ModifyMonitoredItemsResponseMessage> ModifyMonitoredItemsWithHttpInfo(ModifyMonitoredItemsRequestMessage? modifyMonitoredItemsRequestMessage = default(ModifyMonitoredItemsRequestMessage?), int operationIndex = 0);
+        /// <returns>ApiResponse of ModifyMonitoredItemsResponse</returns>
+        ApiResponse<ModifyMonitoredItemsResponse> ModifyMonitoredItemsWithHttpInfo(ModifyMonitoredItemsRequest? modifyMonitoredItemsRequest = default(ModifyMonitoredItemsRequest?), int operationIndex = 0);
         /// <summary>
         /// 
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="modifySubscriptionRequestMessage">ModifySubscriptionRequestMessage (optional)</param>
+        /// <param name="modifySubscriptionRequest">ModifySubscriptionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ModifySubscriptionResponseMessage</returns>
-        ModifySubscriptionResponseMessage ModifySubscription(ModifySubscriptionRequestMessage? modifySubscriptionRequestMessage = default(ModifySubscriptionRequestMessage?), int operationIndex = 0);
+        /// <returns>ModifySubscriptionResponse</returns>
+        ModifySubscriptionResponse ModifySubscription(ModifySubscriptionRequest? modifySubscriptionRequest = default(ModifySubscriptionRequest?), int operationIndex = 0);
 
         /// <summary>
         /// 
@@ -363,18 +363,18 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="modifySubscriptionRequestMessage">ModifySubscriptionRequestMessage (optional)</param>
+        /// <param name="modifySubscriptionRequest">ModifySubscriptionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of ModifySubscriptionResponseMessage</returns>
-        ApiResponse<ModifySubscriptionResponseMessage> ModifySubscriptionWithHttpInfo(ModifySubscriptionRequestMessage? modifySubscriptionRequestMessage = default(ModifySubscriptionRequestMessage?), int operationIndex = 0);
+        /// <returns>ApiResponse of ModifySubscriptionResponse</returns>
+        ApiResponse<ModifySubscriptionResponse> ModifySubscriptionWithHttpInfo(ModifySubscriptionRequest? modifySubscriptionRequest = default(ModifySubscriptionRequest?), int operationIndex = 0);
         /// <summary>
         /// 
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="publishRequestMessage">PublishRequestMessage (optional)</param>
+        /// <param name="publishRequest">PublishRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>PublishResponseMessage</returns>
-        PublishResponseMessage Publish(PublishRequestMessage? publishRequestMessage = default(PublishRequestMessage?), int operationIndex = 0);
+        /// <returns>PublishResponse</returns>
+        PublishResponse Publish(PublishRequest? publishRequest = default(PublishRequest?), int operationIndex = 0);
 
         /// <summary>
         /// 
@@ -383,18 +383,18 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="publishRequestMessage">PublishRequestMessage (optional)</param>
+        /// <param name="publishRequest">PublishRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of PublishResponseMessage</returns>
-        ApiResponse<PublishResponseMessage> PublishWithHttpInfo(PublishRequestMessage? publishRequestMessage = default(PublishRequestMessage?), int operationIndex = 0);
+        /// <returns>ApiResponse of PublishResponse</returns>
+        ApiResponse<PublishResponse> PublishWithHttpInfo(PublishRequest? publishRequest = default(PublishRequest?), int operationIndex = 0);
         /// <summary>
         /// 
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="readRequestMessage">ReadRequestMessage (optional)</param>
+        /// <param name="readRequest">ReadRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ReadResponseMessage</returns>
-        ReadResponseMessage Read(ReadRequestMessage? readRequestMessage = default(ReadRequestMessage?), int operationIndex = 0);
+        /// <returns>ReadResponse</returns>
+        ReadResponse Read(ReadRequest? readRequest = default(ReadRequest?), int operationIndex = 0);
 
         /// <summary>
         /// 
@@ -403,18 +403,18 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="readRequestMessage">ReadRequestMessage (optional)</param>
+        /// <param name="readRequest">ReadRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of ReadResponseMessage</returns>
-        ApiResponse<ReadResponseMessage> ReadWithHttpInfo(ReadRequestMessage? readRequestMessage = default(ReadRequestMessage?), int operationIndex = 0);
+        /// <returns>ApiResponse of ReadResponse</returns>
+        ApiResponse<ReadResponse> ReadWithHttpInfo(ReadRequest? readRequest = default(ReadRequest?), int operationIndex = 0);
         /// <summary>
         /// 
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="registerNodesRequestMessage">RegisterNodesRequestMessage (optional)</param>
+        /// <param name="registerNodesRequest">RegisterNodesRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>RegisterNodesResponseMessage</returns>
-        RegisterNodesResponseMessage RegisterNodes(RegisterNodesRequestMessage? registerNodesRequestMessage = default(RegisterNodesRequestMessage?), int operationIndex = 0);
+        /// <returns>RegisterNodesResponse</returns>
+        RegisterNodesResponse RegisterNodes(RegisterNodesRequest? registerNodesRequest = default(RegisterNodesRequest?), int operationIndex = 0);
 
         /// <summary>
         /// 
@@ -423,18 +423,18 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="registerNodesRequestMessage">RegisterNodesRequestMessage (optional)</param>
+        /// <param name="registerNodesRequest">RegisterNodesRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of RegisterNodesResponseMessage</returns>
-        ApiResponse<RegisterNodesResponseMessage> RegisterNodesWithHttpInfo(RegisterNodesRequestMessage? registerNodesRequestMessage = default(RegisterNodesRequestMessage?), int operationIndex = 0);
+        /// <returns>ApiResponse of RegisterNodesResponse</returns>
+        ApiResponse<RegisterNodesResponse> RegisterNodesWithHttpInfo(RegisterNodesRequest? registerNodesRequest = default(RegisterNodesRequest?), int operationIndex = 0);
         /// <summary>
         /// 
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="republishRequestMessage">RepublishRequestMessage (optional)</param>
+        /// <param name="republishRequest">RepublishRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>RepublishResponseMessage</returns>
-        RepublishResponseMessage Republish(RepublishRequestMessage? republishRequestMessage = default(RepublishRequestMessage?), int operationIndex = 0);
+        /// <returns>RepublishResponse</returns>
+        RepublishResponse Republish(RepublishRequest? republishRequest = default(RepublishRequest?), int operationIndex = 0);
 
         /// <summary>
         /// 
@@ -443,18 +443,18 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="republishRequestMessage">RepublishRequestMessage (optional)</param>
+        /// <param name="republishRequest">RepublishRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of RepublishResponseMessage</returns>
-        ApiResponse<RepublishResponseMessage> RepublishWithHttpInfo(RepublishRequestMessage? republishRequestMessage = default(RepublishRequestMessage?), int operationIndex = 0);
+        /// <returns>ApiResponse of RepublishResponse</returns>
+        ApiResponse<RepublishResponse> RepublishWithHttpInfo(RepublishRequest? republishRequest = default(RepublishRequest?), int operationIndex = 0);
         /// <summary>
         /// 
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="setMonitoringModeRequestMessage">SetMonitoringModeRequestMessage (optional)</param>
+        /// <param name="setMonitoringModeRequest">SetMonitoringModeRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>SetMonitoringModeResponseMessage</returns>
-        SetMonitoringModeResponseMessage SetMonitoringMode(SetMonitoringModeRequestMessage? setMonitoringModeRequestMessage = default(SetMonitoringModeRequestMessage?), int operationIndex = 0);
+        /// <returns>SetMonitoringModeResponse</returns>
+        SetMonitoringModeResponse SetMonitoringMode(SetMonitoringModeRequest? setMonitoringModeRequest = default(SetMonitoringModeRequest?), int operationIndex = 0);
 
         /// <summary>
         /// 
@@ -463,18 +463,18 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="setMonitoringModeRequestMessage">SetMonitoringModeRequestMessage (optional)</param>
+        /// <param name="setMonitoringModeRequest">SetMonitoringModeRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of SetMonitoringModeResponseMessage</returns>
-        ApiResponse<SetMonitoringModeResponseMessage> SetMonitoringModeWithHttpInfo(SetMonitoringModeRequestMessage? setMonitoringModeRequestMessage = default(SetMonitoringModeRequestMessage?), int operationIndex = 0);
+        /// <returns>ApiResponse of SetMonitoringModeResponse</returns>
+        ApiResponse<SetMonitoringModeResponse> SetMonitoringModeWithHttpInfo(SetMonitoringModeRequest? setMonitoringModeRequest = default(SetMonitoringModeRequest?), int operationIndex = 0);
         /// <summary>
         /// 
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="setPublishingModeRequestMessage">SetPublishingModeRequestMessage (optional)</param>
+        /// <param name="setPublishingModeRequest">SetPublishingModeRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>SetPublishingModeResponseMessage</returns>
-        SetPublishingModeResponseMessage SetPublishingMode(SetPublishingModeRequestMessage? setPublishingModeRequestMessage = default(SetPublishingModeRequestMessage?), int operationIndex = 0);
+        /// <returns>SetPublishingModeResponse</returns>
+        SetPublishingModeResponse SetPublishingMode(SetPublishingModeRequest? setPublishingModeRequest = default(SetPublishingModeRequest?), int operationIndex = 0);
 
         /// <summary>
         /// 
@@ -483,18 +483,18 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="setPublishingModeRequestMessage">SetPublishingModeRequestMessage (optional)</param>
+        /// <param name="setPublishingModeRequest">SetPublishingModeRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of SetPublishingModeResponseMessage</returns>
-        ApiResponse<SetPublishingModeResponseMessage> SetPublishingModeWithHttpInfo(SetPublishingModeRequestMessage? setPublishingModeRequestMessage = default(SetPublishingModeRequestMessage?), int operationIndex = 0);
+        /// <returns>ApiResponse of SetPublishingModeResponse</returns>
+        ApiResponse<SetPublishingModeResponse> SetPublishingModeWithHttpInfo(SetPublishingModeRequest? setPublishingModeRequest = default(SetPublishingModeRequest?), int operationIndex = 0);
         /// <summary>
         /// 
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="setTriggeringRequestMessage">SetTriggeringRequestMessage (optional)</param>
+        /// <param name="setTriggeringRequest">SetTriggeringRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>SetTriggeringResponseMessage</returns>
-        SetTriggeringResponseMessage SetTriggering(SetTriggeringRequestMessage? setTriggeringRequestMessage = default(SetTriggeringRequestMessage?), int operationIndex = 0);
+        /// <returns>SetTriggeringResponse</returns>
+        SetTriggeringResponse SetTriggering(SetTriggeringRequest? setTriggeringRequest = default(SetTriggeringRequest?), int operationIndex = 0);
 
         /// <summary>
         /// 
@@ -503,18 +503,18 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="setTriggeringRequestMessage">SetTriggeringRequestMessage (optional)</param>
+        /// <param name="setTriggeringRequest">SetTriggeringRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of SetTriggeringResponseMessage</returns>
-        ApiResponse<SetTriggeringResponseMessage> SetTriggeringWithHttpInfo(SetTriggeringRequestMessage? setTriggeringRequestMessage = default(SetTriggeringRequestMessage?), int operationIndex = 0);
+        /// <returns>ApiResponse of SetTriggeringResponse</returns>
+        ApiResponse<SetTriggeringResponse> SetTriggeringWithHttpInfo(SetTriggeringRequest? setTriggeringRequest = default(SetTriggeringRequest?), int operationIndex = 0);
         /// <summary>
         /// 
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="transferSubscriptionsRequestMessage">TransferSubscriptionsRequestMessage (optional)</param>
+        /// <param name="transferSubscriptionsRequest">TransferSubscriptionsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>TransferSubscriptionsResponseMessage</returns>
-        TransferSubscriptionsResponseMessage TransferSubscriptions(TransferSubscriptionsRequestMessage? transferSubscriptionsRequestMessage = default(TransferSubscriptionsRequestMessage?), int operationIndex = 0);
+        /// <returns>TransferSubscriptionsResponse</returns>
+        TransferSubscriptionsResponse TransferSubscriptions(TransferSubscriptionsRequest? transferSubscriptionsRequest = default(TransferSubscriptionsRequest?), int operationIndex = 0);
 
         /// <summary>
         /// 
@@ -523,18 +523,18 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="transferSubscriptionsRequestMessage">TransferSubscriptionsRequestMessage (optional)</param>
+        /// <param name="transferSubscriptionsRequest">TransferSubscriptionsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of TransferSubscriptionsResponseMessage</returns>
-        ApiResponse<TransferSubscriptionsResponseMessage> TransferSubscriptionsWithHttpInfo(TransferSubscriptionsRequestMessage? transferSubscriptionsRequestMessage = default(TransferSubscriptionsRequestMessage?), int operationIndex = 0);
+        /// <returns>ApiResponse of TransferSubscriptionsResponse</returns>
+        ApiResponse<TransferSubscriptionsResponse> TransferSubscriptionsWithHttpInfo(TransferSubscriptionsRequest? transferSubscriptionsRequest = default(TransferSubscriptionsRequest?), int operationIndex = 0);
         /// <summary>
         /// 
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="translateBrowsePathsToNodeIdsRequestMessage">TranslateBrowsePathsToNodeIdsRequestMessage (optional)</param>
+        /// <param name="translateBrowsePathsToNodeIdsRequest">TranslateBrowsePathsToNodeIdsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>TranslateBrowsePathsToNodeIdsResponseMessage</returns>
-        TranslateBrowsePathsToNodeIdsResponseMessage TranslateBrowsePathsToNodeIds(TranslateBrowsePathsToNodeIdsRequestMessage? translateBrowsePathsToNodeIdsRequestMessage = default(TranslateBrowsePathsToNodeIdsRequestMessage?), int operationIndex = 0);
+        /// <returns>TranslateBrowsePathsToNodeIdsResponse</returns>
+        TranslateBrowsePathsToNodeIdsResponse TranslateBrowsePathsToNodeIds(TranslateBrowsePathsToNodeIdsRequest? translateBrowsePathsToNodeIdsRequest = default(TranslateBrowsePathsToNodeIdsRequest?), int operationIndex = 0);
 
         /// <summary>
         /// 
@@ -543,18 +543,18 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="translateBrowsePathsToNodeIdsRequestMessage">TranslateBrowsePathsToNodeIdsRequestMessage (optional)</param>
+        /// <param name="translateBrowsePathsToNodeIdsRequest">TranslateBrowsePathsToNodeIdsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of TranslateBrowsePathsToNodeIdsResponseMessage</returns>
-        ApiResponse<TranslateBrowsePathsToNodeIdsResponseMessage> TranslateBrowsePathsToNodeIdsWithHttpInfo(TranslateBrowsePathsToNodeIdsRequestMessage? translateBrowsePathsToNodeIdsRequestMessage = default(TranslateBrowsePathsToNodeIdsRequestMessage?), int operationIndex = 0);
+        /// <returns>ApiResponse of TranslateBrowsePathsToNodeIdsResponse</returns>
+        ApiResponse<TranslateBrowsePathsToNodeIdsResponse> TranslateBrowsePathsToNodeIdsWithHttpInfo(TranslateBrowsePathsToNodeIdsRequest? translateBrowsePathsToNodeIdsRequest = default(TranslateBrowsePathsToNodeIdsRequest?), int operationIndex = 0);
         /// <summary>
         /// 
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="unregisterNodesRequestMessage">UnregisterNodesRequestMessage (optional)</param>
+        /// <param name="unregisterNodesRequest">UnregisterNodesRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>UnregisterNodesResponseMessage</returns>
-        UnregisterNodesResponseMessage UnregisterNodes(UnregisterNodesRequestMessage? unregisterNodesRequestMessage = default(UnregisterNodesRequestMessage?), int operationIndex = 0);
+        /// <returns>UnregisterNodesResponse</returns>
+        UnregisterNodesResponse UnregisterNodes(UnregisterNodesRequest? unregisterNodesRequest = default(UnregisterNodesRequest?), int operationIndex = 0);
 
         /// <summary>
         /// 
@@ -563,18 +563,18 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="unregisterNodesRequestMessage">UnregisterNodesRequestMessage (optional)</param>
+        /// <param name="unregisterNodesRequest">UnregisterNodesRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of UnregisterNodesResponseMessage</returns>
-        ApiResponse<UnregisterNodesResponseMessage> UnregisterNodesWithHttpInfo(UnregisterNodesRequestMessage? unregisterNodesRequestMessage = default(UnregisterNodesRequestMessage?), int operationIndex = 0);
+        /// <returns>ApiResponse of UnregisterNodesResponse</returns>
+        ApiResponse<UnregisterNodesResponse> UnregisterNodesWithHttpInfo(UnregisterNodesRequest? unregisterNodesRequest = default(UnregisterNodesRequest?), int operationIndex = 0);
         /// <summary>
         /// 
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="writeRequestMessage">WriteRequestMessage (optional)</param>
+        /// <param name="writeRequest">WriteRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>WriteResponseMessage</returns>
-        WriteResponseMessage Write(WriteRequestMessage? writeRequestMessage = default(WriteRequestMessage?), int operationIndex = 0);
+        /// <returns>WriteResponse</returns>
+        WriteResponse Write(WriteRequest? writeRequest = default(WriteRequest?), int operationIndex = 0);
 
         /// <summary>
         /// 
@@ -583,10 +583,10 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="writeRequestMessage">WriteRequestMessage (optional)</param>
+        /// <param name="writeRequest">WriteRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of WriteResponseMessage</returns>
-        ApiResponse<WriteResponseMessage> WriteWithHttpInfo(WriteRequestMessage? writeRequestMessage = default(WriteRequestMessage?), int operationIndex = 0);
+        /// <returns>ApiResponse of WriteResponse</returns>
+        ApiResponse<WriteResponse> WriteWithHttpInfo(WriteRequest? writeRequest = default(WriteRequest?), int operationIndex = 0);
         #endregion Synchronous Operations
     }
 
@@ -603,11 +603,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="activateSessionRequestMessage">ActivateSessionRequestMessage (optional)</param>
+        /// <param name="activateSessionRequest">ActivateSessionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ActivateSessionResponseMessage</returns>
-        System.Threading.Tasks.Task<ActivateSessionResponseMessage> ActivateSessionAsync(ActivateSessionRequestMessage? activateSessionRequestMessage = default(ActivateSessionRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of ActivateSessionResponse</returns>
+        System.Threading.Tasks.Task<ActivateSessionResponse> ActivateSessionAsync(ActivateSessionRequest? activateSessionRequest = default(ActivateSessionRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// 
@@ -616,11 +616,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="activateSessionRequestMessage">ActivateSessionRequestMessage (optional)</param>
+        /// <param name="activateSessionRequest">ActivateSessionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (ActivateSessionResponseMessage)</returns>
-        System.Threading.Tasks.Task<ApiResponse<ActivateSessionResponseMessage>> ActivateSessionWithHttpInfoAsync(ActivateSessionRequestMessage? activateSessionRequestMessage = default(ActivateSessionRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of ApiResponse (ActivateSessionResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<ActivateSessionResponse>> ActivateSessionWithHttpInfoAsync(ActivateSessionRequest? activateSessionRequest = default(ActivateSessionRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// 
         /// </summary>
@@ -628,11 +628,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="browseRequestMessage">BrowseRequestMessage (optional)</param>
+        /// <param name="browseRequest">BrowseRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of BrowseResponseMessage</returns>
-        System.Threading.Tasks.Task<BrowseResponseMessage> BrowseAsync(BrowseRequestMessage? browseRequestMessage = default(BrowseRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of BrowseResponse</returns>
+        System.Threading.Tasks.Task<BrowseResponse> BrowseAsync(BrowseRequest? browseRequest = default(BrowseRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// 
@@ -641,11 +641,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="browseRequestMessage">BrowseRequestMessage (optional)</param>
+        /// <param name="browseRequest">BrowseRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (BrowseResponseMessage)</returns>
-        System.Threading.Tasks.Task<ApiResponse<BrowseResponseMessage>> BrowseWithHttpInfoAsync(BrowseRequestMessage? browseRequestMessage = default(BrowseRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of ApiResponse (BrowseResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<BrowseResponse>> BrowseWithHttpInfoAsync(BrowseRequest? browseRequest = default(BrowseRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// 
         /// </summary>
@@ -653,11 +653,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="browseNextRequestMessage">BrowseNextRequestMessage (optional)</param>
+        /// <param name="browseNextRequest">BrowseNextRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of BrowseNextResponseMessage</returns>
-        System.Threading.Tasks.Task<BrowseNextResponseMessage> BrowseNextAsync(BrowseNextRequestMessage? browseNextRequestMessage = default(BrowseNextRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of BrowseNextResponse</returns>
+        System.Threading.Tasks.Task<BrowseNextResponse> BrowseNextAsync(BrowseNextRequest? browseNextRequest = default(BrowseNextRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// 
@@ -666,11 +666,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="browseNextRequestMessage">BrowseNextRequestMessage (optional)</param>
+        /// <param name="browseNextRequest">BrowseNextRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (BrowseNextResponseMessage)</returns>
-        System.Threading.Tasks.Task<ApiResponse<BrowseNextResponseMessage>> BrowseNextWithHttpInfoAsync(BrowseNextRequestMessage? browseNextRequestMessage = default(BrowseNextRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of ApiResponse (BrowseNextResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<BrowseNextResponse>> BrowseNextWithHttpInfoAsync(BrowseNextRequest? browseNextRequest = default(BrowseNextRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// 
         /// </summary>
@@ -678,11 +678,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="callRequestMessage">CallRequestMessage (optional)</param>
+        /// <param name="callRequest">CallRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of CallResponseMessage</returns>
-        System.Threading.Tasks.Task<CallResponseMessage> CallAsync(CallRequestMessage? callRequestMessage = default(CallRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of CallResponse</returns>
+        System.Threading.Tasks.Task<CallResponse> CallAsync(CallRequest? callRequest = default(CallRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// 
@@ -691,11 +691,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="callRequestMessage">CallRequestMessage (optional)</param>
+        /// <param name="callRequest">CallRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (CallResponseMessage)</returns>
-        System.Threading.Tasks.Task<ApiResponse<CallResponseMessage>> CallWithHttpInfoAsync(CallRequestMessage? callRequestMessage = default(CallRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of ApiResponse (CallResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<CallResponse>> CallWithHttpInfoAsync(CallRequest? callRequest = default(CallRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// 
         /// </summary>
@@ -703,11 +703,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="cancelRequestMessage">CancelRequestMessage (optional)</param>
+        /// <param name="cancelRequest">CancelRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of CancelResponseMessage</returns>
-        System.Threading.Tasks.Task<CancelResponseMessage> CancelAsync(CancelRequestMessage? cancelRequestMessage = default(CancelRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of CancelResponse</returns>
+        System.Threading.Tasks.Task<CancelResponse> CancelAsync(CancelRequest? cancelRequest = default(CancelRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// 
@@ -716,11 +716,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="cancelRequestMessage">CancelRequestMessage (optional)</param>
+        /// <param name="cancelRequest">CancelRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (CancelResponseMessage)</returns>
-        System.Threading.Tasks.Task<ApiResponse<CancelResponseMessage>> CancelWithHttpInfoAsync(CancelRequestMessage? cancelRequestMessage = default(CancelRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of ApiResponse (CancelResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<CancelResponse>> CancelWithHttpInfoAsync(CancelRequest? cancelRequest = default(CancelRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// 
         /// </summary>
@@ -728,11 +728,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="closeSessionRequestMessage">CloseSessionRequestMessage (optional)</param>
+        /// <param name="closeSessionRequest">CloseSessionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of CloseSessionResponseMessage</returns>
-        System.Threading.Tasks.Task<CloseSessionResponseMessage> CloseSessionAsync(CloseSessionRequestMessage? closeSessionRequestMessage = default(CloseSessionRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of CloseSessionResponse</returns>
+        System.Threading.Tasks.Task<CloseSessionResponse> CloseSessionAsync(CloseSessionRequest? closeSessionRequest = default(CloseSessionRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// 
@@ -741,11 +741,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="closeSessionRequestMessage">CloseSessionRequestMessage (optional)</param>
+        /// <param name="closeSessionRequest">CloseSessionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (CloseSessionResponseMessage)</returns>
-        System.Threading.Tasks.Task<ApiResponse<CloseSessionResponseMessage>> CloseSessionWithHttpInfoAsync(CloseSessionRequestMessage? closeSessionRequestMessage = default(CloseSessionRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of ApiResponse (CloseSessionResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<CloseSessionResponse>> CloseSessionWithHttpInfoAsync(CloseSessionRequest? closeSessionRequest = default(CloseSessionRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// 
         /// </summary>
@@ -753,11 +753,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="createMonitoredItemsRequestMessage">CreateMonitoredItemsRequestMessage (optional)</param>
+        /// <param name="createMonitoredItemsRequest">CreateMonitoredItemsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of CreateMonitoredItemsResponseMessage</returns>
-        System.Threading.Tasks.Task<CreateMonitoredItemsResponseMessage> CreateMonitoredItemsAsync(CreateMonitoredItemsRequestMessage? createMonitoredItemsRequestMessage = default(CreateMonitoredItemsRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of CreateMonitoredItemsResponse</returns>
+        System.Threading.Tasks.Task<CreateMonitoredItemsResponse> CreateMonitoredItemsAsync(CreateMonitoredItemsRequest? createMonitoredItemsRequest = default(CreateMonitoredItemsRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// 
@@ -766,11 +766,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="createMonitoredItemsRequestMessage">CreateMonitoredItemsRequestMessage (optional)</param>
+        /// <param name="createMonitoredItemsRequest">CreateMonitoredItemsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (CreateMonitoredItemsResponseMessage)</returns>
-        System.Threading.Tasks.Task<ApiResponse<CreateMonitoredItemsResponseMessage>> CreateMonitoredItemsWithHttpInfoAsync(CreateMonitoredItemsRequestMessage? createMonitoredItemsRequestMessage = default(CreateMonitoredItemsRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of ApiResponse (CreateMonitoredItemsResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<CreateMonitoredItemsResponse>> CreateMonitoredItemsWithHttpInfoAsync(CreateMonitoredItemsRequest? createMonitoredItemsRequest = default(CreateMonitoredItemsRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// 
         /// </summary>
@@ -778,11 +778,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="createSessionRequestMessage">CreateSessionRequestMessage (optional)</param>
+        /// <param name="createSessionRequest">CreateSessionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of CreateSessionResponseMessage</returns>
-        System.Threading.Tasks.Task<CreateSessionResponseMessage> CreateSessionAsync(CreateSessionRequestMessage? createSessionRequestMessage = default(CreateSessionRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of CreateSessionResponse</returns>
+        System.Threading.Tasks.Task<CreateSessionResponse> CreateSessionAsync(CreateSessionRequest? createSessionRequest = default(CreateSessionRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// 
@@ -791,11 +791,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="createSessionRequestMessage">CreateSessionRequestMessage (optional)</param>
+        /// <param name="createSessionRequest">CreateSessionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (CreateSessionResponseMessage)</returns>
-        System.Threading.Tasks.Task<ApiResponse<CreateSessionResponseMessage>> CreateSessionWithHttpInfoAsync(CreateSessionRequestMessage? createSessionRequestMessage = default(CreateSessionRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of ApiResponse (CreateSessionResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<CreateSessionResponse>> CreateSessionWithHttpInfoAsync(CreateSessionRequest? createSessionRequest = default(CreateSessionRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// 
         /// </summary>
@@ -803,11 +803,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="createSubscriptionRequestMessage">CreateSubscriptionRequestMessage (optional)</param>
+        /// <param name="createSubscriptionRequest">CreateSubscriptionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of CreateSubscriptionResponseMessage</returns>
-        System.Threading.Tasks.Task<CreateSubscriptionResponseMessage> CreateSubscriptionAsync(CreateSubscriptionRequestMessage? createSubscriptionRequestMessage = default(CreateSubscriptionRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of CreateSubscriptionResponse</returns>
+        System.Threading.Tasks.Task<CreateSubscriptionResponse> CreateSubscriptionAsync(CreateSubscriptionRequest? createSubscriptionRequest = default(CreateSubscriptionRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// 
@@ -816,11 +816,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="createSubscriptionRequestMessage">CreateSubscriptionRequestMessage (optional)</param>
+        /// <param name="createSubscriptionRequest">CreateSubscriptionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (CreateSubscriptionResponseMessage)</returns>
-        System.Threading.Tasks.Task<ApiResponse<CreateSubscriptionResponseMessage>> CreateSubscriptionWithHttpInfoAsync(CreateSubscriptionRequestMessage? createSubscriptionRequestMessage = default(CreateSubscriptionRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of ApiResponse (CreateSubscriptionResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<CreateSubscriptionResponse>> CreateSubscriptionWithHttpInfoAsync(CreateSubscriptionRequest? createSubscriptionRequest = default(CreateSubscriptionRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// 
         /// </summary>
@@ -828,11 +828,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="deleteMonitoredItemsRequestMessage">DeleteMonitoredItemsRequestMessage (optional)</param>
+        /// <param name="deleteMonitoredItemsRequest">DeleteMonitoredItemsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of DeleteMonitoredItemsResponseMessage</returns>
-        System.Threading.Tasks.Task<DeleteMonitoredItemsResponseMessage> DeleteMonitoredItemsAsync(DeleteMonitoredItemsRequestMessage? deleteMonitoredItemsRequestMessage = default(DeleteMonitoredItemsRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of DeleteMonitoredItemsResponse</returns>
+        System.Threading.Tasks.Task<DeleteMonitoredItemsResponse> DeleteMonitoredItemsAsync(DeleteMonitoredItemsRequest? deleteMonitoredItemsRequest = default(DeleteMonitoredItemsRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// 
@@ -841,11 +841,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="deleteMonitoredItemsRequestMessage">DeleteMonitoredItemsRequestMessage (optional)</param>
+        /// <param name="deleteMonitoredItemsRequest">DeleteMonitoredItemsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (DeleteMonitoredItemsResponseMessage)</returns>
-        System.Threading.Tasks.Task<ApiResponse<DeleteMonitoredItemsResponseMessage>> DeleteMonitoredItemsWithHttpInfoAsync(DeleteMonitoredItemsRequestMessage? deleteMonitoredItemsRequestMessage = default(DeleteMonitoredItemsRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of ApiResponse (DeleteMonitoredItemsResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<DeleteMonitoredItemsResponse>> DeleteMonitoredItemsWithHttpInfoAsync(DeleteMonitoredItemsRequest? deleteMonitoredItemsRequest = default(DeleteMonitoredItemsRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// 
         /// </summary>
@@ -853,11 +853,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="deleteSubscriptionsRequestMessage">DeleteSubscriptionsRequestMessage (optional)</param>
+        /// <param name="deleteSubscriptionsRequest">DeleteSubscriptionsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of DeleteSubscriptionsResponseMessage</returns>
-        System.Threading.Tasks.Task<DeleteSubscriptionsResponseMessage> DeleteSubscriptionsAsync(DeleteSubscriptionsRequestMessage? deleteSubscriptionsRequestMessage = default(DeleteSubscriptionsRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of DeleteSubscriptionsResponse</returns>
+        System.Threading.Tasks.Task<DeleteSubscriptionsResponse> DeleteSubscriptionsAsync(DeleteSubscriptionsRequest? deleteSubscriptionsRequest = default(DeleteSubscriptionsRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// 
@@ -866,11 +866,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="deleteSubscriptionsRequestMessage">DeleteSubscriptionsRequestMessage (optional)</param>
+        /// <param name="deleteSubscriptionsRequest">DeleteSubscriptionsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (DeleteSubscriptionsResponseMessage)</returns>
-        System.Threading.Tasks.Task<ApiResponse<DeleteSubscriptionsResponseMessage>> DeleteSubscriptionsWithHttpInfoAsync(DeleteSubscriptionsRequestMessage? deleteSubscriptionsRequestMessage = default(DeleteSubscriptionsRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of ApiResponse (DeleteSubscriptionsResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<DeleteSubscriptionsResponse>> DeleteSubscriptionsWithHttpInfoAsync(DeleteSubscriptionsRequest? deleteSubscriptionsRequest = default(DeleteSubscriptionsRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// 
         /// </summary>
@@ -878,11 +878,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="findServersRequestMessage">FindServersRequestMessage (optional)</param>
+        /// <param name="findServersRequest">FindServersRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of FindServersResponseMessage</returns>
-        System.Threading.Tasks.Task<FindServersResponseMessage> FindServersAsync(FindServersRequestMessage? findServersRequestMessage = default(FindServersRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of FindServersResponse</returns>
+        System.Threading.Tasks.Task<FindServersResponse> FindServersAsync(FindServersRequest? findServersRequest = default(FindServersRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// 
@@ -891,11 +891,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="findServersRequestMessage">FindServersRequestMessage (optional)</param>
+        /// <param name="findServersRequest">FindServersRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (FindServersResponseMessage)</returns>
-        System.Threading.Tasks.Task<ApiResponse<FindServersResponseMessage>> FindServersWithHttpInfoAsync(FindServersRequestMessage? findServersRequestMessage = default(FindServersRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of ApiResponse (FindServersResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<FindServersResponse>> FindServersWithHttpInfoAsync(FindServersRequest? findServersRequest = default(FindServersRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// 
         /// </summary>
@@ -903,11 +903,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="getEndpointsRequestMessage">GetEndpointsRequestMessage (optional)</param>
+        /// <param name="getEndpointsRequest">GetEndpointsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of GetEndpointsResponseMessage</returns>
-        System.Threading.Tasks.Task<GetEndpointsResponseMessage> GetEndpointsAsync(GetEndpointsRequestMessage? getEndpointsRequestMessage = default(GetEndpointsRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of GetEndpointsResponse</returns>
+        System.Threading.Tasks.Task<GetEndpointsResponse> GetEndpointsAsync(GetEndpointsRequest? getEndpointsRequest = default(GetEndpointsRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// 
@@ -916,11 +916,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="getEndpointsRequestMessage">GetEndpointsRequestMessage (optional)</param>
+        /// <param name="getEndpointsRequest">GetEndpointsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (GetEndpointsResponseMessage)</returns>
-        System.Threading.Tasks.Task<ApiResponse<GetEndpointsResponseMessage>> GetEndpointsWithHttpInfoAsync(GetEndpointsRequestMessage? getEndpointsRequestMessage = default(GetEndpointsRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of ApiResponse (GetEndpointsResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<GetEndpointsResponse>> GetEndpointsWithHttpInfoAsync(GetEndpointsRequest? getEndpointsRequest = default(GetEndpointsRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// 
         /// </summary>
@@ -928,11 +928,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="historyReadRequestMessage">HistoryReadRequestMessage (optional)</param>
+        /// <param name="historyReadRequest">HistoryReadRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of HistoryReadResponseMessage</returns>
-        System.Threading.Tasks.Task<HistoryReadResponseMessage> HistoryReadAsync(HistoryReadRequestMessage? historyReadRequestMessage = default(HistoryReadRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of HistoryReadResponse</returns>
+        System.Threading.Tasks.Task<HistoryReadResponse> HistoryReadAsync(HistoryReadRequest? historyReadRequest = default(HistoryReadRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// 
@@ -941,11 +941,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="historyReadRequestMessage">HistoryReadRequestMessage (optional)</param>
+        /// <param name="historyReadRequest">HistoryReadRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (HistoryReadResponseMessage)</returns>
-        System.Threading.Tasks.Task<ApiResponse<HistoryReadResponseMessage>> HistoryReadWithHttpInfoAsync(HistoryReadRequestMessage? historyReadRequestMessage = default(HistoryReadRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of ApiResponse (HistoryReadResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<HistoryReadResponse>> HistoryReadWithHttpInfoAsync(HistoryReadRequest? historyReadRequest = default(HistoryReadRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// 
         /// </summary>
@@ -953,11 +953,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="historyUpdateRequestMessage">HistoryUpdateRequestMessage (optional)</param>
+        /// <param name="historyUpdateRequest">HistoryUpdateRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of HistoryUpdateResponseMessage</returns>
-        System.Threading.Tasks.Task<HistoryUpdateResponseMessage> HistoryUpdateAsync(HistoryUpdateRequestMessage? historyUpdateRequestMessage = default(HistoryUpdateRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of HistoryUpdateResponse</returns>
+        System.Threading.Tasks.Task<HistoryUpdateResponse> HistoryUpdateAsync(HistoryUpdateRequest? historyUpdateRequest = default(HistoryUpdateRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// 
@@ -966,11 +966,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="historyUpdateRequestMessage">HistoryUpdateRequestMessage (optional)</param>
+        /// <param name="historyUpdateRequest">HistoryUpdateRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (HistoryUpdateResponseMessage)</returns>
-        System.Threading.Tasks.Task<ApiResponse<HistoryUpdateResponseMessage>> HistoryUpdateWithHttpInfoAsync(HistoryUpdateRequestMessage? historyUpdateRequestMessage = default(HistoryUpdateRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of ApiResponse (HistoryUpdateResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<HistoryUpdateResponse>> HistoryUpdateWithHttpInfoAsync(HistoryUpdateRequest? historyUpdateRequest = default(HistoryUpdateRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// 
         /// </summary>
@@ -978,11 +978,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="modifyMonitoredItemsRequestMessage">ModifyMonitoredItemsRequestMessage (optional)</param>
+        /// <param name="modifyMonitoredItemsRequest">ModifyMonitoredItemsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ModifyMonitoredItemsResponseMessage</returns>
-        System.Threading.Tasks.Task<ModifyMonitoredItemsResponseMessage> ModifyMonitoredItemsAsync(ModifyMonitoredItemsRequestMessage? modifyMonitoredItemsRequestMessage = default(ModifyMonitoredItemsRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of ModifyMonitoredItemsResponse</returns>
+        System.Threading.Tasks.Task<ModifyMonitoredItemsResponse> ModifyMonitoredItemsAsync(ModifyMonitoredItemsRequest? modifyMonitoredItemsRequest = default(ModifyMonitoredItemsRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// 
@@ -991,11 +991,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="modifyMonitoredItemsRequestMessage">ModifyMonitoredItemsRequestMessage (optional)</param>
+        /// <param name="modifyMonitoredItemsRequest">ModifyMonitoredItemsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (ModifyMonitoredItemsResponseMessage)</returns>
-        System.Threading.Tasks.Task<ApiResponse<ModifyMonitoredItemsResponseMessage>> ModifyMonitoredItemsWithHttpInfoAsync(ModifyMonitoredItemsRequestMessage? modifyMonitoredItemsRequestMessage = default(ModifyMonitoredItemsRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of ApiResponse (ModifyMonitoredItemsResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<ModifyMonitoredItemsResponse>> ModifyMonitoredItemsWithHttpInfoAsync(ModifyMonitoredItemsRequest? modifyMonitoredItemsRequest = default(ModifyMonitoredItemsRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// 
         /// </summary>
@@ -1003,11 +1003,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="modifySubscriptionRequestMessage">ModifySubscriptionRequestMessage (optional)</param>
+        /// <param name="modifySubscriptionRequest">ModifySubscriptionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ModifySubscriptionResponseMessage</returns>
-        System.Threading.Tasks.Task<ModifySubscriptionResponseMessage> ModifySubscriptionAsync(ModifySubscriptionRequestMessage? modifySubscriptionRequestMessage = default(ModifySubscriptionRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of ModifySubscriptionResponse</returns>
+        System.Threading.Tasks.Task<ModifySubscriptionResponse> ModifySubscriptionAsync(ModifySubscriptionRequest? modifySubscriptionRequest = default(ModifySubscriptionRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// 
@@ -1016,11 +1016,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="modifySubscriptionRequestMessage">ModifySubscriptionRequestMessage (optional)</param>
+        /// <param name="modifySubscriptionRequest">ModifySubscriptionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (ModifySubscriptionResponseMessage)</returns>
-        System.Threading.Tasks.Task<ApiResponse<ModifySubscriptionResponseMessage>> ModifySubscriptionWithHttpInfoAsync(ModifySubscriptionRequestMessage? modifySubscriptionRequestMessage = default(ModifySubscriptionRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of ApiResponse (ModifySubscriptionResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<ModifySubscriptionResponse>> ModifySubscriptionWithHttpInfoAsync(ModifySubscriptionRequest? modifySubscriptionRequest = default(ModifySubscriptionRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// 
         /// </summary>
@@ -1028,11 +1028,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="publishRequestMessage">PublishRequestMessage (optional)</param>
+        /// <param name="publishRequest">PublishRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of PublishResponseMessage</returns>
-        System.Threading.Tasks.Task<PublishResponseMessage> PublishAsync(PublishRequestMessage? publishRequestMessage = default(PublishRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of PublishResponse</returns>
+        System.Threading.Tasks.Task<PublishResponse> PublishAsync(PublishRequest? publishRequest = default(PublishRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// 
@@ -1041,11 +1041,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="publishRequestMessage">PublishRequestMessage (optional)</param>
+        /// <param name="publishRequest">PublishRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (PublishResponseMessage)</returns>
-        System.Threading.Tasks.Task<ApiResponse<PublishResponseMessage>> PublishWithHttpInfoAsync(PublishRequestMessage? publishRequestMessage = default(PublishRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of ApiResponse (PublishResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<PublishResponse>> PublishWithHttpInfoAsync(PublishRequest? publishRequest = default(PublishRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// 
         /// </summary>
@@ -1053,11 +1053,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="readRequestMessage">ReadRequestMessage (optional)</param>
+        /// <param name="readRequest">ReadRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ReadResponseMessage</returns>
-        System.Threading.Tasks.Task<ReadResponseMessage> ReadAsync(ReadRequestMessage? readRequestMessage = default(ReadRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of ReadResponse</returns>
+        System.Threading.Tasks.Task<ReadResponse> ReadAsync(ReadRequest? readRequest = default(ReadRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// 
@@ -1066,11 +1066,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="readRequestMessage">ReadRequestMessage (optional)</param>
+        /// <param name="readRequest">ReadRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (ReadResponseMessage)</returns>
-        System.Threading.Tasks.Task<ApiResponse<ReadResponseMessage>> ReadWithHttpInfoAsync(ReadRequestMessage? readRequestMessage = default(ReadRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of ApiResponse (ReadResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<ReadResponse>> ReadWithHttpInfoAsync(ReadRequest? readRequest = default(ReadRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// 
         /// </summary>
@@ -1078,11 +1078,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="registerNodesRequestMessage">RegisterNodesRequestMessage (optional)</param>
+        /// <param name="registerNodesRequest">RegisterNodesRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of RegisterNodesResponseMessage</returns>
-        System.Threading.Tasks.Task<RegisterNodesResponseMessage> RegisterNodesAsync(RegisterNodesRequestMessage? registerNodesRequestMessage = default(RegisterNodesRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of RegisterNodesResponse</returns>
+        System.Threading.Tasks.Task<RegisterNodesResponse> RegisterNodesAsync(RegisterNodesRequest? registerNodesRequest = default(RegisterNodesRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// 
@@ -1091,11 +1091,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="registerNodesRequestMessage">RegisterNodesRequestMessage (optional)</param>
+        /// <param name="registerNodesRequest">RegisterNodesRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (RegisterNodesResponseMessage)</returns>
-        System.Threading.Tasks.Task<ApiResponse<RegisterNodesResponseMessage>> RegisterNodesWithHttpInfoAsync(RegisterNodesRequestMessage? registerNodesRequestMessage = default(RegisterNodesRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of ApiResponse (RegisterNodesResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<RegisterNodesResponse>> RegisterNodesWithHttpInfoAsync(RegisterNodesRequest? registerNodesRequest = default(RegisterNodesRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// 
         /// </summary>
@@ -1103,11 +1103,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="republishRequestMessage">RepublishRequestMessage (optional)</param>
+        /// <param name="republishRequest">RepublishRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of RepublishResponseMessage</returns>
-        System.Threading.Tasks.Task<RepublishResponseMessage> RepublishAsync(RepublishRequestMessage? republishRequestMessage = default(RepublishRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of RepublishResponse</returns>
+        System.Threading.Tasks.Task<RepublishResponse> RepublishAsync(RepublishRequest? republishRequest = default(RepublishRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// 
@@ -1116,11 +1116,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="republishRequestMessage">RepublishRequestMessage (optional)</param>
+        /// <param name="republishRequest">RepublishRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (RepublishResponseMessage)</returns>
-        System.Threading.Tasks.Task<ApiResponse<RepublishResponseMessage>> RepublishWithHttpInfoAsync(RepublishRequestMessage? republishRequestMessage = default(RepublishRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of ApiResponse (RepublishResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<RepublishResponse>> RepublishWithHttpInfoAsync(RepublishRequest? republishRequest = default(RepublishRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// 
         /// </summary>
@@ -1128,11 +1128,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="setMonitoringModeRequestMessage">SetMonitoringModeRequestMessage (optional)</param>
+        /// <param name="setMonitoringModeRequest">SetMonitoringModeRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of SetMonitoringModeResponseMessage</returns>
-        System.Threading.Tasks.Task<SetMonitoringModeResponseMessage> SetMonitoringModeAsync(SetMonitoringModeRequestMessage? setMonitoringModeRequestMessage = default(SetMonitoringModeRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of SetMonitoringModeResponse</returns>
+        System.Threading.Tasks.Task<SetMonitoringModeResponse> SetMonitoringModeAsync(SetMonitoringModeRequest? setMonitoringModeRequest = default(SetMonitoringModeRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// 
@@ -1141,11 +1141,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="setMonitoringModeRequestMessage">SetMonitoringModeRequestMessage (optional)</param>
+        /// <param name="setMonitoringModeRequest">SetMonitoringModeRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (SetMonitoringModeResponseMessage)</returns>
-        System.Threading.Tasks.Task<ApiResponse<SetMonitoringModeResponseMessage>> SetMonitoringModeWithHttpInfoAsync(SetMonitoringModeRequestMessage? setMonitoringModeRequestMessage = default(SetMonitoringModeRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of ApiResponse (SetMonitoringModeResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<SetMonitoringModeResponse>> SetMonitoringModeWithHttpInfoAsync(SetMonitoringModeRequest? setMonitoringModeRequest = default(SetMonitoringModeRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// 
         /// </summary>
@@ -1153,11 +1153,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="setPublishingModeRequestMessage">SetPublishingModeRequestMessage (optional)</param>
+        /// <param name="setPublishingModeRequest">SetPublishingModeRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of SetPublishingModeResponseMessage</returns>
-        System.Threading.Tasks.Task<SetPublishingModeResponseMessage> SetPublishingModeAsync(SetPublishingModeRequestMessage? setPublishingModeRequestMessage = default(SetPublishingModeRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of SetPublishingModeResponse</returns>
+        System.Threading.Tasks.Task<SetPublishingModeResponse> SetPublishingModeAsync(SetPublishingModeRequest? setPublishingModeRequest = default(SetPublishingModeRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// 
@@ -1166,11 +1166,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="setPublishingModeRequestMessage">SetPublishingModeRequestMessage (optional)</param>
+        /// <param name="setPublishingModeRequest">SetPublishingModeRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (SetPublishingModeResponseMessage)</returns>
-        System.Threading.Tasks.Task<ApiResponse<SetPublishingModeResponseMessage>> SetPublishingModeWithHttpInfoAsync(SetPublishingModeRequestMessage? setPublishingModeRequestMessage = default(SetPublishingModeRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of ApiResponse (SetPublishingModeResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<SetPublishingModeResponse>> SetPublishingModeWithHttpInfoAsync(SetPublishingModeRequest? setPublishingModeRequest = default(SetPublishingModeRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// 
         /// </summary>
@@ -1178,11 +1178,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="setTriggeringRequestMessage">SetTriggeringRequestMessage (optional)</param>
+        /// <param name="setTriggeringRequest">SetTriggeringRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of SetTriggeringResponseMessage</returns>
-        System.Threading.Tasks.Task<SetTriggeringResponseMessage> SetTriggeringAsync(SetTriggeringRequestMessage? setTriggeringRequestMessage = default(SetTriggeringRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of SetTriggeringResponse</returns>
+        System.Threading.Tasks.Task<SetTriggeringResponse> SetTriggeringAsync(SetTriggeringRequest? setTriggeringRequest = default(SetTriggeringRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// 
@@ -1191,11 +1191,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="setTriggeringRequestMessage">SetTriggeringRequestMessage (optional)</param>
+        /// <param name="setTriggeringRequest">SetTriggeringRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (SetTriggeringResponseMessage)</returns>
-        System.Threading.Tasks.Task<ApiResponse<SetTriggeringResponseMessage>> SetTriggeringWithHttpInfoAsync(SetTriggeringRequestMessage? setTriggeringRequestMessage = default(SetTriggeringRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of ApiResponse (SetTriggeringResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<SetTriggeringResponse>> SetTriggeringWithHttpInfoAsync(SetTriggeringRequest? setTriggeringRequest = default(SetTriggeringRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// 
         /// </summary>
@@ -1203,11 +1203,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="transferSubscriptionsRequestMessage">TransferSubscriptionsRequestMessage (optional)</param>
+        /// <param name="transferSubscriptionsRequest">TransferSubscriptionsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of TransferSubscriptionsResponseMessage</returns>
-        System.Threading.Tasks.Task<TransferSubscriptionsResponseMessage> TransferSubscriptionsAsync(TransferSubscriptionsRequestMessage? transferSubscriptionsRequestMessage = default(TransferSubscriptionsRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of TransferSubscriptionsResponse</returns>
+        System.Threading.Tasks.Task<TransferSubscriptionsResponse> TransferSubscriptionsAsync(TransferSubscriptionsRequest? transferSubscriptionsRequest = default(TransferSubscriptionsRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// 
@@ -1216,11 +1216,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="transferSubscriptionsRequestMessage">TransferSubscriptionsRequestMessage (optional)</param>
+        /// <param name="transferSubscriptionsRequest">TransferSubscriptionsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (TransferSubscriptionsResponseMessage)</returns>
-        System.Threading.Tasks.Task<ApiResponse<TransferSubscriptionsResponseMessage>> TransferSubscriptionsWithHttpInfoAsync(TransferSubscriptionsRequestMessage? transferSubscriptionsRequestMessage = default(TransferSubscriptionsRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of ApiResponse (TransferSubscriptionsResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<TransferSubscriptionsResponse>> TransferSubscriptionsWithHttpInfoAsync(TransferSubscriptionsRequest? transferSubscriptionsRequest = default(TransferSubscriptionsRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// 
         /// </summary>
@@ -1228,11 +1228,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="translateBrowsePathsToNodeIdsRequestMessage">TranslateBrowsePathsToNodeIdsRequestMessage (optional)</param>
+        /// <param name="translateBrowsePathsToNodeIdsRequest">TranslateBrowsePathsToNodeIdsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of TranslateBrowsePathsToNodeIdsResponseMessage</returns>
-        System.Threading.Tasks.Task<TranslateBrowsePathsToNodeIdsResponseMessage> TranslateBrowsePathsToNodeIdsAsync(TranslateBrowsePathsToNodeIdsRequestMessage? translateBrowsePathsToNodeIdsRequestMessage = default(TranslateBrowsePathsToNodeIdsRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of TranslateBrowsePathsToNodeIdsResponse</returns>
+        System.Threading.Tasks.Task<TranslateBrowsePathsToNodeIdsResponse> TranslateBrowsePathsToNodeIdsAsync(TranslateBrowsePathsToNodeIdsRequest? translateBrowsePathsToNodeIdsRequest = default(TranslateBrowsePathsToNodeIdsRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// 
@@ -1241,11 +1241,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="translateBrowsePathsToNodeIdsRequestMessage">TranslateBrowsePathsToNodeIdsRequestMessage (optional)</param>
+        /// <param name="translateBrowsePathsToNodeIdsRequest">TranslateBrowsePathsToNodeIdsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (TranslateBrowsePathsToNodeIdsResponseMessage)</returns>
-        System.Threading.Tasks.Task<ApiResponse<TranslateBrowsePathsToNodeIdsResponseMessage>> TranslateBrowsePathsToNodeIdsWithHttpInfoAsync(TranslateBrowsePathsToNodeIdsRequestMessage? translateBrowsePathsToNodeIdsRequestMessage = default(TranslateBrowsePathsToNodeIdsRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of ApiResponse (TranslateBrowsePathsToNodeIdsResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<TranslateBrowsePathsToNodeIdsResponse>> TranslateBrowsePathsToNodeIdsWithHttpInfoAsync(TranslateBrowsePathsToNodeIdsRequest? translateBrowsePathsToNodeIdsRequest = default(TranslateBrowsePathsToNodeIdsRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// 
         /// </summary>
@@ -1253,11 +1253,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="unregisterNodesRequestMessage">UnregisterNodesRequestMessage (optional)</param>
+        /// <param name="unregisterNodesRequest">UnregisterNodesRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of UnregisterNodesResponseMessage</returns>
-        System.Threading.Tasks.Task<UnregisterNodesResponseMessage> UnregisterNodesAsync(UnregisterNodesRequestMessage? unregisterNodesRequestMessage = default(UnregisterNodesRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of UnregisterNodesResponse</returns>
+        System.Threading.Tasks.Task<UnregisterNodesResponse> UnregisterNodesAsync(UnregisterNodesRequest? unregisterNodesRequest = default(UnregisterNodesRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// 
@@ -1266,11 +1266,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="unregisterNodesRequestMessage">UnregisterNodesRequestMessage (optional)</param>
+        /// <param name="unregisterNodesRequest">UnregisterNodesRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (UnregisterNodesResponseMessage)</returns>
-        System.Threading.Tasks.Task<ApiResponse<UnregisterNodesResponseMessage>> UnregisterNodesWithHttpInfoAsync(UnregisterNodesRequestMessage? unregisterNodesRequestMessage = default(UnregisterNodesRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of ApiResponse (UnregisterNodesResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<UnregisterNodesResponse>> UnregisterNodesWithHttpInfoAsync(UnregisterNodesRequest? unregisterNodesRequest = default(UnregisterNodesRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// 
         /// </summary>
@@ -1278,11 +1278,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="writeRequestMessage">WriteRequestMessage (optional)</param>
+        /// <param name="writeRequest">WriteRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of WriteResponseMessage</returns>
-        System.Threading.Tasks.Task<WriteResponseMessage> WriteAsync(WriteRequestMessage? writeRequestMessage = default(WriteRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of WriteResponse</returns>
+        System.Threading.Tasks.Task<WriteResponse> WriteAsync(WriteRequest? writeRequest = default(WriteRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
         /// 
@@ -1291,11 +1291,11 @@ namespace Org.OpenAPITools.Api
         /// 
         /// </remarks>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="writeRequestMessage">WriteRequestMessage (optional)</param>
+        /// <param name="writeRequest">WriteRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (WriteResponseMessage)</returns>
-        System.Threading.Tasks.Task<ApiResponse<WriteResponseMessage>> WriteWithHttpInfoAsync(WriteRequestMessage? writeRequestMessage = default(WriteRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of ApiResponse (WriteResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<WriteResponse>> WriteWithHttpInfoAsync(WriteRequest? writeRequest = default(WriteRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         #endregion Asynchronous Operations
     }
 
@@ -1420,12 +1420,12 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="activateSessionRequestMessage">ActivateSessionRequestMessage (optional)</param>
+        /// <param name="activateSessionRequest">ActivateSessionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ActivateSessionResponseMessage</returns>
-        public ActivateSessionResponseMessage ActivateSession(ActivateSessionRequestMessage? activateSessionRequestMessage = default(ActivateSessionRequestMessage?), int operationIndex = 0)
+        /// <returns>ActivateSessionResponse</returns>
+        public ActivateSessionResponse ActivateSession(ActivateSessionRequest? activateSessionRequest = default(ActivateSessionRequest?), int operationIndex = 0)
         {
-            Org.OpenAPITools.Client.ApiResponse<ActivateSessionResponseMessage> localVarResponse = ActivateSessionWithHttpInfo(activateSessionRequestMessage);
+            Org.OpenAPITools.Client.ApiResponse<ActivateSessionResponse> localVarResponse = ActivateSessionWithHttpInfo(activateSessionRequest);
             return localVarResponse.Data;
         }
 
@@ -1433,10 +1433,10 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="activateSessionRequestMessage">ActivateSessionRequestMessage (optional)</param>
+        /// <param name="activateSessionRequest">ActivateSessionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of ActivateSessionResponseMessage</returns>
-        public Org.OpenAPITools.Client.ApiResponse<ActivateSessionResponseMessage> ActivateSessionWithHttpInfo(ActivateSessionRequestMessage? activateSessionRequestMessage = default(ActivateSessionRequestMessage?), int operationIndex = 0)
+        /// <returns>ApiResponse of ActivateSessionResponse</returns>
+        public Org.OpenAPITools.Client.ApiResponse<ActivateSessionResponse> ActivateSessionWithHttpInfo(ActivateSessionRequest? activateSessionRequest = default(ActivateSessionRequest?), int operationIndex = 0)
         {
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
@@ -1461,14 +1461,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = activateSessionRequestMessage;
+            localVarRequestOptions.Data = activateSessionRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.ActivateSession";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = this.Client.Post<ActivateSessionResponseMessage>("/activatesession", localVarRequestOptions, this.Configuration);
+            var localVarResponse = this.Client.Post<ActivateSessionResponse>("/activatesession", localVarRequestOptions, this.Configuration);
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("ActivateSession", localVarResponse);
@@ -1485,13 +1485,13 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="activateSessionRequestMessage">ActivateSessionRequestMessage (optional)</param>
+        /// <param name="activateSessionRequest">ActivateSessionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ActivateSessionResponseMessage</returns>
-        public async System.Threading.Tasks.Task<ActivateSessionResponseMessage> ActivateSessionAsync(ActivateSessionRequestMessage? activateSessionRequestMessage = default(ActivateSessionRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of ActivateSessionResponse</returns>
+        public async System.Threading.Tasks.Task<ActivateSessionResponse> ActivateSessionAsync(ActivateSessionRequest? activateSessionRequest = default(ActivateSessionRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            Org.OpenAPITools.Client.ApiResponse<ActivateSessionResponseMessage> localVarResponse = await ActivateSessionWithHttpInfoAsync(activateSessionRequestMessage, operationIndex, cancellationToken).ConfigureAwait(false);
+            Org.OpenAPITools.Client.ApiResponse<ActivateSessionResponse> localVarResponse = await ActivateSessionWithHttpInfoAsync(activateSessionRequest, operationIndex, cancellationToken).ConfigureAwait(false);
             return localVarResponse.Data;
         }
 
@@ -1499,11 +1499,11 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="activateSessionRequestMessage">ActivateSessionRequestMessage (optional)</param>
+        /// <param name="activateSessionRequest">ActivateSessionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (ActivateSessionResponseMessage)</returns>
-        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<ActivateSessionResponseMessage>> ActivateSessionWithHttpInfoAsync(ActivateSessionRequestMessage? activateSessionRequestMessage = default(ActivateSessionRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of ApiResponse (ActivateSessionResponse)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<ActivateSessionResponse>> ActivateSessionWithHttpInfoAsync(ActivateSessionRequest? activateSessionRequest = default(ActivateSessionRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
 
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
@@ -1529,14 +1529,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = activateSessionRequestMessage;
+            localVarRequestOptions.Data = activateSessionRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.ActivateSession";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = await this.AsynchronousClient.PostAsync<ActivateSessionResponseMessage>("/activatesession", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            var localVarResponse = await this.AsynchronousClient.PostAsync<ActivateSessionResponse>("/activatesession", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
             if (this.ExceptionFactory != null)
             {
@@ -1554,12 +1554,12 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="browseRequestMessage">BrowseRequestMessage (optional)</param>
+        /// <param name="browseRequest">BrowseRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>BrowseResponseMessage</returns>
-        public BrowseResponseMessage Browse(BrowseRequestMessage? browseRequestMessage = default(BrowseRequestMessage?), int operationIndex = 0)
+        /// <returns>BrowseResponse</returns>
+        public BrowseResponse Browse(BrowseRequest? browseRequest = default(BrowseRequest?), int operationIndex = 0)
         {
-            Org.OpenAPITools.Client.ApiResponse<BrowseResponseMessage> localVarResponse = BrowseWithHttpInfo(browseRequestMessage);
+            Org.OpenAPITools.Client.ApiResponse<BrowseResponse> localVarResponse = BrowseWithHttpInfo(browseRequest);
             return localVarResponse.Data;
         }
 
@@ -1567,10 +1567,10 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="browseRequestMessage">BrowseRequestMessage (optional)</param>
+        /// <param name="browseRequest">BrowseRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of BrowseResponseMessage</returns>
-        public Org.OpenAPITools.Client.ApiResponse<BrowseResponseMessage> BrowseWithHttpInfo(BrowseRequestMessage? browseRequestMessage = default(BrowseRequestMessage?), int operationIndex = 0)
+        /// <returns>ApiResponse of BrowseResponse</returns>
+        public Org.OpenAPITools.Client.ApiResponse<BrowseResponse> BrowseWithHttpInfo(BrowseRequest? browseRequest = default(BrowseRequest?), int operationIndex = 0)
         {
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
@@ -1595,14 +1595,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = browseRequestMessage;
+            localVarRequestOptions.Data = browseRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.Browse";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = this.Client.Post<BrowseResponseMessage>("/browse", localVarRequestOptions, this.Configuration);
+            var localVarResponse = this.Client.Post<BrowseResponse>("/browse", localVarRequestOptions, this.Configuration);
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("Browse", localVarResponse);
@@ -1619,13 +1619,13 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="browseRequestMessage">BrowseRequestMessage (optional)</param>
+        /// <param name="browseRequest">BrowseRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of BrowseResponseMessage</returns>
-        public async System.Threading.Tasks.Task<BrowseResponseMessage> BrowseAsync(BrowseRequestMessage? browseRequestMessage = default(BrowseRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of BrowseResponse</returns>
+        public async System.Threading.Tasks.Task<BrowseResponse> BrowseAsync(BrowseRequest? browseRequest = default(BrowseRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            Org.OpenAPITools.Client.ApiResponse<BrowseResponseMessage> localVarResponse = await BrowseWithHttpInfoAsync(browseRequestMessage, operationIndex, cancellationToken).ConfigureAwait(false);
+            Org.OpenAPITools.Client.ApiResponse<BrowseResponse> localVarResponse = await BrowseWithHttpInfoAsync(browseRequest, operationIndex, cancellationToken).ConfigureAwait(false);
             return localVarResponse.Data;
         }
 
@@ -1633,11 +1633,11 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="browseRequestMessage">BrowseRequestMessage (optional)</param>
+        /// <param name="browseRequest">BrowseRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (BrowseResponseMessage)</returns>
-        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<BrowseResponseMessage>> BrowseWithHttpInfoAsync(BrowseRequestMessage? browseRequestMessage = default(BrowseRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of ApiResponse (BrowseResponse)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<BrowseResponse>> BrowseWithHttpInfoAsync(BrowseRequest? browseRequest = default(BrowseRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
 
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
@@ -1663,14 +1663,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = browseRequestMessage;
+            localVarRequestOptions.Data = browseRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.Browse";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = await this.AsynchronousClient.PostAsync<BrowseResponseMessage>("/browse", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            var localVarResponse = await this.AsynchronousClient.PostAsync<BrowseResponse>("/browse", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
             if (this.ExceptionFactory != null)
             {
@@ -1688,12 +1688,12 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="browseNextRequestMessage">BrowseNextRequestMessage (optional)</param>
+        /// <param name="browseNextRequest">BrowseNextRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>BrowseNextResponseMessage</returns>
-        public BrowseNextResponseMessage BrowseNext(BrowseNextRequestMessage? browseNextRequestMessage = default(BrowseNextRequestMessage?), int operationIndex = 0)
+        /// <returns>BrowseNextResponse</returns>
+        public BrowseNextResponse BrowseNext(BrowseNextRequest? browseNextRequest = default(BrowseNextRequest?), int operationIndex = 0)
         {
-            Org.OpenAPITools.Client.ApiResponse<BrowseNextResponseMessage> localVarResponse = BrowseNextWithHttpInfo(browseNextRequestMessage);
+            Org.OpenAPITools.Client.ApiResponse<BrowseNextResponse> localVarResponse = BrowseNextWithHttpInfo(browseNextRequest);
             return localVarResponse.Data;
         }
 
@@ -1701,10 +1701,10 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="browseNextRequestMessage">BrowseNextRequestMessage (optional)</param>
+        /// <param name="browseNextRequest">BrowseNextRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of BrowseNextResponseMessage</returns>
-        public Org.OpenAPITools.Client.ApiResponse<BrowseNextResponseMessage> BrowseNextWithHttpInfo(BrowseNextRequestMessage? browseNextRequestMessage = default(BrowseNextRequestMessage?), int operationIndex = 0)
+        /// <returns>ApiResponse of BrowseNextResponse</returns>
+        public Org.OpenAPITools.Client.ApiResponse<BrowseNextResponse> BrowseNextWithHttpInfo(BrowseNextRequest? browseNextRequest = default(BrowseNextRequest?), int operationIndex = 0)
         {
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
@@ -1729,14 +1729,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = browseNextRequestMessage;
+            localVarRequestOptions.Data = browseNextRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.BrowseNext";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = this.Client.Post<BrowseNextResponseMessage>("/browsenext", localVarRequestOptions, this.Configuration);
+            var localVarResponse = this.Client.Post<BrowseNextResponse>("/browsenext", localVarRequestOptions, this.Configuration);
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("BrowseNext", localVarResponse);
@@ -1753,13 +1753,13 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="browseNextRequestMessage">BrowseNextRequestMessage (optional)</param>
+        /// <param name="browseNextRequest">BrowseNextRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of BrowseNextResponseMessage</returns>
-        public async System.Threading.Tasks.Task<BrowseNextResponseMessage> BrowseNextAsync(BrowseNextRequestMessage? browseNextRequestMessage = default(BrowseNextRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of BrowseNextResponse</returns>
+        public async System.Threading.Tasks.Task<BrowseNextResponse> BrowseNextAsync(BrowseNextRequest? browseNextRequest = default(BrowseNextRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            Org.OpenAPITools.Client.ApiResponse<BrowseNextResponseMessage> localVarResponse = await BrowseNextWithHttpInfoAsync(browseNextRequestMessage, operationIndex, cancellationToken).ConfigureAwait(false);
+            Org.OpenAPITools.Client.ApiResponse<BrowseNextResponse> localVarResponse = await BrowseNextWithHttpInfoAsync(browseNextRequest, operationIndex, cancellationToken).ConfigureAwait(false);
             return localVarResponse.Data;
         }
 
@@ -1767,11 +1767,11 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="browseNextRequestMessage">BrowseNextRequestMessage (optional)</param>
+        /// <param name="browseNextRequest">BrowseNextRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (BrowseNextResponseMessage)</returns>
-        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<BrowseNextResponseMessage>> BrowseNextWithHttpInfoAsync(BrowseNextRequestMessage? browseNextRequestMessage = default(BrowseNextRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of ApiResponse (BrowseNextResponse)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<BrowseNextResponse>> BrowseNextWithHttpInfoAsync(BrowseNextRequest? browseNextRequest = default(BrowseNextRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
 
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
@@ -1797,14 +1797,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = browseNextRequestMessage;
+            localVarRequestOptions.Data = browseNextRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.BrowseNext";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = await this.AsynchronousClient.PostAsync<BrowseNextResponseMessage>("/browsenext", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            var localVarResponse = await this.AsynchronousClient.PostAsync<BrowseNextResponse>("/browsenext", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
             if (this.ExceptionFactory != null)
             {
@@ -1822,12 +1822,12 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="callRequestMessage">CallRequestMessage (optional)</param>
+        /// <param name="callRequest">CallRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>CallResponseMessage</returns>
-        public CallResponseMessage Call(CallRequestMessage? callRequestMessage = default(CallRequestMessage?), int operationIndex = 0)
+        /// <returns>CallResponse</returns>
+        public CallResponse Call(CallRequest? callRequest = default(CallRequest?), int operationIndex = 0)
         {
-            Org.OpenAPITools.Client.ApiResponse<CallResponseMessage> localVarResponse = CallWithHttpInfo(callRequestMessage);
+            Org.OpenAPITools.Client.ApiResponse<CallResponse> localVarResponse = CallWithHttpInfo(callRequest);
             return localVarResponse.Data;
         }
 
@@ -1835,10 +1835,10 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="callRequestMessage">CallRequestMessage (optional)</param>
+        /// <param name="callRequest">CallRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of CallResponseMessage</returns>
-        public Org.OpenAPITools.Client.ApiResponse<CallResponseMessage> CallWithHttpInfo(CallRequestMessage? callRequestMessage = default(CallRequestMessage?), int operationIndex = 0)
+        /// <returns>ApiResponse of CallResponse</returns>
+        public Org.OpenAPITools.Client.ApiResponse<CallResponse> CallWithHttpInfo(CallRequest? callRequest = default(CallRequest?), int operationIndex = 0)
         {
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
@@ -1863,14 +1863,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = callRequestMessage;
+            localVarRequestOptions.Data = callRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.Call";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = this.Client.Post<CallResponseMessage>("/call", localVarRequestOptions, this.Configuration);
+            var localVarResponse = this.Client.Post<CallResponse>("/call", localVarRequestOptions, this.Configuration);
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("Call", localVarResponse);
@@ -1887,13 +1887,13 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="callRequestMessage">CallRequestMessage (optional)</param>
+        /// <param name="callRequest">CallRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of CallResponseMessage</returns>
-        public async System.Threading.Tasks.Task<CallResponseMessage> CallAsync(CallRequestMessage? callRequestMessage = default(CallRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of CallResponse</returns>
+        public async System.Threading.Tasks.Task<CallResponse> CallAsync(CallRequest? callRequest = default(CallRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            Org.OpenAPITools.Client.ApiResponse<CallResponseMessage> localVarResponse = await CallWithHttpInfoAsync(callRequestMessage, operationIndex, cancellationToken).ConfigureAwait(false);
+            Org.OpenAPITools.Client.ApiResponse<CallResponse> localVarResponse = await CallWithHttpInfoAsync(callRequest, operationIndex, cancellationToken).ConfigureAwait(false);
             return localVarResponse.Data;
         }
 
@@ -1901,11 +1901,11 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="callRequestMessage">CallRequestMessage (optional)</param>
+        /// <param name="callRequest">CallRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (CallResponseMessage)</returns>
-        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<CallResponseMessage>> CallWithHttpInfoAsync(CallRequestMessage? callRequestMessage = default(CallRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of ApiResponse (CallResponse)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<CallResponse>> CallWithHttpInfoAsync(CallRequest? callRequest = default(CallRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
 
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
@@ -1931,14 +1931,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = callRequestMessage;
+            localVarRequestOptions.Data = callRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.Call";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = await this.AsynchronousClient.PostAsync<CallResponseMessage>("/call", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            var localVarResponse = await this.AsynchronousClient.PostAsync<CallResponse>("/call", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
             if (this.ExceptionFactory != null)
             {
@@ -1956,12 +1956,12 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="cancelRequestMessage">CancelRequestMessage (optional)</param>
+        /// <param name="cancelRequest">CancelRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>CancelResponseMessage</returns>
-        public CancelResponseMessage Cancel(CancelRequestMessage? cancelRequestMessage = default(CancelRequestMessage?), int operationIndex = 0)
+        /// <returns>CancelResponse</returns>
+        public CancelResponse Cancel(CancelRequest? cancelRequest = default(CancelRequest?), int operationIndex = 0)
         {
-            Org.OpenAPITools.Client.ApiResponse<CancelResponseMessage> localVarResponse = CancelWithHttpInfo(cancelRequestMessage);
+            Org.OpenAPITools.Client.ApiResponse<CancelResponse> localVarResponse = CancelWithHttpInfo(cancelRequest);
             return localVarResponse.Data;
         }
 
@@ -1969,10 +1969,10 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="cancelRequestMessage">CancelRequestMessage (optional)</param>
+        /// <param name="cancelRequest">CancelRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of CancelResponseMessage</returns>
-        public Org.OpenAPITools.Client.ApiResponse<CancelResponseMessage> CancelWithHttpInfo(CancelRequestMessage? cancelRequestMessage = default(CancelRequestMessage?), int operationIndex = 0)
+        /// <returns>ApiResponse of CancelResponse</returns>
+        public Org.OpenAPITools.Client.ApiResponse<CancelResponse> CancelWithHttpInfo(CancelRequest? cancelRequest = default(CancelRequest?), int operationIndex = 0)
         {
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
@@ -1997,14 +1997,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = cancelRequestMessage;
+            localVarRequestOptions.Data = cancelRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.Cancel";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = this.Client.Post<CancelResponseMessage>("/cancel", localVarRequestOptions, this.Configuration);
+            var localVarResponse = this.Client.Post<CancelResponse>("/cancel", localVarRequestOptions, this.Configuration);
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("Cancel", localVarResponse);
@@ -2021,13 +2021,13 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="cancelRequestMessage">CancelRequestMessage (optional)</param>
+        /// <param name="cancelRequest">CancelRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of CancelResponseMessage</returns>
-        public async System.Threading.Tasks.Task<CancelResponseMessage> CancelAsync(CancelRequestMessage? cancelRequestMessage = default(CancelRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of CancelResponse</returns>
+        public async System.Threading.Tasks.Task<CancelResponse> CancelAsync(CancelRequest? cancelRequest = default(CancelRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            Org.OpenAPITools.Client.ApiResponse<CancelResponseMessage> localVarResponse = await CancelWithHttpInfoAsync(cancelRequestMessage, operationIndex, cancellationToken).ConfigureAwait(false);
+            Org.OpenAPITools.Client.ApiResponse<CancelResponse> localVarResponse = await CancelWithHttpInfoAsync(cancelRequest, operationIndex, cancellationToken).ConfigureAwait(false);
             return localVarResponse.Data;
         }
 
@@ -2035,11 +2035,11 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="cancelRequestMessage">CancelRequestMessage (optional)</param>
+        /// <param name="cancelRequest">CancelRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (CancelResponseMessage)</returns>
-        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<CancelResponseMessage>> CancelWithHttpInfoAsync(CancelRequestMessage? cancelRequestMessage = default(CancelRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of ApiResponse (CancelResponse)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<CancelResponse>> CancelWithHttpInfoAsync(CancelRequest? cancelRequest = default(CancelRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
 
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
@@ -2065,14 +2065,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = cancelRequestMessage;
+            localVarRequestOptions.Data = cancelRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.Cancel";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = await this.AsynchronousClient.PostAsync<CancelResponseMessage>("/cancel", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            var localVarResponse = await this.AsynchronousClient.PostAsync<CancelResponse>("/cancel", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
             if (this.ExceptionFactory != null)
             {
@@ -2090,12 +2090,12 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="closeSessionRequestMessage">CloseSessionRequestMessage (optional)</param>
+        /// <param name="closeSessionRequest">CloseSessionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>CloseSessionResponseMessage</returns>
-        public CloseSessionResponseMessage CloseSession(CloseSessionRequestMessage? closeSessionRequestMessage = default(CloseSessionRequestMessage?), int operationIndex = 0)
+        /// <returns>CloseSessionResponse</returns>
+        public CloseSessionResponse CloseSession(CloseSessionRequest? closeSessionRequest = default(CloseSessionRequest?), int operationIndex = 0)
         {
-            Org.OpenAPITools.Client.ApiResponse<CloseSessionResponseMessage> localVarResponse = CloseSessionWithHttpInfo(closeSessionRequestMessage);
+            Org.OpenAPITools.Client.ApiResponse<CloseSessionResponse> localVarResponse = CloseSessionWithHttpInfo(closeSessionRequest);
             return localVarResponse.Data;
         }
 
@@ -2103,10 +2103,10 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="closeSessionRequestMessage">CloseSessionRequestMessage (optional)</param>
+        /// <param name="closeSessionRequest">CloseSessionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of CloseSessionResponseMessage</returns>
-        public Org.OpenAPITools.Client.ApiResponse<CloseSessionResponseMessage> CloseSessionWithHttpInfo(CloseSessionRequestMessage? closeSessionRequestMessage = default(CloseSessionRequestMessage?), int operationIndex = 0)
+        /// <returns>ApiResponse of CloseSessionResponse</returns>
+        public Org.OpenAPITools.Client.ApiResponse<CloseSessionResponse> CloseSessionWithHttpInfo(CloseSessionRequest? closeSessionRequest = default(CloseSessionRequest?), int operationIndex = 0)
         {
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
@@ -2131,14 +2131,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = closeSessionRequestMessage;
+            localVarRequestOptions.Data = closeSessionRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.CloseSession";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = this.Client.Post<CloseSessionResponseMessage>("/closesession", localVarRequestOptions, this.Configuration);
+            var localVarResponse = this.Client.Post<CloseSessionResponse>("/closesession", localVarRequestOptions, this.Configuration);
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("CloseSession", localVarResponse);
@@ -2155,13 +2155,13 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="closeSessionRequestMessage">CloseSessionRequestMessage (optional)</param>
+        /// <param name="closeSessionRequest">CloseSessionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of CloseSessionResponseMessage</returns>
-        public async System.Threading.Tasks.Task<CloseSessionResponseMessage> CloseSessionAsync(CloseSessionRequestMessage? closeSessionRequestMessage = default(CloseSessionRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of CloseSessionResponse</returns>
+        public async System.Threading.Tasks.Task<CloseSessionResponse> CloseSessionAsync(CloseSessionRequest? closeSessionRequest = default(CloseSessionRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            Org.OpenAPITools.Client.ApiResponse<CloseSessionResponseMessage> localVarResponse = await CloseSessionWithHttpInfoAsync(closeSessionRequestMessage, operationIndex, cancellationToken).ConfigureAwait(false);
+            Org.OpenAPITools.Client.ApiResponse<CloseSessionResponse> localVarResponse = await CloseSessionWithHttpInfoAsync(closeSessionRequest, operationIndex, cancellationToken).ConfigureAwait(false);
             return localVarResponse.Data;
         }
 
@@ -2169,11 +2169,11 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="closeSessionRequestMessage">CloseSessionRequestMessage (optional)</param>
+        /// <param name="closeSessionRequest">CloseSessionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (CloseSessionResponseMessage)</returns>
-        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<CloseSessionResponseMessage>> CloseSessionWithHttpInfoAsync(CloseSessionRequestMessage? closeSessionRequestMessage = default(CloseSessionRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of ApiResponse (CloseSessionResponse)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<CloseSessionResponse>> CloseSessionWithHttpInfoAsync(CloseSessionRequest? closeSessionRequest = default(CloseSessionRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
 
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
@@ -2199,14 +2199,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = closeSessionRequestMessage;
+            localVarRequestOptions.Data = closeSessionRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.CloseSession";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = await this.AsynchronousClient.PostAsync<CloseSessionResponseMessage>("/closesession", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            var localVarResponse = await this.AsynchronousClient.PostAsync<CloseSessionResponse>("/closesession", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
             if (this.ExceptionFactory != null)
             {
@@ -2224,12 +2224,12 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="createMonitoredItemsRequestMessage">CreateMonitoredItemsRequestMessage (optional)</param>
+        /// <param name="createMonitoredItemsRequest">CreateMonitoredItemsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>CreateMonitoredItemsResponseMessage</returns>
-        public CreateMonitoredItemsResponseMessage CreateMonitoredItems(CreateMonitoredItemsRequestMessage? createMonitoredItemsRequestMessage = default(CreateMonitoredItemsRequestMessage?), int operationIndex = 0)
+        /// <returns>CreateMonitoredItemsResponse</returns>
+        public CreateMonitoredItemsResponse CreateMonitoredItems(CreateMonitoredItemsRequest? createMonitoredItemsRequest = default(CreateMonitoredItemsRequest?), int operationIndex = 0)
         {
-            Org.OpenAPITools.Client.ApiResponse<CreateMonitoredItemsResponseMessage> localVarResponse = CreateMonitoredItemsWithHttpInfo(createMonitoredItemsRequestMessage);
+            Org.OpenAPITools.Client.ApiResponse<CreateMonitoredItemsResponse> localVarResponse = CreateMonitoredItemsWithHttpInfo(createMonitoredItemsRequest);
             return localVarResponse.Data;
         }
 
@@ -2237,10 +2237,10 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="createMonitoredItemsRequestMessage">CreateMonitoredItemsRequestMessage (optional)</param>
+        /// <param name="createMonitoredItemsRequest">CreateMonitoredItemsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of CreateMonitoredItemsResponseMessage</returns>
-        public Org.OpenAPITools.Client.ApiResponse<CreateMonitoredItemsResponseMessage> CreateMonitoredItemsWithHttpInfo(CreateMonitoredItemsRequestMessage? createMonitoredItemsRequestMessage = default(CreateMonitoredItemsRequestMessage?), int operationIndex = 0)
+        /// <returns>ApiResponse of CreateMonitoredItemsResponse</returns>
+        public Org.OpenAPITools.Client.ApiResponse<CreateMonitoredItemsResponse> CreateMonitoredItemsWithHttpInfo(CreateMonitoredItemsRequest? createMonitoredItemsRequest = default(CreateMonitoredItemsRequest?), int operationIndex = 0)
         {
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
@@ -2265,14 +2265,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = createMonitoredItemsRequestMessage;
+            localVarRequestOptions.Data = createMonitoredItemsRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.CreateMonitoredItems";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = this.Client.Post<CreateMonitoredItemsResponseMessage>("/createmonitoreditems", localVarRequestOptions, this.Configuration);
+            var localVarResponse = this.Client.Post<CreateMonitoredItemsResponse>("/createmonitoreditems", localVarRequestOptions, this.Configuration);
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("CreateMonitoredItems", localVarResponse);
@@ -2289,13 +2289,13 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="createMonitoredItemsRequestMessage">CreateMonitoredItemsRequestMessage (optional)</param>
+        /// <param name="createMonitoredItemsRequest">CreateMonitoredItemsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of CreateMonitoredItemsResponseMessage</returns>
-        public async System.Threading.Tasks.Task<CreateMonitoredItemsResponseMessage> CreateMonitoredItemsAsync(CreateMonitoredItemsRequestMessage? createMonitoredItemsRequestMessage = default(CreateMonitoredItemsRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of CreateMonitoredItemsResponse</returns>
+        public async System.Threading.Tasks.Task<CreateMonitoredItemsResponse> CreateMonitoredItemsAsync(CreateMonitoredItemsRequest? createMonitoredItemsRequest = default(CreateMonitoredItemsRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            Org.OpenAPITools.Client.ApiResponse<CreateMonitoredItemsResponseMessage> localVarResponse = await CreateMonitoredItemsWithHttpInfoAsync(createMonitoredItemsRequestMessage, operationIndex, cancellationToken).ConfigureAwait(false);
+            Org.OpenAPITools.Client.ApiResponse<CreateMonitoredItemsResponse> localVarResponse = await CreateMonitoredItemsWithHttpInfoAsync(createMonitoredItemsRequest, operationIndex, cancellationToken).ConfigureAwait(false);
             return localVarResponse.Data;
         }
 
@@ -2303,11 +2303,11 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="createMonitoredItemsRequestMessage">CreateMonitoredItemsRequestMessage (optional)</param>
+        /// <param name="createMonitoredItemsRequest">CreateMonitoredItemsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (CreateMonitoredItemsResponseMessage)</returns>
-        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<CreateMonitoredItemsResponseMessage>> CreateMonitoredItemsWithHttpInfoAsync(CreateMonitoredItemsRequestMessage? createMonitoredItemsRequestMessage = default(CreateMonitoredItemsRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of ApiResponse (CreateMonitoredItemsResponse)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<CreateMonitoredItemsResponse>> CreateMonitoredItemsWithHttpInfoAsync(CreateMonitoredItemsRequest? createMonitoredItemsRequest = default(CreateMonitoredItemsRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
 
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
@@ -2333,14 +2333,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = createMonitoredItemsRequestMessage;
+            localVarRequestOptions.Data = createMonitoredItemsRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.CreateMonitoredItems";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = await this.AsynchronousClient.PostAsync<CreateMonitoredItemsResponseMessage>("/createmonitoreditems", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            var localVarResponse = await this.AsynchronousClient.PostAsync<CreateMonitoredItemsResponse>("/createmonitoreditems", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
             if (this.ExceptionFactory != null)
             {
@@ -2358,12 +2358,12 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="createSessionRequestMessage">CreateSessionRequestMessage (optional)</param>
+        /// <param name="createSessionRequest">CreateSessionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>CreateSessionResponseMessage</returns>
-        public CreateSessionResponseMessage CreateSession(CreateSessionRequestMessage? createSessionRequestMessage = default(CreateSessionRequestMessage?), int operationIndex = 0)
+        /// <returns>CreateSessionResponse</returns>
+        public CreateSessionResponse CreateSession(CreateSessionRequest? createSessionRequest = default(CreateSessionRequest?), int operationIndex = 0)
         {
-            Org.OpenAPITools.Client.ApiResponse<CreateSessionResponseMessage> localVarResponse = CreateSessionWithHttpInfo(createSessionRequestMessage);
+            Org.OpenAPITools.Client.ApiResponse<CreateSessionResponse> localVarResponse = CreateSessionWithHttpInfo(createSessionRequest);
             return localVarResponse.Data;
         }
 
@@ -2371,10 +2371,10 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="createSessionRequestMessage">CreateSessionRequestMessage (optional)</param>
+        /// <param name="createSessionRequest">CreateSessionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of CreateSessionResponseMessage</returns>
-        public Org.OpenAPITools.Client.ApiResponse<CreateSessionResponseMessage> CreateSessionWithHttpInfo(CreateSessionRequestMessage? createSessionRequestMessage = default(CreateSessionRequestMessage?), int operationIndex = 0)
+        /// <returns>ApiResponse of CreateSessionResponse</returns>
+        public Org.OpenAPITools.Client.ApiResponse<CreateSessionResponse> CreateSessionWithHttpInfo(CreateSessionRequest? createSessionRequest = default(CreateSessionRequest?), int operationIndex = 0)
         {
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
@@ -2399,14 +2399,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = createSessionRequestMessage;
+            localVarRequestOptions.Data = createSessionRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.CreateSession";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = this.Client.Post<CreateSessionResponseMessage>("/createsession", localVarRequestOptions, this.Configuration);
+            var localVarResponse = this.Client.Post<CreateSessionResponse>("/createsession", localVarRequestOptions, this.Configuration);
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("CreateSession", localVarResponse);
@@ -2423,13 +2423,13 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="createSessionRequestMessage">CreateSessionRequestMessage (optional)</param>
+        /// <param name="createSessionRequest">CreateSessionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of CreateSessionResponseMessage</returns>
-        public async System.Threading.Tasks.Task<CreateSessionResponseMessage> CreateSessionAsync(CreateSessionRequestMessage? createSessionRequestMessage = default(CreateSessionRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of CreateSessionResponse</returns>
+        public async System.Threading.Tasks.Task<CreateSessionResponse> CreateSessionAsync(CreateSessionRequest? createSessionRequest = default(CreateSessionRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            Org.OpenAPITools.Client.ApiResponse<CreateSessionResponseMessage> localVarResponse = await CreateSessionWithHttpInfoAsync(createSessionRequestMessage, operationIndex, cancellationToken).ConfigureAwait(false);
+            Org.OpenAPITools.Client.ApiResponse<CreateSessionResponse> localVarResponse = await CreateSessionWithHttpInfoAsync(createSessionRequest, operationIndex, cancellationToken).ConfigureAwait(false);
             return localVarResponse.Data;
         }
 
@@ -2437,11 +2437,11 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="createSessionRequestMessage">CreateSessionRequestMessage (optional)</param>
+        /// <param name="createSessionRequest">CreateSessionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (CreateSessionResponseMessage)</returns>
-        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<CreateSessionResponseMessage>> CreateSessionWithHttpInfoAsync(CreateSessionRequestMessage? createSessionRequestMessage = default(CreateSessionRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of ApiResponse (CreateSessionResponse)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<CreateSessionResponse>> CreateSessionWithHttpInfoAsync(CreateSessionRequest? createSessionRequest = default(CreateSessionRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
 
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
@@ -2467,14 +2467,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = createSessionRequestMessage;
+            localVarRequestOptions.Data = createSessionRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.CreateSession";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = await this.AsynchronousClient.PostAsync<CreateSessionResponseMessage>("/createsession", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            var localVarResponse = await this.AsynchronousClient.PostAsync<CreateSessionResponse>("/createsession", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
             if (this.ExceptionFactory != null)
             {
@@ -2492,12 +2492,12 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="createSubscriptionRequestMessage">CreateSubscriptionRequestMessage (optional)</param>
+        /// <param name="createSubscriptionRequest">CreateSubscriptionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>CreateSubscriptionResponseMessage</returns>
-        public CreateSubscriptionResponseMessage CreateSubscription(CreateSubscriptionRequestMessage? createSubscriptionRequestMessage = default(CreateSubscriptionRequestMessage?), int operationIndex = 0)
+        /// <returns>CreateSubscriptionResponse</returns>
+        public CreateSubscriptionResponse CreateSubscription(CreateSubscriptionRequest? createSubscriptionRequest = default(CreateSubscriptionRequest?), int operationIndex = 0)
         {
-            Org.OpenAPITools.Client.ApiResponse<CreateSubscriptionResponseMessage> localVarResponse = CreateSubscriptionWithHttpInfo(createSubscriptionRequestMessage);
+            Org.OpenAPITools.Client.ApiResponse<CreateSubscriptionResponse> localVarResponse = CreateSubscriptionWithHttpInfo(createSubscriptionRequest);
             return localVarResponse.Data;
         }
 
@@ -2505,10 +2505,10 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="createSubscriptionRequestMessage">CreateSubscriptionRequestMessage (optional)</param>
+        /// <param name="createSubscriptionRequest">CreateSubscriptionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of CreateSubscriptionResponseMessage</returns>
-        public Org.OpenAPITools.Client.ApiResponse<CreateSubscriptionResponseMessage> CreateSubscriptionWithHttpInfo(CreateSubscriptionRequestMessage? createSubscriptionRequestMessage = default(CreateSubscriptionRequestMessage?), int operationIndex = 0)
+        /// <returns>ApiResponse of CreateSubscriptionResponse</returns>
+        public Org.OpenAPITools.Client.ApiResponse<CreateSubscriptionResponse> CreateSubscriptionWithHttpInfo(CreateSubscriptionRequest? createSubscriptionRequest = default(CreateSubscriptionRequest?), int operationIndex = 0)
         {
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
@@ -2533,14 +2533,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = createSubscriptionRequestMessage;
+            localVarRequestOptions.Data = createSubscriptionRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.CreateSubscription";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = this.Client.Post<CreateSubscriptionResponseMessage>("/createsubscription", localVarRequestOptions, this.Configuration);
+            var localVarResponse = this.Client.Post<CreateSubscriptionResponse>("/createsubscription", localVarRequestOptions, this.Configuration);
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("CreateSubscription", localVarResponse);
@@ -2557,13 +2557,13 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="createSubscriptionRequestMessage">CreateSubscriptionRequestMessage (optional)</param>
+        /// <param name="createSubscriptionRequest">CreateSubscriptionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of CreateSubscriptionResponseMessage</returns>
-        public async System.Threading.Tasks.Task<CreateSubscriptionResponseMessage> CreateSubscriptionAsync(CreateSubscriptionRequestMessage? createSubscriptionRequestMessage = default(CreateSubscriptionRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of CreateSubscriptionResponse</returns>
+        public async System.Threading.Tasks.Task<CreateSubscriptionResponse> CreateSubscriptionAsync(CreateSubscriptionRequest? createSubscriptionRequest = default(CreateSubscriptionRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            Org.OpenAPITools.Client.ApiResponse<CreateSubscriptionResponseMessage> localVarResponse = await CreateSubscriptionWithHttpInfoAsync(createSubscriptionRequestMessage, operationIndex, cancellationToken).ConfigureAwait(false);
+            Org.OpenAPITools.Client.ApiResponse<CreateSubscriptionResponse> localVarResponse = await CreateSubscriptionWithHttpInfoAsync(createSubscriptionRequest, operationIndex, cancellationToken).ConfigureAwait(false);
             return localVarResponse.Data;
         }
 
@@ -2571,11 +2571,11 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="createSubscriptionRequestMessage">CreateSubscriptionRequestMessage (optional)</param>
+        /// <param name="createSubscriptionRequest">CreateSubscriptionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (CreateSubscriptionResponseMessage)</returns>
-        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<CreateSubscriptionResponseMessage>> CreateSubscriptionWithHttpInfoAsync(CreateSubscriptionRequestMessage? createSubscriptionRequestMessage = default(CreateSubscriptionRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of ApiResponse (CreateSubscriptionResponse)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<CreateSubscriptionResponse>> CreateSubscriptionWithHttpInfoAsync(CreateSubscriptionRequest? createSubscriptionRequest = default(CreateSubscriptionRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
 
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
@@ -2601,14 +2601,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = createSubscriptionRequestMessage;
+            localVarRequestOptions.Data = createSubscriptionRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.CreateSubscription";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = await this.AsynchronousClient.PostAsync<CreateSubscriptionResponseMessage>("/createsubscription", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            var localVarResponse = await this.AsynchronousClient.PostAsync<CreateSubscriptionResponse>("/createsubscription", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
             if (this.ExceptionFactory != null)
             {
@@ -2626,12 +2626,12 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="deleteMonitoredItemsRequestMessage">DeleteMonitoredItemsRequestMessage (optional)</param>
+        /// <param name="deleteMonitoredItemsRequest">DeleteMonitoredItemsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>DeleteMonitoredItemsResponseMessage</returns>
-        public DeleteMonitoredItemsResponseMessage DeleteMonitoredItems(DeleteMonitoredItemsRequestMessage? deleteMonitoredItemsRequestMessage = default(DeleteMonitoredItemsRequestMessage?), int operationIndex = 0)
+        /// <returns>DeleteMonitoredItemsResponse</returns>
+        public DeleteMonitoredItemsResponse DeleteMonitoredItems(DeleteMonitoredItemsRequest? deleteMonitoredItemsRequest = default(DeleteMonitoredItemsRequest?), int operationIndex = 0)
         {
-            Org.OpenAPITools.Client.ApiResponse<DeleteMonitoredItemsResponseMessage> localVarResponse = DeleteMonitoredItemsWithHttpInfo(deleteMonitoredItemsRequestMessage);
+            Org.OpenAPITools.Client.ApiResponse<DeleteMonitoredItemsResponse> localVarResponse = DeleteMonitoredItemsWithHttpInfo(deleteMonitoredItemsRequest);
             return localVarResponse.Data;
         }
 
@@ -2639,10 +2639,10 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="deleteMonitoredItemsRequestMessage">DeleteMonitoredItemsRequestMessage (optional)</param>
+        /// <param name="deleteMonitoredItemsRequest">DeleteMonitoredItemsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of DeleteMonitoredItemsResponseMessage</returns>
-        public Org.OpenAPITools.Client.ApiResponse<DeleteMonitoredItemsResponseMessage> DeleteMonitoredItemsWithHttpInfo(DeleteMonitoredItemsRequestMessage? deleteMonitoredItemsRequestMessage = default(DeleteMonitoredItemsRequestMessage?), int operationIndex = 0)
+        /// <returns>ApiResponse of DeleteMonitoredItemsResponse</returns>
+        public Org.OpenAPITools.Client.ApiResponse<DeleteMonitoredItemsResponse> DeleteMonitoredItemsWithHttpInfo(DeleteMonitoredItemsRequest? deleteMonitoredItemsRequest = default(DeleteMonitoredItemsRequest?), int operationIndex = 0)
         {
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
@@ -2667,14 +2667,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = deleteMonitoredItemsRequestMessage;
+            localVarRequestOptions.Data = deleteMonitoredItemsRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.DeleteMonitoredItems";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = this.Client.Post<DeleteMonitoredItemsResponseMessage>("/deletemonitoreditems", localVarRequestOptions, this.Configuration);
+            var localVarResponse = this.Client.Post<DeleteMonitoredItemsResponse>("/deletemonitoreditems", localVarRequestOptions, this.Configuration);
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("DeleteMonitoredItems", localVarResponse);
@@ -2691,13 +2691,13 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="deleteMonitoredItemsRequestMessage">DeleteMonitoredItemsRequestMessage (optional)</param>
+        /// <param name="deleteMonitoredItemsRequest">DeleteMonitoredItemsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of DeleteMonitoredItemsResponseMessage</returns>
-        public async System.Threading.Tasks.Task<DeleteMonitoredItemsResponseMessage> DeleteMonitoredItemsAsync(DeleteMonitoredItemsRequestMessage? deleteMonitoredItemsRequestMessage = default(DeleteMonitoredItemsRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of DeleteMonitoredItemsResponse</returns>
+        public async System.Threading.Tasks.Task<DeleteMonitoredItemsResponse> DeleteMonitoredItemsAsync(DeleteMonitoredItemsRequest? deleteMonitoredItemsRequest = default(DeleteMonitoredItemsRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            Org.OpenAPITools.Client.ApiResponse<DeleteMonitoredItemsResponseMessage> localVarResponse = await DeleteMonitoredItemsWithHttpInfoAsync(deleteMonitoredItemsRequestMessage, operationIndex, cancellationToken).ConfigureAwait(false);
+            Org.OpenAPITools.Client.ApiResponse<DeleteMonitoredItemsResponse> localVarResponse = await DeleteMonitoredItemsWithHttpInfoAsync(deleteMonitoredItemsRequest, operationIndex, cancellationToken).ConfigureAwait(false);
             return localVarResponse.Data;
         }
 
@@ -2705,11 +2705,11 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="deleteMonitoredItemsRequestMessage">DeleteMonitoredItemsRequestMessage (optional)</param>
+        /// <param name="deleteMonitoredItemsRequest">DeleteMonitoredItemsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (DeleteMonitoredItemsResponseMessage)</returns>
-        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<DeleteMonitoredItemsResponseMessage>> DeleteMonitoredItemsWithHttpInfoAsync(DeleteMonitoredItemsRequestMessage? deleteMonitoredItemsRequestMessage = default(DeleteMonitoredItemsRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of ApiResponse (DeleteMonitoredItemsResponse)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<DeleteMonitoredItemsResponse>> DeleteMonitoredItemsWithHttpInfoAsync(DeleteMonitoredItemsRequest? deleteMonitoredItemsRequest = default(DeleteMonitoredItemsRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
 
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
@@ -2735,14 +2735,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = deleteMonitoredItemsRequestMessage;
+            localVarRequestOptions.Data = deleteMonitoredItemsRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.DeleteMonitoredItems";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = await this.AsynchronousClient.PostAsync<DeleteMonitoredItemsResponseMessage>("/deletemonitoreditems", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            var localVarResponse = await this.AsynchronousClient.PostAsync<DeleteMonitoredItemsResponse>("/deletemonitoreditems", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
             if (this.ExceptionFactory != null)
             {
@@ -2760,12 +2760,12 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="deleteSubscriptionsRequestMessage">DeleteSubscriptionsRequestMessage (optional)</param>
+        /// <param name="deleteSubscriptionsRequest">DeleteSubscriptionsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>DeleteSubscriptionsResponseMessage</returns>
-        public DeleteSubscriptionsResponseMessage DeleteSubscriptions(DeleteSubscriptionsRequestMessage? deleteSubscriptionsRequestMessage = default(DeleteSubscriptionsRequestMessage?), int operationIndex = 0)
+        /// <returns>DeleteSubscriptionsResponse</returns>
+        public DeleteSubscriptionsResponse DeleteSubscriptions(DeleteSubscriptionsRequest? deleteSubscriptionsRequest = default(DeleteSubscriptionsRequest?), int operationIndex = 0)
         {
-            Org.OpenAPITools.Client.ApiResponse<DeleteSubscriptionsResponseMessage> localVarResponse = DeleteSubscriptionsWithHttpInfo(deleteSubscriptionsRequestMessage);
+            Org.OpenAPITools.Client.ApiResponse<DeleteSubscriptionsResponse> localVarResponse = DeleteSubscriptionsWithHttpInfo(deleteSubscriptionsRequest);
             return localVarResponse.Data;
         }
 
@@ -2773,10 +2773,10 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="deleteSubscriptionsRequestMessage">DeleteSubscriptionsRequestMessage (optional)</param>
+        /// <param name="deleteSubscriptionsRequest">DeleteSubscriptionsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of DeleteSubscriptionsResponseMessage</returns>
-        public Org.OpenAPITools.Client.ApiResponse<DeleteSubscriptionsResponseMessage> DeleteSubscriptionsWithHttpInfo(DeleteSubscriptionsRequestMessage? deleteSubscriptionsRequestMessage = default(DeleteSubscriptionsRequestMessage?), int operationIndex = 0)
+        /// <returns>ApiResponse of DeleteSubscriptionsResponse</returns>
+        public Org.OpenAPITools.Client.ApiResponse<DeleteSubscriptionsResponse> DeleteSubscriptionsWithHttpInfo(DeleteSubscriptionsRequest? deleteSubscriptionsRequest = default(DeleteSubscriptionsRequest?), int operationIndex = 0)
         {
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
@@ -2801,14 +2801,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = deleteSubscriptionsRequestMessage;
+            localVarRequestOptions.Data = deleteSubscriptionsRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.DeleteSubscriptions";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = this.Client.Post<DeleteSubscriptionsResponseMessage>("/deletesubscriptions", localVarRequestOptions, this.Configuration);
+            var localVarResponse = this.Client.Post<DeleteSubscriptionsResponse>("/deletesubscriptions", localVarRequestOptions, this.Configuration);
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("DeleteSubscriptions", localVarResponse);
@@ -2825,13 +2825,13 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="deleteSubscriptionsRequestMessage">DeleteSubscriptionsRequestMessage (optional)</param>
+        /// <param name="deleteSubscriptionsRequest">DeleteSubscriptionsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of DeleteSubscriptionsResponseMessage</returns>
-        public async System.Threading.Tasks.Task<DeleteSubscriptionsResponseMessage> DeleteSubscriptionsAsync(DeleteSubscriptionsRequestMessage? deleteSubscriptionsRequestMessage = default(DeleteSubscriptionsRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of DeleteSubscriptionsResponse</returns>
+        public async System.Threading.Tasks.Task<DeleteSubscriptionsResponse> DeleteSubscriptionsAsync(DeleteSubscriptionsRequest? deleteSubscriptionsRequest = default(DeleteSubscriptionsRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            Org.OpenAPITools.Client.ApiResponse<DeleteSubscriptionsResponseMessage> localVarResponse = await DeleteSubscriptionsWithHttpInfoAsync(deleteSubscriptionsRequestMessage, operationIndex, cancellationToken).ConfigureAwait(false);
+            Org.OpenAPITools.Client.ApiResponse<DeleteSubscriptionsResponse> localVarResponse = await DeleteSubscriptionsWithHttpInfoAsync(deleteSubscriptionsRequest, operationIndex, cancellationToken).ConfigureAwait(false);
             return localVarResponse.Data;
         }
 
@@ -2839,11 +2839,11 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="deleteSubscriptionsRequestMessage">DeleteSubscriptionsRequestMessage (optional)</param>
+        /// <param name="deleteSubscriptionsRequest">DeleteSubscriptionsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (DeleteSubscriptionsResponseMessage)</returns>
-        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<DeleteSubscriptionsResponseMessage>> DeleteSubscriptionsWithHttpInfoAsync(DeleteSubscriptionsRequestMessage? deleteSubscriptionsRequestMessage = default(DeleteSubscriptionsRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of ApiResponse (DeleteSubscriptionsResponse)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<DeleteSubscriptionsResponse>> DeleteSubscriptionsWithHttpInfoAsync(DeleteSubscriptionsRequest? deleteSubscriptionsRequest = default(DeleteSubscriptionsRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
 
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
@@ -2869,14 +2869,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = deleteSubscriptionsRequestMessage;
+            localVarRequestOptions.Data = deleteSubscriptionsRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.DeleteSubscriptions";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = await this.AsynchronousClient.PostAsync<DeleteSubscriptionsResponseMessage>("/deletesubscriptions", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            var localVarResponse = await this.AsynchronousClient.PostAsync<DeleteSubscriptionsResponse>("/deletesubscriptions", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
             if (this.ExceptionFactory != null)
             {
@@ -2894,12 +2894,12 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="findServersRequestMessage">FindServersRequestMessage (optional)</param>
+        /// <param name="findServersRequest">FindServersRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>FindServersResponseMessage</returns>
-        public FindServersResponseMessage FindServers(FindServersRequestMessage? findServersRequestMessage = default(FindServersRequestMessage?), int operationIndex = 0)
+        /// <returns>FindServersResponse</returns>
+        public FindServersResponse FindServers(FindServersRequest? findServersRequest = default(FindServersRequest?), int operationIndex = 0)
         {
-            Org.OpenAPITools.Client.ApiResponse<FindServersResponseMessage> localVarResponse = FindServersWithHttpInfo(findServersRequestMessage);
+            Org.OpenAPITools.Client.ApiResponse<FindServersResponse> localVarResponse = FindServersWithHttpInfo(findServersRequest);
             return localVarResponse.Data;
         }
 
@@ -2907,10 +2907,10 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="findServersRequestMessage">FindServersRequestMessage (optional)</param>
+        /// <param name="findServersRequest">FindServersRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of FindServersResponseMessage</returns>
-        public Org.OpenAPITools.Client.ApiResponse<FindServersResponseMessage> FindServersWithHttpInfo(FindServersRequestMessage? findServersRequestMessage = default(FindServersRequestMessage?), int operationIndex = 0)
+        /// <returns>ApiResponse of FindServersResponse</returns>
+        public Org.OpenAPITools.Client.ApiResponse<FindServersResponse> FindServersWithHttpInfo(FindServersRequest? findServersRequest = default(FindServersRequest?), int operationIndex = 0)
         {
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
@@ -2935,14 +2935,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = findServersRequestMessage;
+            localVarRequestOptions.Data = findServersRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.FindServers";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = this.Client.Post<FindServersResponseMessage>("/findservers", localVarRequestOptions, this.Configuration);
+            var localVarResponse = this.Client.Post<FindServersResponse>("/findservers", localVarRequestOptions, this.Configuration);
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("FindServers", localVarResponse);
@@ -2959,13 +2959,13 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="findServersRequestMessage">FindServersRequestMessage (optional)</param>
+        /// <param name="findServersRequest">FindServersRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of FindServersResponseMessage</returns>
-        public async System.Threading.Tasks.Task<FindServersResponseMessage> FindServersAsync(FindServersRequestMessage? findServersRequestMessage = default(FindServersRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of FindServersResponse</returns>
+        public async System.Threading.Tasks.Task<FindServersResponse> FindServersAsync(FindServersRequest? findServersRequest = default(FindServersRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            Org.OpenAPITools.Client.ApiResponse<FindServersResponseMessage> localVarResponse = await FindServersWithHttpInfoAsync(findServersRequestMessage, operationIndex, cancellationToken).ConfigureAwait(false);
+            Org.OpenAPITools.Client.ApiResponse<FindServersResponse> localVarResponse = await FindServersWithHttpInfoAsync(findServersRequest, operationIndex, cancellationToken).ConfigureAwait(false);
             return localVarResponse.Data;
         }
 
@@ -2973,11 +2973,11 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="findServersRequestMessage">FindServersRequestMessage (optional)</param>
+        /// <param name="findServersRequest">FindServersRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (FindServersResponseMessage)</returns>
-        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<FindServersResponseMessage>> FindServersWithHttpInfoAsync(FindServersRequestMessage? findServersRequestMessage = default(FindServersRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of ApiResponse (FindServersResponse)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<FindServersResponse>> FindServersWithHttpInfoAsync(FindServersRequest? findServersRequest = default(FindServersRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
 
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
@@ -3003,14 +3003,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = findServersRequestMessage;
+            localVarRequestOptions.Data = findServersRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.FindServers";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = await this.AsynchronousClient.PostAsync<FindServersResponseMessage>("/findservers", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            var localVarResponse = await this.AsynchronousClient.PostAsync<FindServersResponse>("/findservers", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
             if (this.ExceptionFactory != null)
             {
@@ -3028,12 +3028,12 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="getEndpointsRequestMessage">GetEndpointsRequestMessage (optional)</param>
+        /// <param name="getEndpointsRequest">GetEndpointsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>GetEndpointsResponseMessage</returns>
-        public GetEndpointsResponseMessage GetEndpoints(GetEndpointsRequestMessage? getEndpointsRequestMessage = default(GetEndpointsRequestMessage?), int operationIndex = 0)
+        /// <returns>GetEndpointsResponse</returns>
+        public GetEndpointsResponse GetEndpoints(GetEndpointsRequest? getEndpointsRequest = default(GetEndpointsRequest?), int operationIndex = 0)
         {
-            Org.OpenAPITools.Client.ApiResponse<GetEndpointsResponseMessage> localVarResponse = GetEndpointsWithHttpInfo(getEndpointsRequestMessage);
+            Org.OpenAPITools.Client.ApiResponse<GetEndpointsResponse> localVarResponse = GetEndpointsWithHttpInfo(getEndpointsRequest);
             return localVarResponse.Data;
         }
 
@@ -3041,10 +3041,10 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="getEndpointsRequestMessage">GetEndpointsRequestMessage (optional)</param>
+        /// <param name="getEndpointsRequest">GetEndpointsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of GetEndpointsResponseMessage</returns>
-        public Org.OpenAPITools.Client.ApiResponse<GetEndpointsResponseMessage> GetEndpointsWithHttpInfo(GetEndpointsRequestMessage? getEndpointsRequestMessage = default(GetEndpointsRequestMessage?), int operationIndex = 0)
+        /// <returns>ApiResponse of GetEndpointsResponse</returns>
+        public Org.OpenAPITools.Client.ApiResponse<GetEndpointsResponse> GetEndpointsWithHttpInfo(GetEndpointsRequest? getEndpointsRequest = default(GetEndpointsRequest?), int operationIndex = 0)
         {
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
@@ -3069,14 +3069,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = getEndpointsRequestMessage;
+            localVarRequestOptions.Data = getEndpointsRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.GetEndpoints";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = this.Client.Post<GetEndpointsResponseMessage>("/getendpoints", localVarRequestOptions, this.Configuration);
+            var localVarResponse = this.Client.Post<GetEndpointsResponse>("/getendpoints", localVarRequestOptions, this.Configuration);
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("GetEndpoints", localVarResponse);
@@ -3093,13 +3093,13 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="getEndpointsRequestMessage">GetEndpointsRequestMessage (optional)</param>
+        /// <param name="getEndpointsRequest">GetEndpointsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of GetEndpointsResponseMessage</returns>
-        public async System.Threading.Tasks.Task<GetEndpointsResponseMessage> GetEndpointsAsync(GetEndpointsRequestMessage? getEndpointsRequestMessage = default(GetEndpointsRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of GetEndpointsResponse</returns>
+        public async System.Threading.Tasks.Task<GetEndpointsResponse> GetEndpointsAsync(GetEndpointsRequest? getEndpointsRequest = default(GetEndpointsRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            Org.OpenAPITools.Client.ApiResponse<GetEndpointsResponseMessage> localVarResponse = await GetEndpointsWithHttpInfoAsync(getEndpointsRequestMessage, operationIndex, cancellationToken).ConfigureAwait(false);
+            Org.OpenAPITools.Client.ApiResponse<GetEndpointsResponse> localVarResponse = await GetEndpointsWithHttpInfoAsync(getEndpointsRequest, operationIndex, cancellationToken).ConfigureAwait(false);
             return localVarResponse.Data;
         }
 
@@ -3107,11 +3107,11 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="getEndpointsRequestMessage">GetEndpointsRequestMessage (optional)</param>
+        /// <param name="getEndpointsRequest">GetEndpointsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (GetEndpointsResponseMessage)</returns>
-        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<GetEndpointsResponseMessage>> GetEndpointsWithHttpInfoAsync(GetEndpointsRequestMessage? getEndpointsRequestMessage = default(GetEndpointsRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of ApiResponse (GetEndpointsResponse)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<GetEndpointsResponse>> GetEndpointsWithHttpInfoAsync(GetEndpointsRequest? getEndpointsRequest = default(GetEndpointsRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
 
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
@@ -3137,14 +3137,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = getEndpointsRequestMessage;
+            localVarRequestOptions.Data = getEndpointsRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.GetEndpoints";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = await this.AsynchronousClient.PostAsync<GetEndpointsResponseMessage>("/getendpoints", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            var localVarResponse = await this.AsynchronousClient.PostAsync<GetEndpointsResponse>("/getendpoints", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
             if (this.ExceptionFactory != null)
             {
@@ -3162,12 +3162,12 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="historyReadRequestMessage">HistoryReadRequestMessage (optional)</param>
+        /// <param name="historyReadRequest">HistoryReadRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>HistoryReadResponseMessage</returns>
-        public HistoryReadResponseMessage HistoryRead(HistoryReadRequestMessage? historyReadRequestMessage = default(HistoryReadRequestMessage?), int operationIndex = 0)
+        /// <returns>HistoryReadResponse</returns>
+        public HistoryReadResponse HistoryRead(HistoryReadRequest? historyReadRequest = default(HistoryReadRequest?), int operationIndex = 0)
         {
-            Org.OpenAPITools.Client.ApiResponse<HistoryReadResponseMessage> localVarResponse = HistoryReadWithHttpInfo(historyReadRequestMessage);
+            Org.OpenAPITools.Client.ApiResponse<HistoryReadResponse> localVarResponse = HistoryReadWithHttpInfo(historyReadRequest);
             return localVarResponse.Data;
         }
 
@@ -3175,10 +3175,10 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="historyReadRequestMessage">HistoryReadRequestMessage (optional)</param>
+        /// <param name="historyReadRequest">HistoryReadRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of HistoryReadResponseMessage</returns>
-        public Org.OpenAPITools.Client.ApiResponse<HistoryReadResponseMessage> HistoryReadWithHttpInfo(HistoryReadRequestMessage? historyReadRequestMessage = default(HistoryReadRequestMessage?), int operationIndex = 0)
+        /// <returns>ApiResponse of HistoryReadResponse</returns>
+        public Org.OpenAPITools.Client.ApiResponse<HistoryReadResponse> HistoryReadWithHttpInfo(HistoryReadRequest? historyReadRequest = default(HistoryReadRequest?), int operationIndex = 0)
         {
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
@@ -3203,14 +3203,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = historyReadRequestMessage;
+            localVarRequestOptions.Data = historyReadRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.HistoryRead";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = this.Client.Post<HistoryReadResponseMessage>("/historyread", localVarRequestOptions, this.Configuration);
+            var localVarResponse = this.Client.Post<HistoryReadResponse>("/historyread", localVarRequestOptions, this.Configuration);
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("HistoryRead", localVarResponse);
@@ -3227,13 +3227,13 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="historyReadRequestMessage">HistoryReadRequestMessage (optional)</param>
+        /// <param name="historyReadRequest">HistoryReadRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of HistoryReadResponseMessage</returns>
-        public async System.Threading.Tasks.Task<HistoryReadResponseMessage> HistoryReadAsync(HistoryReadRequestMessage? historyReadRequestMessage = default(HistoryReadRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of HistoryReadResponse</returns>
+        public async System.Threading.Tasks.Task<HistoryReadResponse> HistoryReadAsync(HistoryReadRequest? historyReadRequest = default(HistoryReadRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            Org.OpenAPITools.Client.ApiResponse<HistoryReadResponseMessage> localVarResponse = await HistoryReadWithHttpInfoAsync(historyReadRequestMessage, operationIndex, cancellationToken).ConfigureAwait(false);
+            Org.OpenAPITools.Client.ApiResponse<HistoryReadResponse> localVarResponse = await HistoryReadWithHttpInfoAsync(historyReadRequest, operationIndex, cancellationToken).ConfigureAwait(false);
             return localVarResponse.Data;
         }
 
@@ -3241,11 +3241,11 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="historyReadRequestMessage">HistoryReadRequestMessage (optional)</param>
+        /// <param name="historyReadRequest">HistoryReadRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (HistoryReadResponseMessage)</returns>
-        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<HistoryReadResponseMessage>> HistoryReadWithHttpInfoAsync(HistoryReadRequestMessage? historyReadRequestMessage = default(HistoryReadRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of ApiResponse (HistoryReadResponse)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<HistoryReadResponse>> HistoryReadWithHttpInfoAsync(HistoryReadRequest? historyReadRequest = default(HistoryReadRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
 
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
@@ -3271,14 +3271,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = historyReadRequestMessage;
+            localVarRequestOptions.Data = historyReadRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.HistoryRead";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = await this.AsynchronousClient.PostAsync<HistoryReadResponseMessage>("/historyread", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            var localVarResponse = await this.AsynchronousClient.PostAsync<HistoryReadResponse>("/historyread", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
             if (this.ExceptionFactory != null)
             {
@@ -3296,12 +3296,12 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="historyUpdateRequestMessage">HistoryUpdateRequestMessage (optional)</param>
+        /// <param name="historyUpdateRequest">HistoryUpdateRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>HistoryUpdateResponseMessage</returns>
-        public HistoryUpdateResponseMessage HistoryUpdate(HistoryUpdateRequestMessage? historyUpdateRequestMessage = default(HistoryUpdateRequestMessage?), int operationIndex = 0)
+        /// <returns>HistoryUpdateResponse</returns>
+        public HistoryUpdateResponse HistoryUpdate(HistoryUpdateRequest? historyUpdateRequest = default(HistoryUpdateRequest?), int operationIndex = 0)
         {
-            Org.OpenAPITools.Client.ApiResponse<HistoryUpdateResponseMessage> localVarResponse = HistoryUpdateWithHttpInfo(historyUpdateRequestMessage);
+            Org.OpenAPITools.Client.ApiResponse<HistoryUpdateResponse> localVarResponse = HistoryUpdateWithHttpInfo(historyUpdateRequest);
             return localVarResponse.Data;
         }
 
@@ -3309,10 +3309,10 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="historyUpdateRequestMessage">HistoryUpdateRequestMessage (optional)</param>
+        /// <param name="historyUpdateRequest">HistoryUpdateRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of HistoryUpdateResponseMessage</returns>
-        public Org.OpenAPITools.Client.ApiResponse<HistoryUpdateResponseMessage> HistoryUpdateWithHttpInfo(HistoryUpdateRequestMessage? historyUpdateRequestMessage = default(HistoryUpdateRequestMessage?), int operationIndex = 0)
+        /// <returns>ApiResponse of HistoryUpdateResponse</returns>
+        public Org.OpenAPITools.Client.ApiResponse<HistoryUpdateResponse> HistoryUpdateWithHttpInfo(HistoryUpdateRequest? historyUpdateRequest = default(HistoryUpdateRequest?), int operationIndex = 0)
         {
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
@@ -3337,14 +3337,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = historyUpdateRequestMessage;
+            localVarRequestOptions.Data = historyUpdateRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.HistoryUpdate";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = this.Client.Post<HistoryUpdateResponseMessage>("/historyupdate", localVarRequestOptions, this.Configuration);
+            var localVarResponse = this.Client.Post<HistoryUpdateResponse>("/historyupdate", localVarRequestOptions, this.Configuration);
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("HistoryUpdate", localVarResponse);
@@ -3361,13 +3361,13 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="historyUpdateRequestMessage">HistoryUpdateRequestMessage (optional)</param>
+        /// <param name="historyUpdateRequest">HistoryUpdateRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of HistoryUpdateResponseMessage</returns>
-        public async System.Threading.Tasks.Task<HistoryUpdateResponseMessage> HistoryUpdateAsync(HistoryUpdateRequestMessage? historyUpdateRequestMessage = default(HistoryUpdateRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of HistoryUpdateResponse</returns>
+        public async System.Threading.Tasks.Task<HistoryUpdateResponse> HistoryUpdateAsync(HistoryUpdateRequest? historyUpdateRequest = default(HistoryUpdateRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            Org.OpenAPITools.Client.ApiResponse<HistoryUpdateResponseMessage> localVarResponse = await HistoryUpdateWithHttpInfoAsync(historyUpdateRequestMessage, operationIndex, cancellationToken).ConfigureAwait(false);
+            Org.OpenAPITools.Client.ApiResponse<HistoryUpdateResponse> localVarResponse = await HistoryUpdateWithHttpInfoAsync(historyUpdateRequest, operationIndex, cancellationToken).ConfigureAwait(false);
             return localVarResponse.Data;
         }
 
@@ -3375,11 +3375,11 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="historyUpdateRequestMessage">HistoryUpdateRequestMessage (optional)</param>
+        /// <param name="historyUpdateRequest">HistoryUpdateRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (HistoryUpdateResponseMessage)</returns>
-        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<HistoryUpdateResponseMessage>> HistoryUpdateWithHttpInfoAsync(HistoryUpdateRequestMessage? historyUpdateRequestMessage = default(HistoryUpdateRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of ApiResponse (HistoryUpdateResponse)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<HistoryUpdateResponse>> HistoryUpdateWithHttpInfoAsync(HistoryUpdateRequest? historyUpdateRequest = default(HistoryUpdateRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
 
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
@@ -3405,14 +3405,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = historyUpdateRequestMessage;
+            localVarRequestOptions.Data = historyUpdateRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.HistoryUpdate";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = await this.AsynchronousClient.PostAsync<HistoryUpdateResponseMessage>("/historyupdate", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            var localVarResponse = await this.AsynchronousClient.PostAsync<HistoryUpdateResponse>("/historyupdate", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
             if (this.ExceptionFactory != null)
             {
@@ -3430,12 +3430,12 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="modifyMonitoredItemsRequestMessage">ModifyMonitoredItemsRequestMessage (optional)</param>
+        /// <param name="modifyMonitoredItemsRequest">ModifyMonitoredItemsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ModifyMonitoredItemsResponseMessage</returns>
-        public ModifyMonitoredItemsResponseMessage ModifyMonitoredItems(ModifyMonitoredItemsRequestMessage? modifyMonitoredItemsRequestMessage = default(ModifyMonitoredItemsRequestMessage?), int operationIndex = 0)
+        /// <returns>ModifyMonitoredItemsResponse</returns>
+        public ModifyMonitoredItemsResponse ModifyMonitoredItems(ModifyMonitoredItemsRequest? modifyMonitoredItemsRequest = default(ModifyMonitoredItemsRequest?), int operationIndex = 0)
         {
-            Org.OpenAPITools.Client.ApiResponse<ModifyMonitoredItemsResponseMessage> localVarResponse = ModifyMonitoredItemsWithHttpInfo(modifyMonitoredItemsRequestMessage);
+            Org.OpenAPITools.Client.ApiResponse<ModifyMonitoredItemsResponse> localVarResponse = ModifyMonitoredItemsWithHttpInfo(modifyMonitoredItemsRequest);
             return localVarResponse.Data;
         }
 
@@ -3443,10 +3443,10 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="modifyMonitoredItemsRequestMessage">ModifyMonitoredItemsRequestMessage (optional)</param>
+        /// <param name="modifyMonitoredItemsRequest">ModifyMonitoredItemsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of ModifyMonitoredItemsResponseMessage</returns>
-        public Org.OpenAPITools.Client.ApiResponse<ModifyMonitoredItemsResponseMessage> ModifyMonitoredItemsWithHttpInfo(ModifyMonitoredItemsRequestMessage? modifyMonitoredItemsRequestMessage = default(ModifyMonitoredItemsRequestMessage?), int operationIndex = 0)
+        /// <returns>ApiResponse of ModifyMonitoredItemsResponse</returns>
+        public Org.OpenAPITools.Client.ApiResponse<ModifyMonitoredItemsResponse> ModifyMonitoredItemsWithHttpInfo(ModifyMonitoredItemsRequest? modifyMonitoredItemsRequest = default(ModifyMonitoredItemsRequest?), int operationIndex = 0)
         {
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
@@ -3471,14 +3471,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = modifyMonitoredItemsRequestMessage;
+            localVarRequestOptions.Data = modifyMonitoredItemsRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.ModifyMonitoredItems";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = this.Client.Post<ModifyMonitoredItemsResponseMessage>("/modifymonitoreditems", localVarRequestOptions, this.Configuration);
+            var localVarResponse = this.Client.Post<ModifyMonitoredItemsResponse>("/modifymonitoreditems", localVarRequestOptions, this.Configuration);
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("ModifyMonitoredItems", localVarResponse);
@@ -3495,13 +3495,13 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="modifyMonitoredItemsRequestMessage">ModifyMonitoredItemsRequestMessage (optional)</param>
+        /// <param name="modifyMonitoredItemsRequest">ModifyMonitoredItemsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ModifyMonitoredItemsResponseMessage</returns>
-        public async System.Threading.Tasks.Task<ModifyMonitoredItemsResponseMessage> ModifyMonitoredItemsAsync(ModifyMonitoredItemsRequestMessage? modifyMonitoredItemsRequestMessage = default(ModifyMonitoredItemsRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of ModifyMonitoredItemsResponse</returns>
+        public async System.Threading.Tasks.Task<ModifyMonitoredItemsResponse> ModifyMonitoredItemsAsync(ModifyMonitoredItemsRequest? modifyMonitoredItemsRequest = default(ModifyMonitoredItemsRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            Org.OpenAPITools.Client.ApiResponse<ModifyMonitoredItemsResponseMessage> localVarResponse = await ModifyMonitoredItemsWithHttpInfoAsync(modifyMonitoredItemsRequestMessage, operationIndex, cancellationToken).ConfigureAwait(false);
+            Org.OpenAPITools.Client.ApiResponse<ModifyMonitoredItemsResponse> localVarResponse = await ModifyMonitoredItemsWithHttpInfoAsync(modifyMonitoredItemsRequest, operationIndex, cancellationToken).ConfigureAwait(false);
             return localVarResponse.Data;
         }
 
@@ -3509,11 +3509,11 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="modifyMonitoredItemsRequestMessage">ModifyMonitoredItemsRequestMessage (optional)</param>
+        /// <param name="modifyMonitoredItemsRequest">ModifyMonitoredItemsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (ModifyMonitoredItemsResponseMessage)</returns>
-        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<ModifyMonitoredItemsResponseMessage>> ModifyMonitoredItemsWithHttpInfoAsync(ModifyMonitoredItemsRequestMessage? modifyMonitoredItemsRequestMessage = default(ModifyMonitoredItemsRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of ApiResponse (ModifyMonitoredItemsResponse)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<ModifyMonitoredItemsResponse>> ModifyMonitoredItemsWithHttpInfoAsync(ModifyMonitoredItemsRequest? modifyMonitoredItemsRequest = default(ModifyMonitoredItemsRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
 
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
@@ -3539,14 +3539,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = modifyMonitoredItemsRequestMessage;
+            localVarRequestOptions.Data = modifyMonitoredItemsRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.ModifyMonitoredItems";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = await this.AsynchronousClient.PostAsync<ModifyMonitoredItemsResponseMessage>("/modifymonitoreditems", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            var localVarResponse = await this.AsynchronousClient.PostAsync<ModifyMonitoredItemsResponse>("/modifymonitoreditems", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
             if (this.ExceptionFactory != null)
             {
@@ -3564,12 +3564,12 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="modifySubscriptionRequestMessage">ModifySubscriptionRequestMessage (optional)</param>
+        /// <param name="modifySubscriptionRequest">ModifySubscriptionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ModifySubscriptionResponseMessage</returns>
-        public ModifySubscriptionResponseMessage ModifySubscription(ModifySubscriptionRequestMessage? modifySubscriptionRequestMessage = default(ModifySubscriptionRequestMessage?), int operationIndex = 0)
+        /// <returns>ModifySubscriptionResponse</returns>
+        public ModifySubscriptionResponse ModifySubscription(ModifySubscriptionRequest? modifySubscriptionRequest = default(ModifySubscriptionRequest?), int operationIndex = 0)
         {
-            Org.OpenAPITools.Client.ApiResponse<ModifySubscriptionResponseMessage> localVarResponse = ModifySubscriptionWithHttpInfo(modifySubscriptionRequestMessage);
+            Org.OpenAPITools.Client.ApiResponse<ModifySubscriptionResponse> localVarResponse = ModifySubscriptionWithHttpInfo(modifySubscriptionRequest);
             return localVarResponse.Data;
         }
 
@@ -3577,10 +3577,10 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="modifySubscriptionRequestMessage">ModifySubscriptionRequestMessage (optional)</param>
+        /// <param name="modifySubscriptionRequest">ModifySubscriptionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of ModifySubscriptionResponseMessage</returns>
-        public Org.OpenAPITools.Client.ApiResponse<ModifySubscriptionResponseMessage> ModifySubscriptionWithHttpInfo(ModifySubscriptionRequestMessage? modifySubscriptionRequestMessage = default(ModifySubscriptionRequestMessage?), int operationIndex = 0)
+        /// <returns>ApiResponse of ModifySubscriptionResponse</returns>
+        public Org.OpenAPITools.Client.ApiResponse<ModifySubscriptionResponse> ModifySubscriptionWithHttpInfo(ModifySubscriptionRequest? modifySubscriptionRequest = default(ModifySubscriptionRequest?), int operationIndex = 0)
         {
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
@@ -3605,14 +3605,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = modifySubscriptionRequestMessage;
+            localVarRequestOptions.Data = modifySubscriptionRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.ModifySubscription";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = this.Client.Post<ModifySubscriptionResponseMessage>("/modifysubscription", localVarRequestOptions, this.Configuration);
+            var localVarResponse = this.Client.Post<ModifySubscriptionResponse>("/modifysubscription", localVarRequestOptions, this.Configuration);
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("ModifySubscription", localVarResponse);
@@ -3629,13 +3629,13 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="modifySubscriptionRequestMessage">ModifySubscriptionRequestMessage (optional)</param>
+        /// <param name="modifySubscriptionRequest">ModifySubscriptionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ModifySubscriptionResponseMessage</returns>
-        public async System.Threading.Tasks.Task<ModifySubscriptionResponseMessage> ModifySubscriptionAsync(ModifySubscriptionRequestMessage? modifySubscriptionRequestMessage = default(ModifySubscriptionRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of ModifySubscriptionResponse</returns>
+        public async System.Threading.Tasks.Task<ModifySubscriptionResponse> ModifySubscriptionAsync(ModifySubscriptionRequest? modifySubscriptionRequest = default(ModifySubscriptionRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            Org.OpenAPITools.Client.ApiResponse<ModifySubscriptionResponseMessage> localVarResponse = await ModifySubscriptionWithHttpInfoAsync(modifySubscriptionRequestMessage, operationIndex, cancellationToken).ConfigureAwait(false);
+            Org.OpenAPITools.Client.ApiResponse<ModifySubscriptionResponse> localVarResponse = await ModifySubscriptionWithHttpInfoAsync(modifySubscriptionRequest, operationIndex, cancellationToken).ConfigureAwait(false);
             return localVarResponse.Data;
         }
 
@@ -3643,11 +3643,11 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="modifySubscriptionRequestMessage">ModifySubscriptionRequestMessage (optional)</param>
+        /// <param name="modifySubscriptionRequest">ModifySubscriptionRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (ModifySubscriptionResponseMessage)</returns>
-        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<ModifySubscriptionResponseMessage>> ModifySubscriptionWithHttpInfoAsync(ModifySubscriptionRequestMessage? modifySubscriptionRequestMessage = default(ModifySubscriptionRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of ApiResponse (ModifySubscriptionResponse)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<ModifySubscriptionResponse>> ModifySubscriptionWithHttpInfoAsync(ModifySubscriptionRequest? modifySubscriptionRequest = default(ModifySubscriptionRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
 
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
@@ -3673,14 +3673,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = modifySubscriptionRequestMessage;
+            localVarRequestOptions.Data = modifySubscriptionRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.ModifySubscription";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = await this.AsynchronousClient.PostAsync<ModifySubscriptionResponseMessage>("/modifysubscription", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            var localVarResponse = await this.AsynchronousClient.PostAsync<ModifySubscriptionResponse>("/modifysubscription", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
             if (this.ExceptionFactory != null)
             {
@@ -3698,12 +3698,12 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="publishRequestMessage">PublishRequestMessage (optional)</param>
+        /// <param name="publishRequest">PublishRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>PublishResponseMessage</returns>
-        public PublishResponseMessage Publish(PublishRequestMessage? publishRequestMessage = default(PublishRequestMessage?), int operationIndex = 0)
+        /// <returns>PublishResponse</returns>
+        public PublishResponse Publish(PublishRequest? publishRequest = default(PublishRequest?), int operationIndex = 0)
         {
-            Org.OpenAPITools.Client.ApiResponse<PublishResponseMessage> localVarResponse = PublishWithHttpInfo(publishRequestMessage);
+            Org.OpenAPITools.Client.ApiResponse<PublishResponse> localVarResponse = PublishWithHttpInfo(publishRequest);
             return localVarResponse.Data;
         }
 
@@ -3711,10 +3711,10 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="publishRequestMessage">PublishRequestMessage (optional)</param>
+        /// <param name="publishRequest">PublishRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of PublishResponseMessage</returns>
-        public Org.OpenAPITools.Client.ApiResponse<PublishResponseMessage> PublishWithHttpInfo(PublishRequestMessage? publishRequestMessage = default(PublishRequestMessage?), int operationIndex = 0)
+        /// <returns>ApiResponse of PublishResponse</returns>
+        public Org.OpenAPITools.Client.ApiResponse<PublishResponse> PublishWithHttpInfo(PublishRequest? publishRequest = default(PublishRequest?), int operationIndex = 0)
         {
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
@@ -3739,14 +3739,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = publishRequestMessage;
+            localVarRequestOptions.Data = publishRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.Publish";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = this.Client.Post<PublishResponseMessage>("/publish", localVarRequestOptions, this.Configuration);
+            var localVarResponse = this.Client.Post<PublishResponse>("/publish", localVarRequestOptions, this.Configuration);
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("Publish", localVarResponse);
@@ -3763,13 +3763,13 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="publishRequestMessage">PublishRequestMessage (optional)</param>
+        /// <param name="publishRequest">PublishRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of PublishResponseMessage</returns>
-        public async System.Threading.Tasks.Task<PublishResponseMessage> PublishAsync(PublishRequestMessage? publishRequestMessage = default(PublishRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of PublishResponse</returns>
+        public async System.Threading.Tasks.Task<PublishResponse> PublishAsync(PublishRequest? publishRequest = default(PublishRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            Org.OpenAPITools.Client.ApiResponse<PublishResponseMessage> localVarResponse = await PublishWithHttpInfoAsync(publishRequestMessage, operationIndex, cancellationToken).ConfigureAwait(false);
+            Org.OpenAPITools.Client.ApiResponse<PublishResponse> localVarResponse = await PublishWithHttpInfoAsync(publishRequest, operationIndex, cancellationToken).ConfigureAwait(false);
             return localVarResponse.Data;
         }
 
@@ -3777,11 +3777,11 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="publishRequestMessage">PublishRequestMessage (optional)</param>
+        /// <param name="publishRequest">PublishRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (PublishResponseMessage)</returns>
-        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<PublishResponseMessage>> PublishWithHttpInfoAsync(PublishRequestMessage? publishRequestMessage = default(PublishRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of ApiResponse (PublishResponse)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<PublishResponse>> PublishWithHttpInfoAsync(PublishRequest? publishRequest = default(PublishRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
 
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
@@ -3807,14 +3807,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = publishRequestMessage;
+            localVarRequestOptions.Data = publishRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.Publish";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = await this.AsynchronousClient.PostAsync<PublishResponseMessage>("/publish", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            var localVarResponse = await this.AsynchronousClient.PostAsync<PublishResponse>("/publish", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
             if (this.ExceptionFactory != null)
             {
@@ -3832,12 +3832,12 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="readRequestMessage">ReadRequestMessage (optional)</param>
+        /// <param name="readRequest">ReadRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ReadResponseMessage</returns>
-        public ReadResponseMessage Read(ReadRequestMessage? readRequestMessage = default(ReadRequestMessage?), int operationIndex = 0)
+        /// <returns>ReadResponse</returns>
+        public ReadResponse Read(ReadRequest? readRequest = default(ReadRequest?), int operationIndex = 0)
         {
-            Org.OpenAPITools.Client.ApiResponse<ReadResponseMessage> localVarResponse = ReadWithHttpInfo(readRequestMessage);
+            Org.OpenAPITools.Client.ApiResponse<ReadResponse> localVarResponse = ReadWithHttpInfo(readRequest);
             return localVarResponse.Data;
         }
 
@@ -3845,10 +3845,10 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="readRequestMessage">ReadRequestMessage (optional)</param>
+        /// <param name="readRequest">ReadRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of ReadResponseMessage</returns>
-        public Org.OpenAPITools.Client.ApiResponse<ReadResponseMessage> ReadWithHttpInfo(ReadRequestMessage? readRequestMessage = default(ReadRequestMessage?), int operationIndex = 0)
+        /// <returns>ApiResponse of ReadResponse</returns>
+        public Org.OpenAPITools.Client.ApiResponse<ReadResponse> ReadWithHttpInfo(ReadRequest? readRequest = default(ReadRequest?), int operationIndex = 0)
         {
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
@@ -3873,14 +3873,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = readRequestMessage;
+            localVarRequestOptions.Data = readRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.Read";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = this.Client.Post<ReadResponseMessage>("/read", localVarRequestOptions, this.Configuration);
+            var localVarResponse = this.Client.Post<ReadResponse>("/read", localVarRequestOptions, this.Configuration);
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("Read", localVarResponse);
@@ -3897,13 +3897,13 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="readRequestMessage">ReadRequestMessage (optional)</param>
+        /// <param name="readRequest">ReadRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ReadResponseMessage</returns>
-        public async System.Threading.Tasks.Task<ReadResponseMessage> ReadAsync(ReadRequestMessage? readRequestMessage = default(ReadRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of ReadResponse</returns>
+        public async System.Threading.Tasks.Task<ReadResponse> ReadAsync(ReadRequest? readRequest = default(ReadRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            Org.OpenAPITools.Client.ApiResponse<ReadResponseMessage> localVarResponse = await ReadWithHttpInfoAsync(readRequestMessage, operationIndex, cancellationToken).ConfigureAwait(false);
+            Org.OpenAPITools.Client.ApiResponse<ReadResponse> localVarResponse = await ReadWithHttpInfoAsync(readRequest, operationIndex, cancellationToken).ConfigureAwait(false);
             return localVarResponse.Data;
         }
 
@@ -3911,11 +3911,11 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="readRequestMessage">ReadRequestMessage (optional)</param>
+        /// <param name="readRequest">ReadRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (ReadResponseMessage)</returns>
-        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<ReadResponseMessage>> ReadWithHttpInfoAsync(ReadRequestMessage? readRequestMessage = default(ReadRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of ApiResponse (ReadResponse)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<ReadResponse>> ReadWithHttpInfoAsync(ReadRequest? readRequest = default(ReadRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
 
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
@@ -3941,14 +3941,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = readRequestMessage;
+            localVarRequestOptions.Data = readRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.Read";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = await this.AsynchronousClient.PostAsync<ReadResponseMessage>("/read", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            var localVarResponse = await this.AsynchronousClient.PostAsync<ReadResponse>("/read", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
             if (this.ExceptionFactory != null)
             {
@@ -3966,12 +3966,12 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="registerNodesRequestMessage">RegisterNodesRequestMessage (optional)</param>
+        /// <param name="registerNodesRequest">RegisterNodesRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>RegisterNodesResponseMessage</returns>
-        public RegisterNodesResponseMessage RegisterNodes(RegisterNodesRequestMessage? registerNodesRequestMessage = default(RegisterNodesRequestMessage?), int operationIndex = 0)
+        /// <returns>RegisterNodesResponse</returns>
+        public RegisterNodesResponse RegisterNodes(RegisterNodesRequest? registerNodesRequest = default(RegisterNodesRequest?), int operationIndex = 0)
         {
-            Org.OpenAPITools.Client.ApiResponse<RegisterNodesResponseMessage> localVarResponse = RegisterNodesWithHttpInfo(registerNodesRequestMessage);
+            Org.OpenAPITools.Client.ApiResponse<RegisterNodesResponse> localVarResponse = RegisterNodesWithHttpInfo(registerNodesRequest);
             return localVarResponse.Data;
         }
 
@@ -3979,10 +3979,10 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="registerNodesRequestMessage">RegisterNodesRequestMessage (optional)</param>
+        /// <param name="registerNodesRequest">RegisterNodesRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of RegisterNodesResponseMessage</returns>
-        public Org.OpenAPITools.Client.ApiResponse<RegisterNodesResponseMessage> RegisterNodesWithHttpInfo(RegisterNodesRequestMessage? registerNodesRequestMessage = default(RegisterNodesRequestMessage?), int operationIndex = 0)
+        /// <returns>ApiResponse of RegisterNodesResponse</returns>
+        public Org.OpenAPITools.Client.ApiResponse<RegisterNodesResponse> RegisterNodesWithHttpInfo(RegisterNodesRequest? registerNodesRequest = default(RegisterNodesRequest?), int operationIndex = 0)
         {
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
@@ -4007,14 +4007,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = registerNodesRequestMessage;
+            localVarRequestOptions.Data = registerNodesRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.RegisterNodes";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = this.Client.Post<RegisterNodesResponseMessage>("/registernodes", localVarRequestOptions, this.Configuration);
+            var localVarResponse = this.Client.Post<RegisterNodesResponse>("/registernodes", localVarRequestOptions, this.Configuration);
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("RegisterNodes", localVarResponse);
@@ -4031,13 +4031,13 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="registerNodesRequestMessage">RegisterNodesRequestMessage (optional)</param>
+        /// <param name="registerNodesRequest">RegisterNodesRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of RegisterNodesResponseMessage</returns>
-        public async System.Threading.Tasks.Task<RegisterNodesResponseMessage> RegisterNodesAsync(RegisterNodesRequestMessage? registerNodesRequestMessage = default(RegisterNodesRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of RegisterNodesResponse</returns>
+        public async System.Threading.Tasks.Task<RegisterNodesResponse> RegisterNodesAsync(RegisterNodesRequest? registerNodesRequest = default(RegisterNodesRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            Org.OpenAPITools.Client.ApiResponse<RegisterNodesResponseMessage> localVarResponse = await RegisterNodesWithHttpInfoAsync(registerNodesRequestMessage, operationIndex, cancellationToken).ConfigureAwait(false);
+            Org.OpenAPITools.Client.ApiResponse<RegisterNodesResponse> localVarResponse = await RegisterNodesWithHttpInfoAsync(registerNodesRequest, operationIndex, cancellationToken).ConfigureAwait(false);
             return localVarResponse.Data;
         }
 
@@ -4045,11 +4045,11 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="registerNodesRequestMessage">RegisterNodesRequestMessage (optional)</param>
+        /// <param name="registerNodesRequest">RegisterNodesRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (RegisterNodesResponseMessage)</returns>
-        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<RegisterNodesResponseMessage>> RegisterNodesWithHttpInfoAsync(RegisterNodesRequestMessage? registerNodesRequestMessage = default(RegisterNodesRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of ApiResponse (RegisterNodesResponse)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<RegisterNodesResponse>> RegisterNodesWithHttpInfoAsync(RegisterNodesRequest? registerNodesRequest = default(RegisterNodesRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
 
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
@@ -4075,14 +4075,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = registerNodesRequestMessage;
+            localVarRequestOptions.Data = registerNodesRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.RegisterNodes";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = await this.AsynchronousClient.PostAsync<RegisterNodesResponseMessage>("/registernodes", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            var localVarResponse = await this.AsynchronousClient.PostAsync<RegisterNodesResponse>("/registernodes", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
             if (this.ExceptionFactory != null)
             {
@@ -4100,12 +4100,12 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="republishRequestMessage">RepublishRequestMessage (optional)</param>
+        /// <param name="republishRequest">RepublishRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>RepublishResponseMessage</returns>
-        public RepublishResponseMessage Republish(RepublishRequestMessage? republishRequestMessage = default(RepublishRequestMessage?), int operationIndex = 0)
+        /// <returns>RepublishResponse</returns>
+        public RepublishResponse Republish(RepublishRequest? republishRequest = default(RepublishRequest?), int operationIndex = 0)
         {
-            Org.OpenAPITools.Client.ApiResponse<RepublishResponseMessage> localVarResponse = RepublishWithHttpInfo(republishRequestMessage);
+            Org.OpenAPITools.Client.ApiResponse<RepublishResponse> localVarResponse = RepublishWithHttpInfo(republishRequest);
             return localVarResponse.Data;
         }
 
@@ -4113,10 +4113,10 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="republishRequestMessage">RepublishRequestMessage (optional)</param>
+        /// <param name="republishRequest">RepublishRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of RepublishResponseMessage</returns>
-        public Org.OpenAPITools.Client.ApiResponse<RepublishResponseMessage> RepublishWithHttpInfo(RepublishRequestMessage? republishRequestMessage = default(RepublishRequestMessage?), int operationIndex = 0)
+        /// <returns>ApiResponse of RepublishResponse</returns>
+        public Org.OpenAPITools.Client.ApiResponse<RepublishResponse> RepublishWithHttpInfo(RepublishRequest? republishRequest = default(RepublishRequest?), int operationIndex = 0)
         {
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
@@ -4141,14 +4141,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = republishRequestMessage;
+            localVarRequestOptions.Data = republishRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.Republish";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = this.Client.Post<RepublishResponseMessage>("/republish", localVarRequestOptions, this.Configuration);
+            var localVarResponse = this.Client.Post<RepublishResponse>("/republish", localVarRequestOptions, this.Configuration);
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("Republish", localVarResponse);
@@ -4165,13 +4165,13 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="republishRequestMessage">RepublishRequestMessage (optional)</param>
+        /// <param name="republishRequest">RepublishRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of RepublishResponseMessage</returns>
-        public async System.Threading.Tasks.Task<RepublishResponseMessage> RepublishAsync(RepublishRequestMessage? republishRequestMessage = default(RepublishRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of RepublishResponse</returns>
+        public async System.Threading.Tasks.Task<RepublishResponse> RepublishAsync(RepublishRequest? republishRequest = default(RepublishRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            Org.OpenAPITools.Client.ApiResponse<RepublishResponseMessage> localVarResponse = await RepublishWithHttpInfoAsync(republishRequestMessage, operationIndex, cancellationToken).ConfigureAwait(false);
+            Org.OpenAPITools.Client.ApiResponse<RepublishResponse> localVarResponse = await RepublishWithHttpInfoAsync(republishRequest, operationIndex, cancellationToken).ConfigureAwait(false);
             return localVarResponse.Data;
         }
 
@@ -4179,11 +4179,11 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="republishRequestMessage">RepublishRequestMessage (optional)</param>
+        /// <param name="republishRequest">RepublishRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (RepublishResponseMessage)</returns>
-        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<RepublishResponseMessage>> RepublishWithHttpInfoAsync(RepublishRequestMessage? republishRequestMessage = default(RepublishRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of ApiResponse (RepublishResponse)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<RepublishResponse>> RepublishWithHttpInfoAsync(RepublishRequest? republishRequest = default(RepublishRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
 
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
@@ -4209,14 +4209,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = republishRequestMessage;
+            localVarRequestOptions.Data = republishRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.Republish";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = await this.AsynchronousClient.PostAsync<RepublishResponseMessage>("/republish", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            var localVarResponse = await this.AsynchronousClient.PostAsync<RepublishResponse>("/republish", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
             if (this.ExceptionFactory != null)
             {
@@ -4234,12 +4234,12 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="setMonitoringModeRequestMessage">SetMonitoringModeRequestMessage (optional)</param>
+        /// <param name="setMonitoringModeRequest">SetMonitoringModeRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>SetMonitoringModeResponseMessage</returns>
-        public SetMonitoringModeResponseMessage SetMonitoringMode(SetMonitoringModeRequestMessage? setMonitoringModeRequestMessage = default(SetMonitoringModeRequestMessage?), int operationIndex = 0)
+        /// <returns>SetMonitoringModeResponse</returns>
+        public SetMonitoringModeResponse SetMonitoringMode(SetMonitoringModeRequest? setMonitoringModeRequest = default(SetMonitoringModeRequest?), int operationIndex = 0)
         {
-            Org.OpenAPITools.Client.ApiResponse<SetMonitoringModeResponseMessage> localVarResponse = SetMonitoringModeWithHttpInfo(setMonitoringModeRequestMessage);
+            Org.OpenAPITools.Client.ApiResponse<SetMonitoringModeResponse> localVarResponse = SetMonitoringModeWithHttpInfo(setMonitoringModeRequest);
             return localVarResponse.Data;
         }
 
@@ -4247,10 +4247,10 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="setMonitoringModeRequestMessage">SetMonitoringModeRequestMessage (optional)</param>
+        /// <param name="setMonitoringModeRequest">SetMonitoringModeRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of SetMonitoringModeResponseMessage</returns>
-        public Org.OpenAPITools.Client.ApiResponse<SetMonitoringModeResponseMessage> SetMonitoringModeWithHttpInfo(SetMonitoringModeRequestMessage? setMonitoringModeRequestMessage = default(SetMonitoringModeRequestMessage?), int operationIndex = 0)
+        /// <returns>ApiResponse of SetMonitoringModeResponse</returns>
+        public Org.OpenAPITools.Client.ApiResponse<SetMonitoringModeResponse> SetMonitoringModeWithHttpInfo(SetMonitoringModeRequest? setMonitoringModeRequest = default(SetMonitoringModeRequest?), int operationIndex = 0)
         {
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
@@ -4275,14 +4275,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = setMonitoringModeRequestMessage;
+            localVarRequestOptions.Data = setMonitoringModeRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.SetMonitoringMode";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = this.Client.Post<SetMonitoringModeResponseMessage>("/setmonitoringmode", localVarRequestOptions, this.Configuration);
+            var localVarResponse = this.Client.Post<SetMonitoringModeResponse>("/setmonitoringmode", localVarRequestOptions, this.Configuration);
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("SetMonitoringMode", localVarResponse);
@@ -4299,13 +4299,13 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="setMonitoringModeRequestMessage">SetMonitoringModeRequestMessage (optional)</param>
+        /// <param name="setMonitoringModeRequest">SetMonitoringModeRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of SetMonitoringModeResponseMessage</returns>
-        public async System.Threading.Tasks.Task<SetMonitoringModeResponseMessage> SetMonitoringModeAsync(SetMonitoringModeRequestMessage? setMonitoringModeRequestMessage = default(SetMonitoringModeRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of SetMonitoringModeResponse</returns>
+        public async System.Threading.Tasks.Task<SetMonitoringModeResponse> SetMonitoringModeAsync(SetMonitoringModeRequest? setMonitoringModeRequest = default(SetMonitoringModeRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            Org.OpenAPITools.Client.ApiResponse<SetMonitoringModeResponseMessage> localVarResponse = await SetMonitoringModeWithHttpInfoAsync(setMonitoringModeRequestMessage, operationIndex, cancellationToken).ConfigureAwait(false);
+            Org.OpenAPITools.Client.ApiResponse<SetMonitoringModeResponse> localVarResponse = await SetMonitoringModeWithHttpInfoAsync(setMonitoringModeRequest, operationIndex, cancellationToken).ConfigureAwait(false);
             return localVarResponse.Data;
         }
 
@@ -4313,11 +4313,11 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="setMonitoringModeRequestMessage">SetMonitoringModeRequestMessage (optional)</param>
+        /// <param name="setMonitoringModeRequest">SetMonitoringModeRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (SetMonitoringModeResponseMessage)</returns>
-        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<SetMonitoringModeResponseMessage>> SetMonitoringModeWithHttpInfoAsync(SetMonitoringModeRequestMessage? setMonitoringModeRequestMessage = default(SetMonitoringModeRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of ApiResponse (SetMonitoringModeResponse)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<SetMonitoringModeResponse>> SetMonitoringModeWithHttpInfoAsync(SetMonitoringModeRequest? setMonitoringModeRequest = default(SetMonitoringModeRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
 
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
@@ -4343,14 +4343,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = setMonitoringModeRequestMessage;
+            localVarRequestOptions.Data = setMonitoringModeRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.SetMonitoringMode";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = await this.AsynchronousClient.PostAsync<SetMonitoringModeResponseMessage>("/setmonitoringmode", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            var localVarResponse = await this.AsynchronousClient.PostAsync<SetMonitoringModeResponse>("/setmonitoringmode", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
             if (this.ExceptionFactory != null)
             {
@@ -4368,12 +4368,12 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="setPublishingModeRequestMessage">SetPublishingModeRequestMessage (optional)</param>
+        /// <param name="setPublishingModeRequest">SetPublishingModeRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>SetPublishingModeResponseMessage</returns>
-        public SetPublishingModeResponseMessage SetPublishingMode(SetPublishingModeRequestMessage? setPublishingModeRequestMessage = default(SetPublishingModeRequestMessage?), int operationIndex = 0)
+        /// <returns>SetPublishingModeResponse</returns>
+        public SetPublishingModeResponse SetPublishingMode(SetPublishingModeRequest? setPublishingModeRequest = default(SetPublishingModeRequest?), int operationIndex = 0)
         {
-            Org.OpenAPITools.Client.ApiResponse<SetPublishingModeResponseMessage> localVarResponse = SetPublishingModeWithHttpInfo(setPublishingModeRequestMessage);
+            Org.OpenAPITools.Client.ApiResponse<SetPublishingModeResponse> localVarResponse = SetPublishingModeWithHttpInfo(setPublishingModeRequest);
             return localVarResponse.Data;
         }
 
@@ -4381,10 +4381,10 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="setPublishingModeRequestMessage">SetPublishingModeRequestMessage (optional)</param>
+        /// <param name="setPublishingModeRequest">SetPublishingModeRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of SetPublishingModeResponseMessage</returns>
-        public Org.OpenAPITools.Client.ApiResponse<SetPublishingModeResponseMessage> SetPublishingModeWithHttpInfo(SetPublishingModeRequestMessage? setPublishingModeRequestMessage = default(SetPublishingModeRequestMessage?), int operationIndex = 0)
+        /// <returns>ApiResponse of SetPublishingModeResponse</returns>
+        public Org.OpenAPITools.Client.ApiResponse<SetPublishingModeResponse> SetPublishingModeWithHttpInfo(SetPublishingModeRequest? setPublishingModeRequest = default(SetPublishingModeRequest?), int operationIndex = 0)
         {
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
@@ -4409,14 +4409,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = setPublishingModeRequestMessage;
+            localVarRequestOptions.Data = setPublishingModeRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.SetPublishingMode";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = this.Client.Post<SetPublishingModeResponseMessage>("/setpublishingmode", localVarRequestOptions, this.Configuration);
+            var localVarResponse = this.Client.Post<SetPublishingModeResponse>("/setpublishingmode", localVarRequestOptions, this.Configuration);
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("SetPublishingMode", localVarResponse);
@@ -4433,13 +4433,13 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="setPublishingModeRequestMessage">SetPublishingModeRequestMessage (optional)</param>
+        /// <param name="setPublishingModeRequest">SetPublishingModeRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of SetPublishingModeResponseMessage</returns>
-        public async System.Threading.Tasks.Task<SetPublishingModeResponseMessage> SetPublishingModeAsync(SetPublishingModeRequestMessage? setPublishingModeRequestMessage = default(SetPublishingModeRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of SetPublishingModeResponse</returns>
+        public async System.Threading.Tasks.Task<SetPublishingModeResponse> SetPublishingModeAsync(SetPublishingModeRequest? setPublishingModeRequest = default(SetPublishingModeRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            Org.OpenAPITools.Client.ApiResponse<SetPublishingModeResponseMessage> localVarResponse = await SetPublishingModeWithHttpInfoAsync(setPublishingModeRequestMessage, operationIndex, cancellationToken).ConfigureAwait(false);
+            Org.OpenAPITools.Client.ApiResponse<SetPublishingModeResponse> localVarResponse = await SetPublishingModeWithHttpInfoAsync(setPublishingModeRequest, operationIndex, cancellationToken).ConfigureAwait(false);
             return localVarResponse.Data;
         }
 
@@ -4447,11 +4447,11 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="setPublishingModeRequestMessage">SetPublishingModeRequestMessage (optional)</param>
+        /// <param name="setPublishingModeRequest">SetPublishingModeRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (SetPublishingModeResponseMessage)</returns>
-        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<SetPublishingModeResponseMessage>> SetPublishingModeWithHttpInfoAsync(SetPublishingModeRequestMessage? setPublishingModeRequestMessage = default(SetPublishingModeRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of ApiResponse (SetPublishingModeResponse)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<SetPublishingModeResponse>> SetPublishingModeWithHttpInfoAsync(SetPublishingModeRequest? setPublishingModeRequest = default(SetPublishingModeRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
 
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
@@ -4477,14 +4477,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = setPublishingModeRequestMessage;
+            localVarRequestOptions.Data = setPublishingModeRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.SetPublishingMode";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = await this.AsynchronousClient.PostAsync<SetPublishingModeResponseMessage>("/setpublishingmode", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            var localVarResponse = await this.AsynchronousClient.PostAsync<SetPublishingModeResponse>("/setpublishingmode", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
             if (this.ExceptionFactory != null)
             {
@@ -4502,12 +4502,12 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="setTriggeringRequestMessage">SetTriggeringRequestMessage (optional)</param>
+        /// <param name="setTriggeringRequest">SetTriggeringRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>SetTriggeringResponseMessage</returns>
-        public SetTriggeringResponseMessage SetTriggering(SetTriggeringRequestMessage? setTriggeringRequestMessage = default(SetTriggeringRequestMessage?), int operationIndex = 0)
+        /// <returns>SetTriggeringResponse</returns>
+        public SetTriggeringResponse SetTriggering(SetTriggeringRequest? setTriggeringRequest = default(SetTriggeringRequest?), int operationIndex = 0)
         {
-            Org.OpenAPITools.Client.ApiResponse<SetTriggeringResponseMessage> localVarResponse = SetTriggeringWithHttpInfo(setTriggeringRequestMessage);
+            Org.OpenAPITools.Client.ApiResponse<SetTriggeringResponse> localVarResponse = SetTriggeringWithHttpInfo(setTriggeringRequest);
             return localVarResponse.Data;
         }
 
@@ -4515,10 +4515,10 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="setTriggeringRequestMessage">SetTriggeringRequestMessage (optional)</param>
+        /// <param name="setTriggeringRequest">SetTriggeringRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of SetTriggeringResponseMessage</returns>
-        public Org.OpenAPITools.Client.ApiResponse<SetTriggeringResponseMessage> SetTriggeringWithHttpInfo(SetTriggeringRequestMessage? setTriggeringRequestMessage = default(SetTriggeringRequestMessage?), int operationIndex = 0)
+        /// <returns>ApiResponse of SetTriggeringResponse</returns>
+        public Org.OpenAPITools.Client.ApiResponse<SetTriggeringResponse> SetTriggeringWithHttpInfo(SetTriggeringRequest? setTriggeringRequest = default(SetTriggeringRequest?), int operationIndex = 0)
         {
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
@@ -4543,14 +4543,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = setTriggeringRequestMessage;
+            localVarRequestOptions.Data = setTriggeringRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.SetTriggering";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = this.Client.Post<SetTriggeringResponseMessage>("/settriggering", localVarRequestOptions, this.Configuration);
+            var localVarResponse = this.Client.Post<SetTriggeringResponse>("/settriggering", localVarRequestOptions, this.Configuration);
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("SetTriggering", localVarResponse);
@@ -4567,13 +4567,13 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="setTriggeringRequestMessage">SetTriggeringRequestMessage (optional)</param>
+        /// <param name="setTriggeringRequest">SetTriggeringRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of SetTriggeringResponseMessage</returns>
-        public async System.Threading.Tasks.Task<SetTriggeringResponseMessage> SetTriggeringAsync(SetTriggeringRequestMessage? setTriggeringRequestMessage = default(SetTriggeringRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of SetTriggeringResponse</returns>
+        public async System.Threading.Tasks.Task<SetTriggeringResponse> SetTriggeringAsync(SetTriggeringRequest? setTriggeringRequest = default(SetTriggeringRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            Org.OpenAPITools.Client.ApiResponse<SetTriggeringResponseMessage> localVarResponse = await SetTriggeringWithHttpInfoAsync(setTriggeringRequestMessage, operationIndex, cancellationToken).ConfigureAwait(false);
+            Org.OpenAPITools.Client.ApiResponse<SetTriggeringResponse> localVarResponse = await SetTriggeringWithHttpInfoAsync(setTriggeringRequest, operationIndex, cancellationToken).ConfigureAwait(false);
             return localVarResponse.Data;
         }
 
@@ -4581,11 +4581,11 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="setTriggeringRequestMessage">SetTriggeringRequestMessage (optional)</param>
+        /// <param name="setTriggeringRequest">SetTriggeringRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (SetTriggeringResponseMessage)</returns>
-        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<SetTriggeringResponseMessage>> SetTriggeringWithHttpInfoAsync(SetTriggeringRequestMessage? setTriggeringRequestMessage = default(SetTriggeringRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of ApiResponse (SetTriggeringResponse)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<SetTriggeringResponse>> SetTriggeringWithHttpInfoAsync(SetTriggeringRequest? setTriggeringRequest = default(SetTriggeringRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
 
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
@@ -4611,14 +4611,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = setTriggeringRequestMessage;
+            localVarRequestOptions.Data = setTriggeringRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.SetTriggering";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = await this.AsynchronousClient.PostAsync<SetTriggeringResponseMessage>("/settriggering", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            var localVarResponse = await this.AsynchronousClient.PostAsync<SetTriggeringResponse>("/settriggering", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
             if (this.ExceptionFactory != null)
             {
@@ -4636,12 +4636,12 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="transferSubscriptionsRequestMessage">TransferSubscriptionsRequestMessage (optional)</param>
+        /// <param name="transferSubscriptionsRequest">TransferSubscriptionsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>TransferSubscriptionsResponseMessage</returns>
-        public TransferSubscriptionsResponseMessage TransferSubscriptions(TransferSubscriptionsRequestMessage? transferSubscriptionsRequestMessage = default(TransferSubscriptionsRequestMessage?), int operationIndex = 0)
+        /// <returns>TransferSubscriptionsResponse</returns>
+        public TransferSubscriptionsResponse TransferSubscriptions(TransferSubscriptionsRequest? transferSubscriptionsRequest = default(TransferSubscriptionsRequest?), int operationIndex = 0)
         {
-            Org.OpenAPITools.Client.ApiResponse<TransferSubscriptionsResponseMessage> localVarResponse = TransferSubscriptionsWithHttpInfo(transferSubscriptionsRequestMessage);
+            Org.OpenAPITools.Client.ApiResponse<TransferSubscriptionsResponse> localVarResponse = TransferSubscriptionsWithHttpInfo(transferSubscriptionsRequest);
             return localVarResponse.Data;
         }
 
@@ -4649,10 +4649,10 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="transferSubscriptionsRequestMessage">TransferSubscriptionsRequestMessage (optional)</param>
+        /// <param name="transferSubscriptionsRequest">TransferSubscriptionsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of TransferSubscriptionsResponseMessage</returns>
-        public Org.OpenAPITools.Client.ApiResponse<TransferSubscriptionsResponseMessage> TransferSubscriptionsWithHttpInfo(TransferSubscriptionsRequestMessage? transferSubscriptionsRequestMessage = default(TransferSubscriptionsRequestMessage?), int operationIndex = 0)
+        /// <returns>ApiResponse of TransferSubscriptionsResponse</returns>
+        public Org.OpenAPITools.Client.ApiResponse<TransferSubscriptionsResponse> TransferSubscriptionsWithHttpInfo(TransferSubscriptionsRequest? transferSubscriptionsRequest = default(TransferSubscriptionsRequest?), int operationIndex = 0)
         {
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
@@ -4677,14 +4677,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = transferSubscriptionsRequestMessage;
+            localVarRequestOptions.Data = transferSubscriptionsRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.TransferSubscriptions";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = this.Client.Post<TransferSubscriptionsResponseMessage>("/transfersubscriptions", localVarRequestOptions, this.Configuration);
+            var localVarResponse = this.Client.Post<TransferSubscriptionsResponse>("/transfersubscriptions", localVarRequestOptions, this.Configuration);
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("TransferSubscriptions", localVarResponse);
@@ -4701,13 +4701,13 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="transferSubscriptionsRequestMessage">TransferSubscriptionsRequestMessage (optional)</param>
+        /// <param name="transferSubscriptionsRequest">TransferSubscriptionsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of TransferSubscriptionsResponseMessage</returns>
-        public async System.Threading.Tasks.Task<TransferSubscriptionsResponseMessage> TransferSubscriptionsAsync(TransferSubscriptionsRequestMessage? transferSubscriptionsRequestMessage = default(TransferSubscriptionsRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of TransferSubscriptionsResponse</returns>
+        public async System.Threading.Tasks.Task<TransferSubscriptionsResponse> TransferSubscriptionsAsync(TransferSubscriptionsRequest? transferSubscriptionsRequest = default(TransferSubscriptionsRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            Org.OpenAPITools.Client.ApiResponse<TransferSubscriptionsResponseMessage> localVarResponse = await TransferSubscriptionsWithHttpInfoAsync(transferSubscriptionsRequestMessage, operationIndex, cancellationToken).ConfigureAwait(false);
+            Org.OpenAPITools.Client.ApiResponse<TransferSubscriptionsResponse> localVarResponse = await TransferSubscriptionsWithHttpInfoAsync(transferSubscriptionsRequest, operationIndex, cancellationToken).ConfigureAwait(false);
             return localVarResponse.Data;
         }
 
@@ -4715,11 +4715,11 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="transferSubscriptionsRequestMessage">TransferSubscriptionsRequestMessage (optional)</param>
+        /// <param name="transferSubscriptionsRequest">TransferSubscriptionsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (TransferSubscriptionsResponseMessage)</returns>
-        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<TransferSubscriptionsResponseMessage>> TransferSubscriptionsWithHttpInfoAsync(TransferSubscriptionsRequestMessage? transferSubscriptionsRequestMessage = default(TransferSubscriptionsRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of ApiResponse (TransferSubscriptionsResponse)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<TransferSubscriptionsResponse>> TransferSubscriptionsWithHttpInfoAsync(TransferSubscriptionsRequest? transferSubscriptionsRequest = default(TransferSubscriptionsRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
 
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
@@ -4745,14 +4745,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = transferSubscriptionsRequestMessage;
+            localVarRequestOptions.Data = transferSubscriptionsRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.TransferSubscriptions";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = await this.AsynchronousClient.PostAsync<TransferSubscriptionsResponseMessage>("/transfersubscriptions", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            var localVarResponse = await this.AsynchronousClient.PostAsync<TransferSubscriptionsResponse>("/transfersubscriptions", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
             if (this.ExceptionFactory != null)
             {
@@ -4770,12 +4770,12 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="translateBrowsePathsToNodeIdsRequestMessage">TranslateBrowsePathsToNodeIdsRequestMessage (optional)</param>
+        /// <param name="translateBrowsePathsToNodeIdsRequest">TranslateBrowsePathsToNodeIdsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>TranslateBrowsePathsToNodeIdsResponseMessage</returns>
-        public TranslateBrowsePathsToNodeIdsResponseMessage TranslateBrowsePathsToNodeIds(TranslateBrowsePathsToNodeIdsRequestMessage? translateBrowsePathsToNodeIdsRequestMessage = default(TranslateBrowsePathsToNodeIdsRequestMessage?), int operationIndex = 0)
+        /// <returns>TranslateBrowsePathsToNodeIdsResponse</returns>
+        public TranslateBrowsePathsToNodeIdsResponse TranslateBrowsePathsToNodeIds(TranslateBrowsePathsToNodeIdsRequest? translateBrowsePathsToNodeIdsRequest = default(TranslateBrowsePathsToNodeIdsRequest?), int operationIndex = 0)
         {
-            Org.OpenAPITools.Client.ApiResponse<TranslateBrowsePathsToNodeIdsResponseMessage> localVarResponse = TranslateBrowsePathsToNodeIdsWithHttpInfo(translateBrowsePathsToNodeIdsRequestMessage);
+            Org.OpenAPITools.Client.ApiResponse<TranslateBrowsePathsToNodeIdsResponse> localVarResponse = TranslateBrowsePathsToNodeIdsWithHttpInfo(translateBrowsePathsToNodeIdsRequest);
             return localVarResponse.Data;
         }
 
@@ -4783,10 +4783,10 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="translateBrowsePathsToNodeIdsRequestMessage">TranslateBrowsePathsToNodeIdsRequestMessage (optional)</param>
+        /// <param name="translateBrowsePathsToNodeIdsRequest">TranslateBrowsePathsToNodeIdsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of TranslateBrowsePathsToNodeIdsResponseMessage</returns>
-        public Org.OpenAPITools.Client.ApiResponse<TranslateBrowsePathsToNodeIdsResponseMessage> TranslateBrowsePathsToNodeIdsWithHttpInfo(TranslateBrowsePathsToNodeIdsRequestMessage? translateBrowsePathsToNodeIdsRequestMessage = default(TranslateBrowsePathsToNodeIdsRequestMessage?), int operationIndex = 0)
+        /// <returns>ApiResponse of TranslateBrowsePathsToNodeIdsResponse</returns>
+        public Org.OpenAPITools.Client.ApiResponse<TranslateBrowsePathsToNodeIdsResponse> TranslateBrowsePathsToNodeIdsWithHttpInfo(TranslateBrowsePathsToNodeIdsRequest? translateBrowsePathsToNodeIdsRequest = default(TranslateBrowsePathsToNodeIdsRequest?), int operationIndex = 0)
         {
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
@@ -4811,14 +4811,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = translateBrowsePathsToNodeIdsRequestMessage;
+            localVarRequestOptions.Data = translateBrowsePathsToNodeIdsRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.TranslateBrowsePathsToNodeIds";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = this.Client.Post<TranslateBrowsePathsToNodeIdsResponseMessage>("/translate", localVarRequestOptions, this.Configuration);
+            var localVarResponse = this.Client.Post<TranslateBrowsePathsToNodeIdsResponse>("/translate", localVarRequestOptions, this.Configuration);
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("TranslateBrowsePathsToNodeIds", localVarResponse);
@@ -4835,13 +4835,13 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="translateBrowsePathsToNodeIdsRequestMessage">TranslateBrowsePathsToNodeIdsRequestMessage (optional)</param>
+        /// <param name="translateBrowsePathsToNodeIdsRequest">TranslateBrowsePathsToNodeIdsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of TranslateBrowsePathsToNodeIdsResponseMessage</returns>
-        public async System.Threading.Tasks.Task<TranslateBrowsePathsToNodeIdsResponseMessage> TranslateBrowsePathsToNodeIdsAsync(TranslateBrowsePathsToNodeIdsRequestMessage? translateBrowsePathsToNodeIdsRequestMessage = default(TranslateBrowsePathsToNodeIdsRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of TranslateBrowsePathsToNodeIdsResponse</returns>
+        public async System.Threading.Tasks.Task<TranslateBrowsePathsToNodeIdsResponse> TranslateBrowsePathsToNodeIdsAsync(TranslateBrowsePathsToNodeIdsRequest? translateBrowsePathsToNodeIdsRequest = default(TranslateBrowsePathsToNodeIdsRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            Org.OpenAPITools.Client.ApiResponse<TranslateBrowsePathsToNodeIdsResponseMessage> localVarResponse = await TranslateBrowsePathsToNodeIdsWithHttpInfoAsync(translateBrowsePathsToNodeIdsRequestMessage, operationIndex, cancellationToken).ConfigureAwait(false);
+            Org.OpenAPITools.Client.ApiResponse<TranslateBrowsePathsToNodeIdsResponse> localVarResponse = await TranslateBrowsePathsToNodeIdsWithHttpInfoAsync(translateBrowsePathsToNodeIdsRequest, operationIndex, cancellationToken).ConfigureAwait(false);
             return localVarResponse.Data;
         }
 
@@ -4849,11 +4849,11 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="translateBrowsePathsToNodeIdsRequestMessage">TranslateBrowsePathsToNodeIdsRequestMessage (optional)</param>
+        /// <param name="translateBrowsePathsToNodeIdsRequest">TranslateBrowsePathsToNodeIdsRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (TranslateBrowsePathsToNodeIdsResponseMessage)</returns>
-        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<TranslateBrowsePathsToNodeIdsResponseMessage>> TranslateBrowsePathsToNodeIdsWithHttpInfoAsync(TranslateBrowsePathsToNodeIdsRequestMessage? translateBrowsePathsToNodeIdsRequestMessage = default(TranslateBrowsePathsToNodeIdsRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of ApiResponse (TranslateBrowsePathsToNodeIdsResponse)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<TranslateBrowsePathsToNodeIdsResponse>> TranslateBrowsePathsToNodeIdsWithHttpInfoAsync(TranslateBrowsePathsToNodeIdsRequest? translateBrowsePathsToNodeIdsRequest = default(TranslateBrowsePathsToNodeIdsRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
 
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
@@ -4879,14 +4879,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = translateBrowsePathsToNodeIdsRequestMessage;
+            localVarRequestOptions.Data = translateBrowsePathsToNodeIdsRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.TranslateBrowsePathsToNodeIds";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = await this.AsynchronousClient.PostAsync<TranslateBrowsePathsToNodeIdsResponseMessage>("/translate", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            var localVarResponse = await this.AsynchronousClient.PostAsync<TranslateBrowsePathsToNodeIdsResponse>("/translate", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
             if (this.ExceptionFactory != null)
             {
@@ -4904,12 +4904,12 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="unregisterNodesRequestMessage">UnregisterNodesRequestMessage (optional)</param>
+        /// <param name="unregisterNodesRequest">UnregisterNodesRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>UnregisterNodesResponseMessage</returns>
-        public UnregisterNodesResponseMessage UnregisterNodes(UnregisterNodesRequestMessage? unregisterNodesRequestMessage = default(UnregisterNodesRequestMessage?), int operationIndex = 0)
+        /// <returns>UnregisterNodesResponse</returns>
+        public UnregisterNodesResponse UnregisterNodes(UnregisterNodesRequest? unregisterNodesRequest = default(UnregisterNodesRequest?), int operationIndex = 0)
         {
-            Org.OpenAPITools.Client.ApiResponse<UnregisterNodesResponseMessage> localVarResponse = UnregisterNodesWithHttpInfo(unregisterNodesRequestMessage);
+            Org.OpenAPITools.Client.ApiResponse<UnregisterNodesResponse> localVarResponse = UnregisterNodesWithHttpInfo(unregisterNodesRequest);
             return localVarResponse.Data;
         }
 
@@ -4917,10 +4917,10 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="unregisterNodesRequestMessage">UnregisterNodesRequestMessage (optional)</param>
+        /// <param name="unregisterNodesRequest">UnregisterNodesRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of UnregisterNodesResponseMessage</returns>
-        public Org.OpenAPITools.Client.ApiResponse<UnregisterNodesResponseMessage> UnregisterNodesWithHttpInfo(UnregisterNodesRequestMessage? unregisterNodesRequestMessage = default(UnregisterNodesRequestMessage?), int operationIndex = 0)
+        /// <returns>ApiResponse of UnregisterNodesResponse</returns>
+        public Org.OpenAPITools.Client.ApiResponse<UnregisterNodesResponse> UnregisterNodesWithHttpInfo(UnregisterNodesRequest? unregisterNodesRequest = default(UnregisterNodesRequest?), int operationIndex = 0)
         {
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
@@ -4945,14 +4945,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = unregisterNodesRequestMessage;
+            localVarRequestOptions.Data = unregisterNodesRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.UnregisterNodes";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = this.Client.Post<UnregisterNodesResponseMessage>("/unregisternodes", localVarRequestOptions, this.Configuration);
+            var localVarResponse = this.Client.Post<UnregisterNodesResponse>("/unregisternodes", localVarRequestOptions, this.Configuration);
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("UnregisterNodes", localVarResponse);
@@ -4969,13 +4969,13 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="unregisterNodesRequestMessage">UnregisterNodesRequestMessage (optional)</param>
+        /// <param name="unregisterNodesRequest">UnregisterNodesRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of UnregisterNodesResponseMessage</returns>
-        public async System.Threading.Tasks.Task<UnregisterNodesResponseMessage> UnregisterNodesAsync(UnregisterNodesRequestMessage? unregisterNodesRequestMessage = default(UnregisterNodesRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of UnregisterNodesResponse</returns>
+        public async System.Threading.Tasks.Task<UnregisterNodesResponse> UnregisterNodesAsync(UnregisterNodesRequest? unregisterNodesRequest = default(UnregisterNodesRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            Org.OpenAPITools.Client.ApiResponse<UnregisterNodesResponseMessage> localVarResponse = await UnregisterNodesWithHttpInfoAsync(unregisterNodesRequestMessage, operationIndex, cancellationToken).ConfigureAwait(false);
+            Org.OpenAPITools.Client.ApiResponse<UnregisterNodesResponse> localVarResponse = await UnregisterNodesWithHttpInfoAsync(unregisterNodesRequest, operationIndex, cancellationToken).ConfigureAwait(false);
             return localVarResponse.Data;
         }
 
@@ -4983,11 +4983,11 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="unregisterNodesRequestMessage">UnregisterNodesRequestMessage (optional)</param>
+        /// <param name="unregisterNodesRequest">UnregisterNodesRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (UnregisterNodesResponseMessage)</returns>
-        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<UnregisterNodesResponseMessage>> UnregisterNodesWithHttpInfoAsync(UnregisterNodesRequestMessage? unregisterNodesRequestMessage = default(UnregisterNodesRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of ApiResponse (UnregisterNodesResponse)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<UnregisterNodesResponse>> UnregisterNodesWithHttpInfoAsync(UnregisterNodesRequest? unregisterNodesRequest = default(UnregisterNodesRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
 
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
@@ -5013,14 +5013,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = unregisterNodesRequestMessage;
+            localVarRequestOptions.Data = unregisterNodesRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.UnregisterNodes";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = await this.AsynchronousClient.PostAsync<UnregisterNodesResponseMessage>("/unregisternodes", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            var localVarResponse = await this.AsynchronousClient.PostAsync<UnregisterNodesResponse>("/unregisternodes", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
             if (this.ExceptionFactory != null)
             {
@@ -5038,12 +5038,12 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="writeRequestMessage">WriteRequestMessage (optional)</param>
+        /// <param name="writeRequest">WriteRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>WriteResponseMessage</returns>
-        public WriteResponseMessage Write(WriteRequestMessage? writeRequestMessage = default(WriteRequestMessage?), int operationIndex = 0)
+        /// <returns>WriteResponse</returns>
+        public WriteResponse Write(WriteRequest? writeRequest = default(WriteRequest?), int operationIndex = 0)
         {
-            Org.OpenAPITools.Client.ApiResponse<WriteResponseMessage> localVarResponse = WriteWithHttpInfo(writeRequestMessage);
+            Org.OpenAPITools.Client.ApiResponse<WriteResponse> localVarResponse = WriteWithHttpInfo(writeRequest);
             return localVarResponse.Data;
         }
 
@@ -5051,10 +5051,10 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="writeRequestMessage">WriteRequestMessage (optional)</param>
+        /// <param name="writeRequest">WriteRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
-        /// <returns>ApiResponse of WriteResponseMessage</returns>
-        public Org.OpenAPITools.Client.ApiResponse<WriteResponseMessage> WriteWithHttpInfo(WriteRequestMessage? writeRequestMessage = default(WriteRequestMessage?), int operationIndex = 0)
+        /// <returns>ApiResponse of WriteResponse</returns>
+        public Org.OpenAPITools.Client.ApiResponse<WriteResponse> WriteWithHttpInfo(WriteRequest? writeRequest = default(WriteRequest?), int operationIndex = 0)
         {
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
 
@@ -5079,14 +5079,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = writeRequestMessage;
+            localVarRequestOptions.Data = writeRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.Write";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = this.Client.Post<WriteResponseMessage>("/write", localVarRequestOptions, this.Configuration);
+            var localVarResponse = this.Client.Post<WriteResponse>("/write", localVarRequestOptions, this.Configuration);
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("Write", localVarResponse);
@@ -5103,13 +5103,13 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="writeRequestMessage">WriteRequestMessage (optional)</param>
+        /// <param name="writeRequest">WriteRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of WriteResponseMessage</returns>
-        public async System.Threading.Tasks.Task<WriteResponseMessage> WriteAsync(WriteRequestMessage? writeRequestMessage = default(WriteRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of WriteResponse</returns>
+        public async System.Threading.Tasks.Task<WriteResponse> WriteAsync(WriteRequest? writeRequest = default(WriteRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            Org.OpenAPITools.Client.ApiResponse<WriteResponseMessage> localVarResponse = await WriteWithHttpInfoAsync(writeRequestMessage, operationIndex, cancellationToken).ConfigureAwait(false);
+            Org.OpenAPITools.Client.ApiResponse<WriteResponse> localVarResponse = await WriteWithHttpInfoAsync(writeRequest, operationIndex, cancellationToken).ConfigureAwait(false);
             return localVarResponse.Data;
         }
 
@@ -5117,11 +5117,11 @@ namespace Org.OpenAPITools.Api
         ///  
         /// </summary>
         /// <exception cref="Org.OpenAPITools.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="writeRequestMessage">WriteRequestMessage (optional)</param>
+        /// <param name="writeRequest">WriteRequestMessage (optional)</param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (WriteResponseMessage)</returns>
-        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<WriteResponseMessage>> WriteWithHttpInfoAsync(WriteRequestMessage? writeRequestMessage = default(WriteRequestMessage?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of ApiResponse (WriteResponse)</returns>
+        public async System.Threading.Tasks.Task<Org.OpenAPITools.Client.ApiResponse<WriteResponse>> WriteWithHttpInfoAsync(WriteRequest? writeRequest = default(WriteRequest?), int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
 
             Org.OpenAPITools.Client.RequestOptions localVarRequestOptions = new Org.OpenAPITools.Client.RequestOptions();
@@ -5147,14 +5147,14 @@ namespace Org.OpenAPITools.Api
                 localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
             }
 
-            localVarRequestOptions.Data = writeRequestMessage;
+            localVarRequestOptions.Data = writeRequest;
 
             localVarRequestOptions.Operation = "DefaultApi.Write";
             localVarRequestOptions.OperationIndex = operationIndex;
 
 
             // make the HTTP request
-            var localVarResponse = await this.AsynchronousClient.PostAsync<WriteResponseMessage>("/write", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            var localVarResponse = await this.AsynchronousClient.PostAsync<WriteResponse>("/write", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
             if (this.ExceptionFactory != null)
             {

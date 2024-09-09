@@ -62,9 +62,9 @@ namespace Org.OpenAPITools.Test.Api
         public void ActivateSessionTest()
         {
             // TODO uncomment below to test the method and replace null with proper value
-            //ActivateSessionRequestMessage? activateSessionRequestMessage = null;
-            //var response = instance.ActivateSession(activateSessionRequestMessage);
-            //Assert.IsType<ActivateSessionResponseMessage>(response);
+            //ActivateSessionRequest? activateSessionRequest = null;
+            //var response = instance.ActivateSession(activateSessionRequest);
+            //Assert.IsType<ActivateSessionResponse>(response);
         }
 
         /// <summary>
@@ -74,9 +74,9 @@ namespace Org.OpenAPITools.Test.Api
         public void BrowseTest()
         {
             // TODO uncomment below to test the method and replace null with proper value
-            //BrowseRequestMessage? browseRequestMessage = null;
-            //var response = instance.Browse(browseRequestMessage);
-            //Assert.IsType<BrowseResponseMessage>(response);
+            //BrowseRequest? browseRequest = null;
+            //var response = instance.Browse(browseRequest);
+            //Assert.IsType<BrowseResponse>(response);
         }
 
         /// <summary>
@@ -86,9 +86,9 @@ namespace Org.OpenAPITools.Test.Api
         public void BrowseNextTest()
         {
             // TODO uncomment below to test the method and replace null with proper value
-            //BrowseNextRequestMessage? browseNextRequestMessage = null;
-            //var response = instance.BrowseNext(browseNextRequestMessage);
-            //Assert.IsType<BrowseNextResponseMessage>(response);
+            //BrowseNextRequest? browseNextRequest = null;
+            //var response = instance.BrowseNext(browseNextRequest);
+            //Assert.IsType<BrowseNextResponse>(response);
         }
 
         /// <summary>
@@ -98,9 +98,9 @@ namespace Org.OpenAPITools.Test.Api
         public void CallTest()
         {
             // TODO uncomment below to test the method and replace null with proper value
-            //CallRequestMessage? callRequestMessage = null;
-            //var response = instance.Call(callRequestMessage);
-            //Assert.IsType<CallResponseMessage>(response);
+            //CallRequest? callRequest = null;
+            //var response = instance.Call(callRequest);
+            //Assert.IsType<CallResponse>(response);
         }
 
         /// <summary>
@@ -110,9 +110,9 @@ namespace Org.OpenAPITools.Test.Api
         public void CancelTest()
         {
             // TODO uncomment below to test the method and replace null with proper value
-            //CancelRequestMessage? cancelRequestMessage = null;
-            //var response = instance.Cancel(cancelRequestMessage);
-            //Assert.IsType<CancelResponseMessage>(response);
+            //CancelRequest? cancelRequest = null;
+            //var response = instance.Cancel(cancelRequest);
+            //Assert.IsType<CancelResponse>(response);
         }
 
         /// <summary>
@@ -122,9 +122,9 @@ namespace Org.OpenAPITools.Test.Api
         public void CloseSessionTest()
         {
             // TODO uncomment below to test the method and replace null with proper value
-            //CloseSessionRequestMessage? closeSessionRequestMessage = null;
-            //var response = instance.CloseSession(closeSessionRequestMessage);
-            //Assert.IsType<CloseSessionResponseMessage>(response);
+            //CloseSessionRequest? closeSessionRequest = null;
+            //var response = instance.CloseSession(closeSessionRequest);
+            //Assert.IsType<CloseSessionResponse>(response);
         }
 
         /// <summary>
@@ -134,9 +134,9 @@ namespace Org.OpenAPITools.Test.Api
         public void CreateMonitoredItemsTest()
         {
             // TODO uncomment below to test the method and replace null with proper value
-            //CreateMonitoredItemsRequestMessage? createMonitoredItemsRequestMessage = null;
-            //var response = instance.CreateMonitoredItems(createMonitoredItemsRequestMessage);
-            //Assert.IsType<CreateMonitoredItemsResponseMessage>(response);
+            //CreateMonitoredItemsRequest? createMonitoredItemsRequest = null;
+            //var response = instance.CreateMonitoredItems(createMonitoredItemsRequest);
+            //Assert.IsType<CreateMonitoredItemsResponse>(response);
         }
 
         /// <summary>
@@ -146,9 +146,9 @@ namespace Org.OpenAPITools.Test.Api
         public void CreateSessionTest()
         {
             // TODO uncomment below to test the method and replace null with proper value
-            //CreateSessionRequestMessage? createSessionRequestMessage = null;
-            //var response = instance.CreateSession(createSessionRequestMessage);
-            //Assert.IsType<CreateSessionResponseMessage>(response);
+            //CreateSessionRequest? createSessionRequest = null;
+            //var response = instance.CreateSession(createSessionRequest);
+            //Assert.IsType<CreateSessionResponse>(response);
         }
 
         /// <summary>
@@ -158,9 +158,9 @@ namespace Org.OpenAPITools.Test.Api
         public void CreateSubscriptionTest()
         {
             // TODO uncomment below to test the method and replace null with proper value
-            //CreateSubscriptionRequestMessage? createSubscriptionRequestMessage = null;
-            //var response = instance.CreateSubscription(createSubscriptionRequestMessage);
-            //Assert.IsType<CreateSubscriptionResponseMessage>(response);
+            //CreateSubscriptionRequest? createSubscriptionRequest = null;
+            //var response = instance.CreateSubscription(createSubscriptionRequest);
+            //Assert.IsType<CreateSubscriptionResponse>(response);
         }
 
         /// <summary>
@@ -170,9 +170,9 @@ namespace Org.OpenAPITools.Test.Api
         public void DeleteMonitoredItemsTest()
         {
             // TODO uncomment below to test the method and replace null with proper value
-            //DeleteMonitoredItemsRequestMessage? deleteMonitoredItemsRequestMessage = null;
-            //var response = instance.DeleteMonitoredItems(deleteMonitoredItemsRequestMessage);
-            //Assert.IsType<DeleteMonitoredItemsResponseMessage>(response);
+            //DeleteMonitoredItemsRequest? deleteMonitoredItemsRequest = null;
+            //var response = instance.DeleteMonitoredItems(deleteMonitoredItemsRequest);
+            //Assert.IsType<DeleteMonitoredItemsResponse>(response);
         }
 
         /// <summary>
@@ -182,9 +182,9 @@ namespace Org.OpenAPITools.Test.Api
         public void DeleteSubscriptionsTest()
         {
             // TODO uncomment below to test the method and replace null with proper value
-            //DeleteSubscriptionsRequestMessage? deleteSubscriptionsRequestMessage = null;
-            //var response = instance.DeleteSubscriptions(deleteSubscriptionsRequestMessage);
-            //Assert.IsType<DeleteSubscriptionsResponseMessage>(response);
+            //DeleteSubscriptionsRequest? deleteSubscriptionsRequest = null;
+            //var response = instance.DeleteSubscriptions(deleteSubscriptionsRequest);
+            //Assert.IsType<DeleteSubscriptionsResponse>(response);
         }
 
         /// <summary>
@@ -194,9 +194,9 @@ namespace Org.OpenAPITools.Test.Api
         public void FindServersTest()
         {
             // TODO uncomment below to test the method and replace null with proper value
-            //FindServersRequestMessage? findServersRequestMessage = null;
-            //var response = instance.FindServers(findServersRequestMessage);
-            //Assert.IsType<FindServersResponseMessage>(response);
+            //FindServersRequest? findServersRequest = null;
+            //var response = instance.FindServers(findServersRequest);
+            //Assert.IsType<FindServersResponse>(response);
         }
 
         /// <summary>
@@ -206,9 +206,9 @@ namespace Org.OpenAPITools.Test.Api
         public void GetEndpointsTest()
         {
             // TODO uncomment below to test the method and replace null with proper value
-            //GetEndpointsRequestMessage? getEndpointsRequestMessage = null;
-            //var response = instance.GetEndpoints(getEndpointsRequestMessage);
-            //Assert.IsType<GetEndpointsResponseMessage>(response);
+            //GetEndpointsRequest? getEndpointsRequest = null;
+            //var response = instance.GetEndpoints(getEndpointsRequest);
+            //Assert.IsType<GetEndpointsResponse>(response);
         }
 
         /// <summary>
@@ -218,9 +218,9 @@ namespace Org.OpenAPITools.Test.Api
         public void HistoryReadTest()
         {
             // TODO uncomment below to test the method and replace null with proper value
-            //HistoryReadRequestMessage? historyReadRequestMessage = null;
-            //var response = instance.HistoryRead(historyReadRequestMessage);
-            //Assert.IsType<HistoryReadResponseMessage>(response);
+            //HistoryReadRequest? historyReadRequest = null;
+            //var response = instance.HistoryRead(historyReadRequest);
+            //Assert.IsType<HistoryReadResponse>(response);
         }
 
         /// <summary>
@@ -230,9 +230,9 @@ namespace Org.OpenAPITools.Test.Api
         public void HistoryUpdateTest()
         {
             // TODO uncomment below to test the method and replace null with proper value
-            //HistoryUpdateRequestMessage? historyUpdateRequestMessage = null;
-            //var response = instance.HistoryUpdate(historyUpdateRequestMessage);
-            //Assert.IsType<HistoryUpdateResponseMessage>(response);
+            //HistoryUpdateRequest? historyUpdateRequest = null;
+            //var response = instance.HistoryUpdate(historyUpdateRequest);
+            //Assert.IsType<HistoryUpdateResponse>(response);
         }
 
         /// <summary>
@@ -242,9 +242,9 @@ namespace Org.OpenAPITools.Test.Api
         public void ModifyMonitoredItemsTest()
         {
             // TODO uncomment below to test the method and replace null with proper value
-            //ModifyMonitoredItemsRequestMessage? modifyMonitoredItemsRequestMessage = null;
-            //var response = instance.ModifyMonitoredItems(modifyMonitoredItemsRequestMessage);
-            //Assert.IsType<ModifyMonitoredItemsResponseMessage>(response);
+            //ModifyMonitoredItemsRequest? modifyMonitoredItemsRequest = null;
+            //var response = instance.ModifyMonitoredItems(modifyMonitoredItemsRequest);
+            //Assert.IsType<ModifyMonitoredItemsResponse>(response);
         }
 
         /// <summary>
@@ -254,9 +254,9 @@ namespace Org.OpenAPITools.Test.Api
         public void ModifySubscriptionTest()
         {
             // TODO uncomment below to test the method and replace null with proper value
-            //ModifySubscriptionRequestMessage? modifySubscriptionRequestMessage = null;
-            //var response = instance.ModifySubscription(modifySubscriptionRequestMessage);
-            //Assert.IsType<ModifySubscriptionResponseMessage>(response);
+            //ModifySubscriptionRequest? modifySubscriptionRequest = null;
+            //var response = instance.ModifySubscription(modifySubscriptionRequest);
+            //Assert.IsType<ModifySubscriptionResponse>(response);
         }
 
         /// <summary>
@@ -266,9 +266,9 @@ namespace Org.OpenAPITools.Test.Api
         public void PublishTest()
         {
             // TODO uncomment below to test the method and replace null with proper value
-            //PublishRequestMessage? publishRequestMessage = null;
-            //var response = instance.Publish(publishRequestMessage);
-            //Assert.IsType<PublishResponseMessage>(response);
+            //PublishRequest? publishRequest = null;
+            //var response = instance.Publish(publishRequest);
+            //Assert.IsType<PublishResponse>(response);
         }
 
         /// <summary>
@@ -278,9 +278,9 @@ namespace Org.OpenAPITools.Test.Api
         public void ReadTest()
         {
             // TODO uncomment below to test the method and replace null with proper value
-            //ReadRequestMessage? readRequestMessage = null;
-            //var response = instance.Read(readRequestMessage);
-            //Assert.IsType<ReadResponseMessage>(response);
+            //ReadRequest? readRequest = null;
+            //var response = instance.Read(readRequest);
+            //Assert.IsType<ReadResponse>(response);
         }
 
         /// <summary>
@@ -290,9 +290,9 @@ namespace Org.OpenAPITools.Test.Api
         public void RegisterNodesTest()
         {
             // TODO uncomment below to test the method and replace null with proper value
-            //RegisterNodesRequestMessage? registerNodesRequestMessage = null;
-            //var response = instance.RegisterNodes(registerNodesRequestMessage);
-            //Assert.IsType<RegisterNodesResponseMessage>(response);
+            //RegisterNodesRequest? registerNodesRequest = null;
+            //var response = instance.RegisterNodes(registerNodesRequest);
+            //Assert.IsType<RegisterNodesResponse>(response);
         }
 
         /// <summary>
@@ -302,9 +302,9 @@ namespace Org.OpenAPITools.Test.Api
         public void RepublishTest()
         {
             // TODO uncomment below to test the method and replace null with proper value
-            //RepublishRequestMessage? republishRequestMessage = null;
-            //var response = instance.Republish(republishRequestMessage);
-            //Assert.IsType<RepublishResponseMessage>(response);
+            //RepublishRequest? republishRequest = null;
+            //var response = instance.Republish(republishRequest);
+            //Assert.IsType<RepublishResponse>(response);
         }
 
         /// <summary>
@@ -314,9 +314,9 @@ namespace Org.OpenAPITools.Test.Api
         public void SetMonitoringModeTest()
         {
             // TODO uncomment below to test the method and replace null with proper value
-            //SetMonitoringModeRequestMessage? setMonitoringModeRequestMessage = null;
-            //var response = instance.SetMonitoringMode(setMonitoringModeRequestMessage);
-            //Assert.IsType<SetMonitoringModeResponseMessage>(response);
+            //SetMonitoringModeRequest? setMonitoringModeRequest = null;
+            //var response = instance.SetMonitoringMode(setMonitoringModeRequest);
+            //Assert.IsType<SetMonitoringModeResponse>(response);
         }
 
         /// <summary>
@@ -326,9 +326,9 @@ namespace Org.OpenAPITools.Test.Api
         public void SetPublishingModeTest()
         {
             // TODO uncomment below to test the method and replace null with proper value
-            //SetPublishingModeRequestMessage? setPublishingModeRequestMessage = null;
-            //var response = instance.SetPublishingMode(setPublishingModeRequestMessage);
-            //Assert.IsType<SetPublishingModeResponseMessage>(response);
+            //SetPublishingModeRequest? setPublishingModeRequest = null;
+            //var response = instance.SetPublishingMode(setPublishingModeRequest);
+            //Assert.IsType<SetPublishingModeResponse>(response);
         }
 
         /// <summary>
@@ -338,9 +338,9 @@ namespace Org.OpenAPITools.Test.Api
         public void SetTriggeringTest()
         {
             // TODO uncomment below to test the method and replace null with proper value
-            //SetTriggeringRequestMessage? setTriggeringRequestMessage = null;
-            //var response = instance.SetTriggering(setTriggeringRequestMessage);
-            //Assert.IsType<SetTriggeringResponseMessage>(response);
+            //SetTriggeringRequest? setTriggeringRequest = null;
+            //var response = instance.SetTriggering(setTriggeringRequest);
+            //Assert.IsType<SetTriggeringResponse>(response);
         }
 
         /// <summary>
@@ -350,9 +350,9 @@ namespace Org.OpenAPITools.Test.Api
         public void TransferSubscriptionsTest()
         {
             // TODO uncomment below to test the method and replace null with proper value
-            //TransferSubscriptionsRequestMessage? transferSubscriptionsRequestMessage = null;
-            //var response = instance.TransferSubscriptions(transferSubscriptionsRequestMessage);
-            //Assert.IsType<TransferSubscriptionsResponseMessage>(response);
+            //TransferSubscriptionsRequest? transferSubscriptionsRequest = null;
+            //var response = instance.TransferSubscriptions(transferSubscriptionsRequest);
+            //Assert.IsType<TransferSubscriptionsResponse>(response);
         }
 
         /// <summary>
@@ -362,9 +362,9 @@ namespace Org.OpenAPITools.Test.Api
         public void TranslateBrowsePathsToNodeIdsTest()
         {
             // TODO uncomment below to test the method and replace null with proper value
-            //TranslateBrowsePathsToNodeIdsRequestMessage? translateBrowsePathsToNodeIdsRequestMessage = null;
-            //var response = instance.TranslateBrowsePathsToNodeIds(translateBrowsePathsToNodeIdsRequestMessage);
-            //Assert.IsType<TranslateBrowsePathsToNodeIdsResponseMessage>(response);
+            //TranslateBrowsePathsToNodeIdsRequest? translateBrowsePathsToNodeIdsRequest = null;
+            //var response = instance.TranslateBrowsePathsToNodeIds(translateBrowsePathsToNodeIdsRequest);
+            //Assert.IsType<TranslateBrowsePathsToNodeIdsResponse>(response);
         }
 
         /// <summary>
@@ -374,9 +374,9 @@ namespace Org.OpenAPITools.Test.Api
         public void UnregisterNodesTest()
         {
             // TODO uncomment below to test the method and replace null with proper value
-            //UnregisterNodesRequestMessage? unregisterNodesRequestMessage = null;
-            //var response = instance.UnregisterNodes(unregisterNodesRequestMessage);
-            //Assert.IsType<UnregisterNodesResponseMessage>(response);
+            //UnregisterNodesRequest? unregisterNodesRequest = null;
+            //var response = instance.UnregisterNodes(unregisterNodesRequest);
+            //Assert.IsType<UnregisterNodesResponse>(response);
         }
 
         /// <summary>
@@ -386,9 +386,9 @@ namespace Org.OpenAPITools.Test.Api
         public void WriteTest()
         {
             // TODO uncomment below to test the method and replace null with proper value
-            //WriteRequestMessage? writeRequestMessage = null;
-            //var response = instance.Write(writeRequestMessage);
-            //Assert.IsType<WriteResponseMessage>(response);
+            //WriteRequest? writeRequest = null;
+            //var response = instance.Write(writeRequest);
+            //Assert.IsType<WriteResponse>(response);
         }
     }
 }

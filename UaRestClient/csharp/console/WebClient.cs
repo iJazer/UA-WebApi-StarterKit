@@ -90,127 +90,119 @@ namespace UaRestClient
 
         public async Task<List<ReferenceDescription>> BrowseChildren(string nodeId)
         {
-            var message = new BrowseRequestMessage(
-                body: new BrowseRequest()
-                {
-                     RequestHeader = new RequestHeader()
-                     {
-                         TimeoutHint = 100000,
-                         Timestamp = DateTime.UtcNow
-                     },
-                     NodesToBrowse = new List<BrowseDescription>()
-                     {
-                         new BrowseDescription()
-                         {
-                             NodeId = nodeId,
-                             BrowseDirection = (int)BrowseDirection.Forward,
-                             ReferenceTypeId = ReferenceTypeIds.HierarchicalReferences,
-                             IncludeSubtypes = true,
-                             NodeClassMask = (uint)(NodeClass.Object | NodeClass.Variable | NodeClass.Method),
-                             ResultMask = 63
-                         }
-                     }
-                }
-            );
-
-            var response = await PostAsync<BrowseRequestMessage, BrowseResponseMessage>("browse", message);
-
-            if (response.Body.ResponseHeader.ServiceResult != 0)
+            var message = new BrowseRequest()
             {
-                throw new Exception($"Browse failed with status code {OpenApi.Opc.Ua.StatusCodes.ToName(response.Body.ResponseHeader.ServiceResult)}.");
+                RequestHeader = new RequestHeader()
+                {
+                    TimeoutHint = 100000,
+                    Timestamp = DateTime.UtcNow
+                },
+                NodesToBrowse = new List<BrowseDescription>()
+                {
+                    new BrowseDescription()
+                    {
+                        NodeId = nodeId,
+                        BrowseDirection = (int)BrowseDirection.Forward,
+                        ReferenceTypeId = ReferenceTypeIds.HierarchicalReferences,
+                        IncludeSubtypes = true,
+                        NodeClassMask = (uint)(NodeClass.Object | NodeClass.Variable | NodeClass.Method),
+                        ResultMask = 63
+                    }
+                }
+            };
+
+            var response = await PostAsync<BrowseRequest, BrowseResponse>("browse", message);
+
+            if (response.ResponseHeader.ServiceResult != 0)
+            {
+                throw new Exception($"Browse failed with status code {OpenApi.Opc.Ua.StatusCodes.ToName(response.ResponseHeader.ServiceResult)}.");
             }
 
-            return response.Body.Results[0].References;
+            return response.Results[0].References;
         }
 
         public async Task<List<DataValue>> ReadValues(IList<string> nodeIds)
         {
-            var message = new ReadRequestMessage(
-                body: new ReadRequest()
-                {
-                    RequestHeader = new RequestHeader()
-                    {
-                        TimeoutHint = 100000,
-                        Timestamp = DateTime.UtcNow
-                    },
-                     MaxAge = 0,
-                     NodesToRead = nodeIds.Select(x => new ReadValueId()
-                     {
-                        NodeId = x,
-                        AttributeId = Attributes.Value
-                     }).ToList()
-                }
-            );
-
-            var response = await PostAsync<ReadRequestMessage, ReadResponseMessage>("read", message);
-
-            if (response.Body.ResponseHeader.ServiceResult != 0)
+            var message = new ReadRequest()
             {
-                throw new Exception($"Read failed with status code {StatusCodes.ToName(response.Body.ResponseHeader.ServiceResult)}.");
+                RequestHeader = new RequestHeader()
+                {
+                    TimeoutHint = 100000,
+                    Timestamp = DateTime.UtcNow
+                },
+                MaxAge = 0,
+                NodesToRead = nodeIds.Select(x => new ReadValueId()
+                {
+                    NodeId = x,
+                    AttributeId = Attributes.Value
+                }).ToList()
+            };
+
+            var response = await PostAsync<ReadRequest, ReadResponse>("read", message);
+
+            if (response.ResponseHeader.ServiceResult != 0)
+            {
+                throw new Exception($"Read failed with status code {StatusCodes.ToName(response.ResponseHeader.ServiceResult)}.");
             }
 
-            return response.Body.Results;
+            return response.Results;
         }
 
         public async Task<List<long>> WriteValues(IList<WriteValue> valuesToWrite)
         {
-            var message = new WriteRequestMessage(
-                body: new WriteRequest()
-                {
-                    RequestHeader = new RequestHeader()
-                    {
-                        TimeoutHint = 100000,
-                        Timestamp = DateTime.UtcNow
-                    },
-                    NodesToWrite = new(valuesToWrite)
-                }
-            );
-
-            var response = await PostAsync<WriteRequestMessage, WriteResponseMessage>("write", message);
-
-            if (response.Body.ResponseHeader.ServiceResult != 0)
+            var message = new WriteRequest()
             {
-                throw new Exception($"Write failed with status code {StatusCodes.ToName(response.Body.ResponseHeader.ServiceResult)}.");
+                RequestHeader = new RequestHeader()
+                {
+                    TimeoutHint = 100000,
+                    Timestamp = DateTime.UtcNow
+                },
+                NodesToWrite = new(valuesToWrite)
+            };
+
+            var response = await PostAsync<WriteRequest, WriteResponse>("write", message);
+
+            if (response.ResponseHeader.ServiceResult != 0)
+            {
+                throw new Exception($"Write failed with status code {StatusCodes.ToName(response.ResponseHeader.ServiceResult)}.");
             }
 
-            return response.Body.Results;
+            return response.Results;
         }
 
         public async Task<List<Variant>> Call(string objectId, string methodId, List<Variant> inputs)
         {
-            var message = new CallRequestMessage(
-                body: new CallRequest()
+            var message = new CallRequest()
+            {
+                RequestHeader = new RequestHeader()
                 {
-                    RequestHeader = new RequestHeader()
+                    TimeoutHint = 100000,
+                    Timestamp = DateTime.UtcNow
+                },
+                MethodsToCall = new List<CallMethodRequest>()
+                {
+                    new CallMethodRequest()
                     {
-                        TimeoutHint = 100000,
-                        Timestamp = DateTime.UtcNow
-                    },
-                    MethodsToCall = new List<CallMethodRequest>()
-                    {
-                        new CallMethodRequest()
-                        {
-                            ObjectId = objectId,
-                            MethodId = methodId,
-                            InputArguments = inputs
-                        }
+                        ObjectId = objectId,
+                        MethodId = methodId,
+                        InputArguments = inputs
                     }
                 }
-            );
+            };
 
-            var response = await PostAsync<CallRequestMessage, CallResponseMessage>("call", message);
+            var response = await PostAsync<CallRequest, CallResponse>("call", message);
 
-            if (response.Body.ResponseHeader.ServiceResult != 0)
+            if (response.ResponseHeader.ServiceResult != 0)
             {
-                throw new Exception($"Call failed with status code {StatusCodes.ToName(response.Body.ResponseHeader.ServiceResult)}.");
+                throw new Exception($"Call failed with status code {StatusCodes.ToName(response.ResponseHeader.ServiceResult)}.");
             }
 
-            if (response.Body.Results[0].StatusCode != 0)
+            if (response.Results[0].StatusCode != 0)
             {
-                throw new Exception($"Method return failed status {StatusCodes.ToName(response.Body.Results[0].StatusCode)}.");
+                throw new Exception($"Method return failed status {StatusCodes.ToName(response.Results[0].StatusCode)}.");
             }
 
-            return response.Body.Results[0].OutputArguments;
+            return response.Results[0].OutputArguments;
         }
     }
 }

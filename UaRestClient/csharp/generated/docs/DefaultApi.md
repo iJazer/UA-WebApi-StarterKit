@@ -35,7 +35,7 @@ All URIs are relative to *http://localhost:4840*
 
 <a id="activatesession"></a>
 # **ActivateSession**
-> ActivateSessionResponseMessage ActivateSession (ActivateSessionRequestMessage? activateSessionRequestMessage = null)
+> ActivateSessionResponse ActivateSession (ActivateSessionRequest? activateSessionRequest = null)
 
 
 
@@ -56,11 +56,11 @@ namespace Example
             Configuration config = new Configuration();
             config.BasePath = "http://localhost:4840";
             var apiInstance = new DefaultApi(config);
-            var activateSessionRequestMessage = new ActivateSessionRequestMessage?(); // ActivateSessionRequestMessage? | ActivateSessionRequestMessage (optional) 
+            var activateSessionRequest = new ActivateSessionRequest?(); // ActivateSessionRequest? | ActivateSessionRequestMessage (optional) 
 
             try
             {
-                ActivateSessionResponseMessage result = apiInstance.ActivateSession(activateSessionRequestMessage);
+                ActivateSessionResponse result = apiInstance.ActivateSession(activateSessionRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -80,7 +80,7 @@ This returns an ApiResponse object which contains the response data, status code
 ```csharp
 try
 {
-    ApiResponse<ActivateSessionResponseMessage> response = apiInstance.ActivateSessionWithHttpInfo(activateSessionRequestMessage);
+    ApiResponse<ActivateSessionResponse> response = apiInstance.ActivateSessionWithHttpInfo(activateSessionRequest);
     Debug.Write("Status Code: " + response.StatusCode);
     Debug.Write("Response Headers: " + response.Headers);
     Debug.Write("Response Body: " + response.Data);
@@ -97,11 +97,11 @@ catch (ApiException e)
 
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| **activateSessionRequestMessage** | [**ActivateSessionRequestMessage?**](ActivateSessionRequestMessage?.md) | ActivateSessionRequestMessage | [optional]  |
+| **activateSessionRequest** | [**ActivateSessionRequest?**](ActivateSessionRequest?.md) | ActivateSessionRequestMessage | [optional]  |
 
 ### Return type
 
-[**ActivateSessionResponseMessage**](ActivateSessionResponseMessage.md)
+[**ActivateSessionResponse**](ActivateSessionResponse.md)
 
 ### Authorization
 
@@ -122,7 +122,7 @@ No authorization required
 
 <a id="browse"></a>
 # **Browse**
-> BrowseResponseMessage Browse (BrowseRequestMessage? browseRequestMessage = null)
+> BrowseResponse Browse (BrowseRequest? browseRequest = null)
 
 
 
@@ -143,11 +143,11 @@ namespace Example
             Configuration config = new Configuration();
             config.BasePath = "http://localhost:4840";
             var apiInstance = new DefaultApi(config);
-            var browseRequestMessage = new BrowseRequestMessage?(); // BrowseRequestMessage? | BrowseRequestMessage (optional) 
+            var browseRequest = new BrowseRequest?(); // BrowseRequest? | BrowseRequestMessage (optional) 
 
             try
             {
-                BrowseResponseMessage result = apiInstance.Browse(browseRequestMessage);
+                BrowseResponse result = apiInstance.Browse(browseRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -167,7 +167,7 @@ This returns an ApiResponse object which contains the response data, status code
 ```csharp
 try
 {
-    ApiResponse<BrowseResponseMessage> response = apiInstance.BrowseWithHttpInfo(browseRequestMessage);
+    ApiResponse<BrowseResponse> response = apiInstance.BrowseWithHttpInfo(browseRequest);
     Debug.Write("Status Code: " + response.StatusCode);
     Debug.Write("Response Headers: " + response.Headers);
     Debug.Write("Response Body: " + response.Data);
@@ -184,11 +184,11 @@ catch (ApiException e)
 
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| **browseRequestMessage** | [**BrowseRequestMessage?**](BrowseRequestMessage?.md) | BrowseRequestMessage | [optional]  |
+| **browseRequest** | [**BrowseRequest?**](BrowseRequest?.md) | BrowseRequestMessage | [optional]  |
 
 ### Return type
 
-[**BrowseResponseMessage**](BrowseResponseMessage.md)
+[**BrowseResponse**](BrowseResponse.md)
 
 ### Authorization
 
@@ -209,7 +209,7 @@ No authorization required
 
 <a id="browsenext"></a>
 # **BrowseNext**
-> BrowseNextResponseMessage BrowseNext (BrowseNextRequestMessage? browseNextRequestMessage = null)
+> BrowseNextResponse BrowseNext (BrowseNextRequest? browseNextRequest = null)
 
 
 
@@ -230,11 +230,11 @@ namespace Example
             Configuration config = new Configuration();
             config.BasePath = "http://localhost:4840";
             var apiInstance = new DefaultApi(config);
-            var browseNextRequestMessage = new BrowseNextRequestMessage?(); // BrowseNextRequestMessage? | BrowseNextRequestMessage (optional) 
+            var browseNextRequest = new BrowseNextRequest?(); // BrowseNextRequest? | BrowseNextRequestMessage (optional) 
 
             try
             {
-                BrowseNextResponseMessage result = apiInstance.BrowseNext(browseNextRequestMessage);
+                BrowseNextResponse result = apiInstance.BrowseNext(browseNextRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -254,7 +254,7 @@ This returns an ApiResponse object which contains the response data, status code
 ```csharp
 try
 {
-    ApiResponse<BrowseNextResponseMessage> response = apiInstance.BrowseNextWithHttpInfo(browseNextRequestMessage);
+    ApiResponse<BrowseNextResponse> response = apiInstance.BrowseNextWithHttpInfo(browseNextRequest);
     Debug.Write("Status Code: " + response.StatusCode);
     Debug.Write("Response Headers: " + response.Headers);
     Debug.Write("Response Body: " + response.Data);
@@ -271,11 +271,11 @@ catch (ApiException e)
 
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| **browseNextRequestMessage** | [**BrowseNextRequestMessage?**](BrowseNextRequestMessage?.md) | BrowseNextRequestMessage | [optional]  |
+| **browseNextRequest** | [**BrowseNextRequest?**](BrowseNextRequest?.md) | BrowseNextRequestMessage | [optional]  |
 
 ### Return type
 
-[**BrowseNextResponseMessage**](BrowseNextResponseMessage.md)
+[**BrowseNextResponse**](BrowseNextResponse.md)
 
 ### Authorization
 
@@ -296,7 +296,7 @@ No authorization required
 
 <a id="call"></a>
 # **Call**
-> CallResponseMessage Call (CallRequestMessage? callRequestMessage = null)
+> CallResponse Call (CallRequest? callRequest = null)
 
 
 
@@ -317,11 +317,11 @@ namespace Example
             Configuration config = new Configuration();
             config.BasePath = "http://localhost:4840";
             var apiInstance = new DefaultApi(config);
-            var callRequestMessage = new CallRequestMessage?(); // CallRequestMessage? | CallRequestMessage (optional) 
+            var callRequest = new CallRequest?(); // CallRequest? | CallRequestMessage (optional) 
 
             try
             {
-                CallResponseMessage result = apiInstance.Call(callRequestMessage);
+                CallResponse result = apiInstance.Call(callRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -341,7 +341,7 @@ This returns an ApiResponse object which contains the response data, status code
 ```csharp
 try
 {
-    ApiResponse<CallResponseMessage> response = apiInstance.CallWithHttpInfo(callRequestMessage);
+    ApiResponse<CallResponse> response = apiInstance.CallWithHttpInfo(callRequest);
     Debug.Write("Status Code: " + response.StatusCode);
     Debug.Write("Response Headers: " + response.Headers);
     Debug.Write("Response Body: " + response.Data);
@@ -358,11 +358,11 @@ catch (ApiException e)
 
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| **callRequestMessage** | [**CallRequestMessage?**](CallRequestMessage?.md) | CallRequestMessage | [optional]  |
+| **callRequest** | [**CallRequest?**](CallRequest?.md) | CallRequestMessage | [optional]  |
 
 ### Return type
 
-[**CallResponseMessage**](CallResponseMessage.md)
+[**CallResponse**](CallResponse.md)
 
 ### Authorization
 
@@ -383,7 +383,7 @@ No authorization required
 
 <a id="cancel"></a>
 # **Cancel**
-> CancelResponseMessage Cancel (CancelRequestMessage? cancelRequestMessage = null)
+> CancelResponse Cancel (CancelRequest? cancelRequest = null)
 
 
 
@@ -404,11 +404,11 @@ namespace Example
             Configuration config = new Configuration();
             config.BasePath = "http://localhost:4840";
             var apiInstance = new DefaultApi(config);
-            var cancelRequestMessage = new CancelRequestMessage?(); // CancelRequestMessage? | CancelRequestMessage (optional) 
+            var cancelRequest = new CancelRequest?(); // CancelRequest? | CancelRequestMessage (optional) 
 
             try
             {
-                CancelResponseMessage result = apiInstance.Cancel(cancelRequestMessage);
+                CancelResponse result = apiInstance.Cancel(cancelRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -428,7 +428,7 @@ This returns an ApiResponse object which contains the response data, status code
 ```csharp
 try
 {
-    ApiResponse<CancelResponseMessage> response = apiInstance.CancelWithHttpInfo(cancelRequestMessage);
+    ApiResponse<CancelResponse> response = apiInstance.CancelWithHttpInfo(cancelRequest);
     Debug.Write("Status Code: " + response.StatusCode);
     Debug.Write("Response Headers: " + response.Headers);
     Debug.Write("Response Body: " + response.Data);
@@ -445,11 +445,11 @@ catch (ApiException e)
 
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| **cancelRequestMessage** | [**CancelRequestMessage?**](CancelRequestMessage?.md) | CancelRequestMessage | [optional]  |
+| **cancelRequest** | [**CancelRequest?**](CancelRequest?.md) | CancelRequestMessage | [optional]  |
 
 ### Return type
 
-[**CancelResponseMessage**](CancelResponseMessage.md)
+[**CancelResponse**](CancelResponse.md)
 
 ### Authorization
 
@@ -470,7 +470,7 @@ No authorization required
 
 <a id="closesession"></a>
 # **CloseSession**
-> CloseSessionResponseMessage CloseSession (CloseSessionRequestMessage? closeSessionRequestMessage = null)
+> CloseSessionResponse CloseSession (CloseSessionRequest? closeSessionRequest = null)
 
 
 
@@ -491,11 +491,11 @@ namespace Example
             Configuration config = new Configuration();
             config.BasePath = "http://localhost:4840";
             var apiInstance = new DefaultApi(config);
-            var closeSessionRequestMessage = new CloseSessionRequestMessage?(); // CloseSessionRequestMessage? | CloseSessionRequestMessage (optional) 
+            var closeSessionRequest = new CloseSessionRequest?(); // CloseSessionRequest? | CloseSessionRequestMessage (optional) 
 
             try
             {
-                CloseSessionResponseMessage result = apiInstance.CloseSession(closeSessionRequestMessage);
+                CloseSessionResponse result = apiInstance.CloseSession(closeSessionRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -515,7 +515,7 @@ This returns an ApiResponse object which contains the response data, status code
 ```csharp
 try
 {
-    ApiResponse<CloseSessionResponseMessage> response = apiInstance.CloseSessionWithHttpInfo(closeSessionRequestMessage);
+    ApiResponse<CloseSessionResponse> response = apiInstance.CloseSessionWithHttpInfo(closeSessionRequest);
     Debug.Write("Status Code: " + response.StatusCode);
     Debug.Write("Response Headers: " + response.Headers);
     Debug.Write("Response Body: " + response.Data);
@@ -532,11 +532,11 @@ catch (ApiException e)
 
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| **closeSessionRequestMessage** | [**CloseSessionRequestMessage?**](CloseSessionRequestMessage?.md) | CloseSessionRequestMessage | [optional]  |
+| **closeSessionRequest** | [**CloseSessionRequest?**](CloseSessionRequest?.md) | CloseSessionRequestMessage | [optional]  |
 
 ### Return type
 
-[**CloseSessionResponseMessage**](CloseSessionResponseMessage.md)
+[**CloseSessionResponse**](CloseSessionResponse.md)
 
 ### Authorization
 
@@ -557,7 +557,7 @@ No authorization required
 
 <a id="createmonitoreditems"></a>
 # **CreateMonitoredItems**
-> CreateMonitoredItemsResponseMessage CreateMonitoredItems (CreateMonitoredItemsRequestMessage? createMonitoredItemsRequestMessage = null)
+> CreateMonitoredItemsResponse CreateMonitoredItems (CreateMonitoredItemsRequest? createMonitoredItemsRequest = null)
 
 
 
@@ -578,11 +578,11 @@ namespace Example
             Configuration config = new Configuration();
             config.BasePath = "http://localhost:4840";
             var apiInstance = new DefaultApi(config);
-            var createMonitoredItemsRequestMessage = new CreateMonitoredItemsRequestMessage?(); // CreateMonitoredItemsRequestMessage? | CreateMonitoredItemsRequestMessage (optional) 
+            var createMonitoredItemsRequest = new CreateMonitoredItemsRequest?(); // CreateMonitoredItemsRequest? | CreateMonitoredItemsRequestMessage (optional) 
 
             try
             {
-                CreateMonitoredItemsResponseMessage result = apiInstance.CreateMonitoredItems(createMonitoredItemsRequestMessage);
+                CreateMonitoredItemsResponse result = apiInstance.CreateMonitoredItems(createMonitoredItemsRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -602,7 +602,7 @@ This returns an ApiResponse object which contains the response data, status code
 ```csharp
 try
 {
-    ApiResponse<CreateMonitoredItemsResponseMessage> response = apiInstance.CreateMonitoredItemsWithHttpInfo(createMonitoredItemsRequestMessage);
+    ApiResponse<CreateMonitoredItemsResponse> response = apiInstance.CreateMonitoredItemsWithHttpInfo(createMonitoredItemsRequest);
     Debug.Write("Status Code: " + response.StatusCode);
     Debug.Write("Response Headers: " + response.Headers);
     Debug.Write("Response Body: " + response.Data);
@@ -619,11 +619,11 @@ catch (ApiException e)
 
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| **createMonitoredItemsRequestMessage** | [**CreateMonitoredItemsRequestMessage?**](CreateMonitoredItemsRequestMessage?.md) | CreateMonitoredItemsRequestMessage | [optional]  |
+| **createMonitoredItemsRequest** | [**CreateMonitoredItemsRequest?**](CreateMonitoredItemsRequest?.md) | CreateMonitoredItemsRequestMessage | [optional]  |
 
 ### Return type
 
-[**CreateMonitoredItemsResponseMessage**](CreateMonitoredItemsResponseMessage.md)
+[**CreateMonitoredItemsResponse**](CreateMonitoredItemsResponse.md)
 
 ### Authorization
 
@@ -644,7 +644,7 @@ No authorization required
 
 <a id="createsession"></a>
 # **CreateSession**
-> CreateSessionResponseMessage CreateSession (CreateSessionRequestMessage? createSessionRequestMessage = null)
+> CreateSessionResponse CreateSession (CreateSessionRequest? createSessionRequest = null)
 
 
 
@@ -665,11 +665,11 @@ namespace Example
             Configuration config = new Configuration();
             config.BasePath = "http://localhost:4840";
             var apiInstance = new DefaultApi(config);
-            var createSessionRequestMessage = new CreateSessionRequestMessage?(); // CreateSessionRequestMessage? | CreateSessionRequestMessage (optional) 
+            var createSessionRequest = new CreateSessionRequest?(); // CreateSessionRequest? | CreateSessionRequestMessage (optional) 
 
             try
             {
-                CreateSessionResponseMessage result = apiInstance.CreateSession(createSessionRequestMessage);
+                CreateSessionResponse result = apiInstance.CreateSession(createSessionRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -689,7 +689,7 @@ This returns an ApiResponse object which contains the response data, status code
 ```csharp
 try
 {
-    ApiResponse<CreateSessionResponseMessage> response = apiInstance.CreateSessionWithHttpInfo(createSessionRequestMessage);
+    ApiResponse<CreateSessionResponse> response = apiInstance.CreateSessionWithHttpInfo(createSessionRequest);
     Debug.Write("Status Code: " + response.StatusCode);
     Debug.Write("Response Headers: " + response.Headers);
     Debug.Write("Response Body: " + response.Data);
@@ -706,11 +706,11 @@ catch (ApiException e)
 
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| **createSessionRequestMessage** | [**CreateSessionRequestMessage?**](CreateSessionRequestMessage?.md) | CreateSessionRequestMessage | [optional]  |
+| **createSessionRequest** | [**CreateSessionRequest?**](CreateSessionRequest?.md) | CreateSessionRequestMessage | [optional]  |
 
 ### Return type
 
-[**CreateSessionResponseMessage**](CreateSessionResponseMessage.md)
+[**CreateSessionResponse**](CreateSessionResponse.md)
 
 ### Authorization
 
@@ -731,7 +731,7 @@ No authorization required
 
 <a id="createsubscription"></a>
 # **CreateSubscription**
-> CreateSubscriptionResponseMessage CreateSubscription (CreateSubscriptionRequestMessage? createSubscriptionRequestMessage = null)
+> CreateSubscriptionResponse CreateSubscription (CreateSubscriptionRequest? createSubscriptionRequest = null)
 
 
 
@@ -752,11 +752,11 @@ namespace Example
             Configuration config = new Configuration();
             config.BasePath = "http://localhost:4840";
             var apiInstance = new DefaultApi(config);
-            var createSubscriptionRequestMessage = new CreateSubscriptionRequestMessage?(); // CreateSubscriptionRequestMessage? | CreateSubscriptionRequestMessage (optional) 
+            var createSubscriptionRequest = new CreateSubscriptionRequest?(); // CreateSubscriptionRequest? | CreateSubscriptionRequestMessage (optional) 
 
             try
             {
-                CreateSubscriptionResponseMessage result = apiInstance.CreateSubscription(createSubscriptionRequestMessage);
+                CreateSubscriptionResponse result = apiInstance.CreateSubscription(createSubscriptionRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -776,7 +776,7 @@ This returns an ApiResponse object which contains the response data, status code
 ```csharp
 try
 {
-    ApiResponse<CreateSubscriptionResponseMessage> response = apiInstance.CreateSubscriptionWithHttpInfo(createSubscriptionRequestMessage);
+    ApiResponse<CreateSubscriptionResponse> response = apiInstance.CreateSubscriptionWithHttpInfo(createSubscriptionRequest);
     Debug.Write("Status Code: " + response.StatusCode);
     Debug.Write("Response Headers: " + response.Headers);
     Debug.Write("Response Body: " + response.Data);
@@ -793,11 +793,11 @@ catch (ApiException e)
 
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| **createSubscriptionRequestMessage** | [**CreateSubscriptionRequestMessage?**](CreateSubscriptionRequestMessage?.md) | CreateSubscriptionRequestMessage | [optional]  |
+| **createSubscriptionRequest** | [**CreateSubscriptionRequest?**](CreateSubscriptionRequest?.md) | CreateSubscriptionRequestMessage | [optional]  |
 
 ### Return type
 
-[**CreateSubscriptionResponseMessage**](CreateSubscriptionResponseMessage.md)
+[**CreateSubscriptionResponse**](CreateSubscriptionResponse.md)
 
 ### Authorization
 
@@ -818,7 +818,7 @@ No authorization required
 
 <a id="deletemonitoreditems"></a>
 # **DeleteMonitoredItems**
-> DeleteMonitoredItemsResponseMessage DeleteMonitoredItems (DeleteMonitoredItemsRequestMessage? deleteMonitoredItemsRequestMessage = null)
+> DeleteMonitoredItemsResponse DeleteMonitoredItems (DeleteMonitoredItemsRequest? deleteMonitoredItemsRequest = null)
 
 
 
@@ -839,11 +839,11 @@ namespace Example
             Configuration config = new Configuration();
             config.BasePath = "http://localhost:4840";
             var apiInstance = new DefaultApi(config);
-            var deleteMonitoredItemsRequestMessage = new DeleteMonitoredItemsRequestMessage?(); // DeleteMonitoredItemsRequestMessage? | DeleteMonitoredItemsRequestMessage (optional) 
+            var deleteMonitoredItemsRequest = new DeleteMonitoredItemsRequest?(); // DeleteMonitoredItemsRequest? | DeleteMonitoredItemsRequestMessage (optional) 
 
             try
             {
-                DeleteMonitoredItemsResponseMessage result = apiInstance.DeleteMonitoredItems(deleteMonitoredItemsRequestMessage);
+                DeleteMonitoredItemsResponse result = apiInstance.DeleteMonitoredItems(deleteMonitoredItemsRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -863,7 +863,7 @@ This returns an ApiResponse object which contains the response data, status code
 ```csharp
 try
 {
-    ApiResponse<DeleteMonitoredItemsResponseMessage> response = apiInstance.DeleteMonitoredItemsWithHttpInfo(deleteMonitoredItemsRequestMessage);
+    ApiResponse<DeleteMonitoredItemsResponse> response = apiInstance.DeleteMonitoredItemsWithHttpInfo(deleteMonitoredItemsRequest);
     Debug.Write("Status Code: " + response.StatusCode);
     Debug.Write("Response Headers: " + response.Headers);
     Debug.Write("Response Body: " + response.Data);
@@ -880,11 +880,11 @@ catch (ApiException e)
 
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| **deleteMonitoredItemsRequestMessage** | [**DeleteMonitoredItemsRequestMessage?**](DeleteMonitoredItemsRequestMessage?.md) | DeleteMonitoredItemsRequestMessage | [optional]  |
+| **deleteMonitoredItemsRequest** | [**DeleteMonitoredItemsRequest?**](DeleteMonitoredItemsRequest?.md) | DeleteMonitoredItemsRequestMessage | [optional]  |
 
 ### Return type
 
-[**DeleteMonitoredItemsResponseMessage**](DeleteMonitoredItemsResponseMessage.md)
+[**DeleteMonitoredItemsResponse**](DeleteMonitoredItemsResponse.md)
 
 ### Authorization
 
@@ -905,7 +905,7 @@ No authorization required
 
 <a id="deletesubscriptions"></a>
 # **DeleteSubscriptions**
-> DeleteSubscriptionsResponseMessage DeleteSubscriptions (DeleteSubscriptionsRequestMessage? deleteSubscriptionsRequestMessage = null)
+> DeleteSubscriptionsResponse DeleteSubscriptions (DeleteSubscriptionsRequest? deleteSubscriptionsRequest = null)
 
 
 
@@ -926,11 +926,11 @@ namespace Example
             Configuration config = new Configuration();
             config.BasePath = "http://localhost:4840";
             var apiInstance = new DefaultApi(config);
-            var deleteSubscriptionsRequestMessage = new DeleteSubscriptionsRequestMessage?(); // DeleteSubscriptionsRequestMessage? | DeleteSubscriptionsRequestMessage (optional) 
+            var deleteSubscriptionsRequest = new DeleteSubscriptionsRequest?(); // DeleteSubscriptionsRequest? | DeleteSubscriptionsRequestMessage (optional) 
 
             try
             {
-                DeleteSubscriptionsResponseMessage result = apiInstance.DeleteSubscriptions(deleteSubscriptionsRequestMessage);
+                DeleteSubscriptionsResponse result = apiInstance.DeleteSubscriptions(deleteSubscriptionsRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -950,7 +950,7 @@ This returns an ApiResponse object which contains the response data, status code
 ```csharp
 try
 {
-    ApiResponse<DeleteSubscriptionsResponseMessage> response = apiInstance.DeleteSubscriptionsWithHttpInfo(deleteSubscriptionsRequestMessage);
+    ApiResponse<DeleteSubscriptionsResponse> response = apiInstance.DeleteSubscriptionsWithHttpInfo(deleteSubscriptionsRequest);
     Debug.Write("Status Code: " + response.StatusCode);
     Debug.Write("Response Headers: " + response.Headers);
     Debug.Write("Response Body: " + response.Data);
@@ -967,11 +967,11 @@ catch (ApiException e)
 
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| **deleteSubscriptionsRequestMessage** | [**DeleteSubscriptionsRequestMessage?**](DeleteSubscriptionsRequestMessage?.md) | DeleteSubscriptionsRequestMessage | [optional]  |
+| **deleteSubscriptionsRequest** | [**DeleteSubscriptionsRequest?**](DeleteSubscriptionsRequest?.md) | DeleteSubscriptionsRequestMessage | [optional]  |
 
 ### Return type
 
-[**DeleteSubscriptionsResponseMessage**](DeleteSubscriptionsResponseMessage.md)
+[**DeleteSubscriptionsResponse**](DeleteSubscriptionsResponse.md)
 
 ### Authorization
 
@@ -992,7 +992,7 @@ No authorization required
 
 <a id="findservers"></a>
 # **FindServers**
-> FindServersResponseMessage FindServers (FindServersRequestMessage? findServersRequestMessage = null)
+> FindServersResponse FindServers (FindServersRequest? findServersRequest = null)
 
 
 
@@ -1013,11 +1013,11 @@ namespace Example
             Configuration config = new Configuration();
             config.BasePath = "http://localhost:4840";
             var apiInstance = new DefaultApi(config);
-            var findServersRequestMessage = new FindServersRequestMessage?(); // FindServersRequestMessage? | FindServersRequestMessage (optional) 
+            var findServersRequest = new FindServersRequest?(); // FindServersRequest? | FindServersRequestMessage (optional) 
 
             try
             {
-                FindServersResponseMessage result = apiInstance.FindServers(findServersRequestMessage);
+                FindServersResponse result = apiInstance.FindServers(findServersRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -1037,7 +1037,7 @@ This returns an ApiResponse object which contains the response data, status code
 ```csharp
 try
 {
-    ApiResponse<FindServersResponseMessage> response = apiInstance.FindServersWithHttpInfo(findServersRequestMessage);
+    ApiResponse<FindServersResponse> response = apiInstance.FindServersWithHttpInfo(findServersRequest);
     Debug.Write("Status Code: " + response.StatusCode);
     Debug.Write("Response Headers: " + response.Headers);
     Debug.Write("Response Body: " + response.Data);
@@ -1054,11 +1054,11 @@ catch (ApiException e)
 
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| **findServersRequestMessage** | [**FindServersRequestMessage?**](FindServersRequestMessage?.md) | FindServersRequestMessage | [optional]  |
+| **findServersRequest** | [**FindServersRequest?**](FindServersRequest?.md) | FindServersRequestMessage | [optional]  |
 
 ### Return type
 
-[**FindServersResponseMessage**](FindServersResponseMessage.md)
+[**FindServersResponse**](FindServersResponse.md)
 
 ### Authorization
 
@@ -1079,7 +1079,7 @@ No authorization required
 
 <a id="getendpoints"></a>
 # **GetEndpoints**
-> GetEndpointsResponseMessage GetEndpoints (GetEndpointsRequestMessage? getEndpointsRequestMessage = null)
+> GetEndpointsResponse GetEndpoints (GetEndpointsRequest? getEndpointsRequest = null)
 
 
 
@@ -1100,11 +1100,11 @@ namespace Example
             Configuration config = new Configuration();
             config.BasePath = "http://localhost:4840";
             var apiInstance = new DefaultApi(config);
-            var getEndpointsRequestMessage = new GetEndpointsRequestMessage?(); // GetEndpointsRequestMessage? | GetEndpointsRequestMessage (optional) 
+            var getEndpointsRequest = new GetEndpointsRequest?(); // GetEndpointsRequest? | GetEndpointsRequestMessage (optional) 
 
             try
             {
-                GetEndpointsResponseMessage result = apiInstance.GetEndpoints(getEndpointsRequestMessage);
+                GetEndpointsResponse result = apiInstance.GetEndpoints(getEndpointsRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -1124,7 +1124,7 @@ This returns an ApiResponse object which contains the response data, status code
 ```csharp
 try
 {
-    ApiResponse<GetEndpointsResponseMessage> response = apiInstance.GetEndpointsWithHttpInfo(getEndpointsRequestMessage);
+    ApiResponse<GetEndpointsResponse> response = apiInstance.GetEndpointsWithHttpInfo(getEndpointsRequest);
     Debug.Write("Status Code: " + response.StatusCode);
     Debug.Write("Response Headers: " + response.Headers);
     Debug.Write("Response Body: " + response.Data);
@@ -1141,11 +1141,11 @@ catch (ApiException e)
 
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| **getEndpointsRequestMessage** | [**GetEndpointsRequestMessage?**](GetEndpointsRequestMessage?.md) | GetEndpointsRequestMessage | [optional]  |
+| **getEndpointsRequest** | [**GetEndpointsRequest?**](GetEndpointsRequest?.md) | GetEndpointsRequestMessage | [optional]  |
 
 ### Return type
 
-[**GetEndpointsResponseMessage**](GetEndpointsResponseMessage.md)
+[**GetEndpointsResponse**](GetEndpointsResponse.md)
 
 ### Authorization
 
@@ -1166,7 +1166,7 @@ No authorization required
 
 <a id="historyread"></a>
 # **HistoryRead**
-> HistoryReadResponseMessage HistoryRead (HistoryReadRequestMessage? historyReadRequestMessage = null)
+> HistoryReadResponse HistoryRead (HistoryReadRequest? historyReadRequest = null)
 
 
 
@@ -1187,11 +1187,11 @@ namespace Example
             Configuration config = new Configuration();
             config.BasePath = "http://localhost:4840";
             var apiInstance = new DefaultApi(config);
-            var historyReadRequestMessage = new HistoryReadRequestMessage?(); // HistoryReadRequestMessage? | HistoryReadRequestMessage (optional) 
+            var historyReadRequest = new HistoryReadRequest?(); // HistoryReadRequest? | HistoryReadRequestMessage (optional) 
 
             try
             {
-                HistoryReadResponseMessage result = apiInstance.HistoryRead(historyReadRequestMessage);
+                HistoryReadResponse result = apiInstance.HistoryRead(historyReadRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -1211,7 +1211,7 @@ This returns an ApiResponse object which contains the response data, status code
 ```csharp
 try
 {
-    ApiResponse<HistoryReadResponseMessage> response = apiInstance.HistoryReadWithHttpInfo(historyReadRequestMessage);
+    ApiResponse<HistoryReadResponse> response = apiInstance.HistoryReadWithHttpInfo(historyReadRequest);
     Debug.Write("Status Code: " + response.StatusCode);
     Debug.Write("Response Headers: " + response.Headers);
     Debug.Write("Response Body: " + response.Data);
@@ -1228,11 +1228,11 @@ catch (ApiException e)
 
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| **historyReadRequestMessage** | [**HistoryReadRequestMessage?**](HistoryReadRequestMessage?.md) | HistoryReadRequestMessage | [optional]  |
+| **historyReadRequest** | [**HistoryReadRequest?**](HistoryReadRequest?.md) | HistoryReadRequestMessage | [optional]  |
 
 ### Return type
 
-[**HistoryReadResponseMessage**](HistoryReadResponseMessage.md)
+[**HistoryReadResponse**](HistoryReadResponse.md)
 
 ### Authorization
 
@@ -1253,7 +1253,7 @@ No authorization required
 
 <a id="historyupdate"></a>
 # **HistoryUpdate**
-> HistoryUpdateResponseMessage HistoryUpdate (HistoryUpdateRequestMessage? historyUpdateRequestMessage = null)
+> HistoryUpdateResponse HistoryUpdate (HistoryUpdateRequest? historyUpdateRequest = null)
 
 
 
@@ -1274,11 +1274,11 @@ namespace Example
             Configuration config = new Configuration();
             config.BasePath = "http://localhost:4840";
             var apiInstance = new DefaultApi(config);
-            var historyUpdateRequestMessage = new HistoryUpdateRequestMessage?(); // HistoryUpdateRequestMessage? | HistoryUpdateRequestMessage (optional) 
+            var historyUpdateRequest = new HistoryUpdateRequest?(); // HistoryUpdateRequest? | HistoryUpdateRequestMessage (optional) 
 
             try
             {
-                HistoryUpdateResponseMessage result = apiInstance.HistoryUpdate(historyUpdateRequestMessage);
+                HistoryUpdateResponse result = apiInstance.HistoryUpdate(historyUpdateRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -1298,7 +1298,7 @@ This returns an ApiResponse object which contains the response data, status code
 ```csharp
 try
 {
-    ApiResponse<HistoryUpdateResponseMessage> response = apiInstance.HistoryUpdateWithHttpInfo(historyUpdateRequestMessage);
+    ApiResponse<HistoryUpdateResponse> response = apiInstance.HistoryUpdateWithHttpInfo(historyUpdateRequest);
     Debug.Write("Status Code: " + response.StatusCode);
     Debug.Write("Response Headers: " + response.Headers);
     Debug.Write("Response Body: " + response.Data);
@@ -1315,11 +1315,11 @@ catch (ApiException e)
 
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| **historyUpdateRequestMessage** | [**HistoryUpdateRequestMessage?**](HistoryUpdateRequestMessage?.md) | HistoryUpdateRequestMessage | [optional]  |
+| **historyUpdateRequest** | [**HistoryUpdateRequest?**](HistoryUpdateRequest?.md) | HistoryUpdateRequestMessage | [optional]  |
 
 ### Return type
 
-[**HistoryUpdateResponseMessage**](HistoryUpdateResponseMessage.md)
+[**HistoryUpdateResponse**](HistoryUpdateResponse.md)
 
 ### Authorization
 
@@ -1340,7 +1340,7 @@ No authorization required
 
 <a id="modifymonitoreditems"></a>
 # **ModifyMonitoredItems**
-> ModifyMonitoredItemsResponseMessage ModifyMonitoredItems (ModifyMonitoredItemsRequestMessage? modifyMonitoredItemsRequestMessage = null)
+> ModifyMonitoredItemsResponse ModifyMonitoredItems (ModifyMonitoredItemsRequest? modifyMonitoredItemsRequest = null)
 
 
 
@@ -1361,11 +1361,11 @@ namespace Example
             Configuration config = new Configuration();
             config.BasePath = "http://localhost:4840";
             var apiInstance = new DefaultApi(config);
-            var modifyMonitoredItemsRequestMessage = new ModifyMonitoredItemsRequestMessage?(); // ModifyMonitoredItemsRequestMessage? | ModifyMonitoredItemsRequestMessage (optional) 
+            var modifyMonitoredItemsRequest = new ModifyMonitoredItemsRequest?(); // ModifyMonitoredItemsRequest? | ModifyMonitoredItemsRequestMessage (optional) 
 
             try
             {
-                ModifyMonitoredItemsResponseMessage result = apiInstance.ModifyMonitoredItems(modifyMonitoredItemsRequestMessage);
+                ModifyMonitoredItemsResponse result = apiInstance.ModifyMonitoredItems(modifyMonitoredItemsRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -1385,7 +1385,7 @@ This returns an ApiResponse object which contains the response data, status code
 ```csharp
 try
 {
-    ApiResponse<ModifyMonitoredItemsResponseMessage> response = apiInstance.ModifyMonitoredItemsWithHttpInfo(modifyMonitoredItemsRequestMessage);
+    ApiResponse<ModifyMonitoredItemsResponse> response = apiInstance.ModifyMonitoredItemsWithHttpInfo(modifyMonitoredItemsRequest);
     Debug.Write("Status Code: " + response.StatusCode);
     Debug.Write("Response Headers: " + response.Headers);
     Debug.Write("Response Body: " + response.Data);
@@ -1402,11 +1402,11 @@ catch (ApiException e)
 
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| **modifyMonitoredItemsRequestMessage** | [**ModifyMonitoredItemsRequestMessage?**](ModifyMonitoredItemsRequestMessage?.md) | ModifyMonitoredItemsRequestMessage | [optional]  |
+| **modifyMonitoredItemsRequest** | [**ModifyMonitoredItemsRequest?**](ModifyMonitoredItemsRequest?.md) | ModifyMonitoredItemsRequestMessage | [optional]  |
 
 ### Return type
 
-[**ModifyMonitoredItemsResponseMessage**](ModifyMonitoredItemsResponseMessage.md)
+[**ModifyMonitoredItemsResponse**](ModifyMonitoredItemsResponse.md)
 
 ### Authorization
 
@@ -1427,7 +1427,7 @@ No authorization required
 
 <a id="modifysubscription"></a>
 # **ModifySubscription**
-> ModifySubscriptionResponseMessage ModifySubscription (ModifySubscriptionRequestMessage? modifySubscriptionRequestMessage = null)
+> ModifySubscriptionResponse ModifySubscription (ModifySubscriptionRequest? modifySubscriptionRequest = null)
 
 
 
@@ -1448,11 +1448,11 @@ namespace Example
             Configuration config = new Configuration();
             config.BasePath = "http://localhost:4840";
             var apiInstance = new DefaultApi(config);
-            var modifySubscriptionRequestMessage = new ModifySubscriptionRequestMessage?(); // ModifySubscriptionRequestMessage? | ModifySubscriptionRequestMessage (optional) 
+            var modifySubscriptionRequest = new ModifySubscriptionRequest?(); // ModifySubscriptionRequest? | ModifySubscriptionRequestMessage (optional) 
 
             try
             {
-                ModifySubscriptionResponseMessage result = apiInstance.ModifySubscription(modifySubscriptionRequestMessage);
+                ModifySubscriptionResponse result = apiInstance.ModifySubscription(modifySubscriptionRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -1472,7 +1472,7 @@ This returns an ApiResponse object which contains the response data, status code
 ```csharp
 try
 {
-    ApiResponse<ModifySubscriptionResponseMessage> response = apiInstance.ModifySubscriptionWithHttpInfo(modifySubscriptionRequestMessage);
+    ApiResponse<ModifySubscriptionResponse> response = apiInstance.ModifySubscriptionWithHttpInfo(modifySubscriptionRequest);
     Debug.Write("Status Code: " + response.StatusCode);
     Debug.Write("Response Headers: " + response.Headers);
     Debug.Write("Response Body: " + response.Data);
@@ -1489,11 +1489,11 @@ catch (ApiException e)
 
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| **modifySubscriptionRequestMessage** | [**ModifySubscriptionRequestMessage?**](ModifySubscriptionRequestMessage?.md) | ModifySubscriptionRequestMessage | [optional]  |
+| **modifySubscriptionRequest** | [**ModifySubscriptionRequest?**](ModifySubscriptionRequest?.md) | ModifySubscriptionRequestMessage | [optional]  |
 
 ### Return type
 
-[**ModifySubscriptionResponseMessage**](ModifySubscriptionResponseMessage.md)
+[**ModifySubscriptionResponse**](ModifySubscriptionResponse.md)
 
 ### Authorization
 
@@ -1514,7 +1514,7 @@ No authorization required
 
 <a id="publish"></a>
 # **Publish**
-> PublishResponseMessage Publish (PublishRequestMessage? publishRequestMessage = null)
+> PublishResponse Publish (PublishRequest? publishRequest = null)
 
 
 
@@ -1535,11 +1535,11 @@ namespace Example
             Configuration config = new Configuration();
             config.BasePath = "http://localhost:4840";
             var apiInstance = new DefaultApi(config);
-            var publishRequestMessage = new PublishRequestMessage?(); // PublishRequestMessage? | PublishRequestMessage (optional) 
+            var publishRequest = new PublishRequest?(); // PublishRequest? | PublishRequestMessage (optional) 
 
             try
             {
-                PublishResponseMessage result = apiInstance.Publish(publishRequestMessage);
+                PublishResponse result = apiInstance.Publish(publishRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -1559,7 +1559,7 @@ This returns an ApiResponse object which contains the response data, status code
 ```csharp
 try
 {
-    ApiResponse<PublishResponseMessage> response = apiInstance.PublishWithHttpInfo(publishRequestMessage);
+    ApiResponse<PublishResponse> response = apiInstance.PublishWithHttpInfo(publishRequest);
     Debug.Write("Status Code: " + response.StatusCode);
     Debug.Write("Response Headers: " + response.Headers);
     Debug.Write("Response Body: " + response.Data);
@@ -1576,11 +1576,11 @@ catch (ApiException e)
 
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| **publishRequestMessage** | [**PublishRequestMessage?**](PublishRequestMessage?.md) | PublishRequestMessage | [optional]  |
+| **publishRequest** | [**PublishRequest?**](PublishRequest?.md) | PublishRequestMessage | [optional]  |
 
 ### Return type
 
-[**PublishResponseMessage**](PublishResponseMessage.md)
+[**PublishResponse**](PublishResponse.md)
 
 ### Authorization
 
@@ -1601,7 +1601,7 @@ No authorization required
 
 <a id="read"></a>
 # **Read**
-> ReadResponseMessage Read (ReadRequestMessage? readRequestMessage = null)
+> ReadResponse Read (ReadRequest? readRequest = null)
 
 
 
@@ -1622,11 +1622,11 @@ namespace Example
             Configuration config = new Configuration();
             config.BasePath = "http://localhost:4840";
             var apiInstance = new DefaultApi(config);
-            var readRequestMessage = new ReadRequestMessage?(); // ReadRequestMessage? | ReadRequestMessage (optional) 
+            var readRequest = new ReadRequest?(); // ReadRequest? | ReadRequestMessage (optional) 
 
             try
             {
-                ReadResponseMessage result = apiInstance.Read(readRequestMessage);
+                ReadResponse result = apiInstance.Read(readRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -1646,7 +1646,7 @@ This returns an ApiResponse object which contains the response data, status code
 ```csharp
 try
 {
-    ApiResponse<ReadResponseMessage> response = apiInstance.ReadWithHttpInfo(readRequestMessage);
+    ApiResponse<ReadResponse> response = apiInstance.ReadWithHttpInfo(readRequest);
     Debug.Write("Status Code: " + response.StatusCode);
     Debug.Write("Response Headers: " + response.Headers);
     Debug.Write("Response Body: " + response.Data);
@@ -1663,11 +1663,11 @@ catch (ApiException e)
 
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| **readRequestMessage** | [**ReadRequestMessage?**](ReadRequestMessage?.md) | ReadRequestMessage | [optional]  |
+| **readRequest** | [**ReadRequest?**](ReadRequest?.md) | ReadRequestMessage | [optional]  |
 
 ### Return type
 
-[**ReadResponseMessage**](ReadResponseMessage.md)
+[**ReadResponse**](ReadResponse.md)
 
 ### Authorization
 
@@ -1688,7 +1688,7 @@ No authorization required
 
 <a id="registernodes"></a>
 # **RegisterNodes**
-> RegisterNodesResponseMessage RegisterNodes (RegisterNodesRequestMessage? registerNodesRequestMessage = null)
+> RegisterNodesResponse RegisterNodes (RegisterNodesRequest? registerNodesRequest = null)
 
 
 
@@ -1709,11 +1709,11 @@ namespace Example
             Configuration config = new Configuration();
             config.BasePath = "http://localhost:4840";
             var apiInstance = new DefaultApi(config);
-            var registerNodesRequestMessage = new RegisterNodesRequestMessage?(); // RegisterNodesRequestMessage? | RegisterNodesRequestMessage (optional) 
+            var registerNodesRequest = new RegisterNodesRequest?(); // RegisterNodesRequest? | RegisterNodesRequestMessage (optional) 
 
             try
             {
-                RegisterNodesResponseMessage result = apiInstance.RegisterNodes(registerNodesRequestMessage);
+                RegisterNodesResponse result = apiInstance.RegisterNodes(registerNodesRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -1733,7 +1733,7 @@ This returns an ApiResponse object which contains the response data, status code
 ```csharp
 try
 {
-    ApiResponse<RegisterNodesResponseMessage> response = apiInstance.RegisterNodesWithHttpInfo(registerNodesRequestMessage);
+    ApiResponse<RegisterNodesResponse> response = apiInstance.RegisterNodesWithHttpInfo(registerNodesRequest);
     Debug.Write("Status Code: " + response.StatusCode);
     Debug.Write("Response Headers: " + response.Headers);
     Debug.Write("Response Body: " + response.Data);
@@ -1750,11 +1750,11 @@ catch (ApiException e)
 
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| **registerNodesRequestMessage** | [**RegisterNodesRequestMessage?**](RegisterNodesRequestMessage?.md) | RegisterNodesRequestMessage | [optional]  |
+| **registerNodesRequest** | [**RegisterNodesRequest?**](RegisterNodesRequest?.md) | RegisterNodesRequestMessage | [optional]  |
 
 ### Return type
 
-[**RegisterNodesResponseMessage**](RegisterNodesResponseMessage.md)
+[**RegisterNodesResponse**](RegisterNodesResponse.md)
 
 ### Authorization
 
@@ -1775,7 +1775,7 @@ No authorization required
 
 <a id="republish"></a>
 # **Republish**
-> RepublishResponseMessage Republish (RepublishRequestMessage? republishRequestMessage = null)
+> RepublishResponse Republish (RepublishRequest? republishRequest = null)
 
 
 
@@ -1796,11 +1796,11 @@ namespace Example
             Configuration config = new Configuration();
             config.BasePath = "http://localhost:4840";
             var apiInstance = new DefaultApi(config);
-            var republishRequestMessage = new RepublishRequestMessage?(); // RepublishRequestMessage? | RepublishRequestMessage (optional) 
+            var republishRequest = new RepublishRequest?(); // RepublishRequest? | RepublishRequestMessage (optional) 
 
             try
             {
-                RepublishResponseMessage result = apiInstance.Republish(republishRequestMessage);
+                RepublishResponse result = apiInstance.Republish(republishRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -1820,7 +1820,7 @@ This returns an ApiResponse object which contains the response data, status code
 ```csharp
 try
 {
-    ApiResponse<RepublishResponseMessage> response = apiInstance.RepublishWithHttpInfo(republishRequestMessage);
+    ApiResponse<RepublishResponse> response = apiInstance.RepublishWithHttpInfo(republishRequest);
     Debug.Write("Status Code: " + response.StatusCode);
     Debug.Write("Response Headers: " + response.Headers);
     Debug.Write("Response Body: " + response.Data);
@@ -1837,11 +1837,11 @@ catch (ApiException e)
 
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| **republishRequestMessage** | [**RepublishRequestMessage?**](RepublishRequestMessage?.md) | RepublishRequestMessage | [optional]  |
+| **republishRequest** | [**RepublishRequest?**](RepublishRequest?.md) | RepublishRequestMessage | [optional]  |
 
 ### Return type
 
-[**RepublishResponseMessage**](RepublishResponseMessage.md)
+[**RepublishResponse**](RepublishResponse.md)
 
 ### Authorization
 
@@ -1862,7 +1862,7 @@ No authorization required
 
 <a id="setmonitoringmode"></a>
 # **SetMonitoringMode**
-> SetMonitoringModeResponseMessage SetMonitoringMode (SetMonitoringModeRequestMessage? setMonitoringModeRequestMessage = null)
+> SetMonitoringModeResponse SetMonitoringMode (SetMonitoringModeRequest? setMonitoringModeRequest = null)
 
 
 
@@ -1883,11 +1883,11 @@ namespace Example
             Configuration config = new Configuration();
             config.BasePath = "http://localhost:4840";
             var apiInstance = new DefaultApi(config);
-            var setMonitoringModeRequestMessage = new SetMonitoringModeRequestMessage?(); // SetMonitoringModeRequestMessage? | SetMonitoringModeRequestMessage (optional) 
+            var setMonitoringModeRequest = new SetMonitoringModeRequest?(); // SetMonitoringModeRequest? | SetMonitoringModeRequestMessage (optional) 
 
             try
             {
-                SetMonitoringModeResponseMessage result = apiInstance.SetMonitoringMode(setMonitoringModeRequestMessage);
+                SetMonitoringModeResponse result = apiInstance.SetMonitoringMode(setMonitoringModeRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -1907,7 +1907,7 @@ This returns an ApiResponse object which contains the response data, status code
 ```csharp
 try
 {
-    ApiResponse<SetMonitoringModeResponseMessage> response = apiInstance.SetMonitoringModeWithHttpInfo(setMonitoringModeRequestMessage);
+    ApiResponse<SetMonitoringModeResponse> response = apiInstance.SetMonitoringModeWithHttpInfo(setMonitoringModeRequest);
     Debug.Write("Status Code: " + response.StatusCode);
     Debug.Write("Response Headers: " + response.Headers);
     Debug.Write("Response Body: " + response.Data);
@@ -1924,11 +1924,11 @@ catch (ApiException e)
 
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| **setMonitoringModeRequestMessage** | [**SetMonitoringModeRequestMessage?**](SetMonitoringModeRequestMessage?.md) | SetMonitoringModeRequestMessage | [optional]  |
+| **setMonitoringModeRequest** | [**SetMonitoringModeRequest?**](SetMonitoringModeRequest?.md) | SetMonitoringModeRequestMessage | [optional]  |
 
 ### Return type
 
-[**SetMonitoringModeResponseMessage**](SetMonitoringModeResponseMessage.md)
+[**SetMonitoringModeResponse**](SetMonitoringModeResponse.md)
 
 ### Authorization
 
@@ -1949,7 +1949,7 @@ No authorization required
 
 <a id="setpublishingmode"></a>
 # **SetPublishingMode**
-> SetPublishingModeResponseMessage SetPublishingMode (SetPublishingModeRequestMessage? setPublishingModeRequestMessage = null)
+> SetPublishingModeResponse SetPublishingMode (SetPublishingModeRequest? setPublishingModeRequest = null)
 
 
 
@@ -1970,11 +1970,11 @@ namespace Example
             Configuration config = new Configuration();
             config.BasePath = "http://localhost:4840";
             var apiInstance = new DefaultApi(config);
-            var setPublishingModeRequestMessage = new SetPublishingModeRequestMessage?(); // SetPublishingModeRequestMessage? | SetPublishingModeRequestMessage (optional) 
+            var setPublishingModeRequest = new SetPublishingModeRequest?(); // SetPublishingModeRequest? | SetPublishingModeRequestMessage (optional) 
 
             try
             {
-                SetPublishingModeResponseMessage result = apiInstance.SetPublishingMode(setPublishingModeRequestMessage);
+                SetPublishingModeResponse result = apiInstance.SetPublishingMode(setPublishingModeRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -1994,7 +1994,7 @@ This returns an ApiResponse object which contains the response data, status code
 ```csharp
 try
 {
-    ApiResponse<SetPublishingModeResponseMessage> response = apiInstance.SetPublishingModeWithHttpInfo(setPublishingModeRequestMessage);
+    ApiResponse<SetPublishingModeResponse> response = apiInstance.SetPublishingModeWithHttpInfo(setPublishingModeRequest);
     Debug.Write("Status Code: " + response.StatusCode);
     Debug.Write("Response Headers: " + response.Headers);
     Debug.Write("Response Body: " + response.Data);
@@ -2011,11 +2011,11 @@ catch (ApiException e)
 
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| **setPublishingModeRequestMessage** | [**SetPublishingModeRequestMessage?**](SetPublishingModeRequestMessage?.md) | SetPublishingModeRequestMessage | [optional]  |
+| **setPublishingModeRequest** | [**SetPublishingModeRequest?**](SetPublishingModeRequest?.md) | SetPublishingModeRequestMessage | [optional]  |
 
 ### Return type
 
-[**SetPublishingModeResponseMessage**](SetPublishingModeResponseMessage.md)
+[**SetPublishingModeResponse**](SetPublishingModeResponse.md)
 
 ### Authorization
 
@@ -2036,7 +2036,7 @@ No authorization required
 
 <a id="settriggering"></a>
 # **SetTriggering**
-> SetTriggeringResponseMessage SetTriggering (SetTriggeringRequestMessage? setTriggeringRequestMessage = null)
+> SetTriggeringResponse SetTriggering (SetTriggeringRequest? setTriggeringRequest = null)
 
 
 
@@ -2057,11 +2057,11 @@ namespace Example
             Configuration config = new Configuration();
             config.BasePath = "http://localhost:4840";
             var apiInstance = new DefaultApi(config);
-            var setTriggeringRequestMessage = new SetTriggeringRequestMessage?(); // SetTriggeringRequestMessage? | SetTriggeringRequestMessage (optional) 
+            var setTriggeringRequest = new SetTriggeringRequest?(); // SetTriggeringRequest? | SetTriggeringRequestMessage (optional) 
 
             try
             {
-                SetTriggeringResponseMessage result = apiInstance.SetTriggering(setTriggeringRequestMessage);
+                SetTriggeringResponse result = apiInstance.SetTriggering(setTriggeringRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -2081,7 +2081,7 @@ This returns an ApiResponse object which contains the response data, status code
 ```csharp
 try
 {
-    ApiResponse<SetTriggeringResponseMessage> response = apiInstance.SetTriggeringWithHttpInfo(setTriggeringRequestMessage);
+    ApiResponse<SetTriggeringResponse> response = apiInstance.SetTriggeringWithHttpInfo(setTriggeringRequest);
     Debug.Write("Status Code: " + response.StatusCode);
     Debug.Write("Response Headers: " + response.Headers);
     Debug.Write("Response Body: " + response.Data);
@@ -2098,11 +2098,11 @@ catch (ApiException e)
 
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| **setTriggeringRequestMessage** | [**SetTriggeringRequestMessage?**](SetTriggeringRequestMessage?.md) | SetTriggeringRequestMessage | [optional]  |
+| **setTriggeringRequest** | [**SetTriggeringRequest?**](SetTriggeringRequest?.md) | SetTriggeringRequestMessage | [optional]  |
 
 ### Return type
 
-[**SetTriggeringResponseMessage**](SetTriggeringResponseMessage.md)
+[**SetTriggeringResponse**](SetTriggeringResponse.md)
 
 ### Authorization
 
@@ -2123,7 +2123,7 @@ No authorization required
 
 <a id="transfersubscriptions"></a>
 # **TransferSubscriptions**
-> TransferSubscriptionsResponseMessage TransferSubscriptions (TransferSubscriptionsRequestMessage? transferSubscriptionsRequestMessage = null)
+> TransferSubscriptionsResponse TransferSubscriptions (TransferSubscriptionsRequest? transferSubscriptionsRequest = null)
 
 
 
@@ -2144,11 +2144,11 @@ namespace Example
             Configuration config = new Configuration();
             config.BasePath = "http://localhost:4840";
             var apiInstance = new DefaultApi(config);
-            var transferSubscriptionsRequestMessage = new TransferSubscriptionsRequestMessage?(); // TransferSubscriptionsRequestMessage? | TransferSubscriptionsRequestMessage (optional) 
+            var transferSubscriptionsRequest = new TransferSubscriptionsRequest?(); // TransferSubscriptionsRequest? | TransferSubscriptionsRequestMessage (optional) 
 
             try
             {
-                TransferSubscriptionsResponseMessage result = apiInstance.TransferSubscriptions(transferSubscriptionsRequestMessage);
+                TransferSubscriptionsResponse result = apiInstance.TransferSubscriptions(transferSubscriptionsRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -2168,7 +2168,7 @@ This returns an ApiResponse object which contains the response data, status code
 ```csharp
 try
 {
-    ApiResponse<TransferSubscriptionsResponseMessage> response = apiInstance.TransferSubscriptionsWithHttpInfo(transferSubscriptionsRequestMessage);
+    ApiResponse<TransferSubscriptionsResponse> response = apiInstance.TransferSubscriptionsWithHttpInfo(transferSubscriptionsRequest);
     Debug.Write("Status Code: " + response.StatusCode);
     Debug.Write("Response Headers: " + response.Headers);
     Debug.Write("Response Body: " + response.Data);
@@ -2185,11 +2185,11 @@ catch (ApiException e)
 
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| **transferSubscriptionsRequestMessage** | [**TransferSubscriptionsRequestMessage?**](TransferSubscriptionsRequestMessage?.md) | TransferSubscriptionsRequestMessage | [optional]  |
+| **transferSubscriptionsRequest** | [**TransferSubscriptionsRequest?**](TransferSubscriptionsRequest?.md) | TransferSubscriptionsRequestMessage | [optional]  |
 
 ### Return type
 
-[**TransferSubscriptionsResponseMessage**](TransferSubscriptionsResponseMessage.md)
+[**TransferSubscriptionsResponse**](TransferSubscriptionsResponse.md)
 
 ### Authorization
 
@@ -2210,7 +2210,7 @@ No authorization required
 
 <a id="translatebrowsepathstonodeids"></a>
 # **TranslateBrowsePathsToNodeIds**
-> TranslateBrowsePathsToNodeIdsResponseMessage TranslateBrowsePathsToNodeIds (TranslateBrowsePathsToNodeIdsRequestMessage? translateBrowsePathsToNodeIdsRequestMessage = null)
+> TranslateBrowsePathsToNodeIdsResponse TranslateBrowsePathsToNodeIds (TranslateBrowsePathsToNodeIdsRequest? translateBrowsePathsToNodeIdsRequest = null)
 
 
 
@@ -2231,11 +2231,11 @@ namespace Example
             Configuration config = new Configuration();
             config.BasePath = "http://localhost:4840";
             var apiInstance = new DefaultApi(config);
-            var translateBrowsePathsToNodeIdsRequestMessage = new TranslateBrowsePathsToNodeIdsRequestMessage?(); // TranslateBrowsePathsToNodeIdsRequestMessage? | TranslateBrowsePathsToNodeIdsRequestMessage (optional) 
+            var translateBrowsePathsToNodeIdsRequest = new TranslateBrowsePathsToNodeIdsRequest?(); // TranslateBrowsePathsToNodeIdsRequest? | TranslateBrowsePathsToNodeIdsRequestMessage (optional) 
 
             try
             {
-                TranslateBrowsePathsToNodeIdsResponseMessage result = apiInstance.TranslateBrowsePathsToNodeIds(translateBrowsePathsToNodeIdsRequestMessage);
+                TranslateBrowsePathsToNodeIdsResponse result = apiInstance.TranslateBrowsePathsToNodeIds(translateBrowsePathsToNodeIdsRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -2255,7 +2255,7 @@ This returns an ApiResponse object which contains the response data, status code
 ```csharp
 try
 {
-    ApiResponse<TranslateBrowsePathsToNodeIdsResponseMessage> response = apiInstance.TranslateBrowsePathsToNodeIdsWithHttpInfo(translateBrowsePathsToNodeIdsRequestMessage);
+    ApiResponse<TranslateBrowsePathsToNodeIdsResponse> response = apiInstance.TranslateBrowsePathsToNodeIdsWithHttpInfo(translateBrowsePathsToNodeIdsRequest);
     Debug.Write("Status Code: " + response.StatusCode);
     Debug.Write("Response Headers: " + response.Headers);
     Debug.Write("Response Body: " + response.Data);
@@ -2272,11 +2272,11 @@ catch (ApiException e)
 
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| **translateBrowsePathsToNodeIdsRequestMessage** | [**TranslateBrowsePathsToNodeIdsRequestMessage?**](TranslateBrowsePathsToNodeIdsRequestMessage?.md) | TranslateBrowsePathsToNodeIdsRequestMessage | [optional]  |
+| **translateBrowsePathsToNodeIdsRequest** | [**TranslateBrowsePathsToNodeIdsRequest?**](TranslateBrowsePathsToNodeIdsRequest?.md) | TranslateBrowsePathsToNodeIdsRequestMessage | [optional]  |
 
 ### Return type
 
-[**TranslateBrowsePathsToNodeIdsResponseMessage**](TranslateBrowsePathsToNodeIdsResponseMessage.md)
+[**TranslateBrowsePathsToNodeIdsResponse**](TranslateBrowsePathsToNodeIdsResponse.md)
 
 ### Authorization
 
@@ -2297,7 +2297,7 @@ No authorization required
 
 <a id="unregisternodes"></a>
 # **UnregisterNodes**
-> UnregisterNodesResponseMessage UnregisterNodes (UnregisterNodesRequestMessage? unregisterNodesRequestMessage = null)
+> UnregisterNodesResponse UnregisterNodes (UnregisterNodesRequest? unregisterNodesRequest = null)
 
 
 
@@ -2318,11 +2318,11 @@ namespace Example
             Configuration config = new Configuration();
             config.BasePath = "http://localhost:4840";
             var apiInstance = new DefaultApi(config);
-            var unregisterNodesRequestMessage = new UnregisterNodesRequestMessage?(); // UnregisterNodesRequestMessage? | UnregisterNodesRequestMessage (optional) 
+            var unregisterNodesRequest = new UnregisterNodesRequest?(); // UnregisterNodesRequest? | UnregisterNodesRequestMessage (optional) 
 
             try
             {
-                UnregisterNodesResponseMessage result = apiInstance.UnregisterNodes(unregisterNodesRequestMessage);
+                UnregisterNodesResponse result = apiInstance.UnregisterNodes(unregisterNodesRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -2342,7 +2342,7 @@ This returns an ApiResponse object which contains the response data, status code
 ```csharp
 try
 {
-    ApiResponse<UnregisterNodesResponseMessage> response = apiInstance.UnregisterNodesWithHttpInfo(unregisterNodesRequestMessage);
+    ApiResponse<UnregisterNodesResponse> response = apiInstance.UnregisterNodesWithHttpInfo(unregisterNodesRequest);
     Debug.Write("Status Code: " + response.StatusCode);
     Debug.Write("Response Headers: " + response.Headers);
     Debug.Write("Response Body: " + response.Data);
@@ -2359,11 +2359,11 @@ catch (ApiException e)
 
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| **unregisterNodesRequestMessage** | [**UnregisterNodesRequestMessage?**](UnregisterNodesRequestMessage?.md) | UnregisterNodesRequestMessage | [optional]  |
+| **unregisterNodesRequest** | [**UnregisterNodesRequest?**](UnregisterNodesRequest?.md) | UnregisterNodesRequestMessage | [optional]  |
 
 ### Return type
 
-[**UnregisterNodesResponseMessage**](UnregisterNodesResponseMessage.md)
+[**UnregisterNodesResponse**](UnregisterNodesResponse.md)
 
 ### Authorization
 
@@ -2384,7 +2384,7 @@ No authorization required
 
 <a id="write"></a>
 # **Write**
-> WriteResponseMessage Write (WriteRequestMessage? writeRequestMessage = null)
+> WriteResponse Write (WriteRequest? writeRequest = null)
 
 
 
@@ -2405,11 +2405,11 @@ namespace Example
             Configuration config = new Configuration();
             config.BasePath = "http://localhost:4840";
             var apiInstance = new DefaultApi(config);
-            var writeRequestMessage = new WriteRequestMessage?(); // WriteRequestMessage? | WriteRequestMessage (optional) 
+            var writeRequest = new WriteRequest?(); // WriteRequest? | WriteRequestMessage (optional) 
 
             try
             {
-                WriteResponseMessage result = apiInstance.Write(writeRequestMessage);
+                WriteResponse result = apiInstance.Write(writeRequest);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -2429,7 +2429,7 @@ This returns an ApiResponse object which contains the response data, status code
 ```csharp
 try
 {
-    ApiResponse<WriteResponseMessage> response = apiInstance.WriteWithHttpInfo(writeRequestMessage);
+    ApiResponse<WriteResponse> response = apiInstance.WriteWithHttpInfo(writeRequest);
     Debug.Write("Status Code: " + response.StatusCode);
     Debug.Write("Response Headers: " + response.Headers);
     Debug.Write("Response Body: " + response.Data);
@@ -2446,11 +2446,11 @@ catch (ApiException e)
 
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| **writeRequestMessage** | [**WriteRequestMessage?**](WriteRequestMessage?.md) | WriteRequestMessage | [optional]  |
+| **writeRequest** | [**WriteRequest?**](WriteRequest?.md) | WriteRequestMessage | [optional]  |
 
 ### Return type
 
-[**WriteResponseMessage**](WriteResponseMessage.md)
+[**WriteResponse**](WriteResponse.md)
 
 ### Authorization
 
