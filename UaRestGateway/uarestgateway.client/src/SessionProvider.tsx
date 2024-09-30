@@ -110,8 +110,8 @@ export const SessionProvider = ({ children }: SessionProps) => {
       sendMessage(JSON.stringify(request));
    }, [sendMessage]);
 
-   const activateSession = React.useCallback((createSessionResponse: OpcUa.CreateSessionResponseMessage) => {
-      const endpoint = createSessionResponse?.Body?.ServerEndpoints?.find((endpoint) => {
+   const activateSession = React.useCallback((createSessionResponse: OpcUa.CreateSessionResponse) => {
+      const endpoint = createSessionResponse?.ServerEndpoints?.find((endpoint) => {
          if (endpoint.TransportProfileUri === "http://opcfoundation.org/UA-Profile/Transport/wss-uajson") {
             return endpoint;
          }
@@ -130,48 +130,51 @@ export const SessionProvider = ({ children }: SessionProps) => {
             }
          } as OpcUa.ExtensionObject;
       }
-      const request: OpcUa.ActivateSessionRequestMessage = {
-         ServiceId: OpcUa.ActivateSessionRequestMessageServiceIdEnum.NUMBER_465,
-         Body: {
-            RequestHeader: {
-               AuthenticationToken: createSessionResponse?.Body?.AuthenticationToken
-            },
-            LocaleIds: ["en"],
-            UserIdentityToken: token
-         }
+      const request: OpcUa.ActivateSessionRequest = {
+         RequestHeader: {
+            AuthenticationToken: createSessionResponse?.AuthenticationToken
+         },
+         LocaleIds: ["en"],
+         UserIdentityToken: token
       }
-      sendRequest(request);
+      const message: IRequestMessage = {
+         ServiceId: OpcUa.DataTypeIds.ActivateSessionRequest,
+         Body: request
+      };
+      sendRequest(message);
    }, [sendRequest, loginStatus, user?.accessToken]);
 
    const createSession = React.useCallback(() => {
-      const request: OpcUa.CreateSessionRequestMessage = {
-         ServiceId: OpcUa.CreateSessionRequestMessageServiceIdEnum.NUMBER_459,
-         Body: {
-            ClientDescription: {
-               ApplicationUri: 'urn:localhost:UA:uarestgateway.client',
-               ProductUri: 'uarestgateway.client',
-               ApplicationName: { Text: 'uarestgateway.client' },
-               ApplicationType: OpcUa.ApplicationType.Client
-            },
-            EndpointUrl: window.location.href.split('?')[0],
-            SessionName: 'uarestgateway.client',
-            ClientNonce: undefined,
-            ClientCertificate: undefined,
-            RequestedSessionTimeout: 120000,
-            MaxResponseMessageSize: 8 * 1014 * 1024
-         }
+      const request: OpcUa.CreateSessionRequest = {
+         ClientDescription: {
+            ApplicationUri: 'urn:localhost:UA:uarestgateway.client',
+            ProductUri: 'uarestgateway.client',
+            ApplicationName: { Text: 'uarestgateway.client' },
+            ApplicationType: OpcUa.ApplicationType.Client
+         },
+         EndpointUrl: window.location.href.split('?')[0],
+         SessionName: 'uarestgateway.client',
+         ClientNonce: undefined,
+         ClientCertificate: undefined,
+         RequestedSessionTimeout: 120000,
+         MaxResponseMessageSize: 8 * 1014 * 1024
       };
-      sendRequest(request);
+      const message: IRequestMessage = {
+         ServiceId: OpcUa.DataTypeIds.CreateSessionRequest,
+         Body: request
+      };
+      sendRequest(message);
    }, [sendRequest]);
 
    const deleteSession = React.useCallback(() => {
-      const request: OpcUa.CloseSessionRequestMessage = {
-         ServiceId: OpcUa.CloseSessionRequestMessageServiceIdEnum.NUMBER_471,
-         Body: {
-            DeleteSubscriptions: true
-         }
+      const request: OpcUa.CloseSessionRequest = {
+         DeleteSubscriptions: true
       };
-      sendRequest(request);
+      const message: IRequestMessage = {
+         ServiceId: OpcUa.DataTypeIds.CloseSessionRequest,
+         Body: request
+      };
+      sendRequest(message);
    }, [sendRequest]);
 
    React.useEffect(() => {
@@ -244,18 +247,18 @@ export const SessionProvider = ({ children }: SessionProps) => {
    } as ISessionContext;
 
    const processResponse = React.useCallback((response: IResponseMessage) => {
-      if (response?.ServiceId === OpcUa.CreateSessionResponseMessageServiceIdEnum.NUMBER_462) {
-         const csr = response as OpcUa.CreateSessionResponseMessage;
-         m.current.authenticationToken = csr.Body?.AuthenticationToken;
+      if (response?.ServiceId === OpcUa.DataTypeIds.CreateSessionResponse) {
+         const csr = response.Body as OpcUa.CreateSessionResponse;
+         m.current.authenticationToken = csr.AuthenticationToken;
          activateSession(csr);
       }
-      else if (response?.ServiceId === OpcUa.ActivateSessionResponseMessageServiceIdEnum.NUMBER_468) {
-         const asr = response as OpcUa.ActivateSessionResponseMessage;
-         m.current.serverNonce = asr.Body?.ServerNonce;
+      else if (response?.ServiceId === OpcUa.DataTypeIds.ActivateSessionResponse) {
+         const asr = response.Body as OpcUa.ActivateSessionResponse;
+         m.current.serverNonce = asr.ServerNonce;
          m.current.sessionState = SessionState.SessionActive;
          setSessionState(m.current.sessionState);
       }
-      else if (response?.ServiceId === OpcUa.CloseSessionResponseMessageServiceIdEnum.NUMBER_474) {
+      else if (response?.ServiceId === OpcUa.DataTypeIds.CloseSessionResponse) {
          m.current.authenticationToken = undefined;
          m.current.serverNonce = undefined;
          m.current.sessionState = SessionState.NoSession;

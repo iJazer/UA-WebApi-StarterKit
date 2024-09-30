@@ -159,7 +159,11 @@ namespace UaRestGateway.Server.Controllers
             return authenticationToken.Format(server.CurrentInstance.MessageContext, true);
         }
 
-        public static async Task<IServiceRequest> Decode<T>(IServiceMessageContext context, Stream stream, bool? compressed = null) where T : IServiceRequest
+        public static async Task<IServiceRequest> Decode<T>(
+            IServiceMessageContext context,
+            Stream stream,
+            bool? compressed = null,
+            bool envelopeExpected = false) where T : IServiceRequest
         {
             var mstrm = stream;
 
@@ -190,38 +194,54 @@ namespace UaRestGateway.Server.Controllers
                 using (var decoder = new JsonDecoder(json, context))
                 {
                     decoder.UpdateNamespaceTable = true;
-                    SessionLessServiceMessage message = new SessionLessServiceMessage();
+                    var envelope = new ServiceMessageEnvelope();
 
-                    // message.NamespaceUris = new NamespaceTable(decoder.ReadStringArray(nameof(SessionLessServiceMessage.NamespaceUris)));
-                    // message.ServerUris = new StringTable(decoder.ReadStringArray(nameof(SessionLessServiceMessage.ServerUris)));
-                    // decoder.SetMappingTables(message.NamespaceUris, message.ServerUris);
-
-                    message.LocaleIds = new StringTable(decoder.ReadStringArray(nameof(SessionLessServiceMessage.LocaleIds)));
-
-                    var serviceId = decoder.ReadUInt32("ServiceId");
-                    var serviceType = decoder.Context.Factory.GetSystemType(new NodeId(serviceId, 0));
-
-                    if (serviceType == null)
+                    if (envelopeExpected)
                     {
-                        serviceType = typeof(T);
+                        //envelope.NamespaceUris = new NamespaceTable(decoder.ReadStringArray(nameof(SessionLessServiceMessage.NamespaceUris)));
+                        //envelope.ServerUris = new StringTable(decoder.ReadStringArray(nameof(SessionLessServiceMessage.ServerUris)));
+                        //decoder.SetMappingTables(envelope.NamespaceUris, envelope.ServerUris);
+
+                        envelope.ServiceId = decoder.ReadExpandedNodeId(nameof(ServiceMessageEnvelope.ServiceId));          
+                        envelope.LocaleIds = decoder.ReadStringArray(nameof(ServiceMessageEnvelope.LocaleIds));
+
+                        var serviceType = context.Factory.GetSystemType(envelope.ServiceId);
+
+                        if (serviceType == null)
+                        {
+                            serviceType = typeof(T);
+                        }
+
+                        envelope.Body = decoder.ReadEncodeable(nameof(ServiceMessageEnvelope.Body), serviceType);
+                        return envelope.Body as IServiceRequest;
                     }
 
-                    message.Message = decoder.ReadEncodeable("Body", serviceType);
-                    var request = message.Message as IServiceRequest;
+                    var request = Activator.CreateInstance(typeof(T)) as IServiceRequest;
+                    request.Decode(decoder);
                     return request;
                 }
             }
         }
 
-        public static async Task<MemoryStream> Encode<T>(IServiceMessageContext context, T response, bool compress = false) where T : IEncodeable
+        public static async Task<MemoryStream> Encode<T>(
+            IServiceMessageContext context, 
+            T response,
+            bool compress = false,
+            bool envelopeRequired = false) where T : IEncodeable
         {
             var stream = new MemoryStream();
 
             using (var encoder = new JsonEncoder(context, true, stream: stream, leaveOpen: true))
             {
-                encoder.WriteStringArray(nameof(SessionLessServiceMessage.LocaleIds), null);
-                encoder.WriteUInt32(nameof(SessionLessServiceMessage.ServiceId), (uint)response.TypeId.Identifier);
-                encoder.WriteEncodeable("Body", response, typeof(T));
+                if (envelopeRequired)
+                {
+                    encoder.WriteExpandedNodeId(nameof(ServiceMessageEnvelope.ServiceId), response.TypeId);
+                    encoder.WriteEncodeable(nameof(ServiceMessageEnvelope.Body), response, null);
+                }
+                else
+                {
+                    response.Encode(encoder);
+                }
 
                 encoder.Close();
                 stream.Position = 0;

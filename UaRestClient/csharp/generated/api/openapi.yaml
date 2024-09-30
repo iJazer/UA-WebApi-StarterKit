@@ -599,6 +599,679 @@ components:
       type: object
     BaseDataType:
       $ref: '#/components/schemas/Variant'
+    KeyValuePair:
+      properties:
+        Key:
+          format: opcuaQualifiedName
+          type: string
+        Value:
+          $ref: '#/components/schemas/Variant'
+      type: object
+    DataTypeSchemaHeader:
+      properties:
+        Namespaces:
+          items:
+            type: string
+          type: array
+        StructureDataTypes:
+          items:
+            $ref: '#/components/schemas/StructureDescription'
+          type: array
+        EnumDataTypes:
+          items:
+            $ref: '#/components/schemas/EnumDescription'
+          type: array
+        SimpleDataTypes:
+          items:
+            $ref: '#/components/schemas/SimpleTypeDescription'
+          type: array
+      type: object
+    DataTypeDescription:
+      properties:
+        DataTypeId:
+          format: opcuaNodeId
+          type: string
+        Name:
+          format: opcuaQualifiedName
+          type: string
+      type: object
+    StructureDescription:
+      allOf:
+      - $ref: '#/components/schemas/DataTypeDescription'
+      properties:
+        StructureDefinition:
+          $ref: '#/components/schemas/StructureDefinition'
+      type: object
+    EnumDescription:
+      allOf:
+      - $ref: '#/components/schemas/DataTypeDescription'
+      properties:
+        EnumDefinition:
+          $ref: '#/components/schemas/EnumDefinition'
+        BuiltInType:
+          format: int32
+          maximum: 255
+          minimum: 0
+          type: integer
+      type: object
+    SimpleTypeDescription:
+      allOf:
+      - $ref: '#/components/schemas/DataTypeDescription'
+      properties:
+        BaseDataType:
+          format: opcuaNodeId
+          type: string
+        BuiltInType:
+          format: int32
+          maximum: 255
+          minimum: 0
+          type: integer
+      type: object
+    PubSubState:
+      enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      format: int32
+      type: integer
+      x-enum-varnames:
+      - Disabled
+      - Paused
+      - Operational
+      - Error
+      - PreOperational
+    DataSetMetaDataType:
+      allOf:
+      - $ref: '#/components/schemas/DataTypeSchemaHeader'
+      properties:
+        Name:
+          type: string
+        Description:
+          $ref: '#/components/schemas/LocalizedText'
+        Fields:
+          items:
+            $ref: '#/components/schemas/FieldMetaData'
+          type: array
+        DataSetClassId:
+          format: uuid
+          type: string
+        ConfigurationVersion:
+          $ref: '#/components/schemas/ConfigurationVersionDataType'
+      type: object
+    FieldMetaData:
+      properties:
+        Name:
+          type: string
+        Description:
+          $ref: '#/components/schemas/LocalizedText'
+        FieldFlags:
+          format: int32
+          maximum: 65535
+          minimum: 0
+          type: integer
+        BuiltInType:
+          format: int32
+          maximum: 255
+          minimum: 0
+          type: integer
+        DataType:
+          format: opcuaNodeId
+          type: string
+        ValueRank:
+          format: int32
+          type: integer
+        ArrayDimensions:
+          items:
+            format: int64
+            maximum: 4294967295
+            minimum: 0
+            type: integer
+          type: array
+        MaxStringLength:
+          format: int64
+          maximum: 4294967295
+          minimum: 0
+          type: integer
+        DataSetFieldId:
+          format: uuid
+          type: string
+        Properties:
+          items:
+            $ref: '#/components/schemas/KeyValuePair'
+          type: array
+      type: object
+    DataSetFieldFlags:
+      description: PromotedField=0000
+      format: int64
+      maximum: 4294967295
+      minimum: 0
+      type: integer
+    ConfigurationVersionDataType:
+      properties:
+        MajorVersion:
+          format: int64
+          maximum: 4294967295
+          minimum: 0
+          type: integer
+        MinorVersion:
+          format: int64
+          maximum: 4294967295
+          minimum: 0
+          type: integer
+      type: object
+    PublishedDataSetDataType:
+      properties:
+        Name:
+          type: string
+        DataSetFolder:
+          items:
+            type: string
+          type: array
+        DataSetMetaData:
+          $ref: '#/components/schemas/DataSetMetaDataType'
+        ExtensionFields:
+          items:
+            $ref: '#/components/schemas/KeyValuePair'
+          type: array
+        DataSetSource:
+          $ref: '#/components/schemas/ExtensionObject'
+      type: object
+    PublishedDataSetSourceDataType:
+      type: object
+    DataSetFieldContentMask:
+      description: "StatusCode=0000, SourceTimestamp=0001, ServerTimestamp=0002, SourcePicoSeconds=0003,\
+        \ ServerPicoSeconds=0004, RawData=0005"
+      format: int64
+      maximum: 4294967295
+      minimum: 0
+      type: integer
+    DataSetWriterDataType:
+      properties:
+        Name:
+          type: string
+        Enabled:
+          type: boolean
+        DataSetWriterId:
+          format: int32
+          maximum: 65535
+          minimum: 0
+          type: integer
+        DataSetFieldContentMask:
+          format: int64
+          maximum: 4294967295
+          minimum: 0
+          type: integer
+        KeyFrameCount:
+          format: int64
+          maximum: 4294967295
+          minimum: 0
+          type: integer
+        DataSetName:
+          type: string
+        DataSetWriterProperties:
+          items:
+            $ref: '#/components/schemas/KeyValuePair'
+          type: array
+        TransportSettings:
+          $ref: '#/components/schemas/ExtensionObject'
+        MessageSettings:
+          $ref: '#/components/schemas/ExtensionObject'
+      type: object
+    DataSetWriterTransportDataType:
+      type: object
+    DataSetWriterMessageDataType:
+      type: object
+    PubSubGroupDataType:
+      properties:
+        Name:
+          type: string
+        Enabled:
+          type: boolean
+        SecurityMode:
+          format: MessageSecurityMode
+          type: integer
+        SecurityGroupId:
+          type: string
+        SecurityKeyServices:
+          items:
+            $ref: '#/components/schemas/EndpointDescription'
+          type: array
+        MaxNetworkMessageSize:
+          format: int64
+          maximum: 4294967295
+          minimum: 0
+          type: integer
+        GroupProperties:
+          items:
+            $ref: '#/components/schemas/KeyValuePair'
+          type: array
+      type: object
+    WriterGroupDataType:
+      allOf:
+      - $ref: '#/components/schemas/PubSubGroupDataType'
+      properties:
+        WriterGroupId:
+          format: int32
+          maximum: 65535
+          minimum: 0
+          type: integer
+        PublishingInterval:
+          format: double
+          type: number
+        KeepAliveTime:
+          format: double
+          type: number
+        Priority:
+          format: int32
+          maximum: 255
+          minimum: 0
+          type: integer
+        LocaleIds:
+          items:
+            type: string
+          type: array
+        HeaderLayoutUri:
+          type: string
+        TransportSettings:
+          $ref: '#/components/schemas/ExtensionObject'
+        MessageSettings:
+          $ref: '#/components/schemas/ExtensionObject'
+        DataSetWriters:
+          items:
+            $ref: '#/components/schemas/DataSetWriterDataType'
+          type: array
+      type: object
+    WriterGroupTransportDataType:
+      type: object
+    WriterGroupMessageDataType:
+      type: object
+    PubSubConnectionDataType:
+      properties:
+        Name:
+          type: string
+        Enabled:
+          type: boolean
+        PublisherId:
+          $ref: '#/components/schemas/Variant'
+        TransportProfileUri:
+          type: string
+        Address:
+          $ref: '#/components/schemas/ExtensionObject'
+        ConnectionProperties:
+          items:
+            $ref: '#/components/schemas/KeyValuePair'
+          type: array
+        TransportSettings:
+          $ref: '#/components/schemas/ExtensionObject'
+        WriterGroups:
+          items:
+            $ref: '#/components/schemas/WriterGroupDataType'
+          type: array
+        ReaderGroups:
+          items:
+            $ref: '#/components/schemas/ReaderGroupDataType'
+          type: array
+      type: object
+    ConnectionTransportDataType:
+      type: object
+    NetworkAddressDataType:
+      properties:
+        NetworkInterface:
+          type: string
+      type: object
+    ReaderGroupDataType:
+      allOf:
+      - $ref: '#/components/schemas/PubSubGroupDataType'
+      properties:
+        TransportSettings:
+          $ref: '#/components/schemas/ExtensionObject'
+        MessageSettings:
+          $ref: '#/components/schemas/ExtensionObject'
+        DataSetReaders:
+          items:
+            $ref: '#/components/schemas/DataSetReaderDataType'
+          type: array
+      type: object
+    ReaderGroupTransportDataType:
+      type: object
+    ReaderGroupMessageDataType:
+      type: object
+    DataSetReaderDataType:
+      properties:
+        Name:
+          type: string
+        Enabled:
+          type: boolean
+        PublisherId:
+          $ref: '#/components/schemas/Variant'
+        WriterGroupId:
+          format: int32
+          maximum: 65535
+          minimum: 0
+          type: integer
+        DataSetWriterId:
+          format: int32
+          maximum: 65535
+          minimum: 0
+          type: integer
+        DataSetMetaData:
+          $ref: '#/components/schemas/DataSetMetaDataType'
+        DataSetFieldContentMask:
+          format: int64
+          maximum: 4294967295
+          minimum: 0
+          type: integer
+        MessageReceiveTimeout:
+          format: double
+          type: number
+        KeyFrameCount:
+          format: int64
+          maximum: 4294967295
+          minimum: 0
+          type: integer
+        HeaderLayoutUri:
+          type: string
+        SecurityMode:
+          format: MessageSecurityMode
+          type: integer
+        SecurityGroupId:
+          type: string
+        SecurityKeyServices:
+          items:
+            $ref: '#/components/schemas/EndpointDescription'
+          type: array
+        DataSetReaderProperties:
+          items:
+            $ref: '#/components/schemas/KeyValuePair'
+          type: array
+        TransportSettings:
+          $ref: '#/components/schemas/ExtensionObject'
+        MessageSettings:
+          $ref: '#/components/schemas/ExtensionObject'
+        SubscribedDataSet:
+          $ref: '#/components/schemas/ExtensionObject'
+      type: object
+    DataSetReaderTransportDataType:
+      type: object
+    DataSetReaderMessageDataType:
+      type: object
+    SubscribedDataSetDataType:
+      type: object
+    PubSubConfigurationDataType:
+      properties:
+        PublishedDataSets:
+          items:
+            $ref: '#/components/schemas/PublishedDataSetDataType'
+          type: array
+        Connections:
+          items:
+            $ref: '#/components/schemas/PubSubConnectionDataType'
+          type: array
+        Enabled:
+          type: boolean
+      type: object
+    StandaloneSubscribedDataSetDataType:
+      allOf:
+      - $ref: '#/components/schemas/SubscribedDataSetDataType'
+      properties:
+        Name:
+          type: string
+        DataSetFolder:
+          items:
+            type: string
+          type: array
+        DataSetMetaData:
+          $ref: '#/components/schemas/DataSetMetaDataType'
+        SubscribedDataSet:
+          $ref: '#/components/schemas/ExtensionObject'
+      type: object
+    SecurityGroupDataType:
+      properties:
+        Name:
+          type: string
+        SecurityGroupFolder:
+          items:
+            type: string
+          type: array
+        KeyLifetime:
+          format: double
+          type: number
+        SecurityPolicyUri:
+          type: string
+        MaxFutureKeyCount:
+          format: int64
+          maximum: 4294967295
+          minimum: 0
+          type: integer
+        MaxPastKeyCount:
+          format: int64
+          maximum: 4294967295
+          minimum: 0
+          type: integer
+        SecurityGroupId:
+          type: string
+        RolePermissions:
+          items:
+            $ref: '#/components/schemas/RolePermissionType'
+          type: array
+        GroupProperties:
+          items:
+            $ref: '#/components/schemas/KeyValuePair'
+          type: array
+      type: object
+    PubSubKeyPushTargetDataType:
+      properties:
+        ApplicationUri:
+          type: string
+        PushTargetFolder:
+          items:
+            type: string
+          type: array
+        EndpointUrl:
+          type: string
+        SecurityPolicyUri:
+          type: string
+        UserTokenType:
+          $ref: '#/components/schemas/UserTokenPolicy'
+        RequestedKeyCount:
+          format: int32
+          maximum: 65535
+          minimum: 0
+          type: integer
+        RetryInterval:
+          format: double
+          type: number
+        PushTargetProperties:
+          items:
+            $ref: '#/components/schemas/KeyValuePair'
+          type: array
+        SecurityGroups:
+          items:
+            type: string
+          type: array
+      type: object
+    PubSubConfiguration2DataType:
+      allOf:
+      - $ref: '#/components/schemas/PubSubConfigurationDataType'
+      properties:
+        SubscribedDataSets:
+          items:
+            $ref: '#/components/schemas/StandaloneSubscribedDataSetDataType'
+          type: array
+        DataSetClasses:
+          items:
+            $ref: '#/components/schemas/DataSetMetaDataType'
+          type: array
+        DefaultSecurityKeyServices:
+          items:
+            $ref: '#/components/schemas/EndpointDescription'
+          type: array
+        SecurityGroups:
+          items:
+            $ref: '#/components/schemas/SecurityGroupDataType'
+          type: array
+        PubSubKeyPushTargets:
+          items:
+            $ref: '#/components/schemas/PubSubKeyPushTargetDataType'
+          type: array
+        ConfigurationVersion:
+          format: int64
+          maximum: 4294967295
+          minimum: 0
+          type: integer
+        ConfigurationProperties:
+          items:
+            $ref: '#/components/schemas/KeyValuePair'
+          type: array
+      type: object
+    JsonNetworkMessageContentMask:
+      description: "NetworkMessageHeader=0000, DataSetMessageHeader=0001, SingleDataSetMessage=0002,\
+        \ PublisherId=0003, DataSetClassId=0004, ReplyTo=0005, WriterGroupName=0006"
+      format: int64
+      maximum: 4294967295
+      minimum: 0
+      type: integer
+    JsonWriterGroupMessageDataType:
+      allOf:
+      - $ref: '#/components/schemas/WriterGroupMessageDataType'
+      properties:
+        NetworkMessageContentMask:
+          format: int64
+          maximum: 4294967295
+          minimum: 0
+          type: integer
+      type: object
+    JsonDataSetMessageContentMask:
+      description: "DataSetWriterId=0000, MetaDataVersion=0001, SequenceNumber=0002,\
+        \ Timestamp=0003, Status=0004, MessageType=0005, DataSetWriterName=0006, ReversibleFieldEncoding=0007,\
+        \ PublisherId=0008, WriterGroupName=0009, MinorVersion=000A"
+      format: int64
+      maximum: 4294967295
+      minimum: 0
+      type: integer
+    JsonDataSetWriterMessageDataType:
+      allOf:
+      - $ref: '#/components/schemas/DataSetWriterMessageDataType'
+      properties:
+        DataSetMessageContentMask:
+          format: int64
+          maximum: 4294967295
+          minimum: 0
+          type: integer
+      type: object
+    JsonDataSetReaderMessageDataType:
+      allOf:
+      - $ref: '#/components/schemas/DataSetReaderMessageDataType'
+      properties:
+        NetworkMessageContentMask:
+          format: int64
+          maximum: 4294967295
+          minimum: 0
+          type: integer
+        DataSetMessageContentMask:
+          format: int64
+          maximum: 4294967295
+          minimum: 0
+          type: integer
+      type: object
+    BrokerConnectionTransportDataType:
+      allOf:
+      - $ref: '#/components/schemas/ConnectionTransportDataType'
+      properties:
+        ResourceUri:
+          type: string
+        AuthenticationProfileUri:
+          type: string
+      type: object
+    BrokerTransportQualityOfService:
+      enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      format: int32
+      type: integer
+      x-enum-varnames:
+      - NotSpecified
+      - BestEffort
+      - AtLeastOnce
+      - AtMostOnce
+      - ExactlyOnce
+    BrokerWriterGroupTransportDataType:
+      allOf:
+      - $ref: '#/components/schemas/WriterGroupTransportDataType'
+      properties:
+        QueueName:
+          type: string
+        ResourceUri:
+          type: string
+        AuthenticationProfileUri:
+          type: string
+        RequestedDeliveryGuarantee:
+          format: BrokerTransportQualityOfService
+          type: integer
+      type: object
+    BrokerDataSetWriterTransportDataType:
+      allOf:
+      - $ref: '#/components/schemas/DataSetWriterTransportDataType'
+      properties:
+        QueueName:
+          type: string
+        ResourceUri:
+          type: string
+        AuthenticationProfileUri:
+          type: string
+        RequestedDeliveryGuarantee:
+          format: BrokerTransportQualityOfService
+          type: integer
+        MetaDataQueueName:
+          type: string
+        MetaDataUpdateTime:
+          format: double
+          type: number
+      type: object
+    BrokerDataSetReaderTransportDataType:
+      allOf:
+      - $ref: '#/components/schemas/DataSetReaderTransportDataType'
+      properties:
+        QueueName:
+          type: string
+        ResourceUri:
+          type: string
+        AuthenticationProfileUri:
+          type: string
+        RequestedDeliveryGuarantee:
+          format: BrokerTransportQualityOfService
+          type: integer
+        MetaDataQueueName:
+          type: string
+      type: object
+    NodeClass:
+      enum:
+      - 0
+      - 1
+      - 2
+      - 4
+      - 8
+      - 16
+      - 32
+      - 64
+      - 128
+      format: int32
+      type: integer
+      x-enum-varnames:
+      - Unspecified
+      - Object
+      - Variable
+      - Method
+      - ObjectType
+      - VariableType
+      - ReferenceType
+      - DataType
+      - View
     PermissionType:
       description: "Browse=0000, ReadRolePermissions=0001, WriteAttribute=0002, WriteRolePermissions=0003,\
         \ WriteHistorizing=0004, Read=0005, Write=0006, ReadHistory=0007, InsertHistory=0008,\
@@ -636,33 +1309,6 @@ components:
       - Union
       - StructureWithSubtypedValues
       - UnionWithSubtypedValues
-    StructureDefinition:
-      allOf:
-      - $ref: '#/components/schemas/DataTypeDefinition'
-      properties:
-        DefaultEncodingId:
-          format: opcuaNodeId
-          type: string
-        BaseDataType:
-          format: opcuaNodeId
-          type: string
-        StructureType:
-          format: StructureType
-          type: integer
-        Fields:
-          items:
-            $ref: '#/components/schemas/StructureField'
-          type: array
-      type: object
-    EnumDefinition:
-      allOf:
-      - $ref: '#/components/schemas/DataTypeDefinition'
-      properties:
-        Fields:
-          items:
-            $ref: '#/components/schemas/EnumField'
-          type: array
-      type: object
     StructureField:
       properties:
         Name:
@@ -690,54 +1336,33 @@ components:
         IsOptional:
           type: boolean
       type: object
-    EnumField:
+    StructureDefinition:
       allOf:
-      - $ref: '#/components/schemas/EnumValueType'
+      - $ref: '#/components/schemas/DataTypeDefinition'
       properties:
-        Name:
+        DefaultEncodingId:
+          format: opcuaNodeId
           type: string
+        BaseDataType:
+          format: opcuaNodeId
+          type: string
+        StructureType:
+          format: StructureType
+          type: integer
+        Fields:
+          items:
+            $ref: '#/components/schemas/StructureField'
+          type: array
       type: object
-    NodeClass:
-      enum:
-      - 0
-      - 1
-      - 2
-      - 4
-      - 8
-      - 16
-      - 32
-      - 64
-      - 128
-      format: int32
-      type: integer
-      x-enum-varnames:
-      - Unspecified
-      - Object
-      - Variable
-      - Method
-      - ObjectType
-      - VariableType
-      - ReferenceType
-      - DataType
-      - View
-    IntegerId:
-      format: int64
-      maximum: 4294967295
-      minimum: 0
-      type: integer
-    Counter:
-      format: int64
-      maximum: 4294967295
-      minimum: 0
-      type: integer
-    Duration:
-      format: double
-      type: number
-    NumericRange:
-      type: string
-    UtcTime:
-      format: date-time
-      type: string
+    EnumDefinition:
+      allOf:
+      - $ref: '#/components/schemas/DataTypeDefinition'
+      properties:
+        Fields:
+          items:
+            $ref: '#/components/schemas/EnumField'
+          type: array
+      type: object
     Argument:
       properties:
         Name:
@@ -758,52 +1383,34 @@ components:
         Description:
           $ref: '#/components/schemas/LocalizedText'
       type: object
-    MessageSecurityMode:
-      enum:
-      - 0
-      - 1
-      - 2
-      - 3
-      format: int32
-      type: integer
-      x-enum-varnames:
-      - Invalid
-      - None
-      - Sign
-      - SignAndEncrypt
-    UserTokenType:
-      enum:
-      - 0
-      - 1
-      - 2
-      - 3
-      format: int32
-      type: integer
-      x-enum-varnames:
-      - Anonymous
-      - UserName
-      - Certificate
-      - IssuedToken
-    UserTokenPolicy:
-      example:
-        TokenType: 6
-        IssuedTokenType: IssuedTokenType
-        SecurityPolicyUri: SecurityPolicyUri
-        IssuerEndpointUrl: IssuerEndpointUrl
-        PolicyId: PolicyId
+    EnumValueType:
       properties:
-        PolicyId:
-          type: string
-        TokenType:
-          format: UserTokenType
+        Value:
+          format: int64
           type: integer
-        IssuedTokenType:
-          type: string
-        IssuerEndpointUrl:
-          type: string
-        SecurityPolicyUri:
+        DisplayName:
+          $ref: '#/components/schemas/LocalizedText'
+        Description:
+          $ref: '#/components/schemas/LocalizedText'
+      type: object
+    EnumField:
+      allOf:
+      - $ref: '#/components/schemas/EnumValueType'
+      properties:
+        Name:
           type: string
       type: object
+    Duration:
+      format: double
+      type: number
+    UtcTime:
+      format: date-time
+      type: string
+    IntegerId:
+      format: int64
+      maximum: 4294967295
+      minimum: 0
+      type: integer
     ApplicationType:
       enum:
       - 0
@@ -849,107 +1456,6 @@ components:
             type: string
           type: array
       type: object
-    ApplicationInstanceCertificate:
-      format: byte
-      type: string
-    EndpointDescription:
-      example:
-        ServerCertificate: ServerCertificate
-        UserIdentityTokens:
-        - TokenType: 6
-          IssuedTokenType: IssuedTokenType
-          SecurityPolicyUri: SecurityPolicyUri
-          IssuerEndpointUrl: IssuerEndpointUrl
-          PolicyId: PolicyId
-        - TokenType: 6
-          IssuedTokenType: IssuedTokenType
-          SecurityPolicyUri: SecurityPolicyUri
-          IssuerEndpointUrl: IssuerEndpointUrl
-          PolicyId: PolicyId
-        Server:
-          ApplicationType: 0
-          ApplicationUri: ApplicationUri
-          ProductUri: ProductUri
-          ApplicationName:
-            Locale: Locale
-            Text: Text
-          DiscoveryUrls:
-          - DiscoveryUrls
-          - DiscoveryUrls
-          DiscoveryProfileUri: DiscoveryProfileUri
-          GatewayServerUri: GatewayServerUri
-        SecurityMode: 0
-        SecurityLevel: 37
-        SecurityPolicyUri: SecurityPolicyUri
-        TransportProfileUri: TransportProfileUri
-        EndpointUrl: EndpointUrl
-      properties:
-        EndpointUrl:
-          type: string
-        Server:
-          $ref: '#/components/schemas/ApplicationDescription'
-        ServerCertificate:
-          format: byte
-          type: string
-        SecurityMode:
-          format: MessageSecurityMode
-          type: integer
-        SecurityPolicyUri:
-          type: string
-        UserIdentityTokens:
-          items:
-            $ref: '#/components/schemas/UserTokenPolicy'
-          type: array
-        TransportProfileUri:
-          type: string
-        SecurityLevel:
-          format: int32
-          maximum: 255
-          minimum: 0
-          type: integer
-      type: object
-    UserIdentityToken:
-      properties:
-        PolicyId:
-          type: string
-      type: object
-    AnonymousIdentityToken:
-      type: object
-    UserNameIdentityToken:
-      allOf:
-      - $ref: '#/components/schemas/UserIdentityToken'
-      properties:
-        UserName:
-          type: string
-        Password:
-          format: byte
-          type: string
-        EncryptionAlgorithm:
-          type: string
-      type: object
-    X509IdentityToken:
-      allOf:
-      - $ref: '#/components/schemas/UserIdentityToken'
-      properties:
-        CertificateData:
-          format: byte
-          type: string
-      type: object
-    SignedSoftwareCertificate:
-      example:
-        Signature: Signature
-        CertificateData: CertificateData
-      properties:
-        CertificateData:
-          format: byte
-          type: string
-        Signature:
-          format: byte
-          type: string
-      type: object
-    SessionAuthenticationToken:
-      format: opcuaNodeId
-      type: string
     RequestHeader:
       example:
         AuthenticationToken: AuthenticationToken
@@ -1032,6 +1538,11 @@ components:
         AdditionalHeader:
           $ref: '#/components/schemas/ExtensionObject'
       type: object
+    VersionTime:
+      format: int64
+      maximum: 4294967295
+      minimum: 0
+      type: integer
     FindServersRequest:
       example:
         ServerUris:
@@ -1117,6 +1628,111 @@ components:
           items:
             $ref: '#/components/schemas/ApplicationDescription'
           type: array
+      type: object
+    ApplicationInstanceCertificate:
+      format: byte
+      type: string
+    MessageSecurityMode:
+      enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      format: int32
+      type: integer
+      x-enum-varnames:
+      - Invalid
+      - None
+      - Sign
+      - SignAndEncrypt
+    UserTokenType:
+      enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      format: int32
+      type: integer
+      x-enum-varnames:
+      - Anonymous
+      - UserName
+      - Certificate
+      - IssuedToken
+    UserTokenPolicy:
+      example:
+        TokenType: 6
+        IssuedTokenType: IssuedTokenType
+        SecurityPolicyUri: SecurityPolicyUri
+        IssuerEndpointUrl: IssuerEndpointUrl
+        PolicyId: PolicyId
+      properties:
+        PolicyId:
+          type: string
+        TokenType:
+          format: UserTokenType
+          type: integer
+        IssuedTokenType:
+          type: string
+        IssuerEndpointUrl:
+          type: string
+        SecurityPolicyUri:
+          type: string
+      type: object
+    EndpointDescription:
+      example:
+        ServerCertificate: ServerCertificate
+        UserIdentityTokens:
+        - TokenType: 6
+          IssuedTokenType: IssuedTokenType
+          SecurityPolicyUri: SecurityPolicyUri
+          IssuerEndpointUrl: IssuerEndpointUrl
+          PolicyId: PolicyId
+        - TokenType: 6
+          IssuedTokenType: IssuedTokenType
+          SecurityPolicyUri: SecurityPolicyUri
+          IssuerEndpointUrl: IssuerEndpointUrl
+          PolicyId: PolicyId
+        Server:
+          ApplicationType: 0
+          ApplicationUri: ApplicationUri
+          ProductUri: ProductUri
+          ApplicationName:
+            Locale: Locale
+            Text: Text
+          DiscoveryUrls:
+          - DiscoveryUrls
+          - DiscoveryUrls
+          DiscoveryProfileUri: DiscoveryProfileUri
+          GatewayServerUri: GatewayServerUri
+        SecurityMode: 0
+        SecurityLevel: 37
+        SecurityPolicyUri: SecurityPolicyUri
+        TransportProfileUri: TransportProfileUri
+        EndpointUrl: EndpointUrl
+      properties:
+        EndpointUrl:
+          type: string
+        Server:
+          $ref: '#/components/schemas/ApplicationDescription'
+        ServerCertificate:
+          format: byte
+          type: string
+        SecurityMode:
+          format: MessageSecurityMode
+          type: integer
+        SecurityPolicyUri:
+          type: string
+        UserIdentityTokens:
+          items:
+            $ref: '#/components/schemas/UserTokenPolicy'
+          type: array
+        TransportProfileUri:
+          type: string
+        SecurityLevel:
+          format: int32
+          maximum: 255
+          minimum: 0
+          type: integer
       type: object
     GetEndpointsRequest:
       example:
@@ -1240,6 +1856,21 @@ components:
             $ref: '#/components/schemas/EndpointDescription'
           type: array
       type: object
+    SignedSoftwareCertificate:
+      example:
+        Signature: Signature
+        CertificateData: CertificateData
+      properties:
+        CertificateData:
+          format: byte
+          type: string
+        Signature:
+          format: byte
+          type: string
+      type: object
+    SessionAuthenticationToken:
+      format: opcuaNodeId
+      type: string
     SignatureData:
       example:
         Signature: Signature
@@ -1436,6 +2067,43 @@ components:
           maximum: 4294967295
           minimum: 0
           type: integer
+      type: object
+    UserIdentityToken:
+      properties:
+        PolicyId:
+          type: string
+      type: object
+    AnonymousIdentityToken:
+      type: object
+    UserNameIdentityToken:
+      allOf:
+      - $ref: '#/components/schemas/UserIdentityToken'
+      properties:
+        UserName:
+          type: string
+        Password:
+          format: byte
+          type: string
+        EncryptionAlgorithm:
+          type: string
+      type: object
+    X509IdentityToken:
+      allOf:
+      - $ref: '#/components/schemas/UserIdentityToken'
+      properties:
+        CertificateData:
+          format: byte
+          type: string
+      type: object
+    IssuedIdentityToken:
+      allOf:
+      - $ref: '#/components/schemas/UserIdentityToken'
+      properties:
+        TokenData:
+          format: byte
+          type: string
+        EncryptionAlgorithm:
+          type: string
       type: object
     ActivateSessionRequest:
       example:
@@ -2334,6 +3002,13 @@ components:
         ResponseHeader:
           $ref: '#/components/schemas/ResponseHeader'
       type: object
+    Counter:
+      format: int64
+      maximum: 4294967295
+      minimum: 0
+      type: integer
+    NumericRange:
+      type: string
     FilterOperator:
       enum:
       - 0
@@ -2684,6 +3359,13 @@ components:
         Filter:
           $ref: '#/components/schemas/EventFilter'
       type: object
+    ReadEventDetails2:
+      allOf:
+      - $ref: '#/components/schemas/ReadEventDetails'
+      properties:
+        ReadModified:
+          type: boolean
+      type: object
     ReadRawModifiedDetails:
       allOf:
       - $ref: '#/components/schemas/HistoryReadDetails'
@@ -2737,11 +3419,41 @@ components:
         UseSimpleBounds:
           type: boolean
       type: object
+    ReadAnnotationDataDetails:
+      allOf:
+      - $ref: '#/components/schemas/HistoryReadDetails'
+      properties:
+        ReqTimes:
+          items:
+            format: date-time
+            type: string
+          type: array
+      type: object
     HistoryData:
       properties:
         DataValues:
           items:
             $ref: '#/components/schemas/DataValue'
+          type: array
+      type: object
+    ModificationInfo:
+      properties:
+        ModificationTime:
+          format: date-time
+          type: string
+        UpdateType:
+          format: HistoryUpdateType
+          type: integer
+        UserName:
+          type: string
+      type: object
+    HistoryModifiedData:
+      allOf:
+      - $ref: '#/components/schemas/HistoryData'
+      properties:
+        ModificationInfos:
+          items:
+            $ref: '#/components/schemas/ModificationInfo'
           type: array
       type: object
     HistoryEvent:
@@ -2994,7 +3706,48 @@ components:
       type: object
     HistoryUpdateDetails:
       type: object
+    HistoryUpdateType:
+      enum:
+      - 1
+      - 2
+      - 3
+      - 4
+      format: int32
+      type: integer
+      x-enum-varnames:
+      - Insert
+      - Replace
+      - Update
+      - Delete
+    PerformUpdateType:
+      enum:
+      - 1
+      - 2
+      - 3
+      - 4
+      format: int32
+      type: integer
+      x-enum-varnames:
+      - Insert
+      - Replace
+      - Update
+      - Remove
     UpdateDataDetails:
+      allOf:
+      - $ref: '#/components/schemas/HistoryUpdateDetails'
+      properties:
+        NodeId:
+          format: opcuaNodeId
+          type: string
+        PerformInsertReplace:
+          format: PerformUpdateType
+          type: integer
+        UpdateValues:
+          items:
+            $ref: '#/components/schemas/DataValue'
+          type: array
+      type: object
+    UpdateStructureDataDetails:
       allOf:
       - $ref: '#/components/schemas/HistoryUpdateDetails'
       properties:
@@ -3468,6 +4221,25 @@ components:
           type: array
         WhereClause:
           $ref: '#/components/schemas/ContentFilter'
+      type: object
+    AggregateConfiguration:
+      properties:
+        UseServerCapabilitiesDefaults:
+          type: boolean
+        TreatUncertainAsBad:
+          type: boolean
+        PercentDataBad:
+          format: int32
+          maximum: 255
+          minimum: 0
+          type: integer
+        PercentDataGood:
+          format: int32
+          maximum: 255
+          minimum: 0
+          type: integer
+        UseSlopedExtrapolation:
+          type: boolean
       type: object
     AggregateFilter:
       allOf:
@@ -4500,15 +5272,7 @@ components:
             $ref: '#/components/schemas/ExtensionObject'
           type: array
       type: object
-    MonitoredItemNotification:
-      properties:
-        ClientHandle:
-          format: int64
-          maximum: 4294967295
-          minimum: 0
-          type: integer
-        Value:
-          $ref: '#/components/schemas/DataValue'
+    NotificationData:
       type: object
     DataChangeNotification:
       allOf:
@@ -4521,6 +5285,44 @@ components:
         DiagnosticInfos:
           items:
             $ref: '#/components/schemas/DiagnosticInfo'
+          type: array
+      type: object
+    MonitoredItemNotification:
+      properties:
+        ClientHandle:
+          format: int64
+          maximum: 4294967295
+          minimum: 0
+          type: integer
+        Value:
+          $ref: '#/components/schemas/DataValue'
+      type: object
+    EventNotificationList:
+      allOf:
+      - $ref: '#/components/schemas/NotificationData'
+      properties:
+        Events:
+          items:
+            $ref: '#/components/schemas/EventFieldList'
+          type: array
+      type: object
+    EventFieldList:
+      properties:
+        ClientHandle:
+          format: int64
+          maximum: 4294967295
+          minimum: 0
+          type: integer
+        EventFields:
+          items:
+            $ref: '#/components/schemas/Variant'
+          type: array
+      type: object
+    HistoryEventFieldList:
+      properties:
+        EventFields:
+          items:
+            $ref: '#/components/schemas/Variant'
           type: array
       type: object
     StatusChangeNotification:
@@ -4936,807 +5738,5 @@ components:
           $ref: '#/components/schemas/LocalizedText'
         Description:
           $ref: '#/components/schemas/LocalizedText'
-      type: object
-    EventNotificationList:
-      allOf:
-      - $ref: '#/components/schemas/NotificationData'
-      properties:
-        Events:
-          items:
-            $ref: '#/components/schemas/EventFieldList'
-          type: array
-      type: object
-    EventFieldList:
-      properties:
-        ClientHandle:
-          format: int64
-          maximum: 4294967295
-          minimum: 0
-          type: integer
-        EventFields:
-          items:
-            $ref: '#/components/schemas/Variant'
-          type: array
-      type: object
-    HistoryEventFieldList:
-      properties:
-        EventFields:
-          items:
-            $ref: '#/components/schemas/Variant'
-          type: array
-      type: object
-    IssuedIdentityToken:
-      allOf:
-      - $ref: '#/components/schemas/UserIdentityToken'
-      properties:
-        TokenData:
-          format: byte
-          type: string
-        EncryptionAlgorithm:
-          type: string
-      type: object
-    NotificationData:
-      type: object
-    AggregateConfiguration:
-      properties:
-        UseServerCapabilitiesDefaults:
-          type: boolean
-        TreatUncertainAsBad:
-          type: boolean
-        PercentDataBad:
-          format: int32
-          maximum: 255
-          minimum: 0
-          type: integer
-        PercentDataGood:
-          format: int32
-          maximum: 255
-          minimum: 0
-          type: integer
-        UseSlopedExtrapolation:
-          type: boolean
-      type: object
-    EnumValueType:
-      properties:
-        Value:
-          format: int64
-          type: integer
-        DisplayName:
-          $ref: '#/components/schemas/LocalizedText'
-        Description:
-          $ref: '#/components/schemas/LocalizedText'
-      type: object
-    ModificationInfo:
-      properties:
-        ModificationTime:
-          format: date-time
-          type: string
-        UpdateType:
-          format: HistoryUpdateType
-          type: integer
-        UserName:
-          type: string
-      type: object
-    HistoryModifiedData:
-      allOf:
-      - $ref: '#/components/schemas/HistoryData'
-      properties:
-        ModificationInfos:
-          items:
-            $ref: '#/components/schemas/ModificationInfo'
-          type: array
-      type: object
-    HistoryUpdateType:
-      enum:
-      - 1
-      - 2
-      - 3
-      - 4
-      format: int32
-      type: integer
-      x-enum-varnames:
-      - Insert
-      - Replace
-      - Update
-      - Delete
-    PerformUpdateType:
-      enum:
-      - 1
-      - 2
-      - 3
-      - 4
-      format: int32
-      type: integer
-      x-enum-varnames:
-      - Insert
-      - Replace
-      - Update
-      - Remove
-    UpdateStructureDataDetails:
-      allOf:
-      - $ref: '#/components/schemas/HistoryUpdateDetails'
-      properties:
-        NodeId:
-          format: opcuaNodeId
-          type: string
-        PerformInsertReplace:
-          format: PerformUpdateType
-          type: integer
-        UpdateValues:
-          items:
-            $ref: '#/components/schemas/DataValue'
-          type: array
-      type: object
-    DataSetMetaDataType:
-      allOf:
-      - $ref: '#/components/schemas/DataTypeSchemaHeader'
-      properties:
-        Name:
-          type: string
-        Description:
-          $ref: '#/components/schemas/LocalizedText'
-        Fields:
-          items:
-            $ref: '#/components/schemas/FieldMetaData'
-          type: array
-        DataSetClassId:
-          format: uuid
-          type: string
-        ConfigurationVersion:
-          $ref: '#/components/schemas/ConfigurationVersionDataType'
-      type: object
-    FieldMetaData:
-      properties:
-        Name:
-          type: string
-        Description:
-          $ref: '#/components/schemas/LocalizedText'
-        FieldFlags:
-          format: int32
-          maximum: 65535
-          minimum: 0
-          type: integer
-        BuiltInType:
-          format: int32
-          maximum: 255
-          minimum: 0
-          type: integer
-        DataType:
-          format: opcuaNodeId
-          type: string
-        ValueRank:
-          format: int32
-          type: integer
-        ArrayDimensions:
-          items:
-            format: int64
-            maximum: 4294967295
-            minimum: 0
-            type: integer
-          type: array
-        MaxStringLength:
-          format: int64
-          maximum: 4294967295
-          minimum: 0
-          type: integer
-        DataSetFieldId:
-          format: uuid
-          type: string
-        Properties:
-          items:
-            $ref: '#/components/schemas/KeyValuePair'
-          type: array
-      type: object
-    DataTypeDescription:
-      properties:
-        DataTypeId:
-          format: opcuaNodeId
-          type: string
-        Name:
-          format: opcuaQualifiedName
-          type: string
-      type: object
-    KeyValuePair:
-      properties:
-        Key:
-          format: opcuaQualifiedName
-          type: string
-        Value:
-          $ref: '#/components/schemas/Variant'
-      type: object
-    ConfigurationVersionDataType:
-      properties:
-        MajorVersion:
-          format: int64
-          maximum: 4294967295
-          minimum: 0
-          type: integer
-        MinorVersion:
-          format: int64
-          maximum: 4294967295
-          minimum: 0
-          type: integer
-      type: object
-    PubSubState:
-      enum:
-      - 0
-      - 1
-      - 2
-      - 3
-      - 4
-      format: int32
-      type: integer
-      x-enum-varnames:
-      - Disabled
-      - Paused
-      - Operational
-      - Error
-      - PreOperational
-    SimpleTypeDescription:
-      allOf:
-      - $ref: '#/components/schemas/DataTypeDescription'
-      properties:
-        BaseDataType:
-          format: opcuaNodeId
-          type: string
-        BuiltInType:
-          format: int32
-          maximum: 255
-          minimum: 0
-          type: integer
-      type: object
-    BrokerConnectionTransportDataType:
-      allOf:
-      - $ref: '#/components/schemas/ConnectionTransportDataType'
-      properties:
-        ResourceUri:
-          type: string
-        AuthenticationProfileUri:
-          type: string
-      type: object
-    BrokerTransportQualityOfService:
-      enum:
-      - 0
-      - 1
-      - 2
-      - 3
-      - 4
-      format: int32
-      type: integer
-      x-enum-varnames:
-      - NotSpecified
-      - BestEffort
-      - AtLeastOnce
-      - AtMostOnce
-      - ExactlyOnce
-    WriterGroupDataType:
-      allOf:
-      - $ref: '#/components/schemas/PubSubGroupDataType'
-      properties:
-        WriterGroupId:
-          format: int32
-          maximum: 65535
-          minimum: 0
-          type: integer
-        PublishingInterval:
-          format: double
-          type: number
-        KeepAliveTime:
-          format: double
-          type: number
-        Priority:
-          format: int32
-          maximum: 255
-          minimum: 0
-          type: integer
-        LocaleIds:
-          items:
-            type: string
-          type: array
-        HeaderLayoutUri:
-          type: string
-        TransportSettings:
-          $ref: '#/components/schemas/ExtensionObject'
-        MessageSettings:
-          $ref: '#/components/schemas/ExtensionObject'
-        DataSetWriters:
-          items:
-            $ref: '#/components/schemas/DataSetWriterDataType'
-          type: array
-      type: object
-    StructureDescription:
-      allOf:
-      - $ref: '#/components/schemas/DataTypeDescription'
-      properties:
-        StructureDefinition:
-          $ref: '#/components/schemas/StructureDefinition'
-      type: object
-    EnumDescription:
-      allOf:
-      - $ref: '#/components/schemas/DataTypeDescription'
-      properties:
-        EnumDefinition:
-          $ref: '#/components/schemas/EnumDefinition'
-        BuiltInType:
-          format: int32
-          maximum: 255
-          minimum: 0
-          type: integer
-      type: object
-    NetworkAddressDataType:
-      properties:
-        NetworkInterface:
-          type: string
-      type: object
-    ReaderGroupDataType:
-      allOf:
-      - $ref: '#/components/schemas/PubSubGroupDataType'
-      properties:
-        TransportSettings:
-          $ref: '#/components/schemas/ExtensionObject'
-        MessageSettings:
-          $ref: '#/components/schemas/ExtensionObject'
-        DataSetReaders:
-          items:
-            $ref: '#/components/schemas/DataSetReaderDataType'
-          type: array
-      type: object
-    PubSubConfigurationDataType:
-      properties:
-        PublishedDataSets:
-          items:
-            $ref: '#/components/schemas/PublishedDataSetDataType'
-          type: array
-        Connections:
-          items:
-            $ref: '#/components/schemas/PubSubConnectionDataType'
-          type: array
-        Enabled:
-          type: boolean
-      type: object
-    DataTypeSchemaHeader:
-      properties:
-        Namespaces:
-          items:
-            type: string
-          type: array
-        StructureDataTypes:
-          items:
-            $ref: '#/components/schemas/StructureDescription'
-          type: array
-        EnumDataTypes:
-          items:
-            $ref: '#/components/schemas/EnumDescription'
-          type: array
-        SimpleDataTypes:
-          items:
-            $ref: '#/components/schemas/SimpleTypeDescription'
-          type: array
-      type: object
-    PublishedDataSetDataType:
-      properties:
-        Name:
-          type: string
-        DataSetFolder:
-          items:
-            type: string
-          type: array
-        DataSetMetaData:
-          $ref: '#/components/schemas/DataSetMetaDataType'
-        ExtensionFields:
-          items:
-            $ref: '#/components/schemas/KeyValuePair'
-          type: array
-        DataSetSource:
-          $ref: '#/components/schemas/ExtensionObject'
-      type: object
-    PublishedDataSetSourceDataType:
-      type: object
-    DataSetFieldContentMask:
-      description: "StatusCode=0000, SourceTimestamp=0001, ServerTimestamp=0002, SourcePicoSeconds=0003,\
-        \ ServerPicoSeconds=0004, RawData=0005"
-      format: int64
-      maximum: 4294967295
-      minimum: 0
-      type: integer
-    DataSetWriterDataType:
-      properties:
-        Name:
-          type: string
-        Enabled:
-          type: boolean
-        DataSetWriterId:
-          format: int32
-          maximum: 65535
-          minimum: 0
-          type: integer
-        DataSetFieldContentMask:
-          format: int64
-          maximum: 4294967295
-          minimum: 0
-          type: integer
-        KeyFrameCount:
-          format: int64
-          maximum: 4294967295
-          minimum: 0
-          type: integer
-        DataSetName:
-          type: string
-        DataSetWriterProperties:
-          items:
-            $ref: '#/components/schemas/KeyValuePair'
-          type: array
-        TransportSettings:
-          $ref: '#/components/schemas/ExtensionObject'
-        MessageSettings:
-          $ref: '#/components/schemas/ExtensionObject'
-      type: object
-    DataSetWriterTransportDataType:
-      type: object
-    DataSetWriterMessageDataType:
-      type: object
-    PubSubGroupDataType:
-      properties:
-        Name:
-          type: string
-        Enabled:
-          type: boolean
-        SecurityMode:
-          format: MessageSecurityMode
-          type: integer
-        SecurityGroupId:
-          type: string
-        SecurityKeyServices:
-          items:
-            $ref: '#/components/schemas/EndpointDescription'
-          type: array
-        MaxNetworkMessageSize:
-          format: int64
-          maximum: 4294967295
-          minimum: 0
-          type: integer
-        GroupProperties:
-          items:
-            $ref: '#/components/schemas/KeyValuePair'
-          type: array
-      type: object
-    WriterGroupTransportDataType:
-      type: object
-    WriterGroupMessageDataType:
-      type: object
-    PubSubConnectionDataType:
-      properties:
-        Name:
-          type: string
-        Enabled:
-          type: boolean
-        PublisherId:
-          $ref: '#/components/schemas/Variant'
-        TransportProfileUri:
-          type: string
-        Address:
-          $ref: '#/components/schemas/ExtensionObject'
-        ConnectionProperties:
-          items:
-            $ref: '#/components/schemas/KeyValuePair'
-          type: array
-        TransportSettings:
-          $ref: '#/components/schemas/ExtensionObject'
-        WriterGroups:
-          items:
-            $ref: '#/components/schemas/WriterGroupDataType'
-          type: array
-        ReaderGroups:
-          items:
-            $ref: '#/components/schemas/ReaderGroupDataType'
-          type: array
-      type: object
-    ConnectionTransportDataType:
-      type: object
-    ReaderGroupTransportDataType:
-      type: object
-    ReaderGroupMessageDataType:
-      type: object
-    DataSetReaderDataType:
-      properties:
-        Name:
-          type: string
-        Enabled:
-          type: boolean
-        PublisherId:
-          $ref: '#/components/schemas/Variant'
-        WriterGroupId:
-          format: int32
-          maximum: 65535
-          minimum: 0
-          type: integer
-        DataSetWriterId:
-          format: int32
-          maximum: 65535
-          minimum: 0
-          type: integer
-        DataSetMetaData:
-          $ref: '#/components/schemas/DataSetMetaDataType'
-        DataSetFieldContentMask:
-          format: int64
-          maximum: 4294967295
-          minimum: 0
-          type: integer
-        MessageReceiveTimeout:
-          format: double
-          type: number
-        KeyFrameCount:
-          format: int64
-          maximum: 4294967295
-          minimum: 0
-          type: integer
-        HeaderLayoutUri:
-          type: string
-        SecurityMode:
-          format: MessageSecurityMode
-          type: integer
-        SecurityGroupId:
-          type: string
-        SecurityKeyServices:
-          items:
-            $ref: '#/components/schemas/EndpointDescription'
-          type: array
-        DataSetReaderProperties:
-          items:
-            $ref: '#/components/schemas/KeyValuePair'
-          type: array
-        TransportSettings:
-          $ref: '#/components/schemas/ExtensionObject'
-        MessageSettings:
-          $ref: '#/components/schemas/ExtensionObject'
-        SubscribedDataSet:
-          $ref: '#/components/schemas/ExtensionObject'
-      type: object
-    DataSetReaderTransportDataType:
-      type: object
-    DataSetReaderMessageDataType:
-      type: object
-    SubscribedDataSetDataType:
-      type: object
-    JsonNetworkMessageContentMask:
-      description: "NetworkMessageHeader=0000, DataSetMessageHeader=0001, SingleDataSetMessage=0002,\
-        \ PublisherId=0003, DataSetClassId=0004, ReplyTo=0005, WriterGroupName=0006"
-      format: int64
-      maximum: 4294967295
-      minimum: 0
-      type: integer
-    JsonWriterGroupMessageDataType:
-      allOf:
-      - $ref: '#/components/schemas/WriterGroupMessageDataType'
-      properties:
-        NetworkMessageContentMask:
-          format: int64
-          maximum: 4294967295
-          minimum: 0
-          type: integer
-      type: object
-    JsonDataSetMessageContentMask:
-      description: "DataSetWriterId=0000, MetaDataVersion=0001, SequenceNumber=0002,\
-        \ Timestamp=0003, Status=0004, MessageType=0005, DataSetWriterName=0006, ReversibleFieldEncoding=0007,\
-        \ PublisherId=0008, WriterGroupName=0009, MinorVersion=000A"
-      format: int64
-      maximum: 4294967295
-      minimum: 0
-      type: integer
-    JsonDataSetWriterMessageDataType:
-      allOf:
-      - $ref: '#/components/schemas/DataSetWriterMessageDataType'
-      properties:
-        DataSetMessageContentMask:
-          format: int64
-          maximum: 4294967295
-          minimum: 0
-          type: integer
-      type: object
-    JsonDataSetReaderMessageDataType:
-      allOf:
-      - $ref: '#/components/schemas/DataSetReaderMessageDataType'
-      properties:
-        NetworkMessageContentMask:
-          format: int64
-          maximum: 4294967295
-          minimum: 0
-          type: integer
-        DataSetMessageContentMask:
-          format: int64
-          maximum: 4294967295
-          minimum: 0
-          type: integer
-      type: object
-    BrokerWriterGroupTransportDataType:
-      allOf:
-      - $ref: '#/components/schemas/WriterGroupTransportDataType'
-      properties:
-        QueueName:
-          type: string
-        ResourceUri:
-          type: string
-        AuthenticationProfileUri:
-          type: string
-        RequestedDeliveryGuarantee:
-          format: BrokerTransportQualityOfService
-          type: integer
-      type: object
-    BrokerDataSetWriterTransportDataType:
-      allOf:
-      - $ref: '#/components/schemas/DataSetWriterTransportDataType'
-      properties:
-        QueueName:
-          type: string
-        ResourceUri:
-          type: string
-        AuthenticationProfileUri:
-          type: string
-        RequestedDeliveryGuarantee:
-          format: BrokerTransportQualityOfService
-          type: integer
-        MetaDataQueueName:
-          type: string
-        MetaDataUpdateTime:
-          format: double
-          type: number
-      type: object
-    BrokerDataSetReaderTransportDataType:
-      allOf:
-      - $ref: '#/components/schemas/DataSetReaderTransportDataType'
-      properties:
-        QueueName:
-          type: string
-        ResourceUri:
-          type: string
-        AuthenticationProfileUri:
-          type: string
-        RequestedDeliveryGuarantee:
-          format: BrokerTransportQualityOfService
-          type: integer
-        MetaDataQueueName:
-          type: string
-      type: object
-    DataSetFieldFlags:
-      description: PromotedField=0000
-      format: int64
-      maximum: 4294967295
-      minimum: 0
-      type: integer
-    VersionTime:
-      format: int64
-      maximum: 4294967295
-      minimum: 0
-      type: integer
-    ReadAnnotationDataDetails:
-      allOf:
-      - $ref: '#/components/schemas/HistoryReadDetails'
-      properties:
-        ReqTimes:
-          items:
-            format: date-time
-            type: string
-          type: array
-      type: object
-    StandaloneSubscribedDataSetDataType:
-      allOf:
-      - $ref: '#/components/schemas/SubscribedDataSetDataType'
-      properties:
-        Name:
-          type: string
-        DataSetFolder:
-          items:
-            type: string
-          type: array
-        DataSetMetaData:
-          $ref: '#/components/schemas/DataSetMetaDataType'
-        SubscribedDataSet:
-          $ref: '#/components/schemas/ExtensionObject'
-      type: object
-    SecurityGroupDataType:
-      properties:
-        Name:
-          type: string
-        SecurityGroupFolder:
-          items:
-            type: string
-          type: array
-        KeyLifetime:
-          format: double
-          type: number
-        SecurityPolicyUri:
-          type: string
-        MaxFutureKeyCount:
-          format: int64
-          maximum: 4294967295
-          minimum: 0
-          type: integer
-        MaxPastKeyCount:
-          format: int64
-          maximum: 4294967295
-          minimum: 0
-          type: integer
-        SecurityGroupId:
-          type: string
-        RolePermissions:
-          items:
-            $ref: '#/components/schemas/RolePermissionType'
-          type: array
-        GroupProperties:
-          items:
-            $ref: '#/components/schemas/KeyValuePair'
-          type: array
-      type: object
-    PubSubConfiguration2DataType:
-      allOf:
-      - $ref: '#/components/schemas/PubSubConfigurationDataType'
-      properties:
-        SubscribedDataSets:
-          items:
-            $ref: '#/components/schemas/StandaloneSubscribedDataSetDataType'
-          type: array
-        DataSetClasses:
-          items:
-            $ref: '#/components/schemas/DataSetMetaDataType'
-          type: array
-        DefaultSecurityKeyServices:
-          items:
-            $ref: '#/components/schemas/EndpointDescription'
-          type: array
-        SecurityGroups:
-          items:
-            $ref: '#/components/schemas/SecurityGroupDataType'
-          type: array
-        PubSubKeyPushTargets:
-          items:
-            $ref: '#/components/schemas/PubSubKeyPushTargetDataType'
-          type: array
-        ConfigurationVersion:
-          format: int64
-          maximum: 4294967295
-          minimum: 0
-          type: integer
-        ConfigurationProperties:
-          items:
-            $ref: '#/components/schemas/KeyValuePair'
-          type: array
-      type: object
-    PubSubKeyPushTargetDataType:
-      properties:
-        ApplicationUri:
-          type: string
-        PushTargetFolder:
-          items:
-            type: string
-          type: array
-        EndpointUrl:
-          type: string
-        SecurityPolicyUri:
-          type: string
-        UserTokenType:
-          $ref: '#/components/schemas/UserTokenPolicy'
-        RequestedKeyCount:
-          format: int32
-          maximum: 65535
-          minimum: 0
-          type: integer
-        RetryInterval:
-          format: double
-          type: number
-        PushTargetProperties:
-          items:
-            $ref: '#/components/schemas/KeyValuePair'
-          type: array
-        SecurityGroups:
-          items:
-            type: string
-          type: array
-      type: object
-    ReadEventDetails2:
-      allOf:
-      - $ref: '#/components/schemas/ReadEventDetails'
-      properties:
-        ReadModified:
-          type: boolean
       type: object
 

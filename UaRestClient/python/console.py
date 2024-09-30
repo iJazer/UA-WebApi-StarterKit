@@ -1,11 +1,10 @@
 import json
 from typing import List
-from generated.openapi_client import Configuration, ApiException
-from generated.openapi_client.models import ExtensionObject, NodeClass, WriteValue, DataValue, Variant, Argument
-from opcua_attributes import *
+
+from opcua_webapi import Configuration, ApiException
+from opcua_webapi import ExtensionObject, NodeClass, WriteValue, DataValue, Variant, Argument
+from opcua_webapi import *
 from opcua_client import OpcUaClient
-from opcua_statuscodes import *
-from opcua_constants import *
 
 def variant_to_argument_list(input : Variant) -> List[Argument]:    
     output = []
@@ -18,14 +17,16 @@ def variant_to_argument_list(input : Variant) -> List[Argument]:
                         output.append(Argument.parse_obj(x.body))
     return output
 
+useLocalServer = False
+url = "https://localhost:44429/opcua/" if useLocalServer else "https://opcua-rest-dashboard.azurewebsites.net/opcua/"
+
 configuration = Configuration(
-    host="https://opcua-rest-dashboard.azurewebsites.net/opcua/",
-    #host="https://localhost:44429/opcua/",
+    host=url,
     username='user1',
     password='password1'
 )
 
-# configuration.verify_ssl = False
+configuration.verify_ssl = useLocalServer == False
 
 api = OpcUaClient(configuration)    
 
@@ -72,7 +73,7 @@ try:
 
     if write_results is not None:
         for ii in range(len(write_results)):
-            print(f"{references[ii].display_name.text if references[ii].display_name else None} = {get_StatusCodes_name(write_results[ii])}")
+            print(f"{references[ii].display_name.text if references[ii].display_name else None} = {StatusCodes(write_results[ii]).name}")
 
     print()
     print("==== Read Back Data")
@@ -99,10 +100,10 @@ try:
     print(f"{method.display_name.text if method.display_name else None}(")
     if input_arguments is not None:
         for x in input_arguments:
-            print(f"  [in]  {get_DataTypeIds_name(x.data_type)} {x.name}")
+            print(f"  [in]  {DataTypeIds(x.data_type).name} {x.name}")
     if output_arguments is not None:
         for x in output_arguments:
-            print(f"  [out] {get_DataTypeIds_name(x.data_type)} {x.name}")
+            print(f"  [out] {DataTypeIds(x.data_type).name} {x.name}")
     print(f");")
 
     inputs = [

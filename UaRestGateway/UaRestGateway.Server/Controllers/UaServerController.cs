@@ -45,7 +45,7 @@ namespace UaRestGateway.Server.Controllers
 
         private async Task<T> Decode<T>(IServiceMessageContext context) where T : IServiceRequest, new()
         {
-            return (T)await MessageUtils.Decode<T>(context, Request.Body, IsRequestCompressed());
+            return (T)await MessageUtils.Decode<T>(context, Request.Body, compressed: IsRequestCompressed(), envelopeExpected: false);
         }
 
         private async Task<IActionResult> Encode<T>(IServiceMessageContext context, T response) where T : IEncodeable

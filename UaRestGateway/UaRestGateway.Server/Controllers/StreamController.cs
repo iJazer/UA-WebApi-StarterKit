@@ -129,14 +129,19 @@ namespace UaRestGateway.Server.Controllers
             }
         }
 
-        private async Task SendResponse(WebSocket webSocket, IServiceMessageContext context, IServiceResponse response)
+        private async Task SendResponse(WebSocket webSocket, IServiceMessageContext context, IServiceResponse response, bool compress)
         {
             try
             {
-                using (var ostrm = await MessageUtils.Encode(context, response))
+                using (var ostrm = await MessageUtils.Encode(context, response, compress, envelopeRequired: true))
                 {
                     ostrm.Close();
-                    await webSocket.SendAsync(ostrm.ToArray(), WebSocketMessageType.Text, true, CancellationToken.None);
+
+                    await webSocket.SendAsync(
+                        ostrm.ToArray(),
+                        (compress) ? WebSocketMessageType.Binary : WebSocketMessageType.Text,
+                        true,
+                        CancellationToken.None);
                 }
             }
             catch (Exception e)
@@ -169,10 +174,12 @@ namespace UaRestGateway.Server.Controllers
 
             istrm.Position = 0;
             MemoryStream stream = istrm;
+            bool compress = false;
 
             if (result.MessageType == WebSocketMessageType.Binary)
             {
                 stream = await MessageUtils.Decompress(istrm);
+                compress = true;
             }
 
             IServiceRequest request = null;
@@ -180,12 +187,12 @@ namespace UaRestGateway.Server.Controllers
 
             try
             {
-                request = await MessageUtils.Decode<IServiceRequest>(server.MessageContext, stream);
+                request = await MessageUtils.Decode<IServiceRequest>(server.MessageContext, stream, envelopeExpected: true);
             }
             catch (Exception e)
             {
                 response = MessageUtils.Fault(request, e);
-                await SendResponse(webSocket, server.MessageContext, response);
+                await SendResponse(webSocket, server.MessageContext, response, false);
                 return;
             }
 
@@ -195,16 +202,25 @@ namespace UaRestGateway.Server.Controllers
                 {
                     if (sessionContext.AuthenticationToken != null)
                     {
-                        server.CloseSession(
-                            new RequestHeader()
-                            {
-                                Timestamp = DateTime.UtcNow,
-                                TimeoutHint = 60000,
-                                AuthenticationToken = sessionContext.AuthenticationToken
-                            },
-                            true);
-
-                        sessionContext.AuthenticationToken = null;
+                        try
+                        {
+                            server.CloseSession(
+                                new RequestHeader()
+                                {
+                                    Timestamp = DateTime.UtcNow,
+                                    TimeoutHint = 60000,
+                                    AuthenticationToken = sessionContext.AuthenticationToken
+                                },
+                                true);
+                        }
+                        catch (Exception)
+                        {
+                            // ignore
+                        }
+                        finally
+                        {
+                            sessionContext.AuthenticationToken = null;
+                        }
                     }
                 }
 
@@ -215,14 +231,14 @@ namespace UaRestGateway.Server.Controllers
                     sessionContext.AuthenticationToken = ((CreateSessionResponse)response).AuthenticationToken;
                 }
 
-                await SendResponse(webSocket, server.MessageContext, response);
+                await SendResponse(webSocket, server.MessageContext, response, compress);
                 return;
             }
 
             if (sessionContext.AuthenticationToken == null || sessionContext.AuthenticationToken != request.RequestHeader.AuthenticationToken)
             {
                 response = MessageUtils.Fault(request, new ServiceResultException(Opc.Ua.StatusCodes.BadSessionIdInvalid, "Session not created."));
-                await SendResponse(webSocket, server.MessageContext, response);
+                await SendResponse(webSocket, server.MessageContext, response, compress);
                 Logger.LogError($"BadSessionIdInvalid {request.RequestHeader.RequestHandle}");
                 return;
             }
@@ -231,20 +247,20 @@ namespace UaRestGateway.Server.Controllers
             {
                 response = await MessageUtils.ActivateSession(sessionContext, server, asr);
                 sessionContext.IsActivated = true;
-                await SendResponse(webSocket, server.MessageContext, response);
+                await SendResponse(webSocket, server.MessageContext, response, compress);
                 return;
             }
             else if (!sessionContext.IsActivated)
             {
                 response = MessageUtils.Fault(request, new ServiceResultException(Opc.Ua.StatusCodes.BadSessionNotActivated, "Session not activated."));
-                await SendResponse(webSocket, server.MessageContext, response);
+                await SendResponse(webSocket, server.MessageContext, response, compress);
                 Logger.LogError($"BadSessionNotActivated {request.RequestHeader.RequestHandle}");
                 return;
             }
 
             var task = Task.Run(async () =>
             {
-                await ProcessRequest(webSocket, stream, sessionContext, server, request);
+                await ProcessRequest(webSocket, stream, sessionContext, server, request, result.MessageType == WebSocketMessageType.Binary);
             });
         }
 
@@ -253,7 +269,8 @@ namespace UaRestGateway.Server.Controllers
             Stream stream, 
             SessionContext sessionContext,
             StandardServer server,
-            IServiceRequest request)
+            IServiceRequest request,
+            bool compress)
         {
             using (stream)
             {
@@ -333,9 +350,14 @@ namespace UaRestGateway.Server.Controllers
                     Logger.LogError(e, "Error processing message.");
                 }
 
-                var ostrm = await MessageUtils.Encode(server.MessageContext, response);
+                var ostrm = await MessageUtils.Encode(server.MessageContext, response, compress, envelopeRequired: true);
                 ostrm.Close();
-                await webSocket.SendAsync(ostrm.ToArray(), WebSocketMessageType.Text, true, CancellationToken.None);
+
+                await webSocket.SendAsync(
+                    ostrm.ToArray(),
+                    compress ? WebSocketMessageType.Binary : WebSocketMessageType.Text, 
+                    endOfMessage: true,
+                    CancellationToken.None);
             }
         }
     }

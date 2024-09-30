@@ -13,6 +13,7 @@ import { IMonitoredItem, SubscriptionContext } from '../SubscriptionProvider';
 import { HandleFactory } from '../service/HandleFactory';
 import { SubscriptionState } from '../service/SubscriptionState';
 import { SessionState } from '../service/SessionState';
+import { IRequestMessage } from '../service/IRequestMessage';
 
 const CustomButton = styled(Button)(({ theme }) => ({
    paddingLeft: 0,
@@ -52,9 +53,9 @@ export const SessionStatusBar = () => {
 
    React.useEffect(() => {
       if (lastCompletedRequest?.clientHandle === clientHandle) {
-         if (lastCompletedRequest?.response?.ServiceId === OpcUa.ReadResponseMessageServiceIdEnum.NUMBER_632) {
-            const rrm = lastCompletedRequest.response as OpcUa.ReadResponseMessage;
-            setCurrentTime(rrm?.Body?.Results?.at(0));
+         if (lastCompletedRequest?.response?.ServiceId === OpcUa.DataTypeIds.ReadResponse) {
+            const rrm = lastCompletedRequest.response as OpcUa.ReadResponse;
+            setCurrentTime(rrm?.Results?.at(0));
          }
       }
    }, [lastCompletedRequest, clientHandle]);
@@ -69,18 +70,19 @@ export const SessionStatusBar = () => {
    }, [subscriptionState, monitoredItems, clientHandle, subscribe]);
 
    const sendRead = React.useCallback(() => {
-      const request: OpcUa.ReadRequestMessage = {
-         ServiceId: OpcUa.ReadRequestMessageServiceIdEnum.NUMBER_629,
-         Body: {
-            NodesToRead: [
-               {
-                  NodeId: OpcUa.VariableIds.Server_ServerStatus_CurrentTime,
-                  AttributeId: OpcUa.Attributes.Value
-               }
-            ]
-         }
+      const request: OpcUa.ReadRequest= {
+         NodesToRead: [
+            {
+               NodeId: OpcUa.VariableIds.Server_ServerStatus_CurrentTime,
+               AttributeId: OpcUa.Attributes.Value
+            }
+         ]
       };
-      sendRequest(request, clientHandle);
+      const message: IRequestMessage = {
+         ServiceId: OpcUa.DataTypeIds.ReadRequest,
+         Body: request
+      };
+      sendRequest(message, clientHandle);
    }, [sendRequest, clientHandle]);
 
    const startTimer = React.useCallback(() => {

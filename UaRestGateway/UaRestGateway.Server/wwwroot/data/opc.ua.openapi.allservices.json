@@ -26,40 +26,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "title": "ReadRequestMessage",
-                "required": [
-                  "Body"
-                ],
-                "properties": {
-                  "NamespaceUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServerUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "LocaleIds": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServiceId": {
-                    "enum": [
-                      0,
-                      629
-                    ],
-                    "type": "integer"
-                  },
-                  "Body": {
-                    "$ref": "#/components/schemas/ReadRequest"
-                  }
-                }
+                "$ref": "#/components/schemas/ReadRequest"
               }
             }
           }
@@ -70,32 +37,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "ReadResponseMessage",
-                  "properties": {
-                    "NamespaceUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServerUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServiceId": {
-                      "enum": [
-                        0,
-                        632,
-                        395
-                      ],
-                      "type": "integer"
-                    },
-                    "Body": {
-                      "$ref": "#/components/schemas/ReadResponse"
-                    }
-                  }
+                  "$ref": "#/components/schemas/ReadResponse"
                 }
               }
             }
@@ -111,40 +53,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "title": "WriteRequestMessage",
-                "required": [
-                  "Body"
-                ],
-                "properties": {
-                  "NamespaceUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServerUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "LocaleIds": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServiceId": {
-                    "enum": [
-                      0,
-                      671
-                    ],
-                    "type": "integer"
-                  },
-                  "Body": {
-                    "$ref": "#/components/schemas/WriteRequest"
-                  }
-                }
+                "$ref": "#/components/schemas/WriteRequest"
               }
             }
           }
@@ -155,32 +64,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "WriteResponseMessage",
-                  "properties": {
-                    "NamespaceUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServerUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServiceId": {
-                      "enum": [
-                        0,
-                        674,
-                        395
-                      ],
-                      "type": "integer"
-                    },
-                    "Body": {
-                      "$ref": "#/components/schemas/WriteResponse"
-                    }
-                  }
+                  "$ref": "#/components/schemas/WriteResponse"
                 }
               }
             }
@@ -196,40 +80,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "title": "CallRequestMessage",
-                "required": [
-                  "Body"
-                ],
-                "properties": {
-                  "NamespaceUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServerUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "LocaleIds": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServiceId": {
-                    "enum": [
-                      0,
-                      710
-                    ],
-                    "type": "integer"
-                  },
-                  "Body": {
-                    "$ref": "#/components/schemas/CallRequest"
-                  }
-                }
+                "$ref": "#/components/schemas/CallRequest"
               }
             }
           }
@@ -240,32 +91,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "CallResponseMessage",
-                  "properties": {
-                    "NamespaceUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServerUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServiceId": {
-                      "enum": [
-                        0,
-                        713,
-                        395
-                      ],
-                      "type": "integer"
-                    },
-                    "Body": {
-                      "$ref": "#/components/schemas/CallResponse"
-                    }
-                  }
+                  "$ref": "#/components/schemas/CallResponse"
                 }
               }
             }
@@ -281,40 +107,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "title": "HistoryReadRequestMessage",
-                "required": [
-                  "Body"
-                ],
-                "properties": {
-                  "NamespaceUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServerUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "LocaleIds": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServiceId": {
-                    "enum": [
-                      0,
-                      662
-                    ],
-                    "type": "integer"
-                  },
-                  "Body": {
-                    "$ref": "#/components/schemas/HistoryReadRequest"
-                  }
-                }
+                "$ref": "#/components/schemas/HistoryReadRequest"
               }
             }
           }
@@ -325,32 +118,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "HistoryReadResponseMessage",
-                  "properties": {
-                    "NamespaceUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServerUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServiceId": {
-                      "enum": [
-                        0,
-                        665,
-                        395
-                      ],
-                      "type": "integer"
-                    },
-                    "Body": {
-                      "$ref": "#/components/schemas/HistoryReadResponse"
-                    }
-                  }
+                  "$ref": "#/components/schemas/HistoryReadResponse"
                 }
               }
             }
@@ -366,40 +134,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "title": "HistoryUpdateRequestMessage",
-                "required": [
-                  "Body"
-                ],
-                "properties": {
-                  "NamespaceUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServerUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "LocaleIds": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServiceId": {
-                    "enum": [
-                      0,
-                      698
-                    ],
-                    "type": "integer"
-                  },
-                  "Body": {
-                    "$ref": "#/components/schemas/HistoryUpdateRequest"
-                  }
-                }
+                "$ref": "#/components/schemas/HistoryUpdateRequest"
               }
             }
           }
@@ -410,32 +145,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "HistoryUpdateResponseMessage",
-                  "properties": {
-                    "NamespaceUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServerUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServiceId": {
-                      "enum": [
-                        0,
-                        701,
-                        395
-                      ],
-                      "type": "integer"
-                    },
-                    "Body": {
-                      "$ref": "#/components/schemas/HistoryUpdateResponse"
-                    }
-                  }
+                  "$ref": "#/components/schemas/HistoryUpdateResponse"
                 }
               }
             }
@@ -451,40 +161,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "title": "BrowseRequestMessage",
-                "required": [
-                  "Body"
-                ],
-                "properties": {
-                  "NamespaceUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServerUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "LocaleIds": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServiceId": {
-                    "enum": [
-                      0,
-                      525
-                    ],
-                    "type": "integer"
-                  },
-                  "Body": {
-                    "$ref": "#/components/schemas/BrowseRequest"
-                  }
-                }
+                "$ref": "#/components/schemas/BrowseRequest"
               }
             }
           }
@@ -495,32 +172,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "BrowseResponseMessage",
-                  "properties": {
-                    "NamespaceUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServerUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServiceId": {
-                      "enum": [
-                        0,
-                        528,
-                        395
-                      ],
-                      "type": "integer"
-                    },
-                    "Body": {
-                      "$ref": "#/components/schemas/BrowseResponse"
-                    }
-                  }
+                  "$ref": "#/components/schemas/BrowseResponse"
                 }
               }
             }
@@ -536,40 +188,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "title": "BrowseNextRequestMessage",
-                "required": [
-                  "Body"
-                ],
-                "properties": {
-                  "NamespaceUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServerUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "LocaleIds": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServiceId": {
-                    "enum": [
-                      0,
-                      531
-                    ],
-                    "type": "integer"
-                  },
-                  "Body": {
-                    "$ref": "#/components/schemas/BrowseNextRequest"
-                  }
-                }
+                "$ref": "#/components/schemas/BrowseNextRequest"
               }
             }
           }
@@ -580,32 +199,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "BrowseNextResponseMessage",
-                  "properties": {
-                    "NamespaceUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServerUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServiceId": {
-                      "enum": [
-                        0,
-                        534,
-                        395
-                      ],
-                      "type": "integer"
-                    },
-                    "Body": {
-                      "$ref": "#/components/schemas/BrowseNextResponse"
-                    }
-                  }
+                  "$ref": "#/components/schemas/BrowseNextResponse"
                 }
               }
             }
@@ -621,40 +215,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "title": "TranslateBrowsePathsToNodeIdsRequestMessage",
-                "required": [
-                  "Body"
-                ],
-                "properties": {
-                  "NamespaceUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServerUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "LocaleIds": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServiceId": {
-                    "enum": [
-                      0,
-                      552
-                    ],
-                    "type": "integer"
-                  },
-                  "Body": {
-                    "$ref": "#/components/schemas/TranslateBrowsePathsToNodeIdsRequest"
-                  }
-                }
+                "$ref": "#/components/schemas/TranslateBrowsePathsToNodeIdsRequest"
               }
             }
           }
@@ -665,32 +226,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "TranslateBrowsePathsToNodeIdsResponseMessage",
-                  "properties": {
-                    "NamespaceUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServerUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServiceId": {
-                      "enum": [
-                        0,
-                        555,
-                        395
-                      ],
-                      "type": "integer"
-                    },
-                    "Body": {
-                      "$ref": "#/components/schemas/TranslateBrowsePathsToNodeIdsResponse"
-                    }
-                  }
+                  "$ref": "#/components/schemas/TranslateBrowsePathsToNodeIdsResponse"
                 }
               }
             }
@@ -706,40 +242,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "title": "FindServersRequestMessage",
-                "required": [
-                  "Body"
-                ],
-                "properties": {
-                  "NamespaceUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServerUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "LocaleIds": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServiceId": {
-                    "enum": [
-                      0,
-                      420
-                    ],
-                    "type": "integer"
-                  },
-                  "Body": {
-                    "$ref": "#/components/schemas/FindServersRequest"
-                  }
-                }
+                "$ref": "#/components/schemas/FindServersRequest"
               }
             }
           }
@@ -750,32 +253,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "FindServersResponseMessage",
-                  "properties": {
-                    "NamespaceUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServerUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServiceId": {
-                      "enum": [
-                        0,
-                        423,
-                        395
-                      ],
-                      "type": "integer"
-                    },
-                    "Body": {
-                      "$ref": "#/components/schemas/FindServersResponse"
-                    }
-                  }
+                  "$ref": "#/components/schemas/FindServersResponse"
                 }
               }
             }
@@ -791,40 +269,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "title": "GetEndpointsRequestMessage",
-                "required": [
-                  "Body"
-                ],
-                "properties": {
-                  "NamespaceUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServerUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "LocaleIds": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServiceId": {
-                    "enum": [
-                      0,
-                      426
-                    ],
-                    "type": "integer"
-                  },
-                  "Body": {
-                    "$ref": "#/components/schemas/GetEndpointsRequest"
-                  }
-                }
+                "$ref": "#/components/schemas/GetEndpointsRequest"
               }
             }
           }
@@ -835,32 +280,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "GetEndpointsResponseMessage",
-                  "properties": {
-                    "NamespaceUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServerUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServiceId": {
-                      "enum": [
-                        0,
-                        429,
-                        395
-                      ],
-                      "type": "integer"
-                    },
-                    "Body": {
-                      "$ref": "#/components/schemas/GetEndpointsResponse"
-                    }
-                  }
+                  "$ref": "#/components/schemas/GetEndpointsResponse"
                 }
               }
             }
@@ -876,40 +296,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "title": "CreateSessionRequestMessage",
-                "required": [
-                  "Body"
-                ],
-                "properties": {
-                  "NamespaceUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServerUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "LocaleIds": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServiceId": {
-                    "enum": [
-                      0,
-                      459
-                    ],
-                    "type": "integer"
-                  },
-                  "Body": {
-                    "$ref": "#/components/schemas/CreateSessionRequest"
-                  }
-                }
+                "$ref": "#/components/schemas/CreateSessionRequest"
               }
             }
           }
@@ -920,32 +307,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "CreateSessionResponseMessage",
-                  "properties": {
-                    "NamespaceUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServerUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServiceId": {
-                      "enum": [
-                        0,
-                        462,
-                        395
-                      ],
-                      "type": "integer"
-                    },
-                    "Body": {
-                      "$ref": "#/components/schemas/CreateSessionResponse"
-                    }
-                  }
+                  "$ref": "#/components/schemas/CreateSessionResponse"
                 }
               }
             }
@@ -961,40 +323,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "title": "ActivateSessionRequestMessage",
-                "required": [
-                  "Body"
-                ],
-                "properties": {
-                  "NamespaceUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServerUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "LocaleIds": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServiceId": {
-                    "enum": [
-                      0,
-                      465
-                    ],
-                    "type": "integer"
-                  },
-                  "Body": {
-                    "$ref": "#/components/schemas/ActivateSessionRequest"
-                  }
-                }
+                "$ref": "#/components/schemas/ActivateSessionRequest"
               }
             }
           }
@@ -1005,32 +334,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "ActivateSessionResponseMessage",
-                  "properties": {
-                    "NamespaceUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServerUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServiceId": {
-                      "enum": [
-                        0,
-                        468,
-                        395
-                      ],
-                      "type": "integer"
-                    },
-                    "Body": {
-                      "$ref": "#/components/schemas/ActivateSessionResponse"
-                    }
-                  }
+                  "$ref": "#/components/schemas/ActivateSessionResponse"
                 }
               }
             }
@@ -1046,40 +350,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "title": "CloseSessionRequestMessage",
-                "required": [
-                  "Body"
-                ],
-                "properties": {
-                  "NamespaceUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServerUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "LocaleIds": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServiceId": {
-                    "enum": [
-                      0,
-                      471
-                    ],
-                    "type": "integer"
-                  },
-                  "Body": {
-                    "$ref": "#/components/schemas/CloseSessionRequest"
-                  }
-                }
+                "$ref": "#/components/schemas/CloseSessionRequest"
               }
             }
           }
@@ -1090,32 +361,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "CloseSessionResponseMessage",
-                  "properties": {
-                    "NamespaceUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServerUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServiceId": {
-                      "enum": [
-                        0,
-                        474,
-                        395
-                      ],
-                      "type": "integer"
-                    },
-                    "Body": {
-                      "$ref": "#/components/schemas/CloseSessionResponse"
-                    }
-                  }
+                  "$ref": "#/components/schemas/CloseSessionResponse"
                 }
               }
             }
@@ -1131,40 +377,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "title": "CancelRequestMessage",
-                "required": [
-                  "Body"
-                ],
-                "properties": {
-                  "NamespaceUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServerUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "LocaleIds": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServiceId": {
-                    "enum": [
-                      0,
-                      477
-                    ],
-                    "type": "integer"
-                  },
-                  "Body": {
-                    "$ref": "#/components/schemas/CancelRequest"
-                  }
-                }
+                "$ref": "#/components/schemas/CancelRequest"
               }
             }
           }
@@ -1175,32 +388,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "CancelResponseMessage",
-                  "properties": {
-                    "NamespaceUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServerUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServiceId": {
-                      "enum": [
-                        0,
-                        480,
-                        395
-                      ],
-                      "type": "integer"
-                    },
-                    "Body": {
-                      "$ref": "#/components/schemas/CancelResponse"
-                    }
-                  }
+                  "$ref": "#/components/schemas/CancelResponse"
                 }
               }
             }
@@ -1216,40 +404,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "title": "RegisterNodesRequestMessage",
-                "required": [
-                  "Body"
-                ],
-                "properties": {
-                  "NamespaceUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServerUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "LocaleIds": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServiceId": {
-                    "enum": [
-                      0,
-                      558
-                    ],
-                    "type": "integer"
-                  },
-                  "Body": {
-                    "$ref": "#/components/schemas/RegisterNodesRequest"
-                  }
-                }
+                "$ref": "#/components/schemas/RegisterNodesRequest"
               }
             }
           }
@@ -1260,32 +415,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "RegisterNodesResponseMessage",
-                  "properties": {
-                    "NamespaceUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServerUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServiceId": {
-                      "enum": [
-                        0,
-                        561,
-                        395
-                      ],
-                      "type": "integer"
-                    },
-                    "Body": {
-                      "$ref": "#/components/schemas/RegisterNodesResponse"
-                    }
-                  }
+                  "$ref": "#/components/schemas/RegisterNodesResponse"
                 }
               }
             }
@@ -1301,40 +431,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "title": "UnregisterNodesRequestMessage",
-                "required": [
-                  "Body"
-                ],
-                "properties": {
-                  "NamespaceUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServerUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "LocaleIds": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServiceId": {
-                    "enum": [
-                      0,
-                      564
-                    ],
-                    "type": "integer"
-                  },
-                  "Body": {
-                    "$ref": "#/components/schemas/UnregisterNodesRequest"
-                  }
-                }
+                "$ref": "#/components/schemas/UnregisterNodesRequest"
               }
             }
           }
@@ -1345,32 +442,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "UnregisterNodesResponseMessage",
-                  "properties": {
-                    "NamespaceUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServerUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServiceId": {
-                      "enum": [
-                        0,
-                        567,
-                        395
-                      ],
-                      "type": "integer"
-                    },
-                    "Body": {
-                      "$ref": "#/components/schemas/UnregisterNodesResponse"
-                    }
-                  }
+                  "$ref": "#/components/schemas/UnregisterNodesResponse"
                 }
               }
             }
@@ -1386,40 +458,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "title": "CreateMonitoredItemsRequestMessage",
-                "required": [
-                  "Body"
-                ],
-                "properties": {
-                  "NamespaceUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServerUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "LocaleIds": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServiceId": {
-                    "enum": [
-                      0,
-                      749
-                    ],
-                    "type": "integer"
-                  },
-                  "Body": {
-                    "$ref": "#/components/schemas/CreateMonitoredItemsRequest"
-                  }
-                }
+                "$ref": "#/components/schemas/CreateMonitoredItemsRequest"
               }
             }
           }
@@ -1430,32 +469,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "CreateMonitoredItemsResponseMessage",
-                  "properties": {
-                    "NamespaceUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServerUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServiceId": {
-                      "enum": [
-                        0,
-                        752,
-                        395
-                      ],
-                      "type": "integer"
-                    },
-                    "Body": {
-                      "$ref": "#/components/schemas/CreateMonitoredItemsResponse"
-                    }
-                  }
+                  "$ref": "#/components/schemas/CreateMonitoredItemsResponse"
                 }
               }
             }
@@ -1471,40 +485,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "title": "ModifyMonitoredItemsRequestMessage",
-                "required": [
-                  "Body"
-                ],
-                "properties": {
-                  "NamespaceUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServerUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "LocaleIds": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServiceId": {
-                    "enum": [
-                      0,
-                      761
-                    ],
-                    "type": "integer"
-                  },
-                  "Body": {
-                    "$ref": "#/components/schemas/ModifyMonitoredItemsRequest"
-                  }
-                }
+                "$ref": "#/components/schemas/ModifyMonitoredItemsRequest"
               }
             }
           }
@@ -1515,32 +496,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "ModifyMonitoredItemsResponseMessage",
-                  "properties": {
-                    "NamespaceUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServerUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServiceId": {
-                      "enum": [
-                        0,
-                        764,
-                        395
-                      ],
-                      "type": "integer"
-                    },
-                    "Body": {
-                      "$ref": "#/components/schemas/ModifyMonitoredItemsResponse"
-                    }
-                  }
+                  "$ref": "#/components/schemas/ModifyMonitoredItemsResponse"
                 }
               }
             }
@@ -1556,40 +512,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "title": "SetMonitoringModeRequestMessage",
-                "required": [
-                  "Body"
-                ],
-                "properties": {
-                  "NamespaceUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServerUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "LocaleIds": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServiceId": {
-                    "enum": [
-                      0,
-                      767
-                    ],
-                    "type": "integer"
-                  },
-                  "Body": {
-                    "$ref": "#/components/schemas/SetMonitoringModeRequest"
-                  }
-                }
+                "$ref": "#/components/schemas/SetMonitoringModeRequest"
               }
             }
           }
@@ -1600,32 +523,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "SetMonitoringModeResponseMessage",
-                  "properties": {
-                    "NamespaceUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServerUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServiceId": {
-                      "enum": [
-                        0,
-                        770,
-                        395
-                      ],
-                      "type": "integer"
-                    },
-                    "Body": {
-                      "$ref": "#/components/schemas/SetMonitoringModeResponse"
-                    }
-                  }
+                  "$ref": "#/components/schemas/SetMonitoringModeResponse"
                 }
               }
             }
@@ -1641,40 +539,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "title": "SetTriggeringRequestMessage",
-                "required": [
-                  "Body"
-                ],
-                "properties": {
-                  "NamespaceUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServerUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "LocaleIds": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServiceId": {
-                    "enum": [
-                      0,
-                      773
-                    ],
-                    "type": "integer"
-                  },
-                  "Body": {
-                    "$ref": "#/components/schemas/SetTriggeringRequest"
-                  }
-                }
+                "$ref": "#/components/schemas/SetTriggeringRequest"
               }
             }
           }
@@ -1685,32 +550,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "SetTriggeringResponseMessage",
-                  "properties": {
-                    "NamespaceUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServerUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServiceId": {
-                      "enum": [
-                        0,
-                        776,
-                        395
-                      ],
-                      "type": "integer"
-                    },
-                    "Body": {
-                      "$ref": "#/components/schemas/SetTriggeringResponse"
-                    }
-                  }
+                  "$ref": "#/components/schemas/SetTriggeringResponse"
                 }
               }
             }
@@ -1726,40 +566,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "title": "DeleteMonitoredItemsRequestMessage",
-                "required": [
-                  "Body"
-                ],
-                "properties": {
-                  "NamespaceUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServerUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "LocaleIds": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServiceId": {
-                    "enum": [
-                      0,
-                      779
-                    ],
-                    "type": "integer"
-                  },
-                  "Body": {
-                    "$ref": "#/components/schemas/DeleteMonitoredItemsRequest"
-                  }
-                }
+                "$ref": "#/components/schemas/DeleteMonitoredItemsRequest"
               }
             }
           }
@@ -1770,32 +577,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "DeleteMonitoredItemsResponseMessage",
-                  "properties": {
-                    "NamespaceUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServerUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServiceId": {
-                      "enum": [
-                        0,
-                        782,
-                        395
-                      ],
-                      "type": "integer"
-                    },
-                    "Body": {
-                      "$ref": "#/components/schemas/DeleteMonitoredItemsResponse"
-                    }
-                  }
+                  "$ref": "#/components/schemas/DeleteMonitoredItemsResponse"
                 }
               }
             }
@@ -1811,40 +593,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "title": "CreateSubscriptionRequestMessage",
-                "required": [
-                  "Body"
-                ],
-                "properties": {
-                  "NamespaceUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServerUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "LocaleIds": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServiceId": {
-                    "enum": [
-                      0,
-                      785
-                    ],
-                    "type": "integer"
-                  },
-                  "Body": {
-                    "$ref": "#/components/schemas/CreateSubscriptionRequest"
-                  }
-                }
+                "$ref": "#/components/schemas/CreateSubscriptionRequest"
               }
             }
           }
@@ -1855,32 +604,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "CreateSubscriptionResponseMessage",
-                  "properties": {
-                    "NamespaceUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServerUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServiceId": {
-                      "enum": [
-                        0,
-                        788,
-                        395
-                      ],
-                      "type": "integer"
-                    },
-                    "Body": {
-                      "$ref": "#/components/schemas/CreateSubscriptionResponse"
-                    }
-                  }
+                  "$ref": "#/components/schemas/CreateSubscriptionResponse"
                 }
               }
             }
@@ -1896,40 +620,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "title": "ModifySubscriptionRequestMessage",
-                "required": [
-                  "Body"
-                ],
-                "properties": {
-                  "NamespaceUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServerUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "LocaleIds": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServiceId": {
-                    "enum": [
-                      0,
-                      791
-                    ],
-                    "type": "integer"
-                  },
-                  "Body": {
-                    "$ref": "#/components/schemas/ModifySubscriptionRequest"
-                  }
-                }
+                "$ref": "#/components/schemas/ModifySubscriptionRequest"
               }
             }
           }
@@ -1940,32 +631,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "ModifySubscriptionResponseMessage",
-                  "properties": {
-                    "NamespaceUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServerUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServiceId": {
-                      "enum": [
-                        0,
-                        794,
-                        395
-                      ],
-                      "type": "integer"
-                    },
-                    "Body": {
-                      "$ref": "#/components/schemas/ModifySubscriptionResponse"
-                    }
-                  }
+                  "$ref": "#/components/schemas/ModifySubscriptionResponse"
                 }
               }
             }
@@ -1981,40 +647,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "title": "SetPublishingModeRequestMessage",
-                "required": [
-                  "Body"
-                ],
-                "properties": {
-                  "NamespaceUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServerUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "LocaleIds": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServiceId": {
-                    "enum": [
-                      0,
-                      797
-                    ],
-                    "type": "integer"
-                  },
-                  "Body": {
-                    "$ref": "#/components/schemas/SetPublishingModeRequest"
-                  }
-                }
+                "$ref": "#/components/schemas/SetPublishingModeRequest"
               }
             }
           }
@@ -2025,32 +658,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "SetPublishingModeResponseMessage",
-                  "properties": {
-                    "NamespaceUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServerUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServiceId": {
-                      "enum": [
-                        0,
-                        800,
-                        395
-                      ],
-                      "type": "integer"
-                    },
-                    "Body": {
-                      "$ref": "#/components/schemas/SetPublishingModeResponse"
-                    }
-                  }
+                  "$ref": "#/components/schemas/SetPublishingModeResponse"
                 }
               }
             }
@@ -2066,40 +674,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "title": "PublishRequestMessage",
-                "required": [
-                  "Body"
-                ],
-                "properties": {
-                  "NamespaceUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServerUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "LocaleIds": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServiceId": {
-                    "enum": [
-                      0,
-                      824
-                    ],
-                    "type": "integer"
-                  },
-                  "Body": {
-                    "$ref": "#/components/schemas/PublishRequest"
-                  }
-                }
+                "$ref": "#/components/schemas/PublishRequest"
               }
             }
           }
@@ -2110,32 +685,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "PublishResponseMessage",
-                  "properties": {
-                    "NamespaceUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServerUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServiceId": {
-                      "enum": [
-                        0,
-                        827,
-                        395
-                      ],
-                      "type": "integer"
-                    },
-                    "Body": {
-                      "$ref": "#/components/schemas/PublishResponse"
-                    }
-                  }
+                  "$ref": "#/components/schemas/PublishResponse"
                 }
               }
             }
@@ -2151,40 +701,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "title": "RepublishRequestMessage",
-                "required": [
-                  "Body"
-                ],
-                "properties": {
-                  "NamespaceUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServerUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "LocaleIds": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServiceId": {
-                    "enum": [
-                      0,
-                      830
-                    ],
-                    "type": "integer"
-                  },
-                  "Body": {
-                    "$ref": "#/components/schemas/RepublishRequest"
-                  }
-                }
+                "$ref": "#/components/schemas/RepublishRequest"
               }
             }
           }
@@ -2195,32 +712,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "RepublishResponseMessage",
-                  "properties": {
-                    "NamespaceUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServerUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServiceId": {
-                      "enum": [
-                        0,
-                        833,
-                        395
-                      ],
-                      "type": "integer"
-                    },
-                    "Body": {
-                      "$ref": "#/components/schemas/RepublishResponse"
-                    }
-                  }
+                  "$ref": "#/components/schemas/RepublishResponse"
                 }
               }
             }
@@ -2236,40 +728,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "title": "TransferSubscriptionsRequestMessage",
-                "required": [
-                  "Body"
-                ],
-                "properties": {
-                  "NamespaceUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServerUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "LocaleIds": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServiceId": {
-                    "enum": [
-                      0,
-                      839
-                    ],
-                    "type": "integer"
-                  },
-                  "Body": {
-                    "$ref": "#/components/schemas/TransferSubscriptionsRequest"
-                  }
-                }
+                "$ref": "#/components/schemas/TransferSubscriptionsRequest"
               }
             }
           }
@@ -2280,32 +739,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "TransferSubscriptionsResponseMessage",
-                  "properties": {
-                    "NamespaceUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServerUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServiceId": {
-                      "enum": [
-                        0,
-                        842,
-                        395
-                      ],
-                      "type": "integer"
-                    },
-                    "Body": {
-                      "$ref": "#/components/schemas/TransferSubscriptionsResponse"
-                    }
-                  }
+                  "$ref": "#/components/schemas/TransferSubscriptionsResponse"
                 }
               }
             }
@@ -2321,40 +755,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "title": "DeleteSubscriptionsRequestMessage",
-                "required": [
-                  "Body"
-                ],
-                "properties": {
-                  "NamespaceUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServerUris": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "LocaleIds": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "ServiceId": {
-                    "enum": [
-                      0,
-                      845
-                    ],
-                    "type": "integer"
-                  },
-                  "Body": {
-                    "$ref": "#/components/schemas/DeleteSubscriptionsRequest"
-                  }
-                }
+                "$ref": "#/components/schemas/DeleteSubscriptionsRequest"
               }
             }
           }
@@ -2365,32 +766,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "DeleteSubscriptionsResponseMessage",
-                  "properties": {
-                    "NamespaceUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServerUris": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "ServiceId": {
-                      "enum": [
-                        0,
-                        848,
-                        395
-                      ],
-                      "type": "integer"
-                    },
-                    "Body": {
-                      "$ref": "#/components/schemas/DeleteSubscriptionsResponse"
-                    }
-                  }
+                  "$ref": "#/components/schemas/DeleteSubscriptionsResponse"
                 }
               }
             }

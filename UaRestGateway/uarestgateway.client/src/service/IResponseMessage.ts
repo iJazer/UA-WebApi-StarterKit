@@ -1,6 +1,6 @@
 import { IResponseBody } from "./IResponseBody";
 
 export interface IResponseMessage {
-   ServiceId?: number,
+   ServiceId: string,
    Body: IResponseBody
 }

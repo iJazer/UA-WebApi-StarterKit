@@ -1,6 +1,7 @@
 import { IRequestBody } from './IRequestBody';
 
 export interface IRequestMessage {
-   ServiceId?: number,
+   ServiceId?: string,
+   LocaleIds?: string[],
    Body: IRequestBody
 }

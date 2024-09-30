@@ -1,8 +1,8 @@
-ECHO OFF
+ECHO ON
 SETLOCAL
 
 set ROOT=%~dp0
-SET JAVA="C:\Program Files\Java\jdk-21\bin\java.exe" 
+SET JAVA="java" 
 SET NODESETS="%ROOT%\..\..\nodesets\v105"
 SET OUTPUT="%ROOT%\..\UaRestClient\csharp"
 
