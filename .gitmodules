@@ -1,3 +1,6 @@
 [submodule "UaStack"]
 	path = UaStack
 	url = https://github.com/OPCFoundation/UA-.NETStandard.git
+[submodule "UaRestClient/opcua-webapi-typescript"]
+	path = UaRestClient/opcua-webapi-typescript
+	url = https://github.com/OPCFoundation/opcua-webapi-typescript.git
