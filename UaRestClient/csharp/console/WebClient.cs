@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using Newtonsoft.Json;
-using OpenApi.Opc.Ua;
-using Org.OpenAPITools.Model;
+using Opc.Ua.WebApi;
+using Opc.Ua.WebApi.Model;
 
 namespace UaRestClient
 {
@@ -115,7 +110,7 @@ namespace UaRestClient
 
             if (response.ResponseHeader.ServiceResult != 0)
             {
-                throw new Exception($"Browse failed with status code {OpenApi.Opc.Ua.StatusCodes.ToName(response.ResponseHeader.ServiceResult)}.");
+                throw new Exception($"Browse failed with status code {StatusCodes.ToName(response.ResponseHeader.ServiceResult)}.");
             }
 
             return response.Results[0].References;

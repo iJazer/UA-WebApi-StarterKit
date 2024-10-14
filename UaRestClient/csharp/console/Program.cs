@@ -1,14 +1,16 @@
 ﻿using UaRestClient;
-using OpenApi.Opc.Ua;
-using Org.OpenAPITools.Model;
-using Newtonsoft.Json;
+using Opc.Ua.WebApi;
+using Opc.Ua.WebApi.Model;
+using System.Diagnostics.Metrics;
+using Newtonsoft.Json.Linq;
+using System.Net.Http.Headers;
 
 try
 {
     var client = new OpcUaClient()
     {
-        // BaseUrl = new Uri("https://opcua-rest-dashboard.azurewebsites.net/opcua/")
-        BaseUrl = new Uri("https://localhost:44429/opcua/")
+        BaseUrl = new Uri("https://opcua-rest-dashboard.azurewebsites.net/opcua/")
+        // BaseUrl = new Uri("https://localhost:44429/opcua/")
     };
 
     client.SetUserName("user1", "password1");
@@ -28,7 +30,13 @@ static class Demo
         var references = await client.BrowseChildren(ObjectIds.ObjectsFolder);
         references?.ForEach(action: x => Console.WriteLine($"{x.DisplayName?.Text} {(NodeClass)x.NodeClass}"));
 
-        var data = references.Where(x => x.BrowseName.EndsWith("Data")).FirstOrDefault();
+        var data = references.Where(x => x.BrowseName.EndsWith("Measurements")).FirstOrDefault();
+
+        if (data == null)
+        {
+            Console.WriteLine("Measurements folder not found");
+            return;
+        }
 
         Console.WriteLine(Environment.NewLine);
         Console.WriteLine("==== Browsing Data");
@@ -41,10 +49,16 @@ static class Demo
         var values = await client.ReadValues(variableIds);
 
         List<WriteValue> valuesToWrite = new();
+        List<ReferenceDescription> variables = new();
 
         for (int ii = 0; ii < variableIds.Count; ii++)
         {
             Console.WriteLine($"{references[ii].DisplayName?.Text} = {values[ii].Value.Body}");
+
+            if (values[ii].Value.Body is not double)
+            {
+                continue;
+            }
 
             valuesToWrite.Add(new WriteValue()
             {
@@ -59,24 +73,26 @@ static class Demo
                     }
                 }
             });
+
+            variables.Add(references.Find(x => x.NodeId == variableIds[ii]));
         }
 
         Console.WriteLine(Environment.NewLine);
         Console.WriteLine("==== Write Data");
         var writeResults = await client.WriteValues(valuesToWrite);
 
-        for (int ii = 0; ii < variableIds.Count; ii++)
+        for (int ii = 0; ii < variables.Count; ii++)
         {
-            Console.WriteLine($"{references[ii].DisplayName?.Text}: {StatusCodes.ToName(writeResults[ii])}");
+            Console.WriteLine($"{variables[ii].DisplayName?.Text}: {StatusCodes.ToName(writeResults[ii])}");
         }
 
         Console.WriteLine(Environment.NewLine);
         Console.WriteLine("==== Read Back Data");
         values = await client.ReadValues(variableIds);
 
-        for (int ii = 0; ii < variableIds.Count; ii++)
+        for (int ii = 0; ii < variables.Count; ii++)
         {
-            Console.WriteLine($"{references[ii].DisplayName?.Text} = {values[ii].Value.Body}");
+            Console.WriteLine($"{variables[ii].DisplayName?.Text} = {values[ii].Value.Body}");
         }
 
         var method = references.Where(x => x.NodeClass == (uint)NodeClass.Method).FirstOrDefault();
@@ -114,9 +130,70 @@ static class Demo
         Console.WriteLine("==== Read Back Data");
         values = await client.ReadValues(variableIds);
 
-        for (int ii = 0; ii < variableIds.Count; ii++)
+        for (int ii = 0; ii < variables.Count; ii++)
         {
-            Console.WriteLine($"{references[ii].DisplayName?.Text} = {values[ii].Value.Body}");
+            Console.WriteLine($"{variables[ii].DisplayName?.Text} = {values[ii].Value.Body}");
+        }
+
+        Console.WriteLine(Environment.NewLine);
+        Console.WriteLine("==== Read Complex Data");
+        var complexVariables = references.Where(x => x.BrowseName.Contains(Measurements.WebApi.BrowseNames.Orientation)).ToList();
+
+        values = await client.ReadValues(complexVariables.Select(x => x.NodeId).ToList());
+        valuesToWrite.Clear();
+
+        for (int ii = 0; ii < complexVariables.Count; ii++)
+        {
+            if (values[ii].Value.Body is JObject json)
+            {
+                var orientation = json["Body"].ToObject<Measurements.Model.OrientationDataType>();
+
+                Console.WriteLine($"   ProfileName = {orientation.ProfileName}");
+                Console.WriteLine($"   X = {orientation.X}");
+                Console.WriteLine($"   Y = {orientation.Y}");
+                Console.WriteLine($"   Rotation = {orientation.Rotation}");
+
+                orientation.X += 1.0;
+                orientation.Y += 1.0;
+                orientation.Rotation += 1.0;
+
+                valuesToWrite.Add(new WriteValue()
+                {
+                    NodeId = complexVariables[ii].NodeId,
+                    AttributeId = Attributes.Value,
+                    Value = new DataValue()
+                    {
+                        Value = new Variant()
+                        {
+                            Type = (int)BuiltInType.ExtensionObject,
+                            Body = JObject.Parse(new ExtensionObject(
+                                typeId: Measurements.WebApi.DataTypeIds.OrientationDataType,
+                                body: orientation
+                            ).ToJson())
+                        }
+                    }
+                });
+
+                continue;
+            }
+        }
+
+        Console.WriteLine(Environment.NewLine);
+        Console.WriteLine("==== Write Complex Data");
+        writeResults = await client.WriteValues(valuesToWrite);
+
+        for (int ii = 0; ii < complexVariables.Count; ii++)
+        {
+            Console.WriteLine($"{complexVariables[ii].DisplayName?.Text}: {StatusCodes.ToName(writeResults[ii])}");
+        }
+
+        Console.WriteLine(Environment.NewLine);
+        Console.WriteLine("==== Read Back Complex Data");
+        values = await client.ReadValues(complexVariables.Select(x => x.NodeId).ToList());
+
+        for (int ii = 0; ii < complexVariables.Count; ii++)
+        {
+            Console.WriteLine($"{complexVariables[ii].DisplayName?.Text} = {values[ii].Value.Body}");
         }
     }
 }
