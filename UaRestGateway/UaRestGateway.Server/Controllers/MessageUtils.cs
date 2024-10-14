@@ -231,7 +231,7 @@ namespace UaRestGateway.Server.Controllers
         {
             var stream = new MemoryStream();
 
-            using (var encoder = new JsonEncoder(context, true, stream: stream, leaveOpen: true))
+            using (var encoder = new JsonEncoder(context, JsonEncodingType.Compact, stream: stream, leaveOpen: true))
             {
                 if (envelopeRequired)
                 {

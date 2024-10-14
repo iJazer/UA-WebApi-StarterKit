@@ -7,7 +7,7 @@ import DeveloperBoardIcon from '@mui/icons-material/DeveloperBoard';
 import SystemUpdateAltIcon from '@mui/icons-material/SystemUpdateAlt';
 import BookmarksIcon from '@mui/icons-material/Bookmarks';
 
-import * as OpcUa from '../opcua';
+import * as OpcUa from 'opcua-webapi';
 
 interface NodeIconProps {
    nodeClass?: number

@@ -6,7 +6,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { TreeView } from '@mui/x-tree-view/TreeView/TreeView';
 import Paper from '@mui/material/Paper/Paper';
 
-import * as OpcUa from '../opcua';
+import * as OpcUa from 'opcua-webapi';
 import { ApplicationContext } from '../ApplicationProvider';
 import { TreeItem } from '@mui/x-tree-view/TreeItem/TreeItem';
 import { NodeIcon } from './NodeIcon';

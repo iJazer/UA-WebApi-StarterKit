@@ -1,5 +1,5 @@
   /* eslint-disable @typescript-eslint/no-explicit-any */
-import * as OpcUa from './opcua';
+import * as OpcUa from 'opcua-webapi';
 import * as pako from 'pako';
 import { Account } from './user/Account';
 import { ICompletedRequest } from './service/ICompletedRequest';

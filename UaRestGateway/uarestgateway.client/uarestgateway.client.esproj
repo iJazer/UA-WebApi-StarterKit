@@ -9,15 +9,6 @@
     <PublishAssetsDirectory>$(MSBuildProjectDirectory)\dist</PublishAssetsDirectory>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="src\controls\BrowseTreeView.tsx" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="src\opcua-utils.ts" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="src\controls\BrowseTreeView.tsx" />
-  </ItemGroup>
-  <ItemGroup>
     <None Update="public\opcfoundation-org-opcua-rest-api-1.0.0-swagger.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
@@ -25,9 +16,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Remove="src\controls\FileCard.tsx" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="src\controls\FileCard.tsx" />
+    <Folder Include="src\opcua\models\" />
   </ItemGroup>
 </Project>

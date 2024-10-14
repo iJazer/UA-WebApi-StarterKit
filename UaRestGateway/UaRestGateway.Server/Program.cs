@@ -46,7 +46,18 @@ namespace UaRestGateway.Server
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
-           
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder => builder
+                        .WithOrigins("http://localhost:5173")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials()
+                );
+            });
+
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
                 options.Events = new JwtBearerEvents()
@@ -109,6 +120,7 @@ namespace UaRestGateway.Server
             }
 
             app.UseHttpsRedirection();
+            app.UseCors();
             app.UseAuthorization();
             app.UseAuthentication();
             app.MapControllers();

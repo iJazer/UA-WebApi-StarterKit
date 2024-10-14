@@ -40,7 +40,7 @@ namespace UaRestGateway.Server.Service
     {
         #region Private Fields
         private Dictionary<NodeId, FileManager> m_fileManagers = new();
-        private ushort TestNamespaceIndex => (NamespaceIndexes?.Length > 0) ? NamespaceIndexes[0] : (ushort)0;
+        private ushort MeasurementsNamespaceIndex => (NamespaceIndexes?.Length > 0) ? NamespaceIndexes[0] : (ushort)0;
         private Timer m_simulationTimer;
         #endregion
 
@@ -54,8 +54,9 @@ namespace UaRestGateway.Server.Service
         {
             SystemContext.NodeIdFactory = this;
             string[] namespaceUrls = new string[1];
-            namespaceUrls[0] = "urn:opcua-is-interoperability.net:testing";
+            namespaceUrls[0] = Measurements.Namespaces.Measurements;
             SetNamespaces(namespaceUrls);
+            SystemContext.EncodeableFactory.AddEncodeableTypes(typeof(Measurements.OrientationDataType).Assembly);
         }
         #endregion
 
@@ -132,7 +133,7 @@ namespace UaRestGateway.Server.Service
                     externalReferences[Opc.Ua.ObjectIds.ObjectsFolder] = references = new List<IReference>();
                 }
 
-                var tests = CreateTestFolder();
+                var tests = CreateMeasurementsFolder();
                 references.Add(new NodeStateReference(Opc.Ua.ReferenceTypeIds.Organizes, false, tests.NodeId));
             }
         }
@@ -162,7 +163,7 @@ namespace UaRestGateway.Server.Service
             {
                 if (result.NodeId?.Identifier is string id)
                 {
-                    if (id.Contains("Reset") == true)
+                    if (id.Contains(Measurements.BrowseNames.Reset) == true)
                     {
                         if (!HasEngineerAccess(context))
                         {
@@ -191,31 +192,28 @@ namespace UaRestGateway.Server.Service
 
             if (metadata != null)
             {
-                if (metadata.NodeId?.Identifier is string id)
+                if (metadata.NodeId.Identifier is string id && id.Contains(Measurements.BrowseNames.Reset) == true)
                 {
                     if (metadata.RolePermissions == null)
                     {
-                        if (id.Contains("Reset") == true)
+                        metadata.RolePermissions = new(new RolePermissionType[]
                         {
-                            metadata.RolePermissions = new(new RolePermissionType[]
+                            new RolePermissionType()
                             {
-                                new RolePermissionType()
-                                {
-                                    RoleId = ObjectIds.WellKnownRole_Anonymous,
-                                    Permissions = (uint)(PermissionType.None)
-                                },
-                                new RolePermissionType()
-                                {
-                                    RoleId = ObjectIds.WellKnownRole_AuthenticatedUser,
-                                    Permissions = (uint)(PermissionType.Browse | PermissionType.Read | PermissionType.Call)
-                                },
-                                new RolePermissionType()
-                                {
-                                    RoleId = ObjectIds.WellKnownRole_Engineer,
-                                    Permissions = (uint)(PermissionType.Browse | PermissionType.Read | PermissionType.Call)
-                                }
-                            });
-                        }
+                                RoleId = ObjectIds.WellKnownRole_Anonymous,
+                                Permissions = (uint)(PermissionType.None)
+                            },
+                            new RolePermissionType()
+                            {
+                                RoleId = ObjectIds.WellKnownRole_AuthenticatedUser,
+                                Permissions = (uint)(PermissionType.Browse | PermissionType.Read | PermissionType.Call)
+                            },
+                            new RolePermissionType()
+                            {
+                                RoleId = ObjectIds.WellKnownRole_Engineer,
+                                Permissions = (uint)(PermissionType.Browse | PermissionType.Read | PermissionType.Call)
+                            }
+                        });
                     }
                 }
             }
@@ -223,104 +221,36 @@ namespace UaRestGateway.Server.Service
             return metadata;
         }
 
-        private BaseObjectState CreateTestFolder()
+        private BaseObjectState CreateMeasurementsFolder()
         {
-            var folder = new BaseObjectState(null);
+            var container = new Measurements.MeasurementContainerState(null);
 
-            folder.Create(
+            container.Create(
                 SystemContext,
-                new NodeId("Data", TestNamespaceIndex),
-                new QualifiedName("Data", TestNamespaceIndex),
+                new NodeId("Measurements", MeasurementsNamespaceIndex),
+                new QualifiedName("Measurements", MeasurementsNamespaceIndex),
                 null,
                 true);
 
-            AddPredefinedNode(SystemContext, folder);
+            AddPredefinedNode(SystemContext, container);
 
-            var temperature = new AnalogItemState<double>(folder);
+            container.Temperature.Value = 25.0;
+            container.Temperature.AccessLevel = container.Temperature.UserAccessLevel = AccessLevels.CurrentReadOrWrite;
 
-            temperature.Create(
-                SystemContext,
-                new NodeId("Temperature", TestNamespaceIndex),
-                new QualifiedName("Temperature", TestNamespaceIndex),
-                null,
-                true);
+            container.Pressure.Value = 103.0;
+            container.Pressure.AccessLevel = container.Pressure.UserAccessLevel = AccessLevels.CurrentReadOrWrite;
 
-            temperature.Definition = null;
-            temperature.InstrumentRange = null;
-            temperature.ValuePrecision = null;
-            temperature.AccessLevel = AccessLevels.CurrentReadOrWrite;
-            temperature.UserAccessLevel = AccessLevels.CurrentReadOrWrite;
-            temperature.Value = 25.0;
-
-            temperature.EngineeringUnits.Value = new EUInformation()
+            container.Orientation.Value = new Measurements.OrientationDataType()
             {
-                DisplayName = "°C",
-                Description = "Celsius",
-                UnitId = 4408652,
-                NamespaceUri = "http://www.opcfoundation.org/UA/units/un/cefact"
+                ProfileName = "Profile 1",
+                X = 10.0,
+                Y = 20.0,
+                Rotation = 180.0
             };
 
-            temperature.EURange.Value = new Opc.Ua.Range(-263, 400);
+            container.Orientation.AccessLevel = container.Orientation.UserAccessLevel = AccessLevels.CurrentReadOrWrite;
 
-            folder.AddChild(temperature);
-            AddPredefinedNode(SystemContext, temperature);
-
-            var pressure = new AnalogItemState<double>(folder);
-
-            pressure.Create(
-                SystemContext,
-                new NodeId("Pressure", TestNamespaceIndex),
-                new QualifiedName("Pressure", TestNamespaceIndex),
-                null,
-                true);
-
-            pressure.Definition = null;
-            pressure.InstrumentRange = null;
-            pressure.ValuePrecision = null;
-            pressure.AccessLevel = AccessLevels.CurrentReadOrWrite;
-            pressure.UserAccessLevel = AccessLevels.CurrentReadOrWrite;
-            pressure.Value = 103.0;
-
-            pressure.EngineeringUnits.Value = new EUInformation()
-            {
-                DisplayName = "kPa",
-                Description = "kilopascal",
-                UnitId = 4935745,
-                NamespaceUri = "http://www.opcfoundation.org/UA/units/un/cefact"
-            };
-
-            pressure.EURange.Value = new Opc.Ua.Range(0, 250);
-
-            folder.AddChild(pressure);
-            AddPredefinedNode(SystemContext, pressure);
-
-            var method = new MethodState(folder);
-            method.ReferenceTypeId = ReferenceTypeIds.HasComponent;
-
-            method.InputArguments = new PropertyState<Argument[]>(method)
-            {
-                ReferenceTypeId = ReferenceTypeIds.HasProperty,
-                SymbolicName = BrowseNames.InputArguments,
-                BrowseName = BrowseNames.InputArguments,
-                DisplayName = BrowseNames.InputArguments
-            };
-
-            method.OutputArguments = new PropertyState<Argument[]>(method)
-            {
-                ReferenceTypeId = ReferenceTypeIds.HasProperty,
-                SymbolicName = BrowseNames.OutputArguments,
-                BrowseName = BrowseNames.OutputArguments,
-                DisplayName = BrowseNames.OutputArguments
-            };
-
-            method.Create(
-                SystemContext,
-                new NodeId("Reset", TestNamespaceIndex),
-                new QualifiedName("Reset", TestNamespaceIndex),
-                null,
-                true);
-
-            method.OnCallMethod2 += (context, methodToCall, objectId, inputArguments, outputArguments) =>
+            container.Reset.OnCallMethod2 += (context, methodToCall, objectId, inputArguments, outputArguments) =>
             {
                 if (inputArguments.Count != 2 || outputArguments.Count != 2)
                 {
@@ -329,11 +259,11 @@ namespace UaRestGateway.Server.Service
 
                 lock (Lock)
                 {
-                    double oldTemperature = temperature.Value;
-                    double oldPressure = pressure.Value;
+                    double oldTemperature = container.Temperature.Value;
+                    double oldPressure = container.Pressure.Value;
 
-                    temperature.Value = (double)inputArguments[0];
-                    pressure.Value = (double)inputArguments[1];
+                    container.Temperature.Value = (double)inputArguments[0];
+                    container.Pressure.Value = (double)inputArguments[1];
 
                     outputArguments[0] = oldTemperature;
                     outputArguments[1] = oldPressure;
@@ -342,56 +272,23 @@ namespace UaRestGateway.Server.Service
                 return ServiceResult.Good;
             };
 
-            method.InputArguments.Value = new Argument[] {
-                new Argument() {
-                    Name = "NewTemperature",
-                    DataType = DataTypeIds.Double,
-                    ValueRank = ValueRanks.Scalar,
-                    Description = "The new temperature"
-                },
-                new Argument() {
-                    Name = "NewPressure",
-                    DataType = DataTypeIds.Double,
-                    ValueRank = ValueRanks.Scalar,
-                    Description = "The new pressure"
-                }
-            };
-
-            method.OutputArguments.Value = new Argument[] {
-                new Argument() {
-                    Name = "OldTemperature",
-                    DataType = DataTypeIds.Double,
-                    ValueRank = ValueRanks.Scalar,
-                    Description = "The old temperature"
-                },
-                new Argument() {
-                    Name = "OldPressure",
-                    DataType = DataTypeIds.Double,
-                    ValueRank = ValueRanks.Scalar,
-                    Description = "The old pressure"
-                }
-            };
-
-            folder.AddChild(method);
-            AddPredefinedNode(SystemContext, method);
-
             m_simulationTimer = new Timer(
                 (state) => 
                 {
                     lock (Lock)
                     {
-                        temperature.Value = Math.Round(Math.Round(temperature.Value, 0) + Random.Shared.NextDouble() - 0.5, 2);
-                        pressure.Value = Math.Round(Math.Round(pressure.Value, 0) + Random.Shared.NextDouble() - 0.5, 2);
-        }
+                        container.Temperature.Value = Math.Round(Math.Round(container.Temperature.Value, 0) + Random.Shared.NextDouble() - 0.5, 2);
+                        container.Pressure.Value = Math.Round(Math.Round(container.Pressure.Value, 0) + Random.Shared.NextDouble() - 0.5, 2);
+                    }
 
-                    temperature.ClearChangeMasks(SystemContext, false);
-                    pressure.ClearChangeMasks(SystemContext, false);
+                    container.Temperature.ClearChangeMasks(SystemContext, false);
+                    container.Pressure.ClearChangeMasks(SystemContext, false);
                 }, 
                 null, 
                 1000, 
                 1000);
 
-            return folder;
+            return container;
         }
 
         private class FileManager : IDisposable
@@ -633,12 +530,25 @@ namespace UaRestGateway.Server.Service
         #endregion
 
         #region Overrides
-        /// <summary>
-        /// Loads a node set from a file or resource and addes them to the set of predefined nodes.
-        /// </summary>
         protected override NodeStateCollection LoadPredefinedNodes(ISystemContext context)
         {
-            return base.LoadPredefinedNodes(context);
+            NodeStateCollection predefinedNodes = new NodeStateCollection();
+
+            var assembly = typeof(GatewayNodeManager).Assembly;
+
+            foreach (var name in assembly.GetManifestResourceNames())
+            {
+                if (name.EndsWith("uanodes"))
+                {
+                    if (name.Contains("Measurements"))
+                    {
+                        predefinedNodes.LoadFromBinaryResource(context, name, assembly, true);
+                        break;
+                    }
+                }
+            }
+
+            return predefinedNodes;
         }
         #endregion
     }

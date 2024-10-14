@@ -4,7 +4,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import StopIcon from '@mui/icons-material/Stop';
 import { Button, Toolbar, Typography, useTheme } from '@mui/material';
 
-import * as OpcUa from '../opcua';
+import * as OpcUa from 'opcua-webapi';
 import * as Web from '../Web';
 import { SessionContext } from '../SessionProvider';
 
@@ -54,7 +54,7 @@ export const SessionStatusBar = () => {
    React.useEffect(() => {
       if (lastCompletedRequest?.clientHandle === clientHandle) {
          if (lastCompletedRequest?.response?.ServiceId === OpcUa.DataTypeIds.ReadResponse) {
-            const rrm = lastCompletedRequest.response as OpcUa.ReadResponse;
+            const rrm = lastCompletedRequest.response.Body as OpcUa.ReadResponse;
             setCurrentTime(rrm?.Results?.at(0));
          }
       }

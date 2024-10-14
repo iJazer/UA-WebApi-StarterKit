@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "OPC UA REST API",
-    "description": "This API provides simple REST based access to an OPC UA server.",
+    "title": "OPC UA Web API",
+    "description": "Provides simple HTTPS based access to an OPC UA server.",
     "contact": {
       "email": "office@opcfoundation.org"
     },
@@ -918,6 +918,980 @@
       "BaseDataType": {
         "$ref": "#/components/schemas/Variant"
       },
+      "KeyValuePair": {
+        "type": "object",
+        "properties": {
+          "Key": {
+            "type": "string",
+            "format": "opcuaQualifiedName"
+          },
+          "Value": {
+            "$ref": "#/components/schemas/Variant"
+          }
+        }
+      },
+      "DataTypeSchemaHeader": {
+        "type": "object",
+        "properties": {
+          "Namespaces": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "StructureDataTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StructureDescription"
+            }
+          },
+          "EnumDataTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EnumDescription"
+            }
+          },
+          "SimpleDataTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SimpleTypeDescription"
+            }
+          }
+        }
+      },
+      "DataTypeDescription": {
+        "type": "object",
+        "properties": {
+          "DataTypeId": {
+            "type": "string",
+            "format": "opcuaNodeId"
+          },
+          "Name": {
+            "type": "string",
+            "format": "opcuaQualifiedName"
+          }
+        }
+      },
+      "StructureDescription": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/DataTypeDescription"
+          }
+        ],
+        "properties": {
+          "StructureDefinition": {
+            "$ref": "#/components/schemas/StructureDefinition"
+          }
+        }
+      },
+      "EnumDescription": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/DataTypeDescription"
+          }
+        ],
+        "properties": {
+          "EnumDefinition": {
+            "$ref": "#/components/schemas/EnumDefinition"
+          },
+          "BuiltInType": {
+            "maximum": 255,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "SimpleTypeDescription": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/DataTypeDescription"
+          }
+        ],
+        "properties": {
+          "BaseDataType": {
+            "type": "string",
+            "format": "opcuaNodeId"
+          },
+          "BuiltInType": {
+            "maximum": 255,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "PubSubState": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "type": "integer",
+        "format": "int32",
+        "x-enum-varnames": [
+          "Disabled",
+          "Paused",
+          "Operational",
+          "Error",
+          "PreOperational"
+        ]
+      },
+      "DataSetMetaDataType": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/DataTypeSchemaHeader"
+          }
+        ],
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "Description": {
+            "$ref": "#/components/schemas/LocalizedText"
+          },
+          "Fields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FieldMetaData"
+            }
+          },
+          "DataSetClassId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ConfigurationVersion": {
+            "$ref": "#/components/schemas/ConfigurationVersionDataType"
+          }
+        }
+      },
+      "FieldMetaData": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "Description": {
+            "$ref": "#/components/schemas/LocalizedText"
+          },
+          "FieldFlags": {
+            "maximum": 65535,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "BuiltInType": {
+            "maximum": 255,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "DataType": {
+            "type": "string",
+            "format": "opcuaNodeId"
+          },
+          "ValueRank": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ArrayDimensions": {
+            "type": "array",
+            "items": {
+              "maximum": 4294967295,
+              "minimum": 0,
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          "MaxStringLength": {
+            "maximum": 4294967295,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int64"
+          },
+          "DataSetFieldId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Properties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyValuePair"
+            }
+          }
+        }
+      },
+      "DataSetFieldFlags": {
+        "maximum": 4294967295,
+        "minimum": 0,
+        "type": "integer",
+        "description": "PromotedField=0000",
+        "format": "int64"
+      },
+      "ConfigurationVersionDataType": {
+        "type": "object",
+        "properties": {
+          "MajorVersion": {
+            "maximum": 4294967295,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int64"
+          },
+          "MinorVersion": {
+            "maximum": 4294967295,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "PublishedDataSetDataType": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "DataSetFolder": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "DataSetMetaData": {
+            "$ref": "#/components/schemas/DataSetMetaDataType"
+          },
+          "ExtensionFields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyValuePair"
+            }
+          },
+          "DataSetSource": {
+            "$ref": "#/components/schemas/ExtensionObject"
+          }
+        }
+      },
+      "PublishedDataSetSourceDataType": {
+        "type": "object"
+      },
+      "DataSetFieldContentMask": {
+        "maximum": 4294967295,
+        "minimum": 0,
+        "type": "integer",
+        "description": "StatusCode=0000, SourceTimestamp=0001, ServerTimestamp=0002, SourcePicoSeconds=0003, ServerPicoSeconds=0004, RawData=0005",
+        "format": "int64"
+      },
+      "DataSetWriterDataType": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "Enabled": {
+            "type": "boolean"
+          },
+          "DataSetWriterId": {
+            "maximum": 65535,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "DataSetFieldContentMask": {
+            "maximum": 4294967295,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int64"
+          },
+          "KeyFrameCount": {
+            "maximum": 4294967295,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int64"
+          },
+          "DataSetName": {
+            "type": "string"
+          },
+          "DataSetWriterProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyValuePair"
+            }
+          },
+          "TransportSettings": {
+            "$ref": "#/components/schemas/ExtensionObject"
+          },
+          "MessageSettings": {
+            "$ref": "#/components/schemas/ExtensionObject"
+          }
+        }
+      },
+      "DataSetWriterTransportDataType": {
+        "type": "object"
+      },
+      "DataSetWriterMessageDataType": {
+        "type": "object"
+      },
+      "PubSubGroupDataType": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "Enabled": {
+            "type": "boolean"
+          },
+          "SecurityMode": {
+            "type": "integer",
+            "format": "MessageSecurityMode"
+          },
+          "SecurityGroupId": {
+            "type": "string"
+          },
+          "SecurityKeyServices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EndpointDescription"
+            }
+          },
+          "MaxNetworkMessageSize": {
+            "maximum": 4294967295,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int64"
+          },
+          "GroupProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyValuePair"
+            }
+          }
+        }
+      },
+      "WriterGroupDataType": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/PubSubGroupDataType"
+          }
+        ],
+        "properties": {
+          "WriterGroupId": {
+            "maximum": 65535,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "PublishingInterval": {
+            "type": "number",
+            "format": "double"
+          },
+          "KeepAliveTime": {
+            "type": "number",
+            "format": "double"
+          },
+          "Priority": {
+            "maximum": 255,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "LocaleIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "HeaderLayoutUri": {
+            "type": "string"
+          },
+          "TransportSettings": {
+            "$ref": "#/components/schemas/ExtensionObject"
+          },
+          "MessageSettings": {
+            "$ref": "#/components/schemas/ExtensionObject"
+          },
+          "DataSetWriters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataSetWriterDataType"
+            }
+          }
+        }
+      },
+      "WriterGroupTransportDataType": {
+        "type": "object"
+      },
+      "WriterGroupMessageDataType": {
+        "type": "object"
+      },
+      "PubSubConnectionDataType": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "Enabled": {
+            "type": "boolean"
+          },
+          "PublisherId": {
+            "$ref": "#/components/schemas/Variant"
+          },
+          "TransportProfileUri": {
+            "type": "string"
+          },
+          "Address": {
+            "$ref": "#/components/schemas/ExtensionObject"
+          },
+          "ConnectionProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyValuePair"
+            }
+          },
+          "TransportSettings": {
+            "$ref": "#/components/schemas/ExtensionObject"
+          },
+          "WriterGroups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WriterGroupDataType"
+            }
+          },
+          "ReaderGroups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReaderGroupDataType"
+            }
+          }
+        }
+      },
+      "ConnectionTransportDataType": {
+        "type": "object"
+      },
+      "NetworkAddressDataType": {
+        "type": "object",
+        "properties": {
+          "NetworkInterface": {
+            "type": "string"
+          }
+        }
+      },
+      "ReaderGroupDataType": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/PubSubGroupDataType"
+          }
+        ],
+        "properties": {
+          "TransportSettings": {
+            "$ref": "#/components/schemas/ExtensionObject"
+          },
+          "MessageSettings": {
+            "$ref": "#/components/schemas/ExtensionObject"
+          },
+          "DataSetReaders": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataSetReaderDataType"
+            }
+          }
+        }
+      },
+      "ReaderGroupTransportDataType": {
+        "type": "object"
+      },
+      "ReaderGroupMessageDataType": {
+        "type": "object"
+      },
+      "DataSetReaderDataType": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "Enabled": {
+            "type": "boolean"
+          },
+          "PublisherId": {
+            "$ref": "#/components/schemas/Variant"
+          },
+          "WriterGroupId": {
+            "maximum": 65535,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "DataSetWriterId": {
+            "maximum": 65535,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "DataSetMetaData": {
+            "$ref": "#/components/schemas/DataSetMetaDataType"
+          },
+          "DataSetFieldContentMask": {
+            "maximum": 4294967295,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int64"
+          },
+          "MessageReceiveTimeout": {
+            "type": "number",
+            "format": "double"
+          },
+          "KeyFrameCount": {
+            "maximum": 4294967295,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int64"
+          },
+          "HeaderLayoutUri": {
+            "type": "string"
+          },
+          "SecurityMode": {
+            "type": "integer",
+            "format": "MessageSecurityMode"
+          },
+          "SecurityGroupId": {
+            "type": "string"
+          },
+          "SecurityKeyServices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EndpointDescription"
+            }
+          },
+          "DataSetReaderProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyValuePair"
+            }
+          },
+          "TransportSettings": {
+            "$ref": "#/components/schemas/ExtensionObject"
+          },
+          "MessageSettings": {
+            "$ref": "#/components/schemas/ExtensionObject"
+          },
+          "SubscribedDataSet": {
+            "$ref": "#/components/schemas/ExtensionObject"
+          }
+        }
+      },
+      "DataSetReaderTransportDataType": {
+        "type": "object"
+      },
+      "DataSetReaderMessageDataType": {
+        "type": "object"
+      },
+      "SubscribedDataSetDataType": {
+        "type": "object"
+      },
+      "PubSubConfigurationDataType": {
+        "type": "object",
+        "properties": {
+          "PublishedDataSets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublishedDataSetDataType"
+            }
+          },
+          "Connections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PubSubConnectionDataType"
+            }
+          },
+          "Enabled": {
+            "type": "boolean"
+          }
+        }
+      },
+      "StandaloneSubscribedDataSetDataType": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SubscribedDataSetDataType"
+          }
+        ],
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "DataSetFolder": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "DataSetMetaData": {
+            "$ref": "#/components/schemas/DataSetMetaDataType"
+          },
+          "SubscribedDataSet": {
+            "$ref": "#/components/schemas/ExtensionObject"
+          }
+        }
+      },
+      "SecurityGroupDataType": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "SecurityGroupFolder": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "KeyLifetime": {
+            "type": "number",
+            "format": "double"
+          },
+          "SecurityPolicyUri": {
+            "type": "string"
+          },
+          "MaxFutureKeyCount": {
+            "maximum": 4294967295,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int64"
+          },
+          "MaxPastKeyCount": {
+            "maximum": 4294967295,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int64"
+          },
+          "SecurityGroupId": {
+            "type": "string"
+          },
+          "RolePermissions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RolePermissionType"
+            }
+          },
+          "GroupProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyValuePair"
+            }
+          }
+        }
+      },
+      "PubSubKeyPushTargetDataType": {
+        "type": "object",
+        "properties": {
+          "ApplicationUri": {
+            "type": "string"
+          },
+          "PushTargetFolder": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "EndpointUrl": {
+            "type": "string"
+          },
+          "SecurityPolicyUri": {
+            "type": "string"
+          },
+          "UserTokenType": {
+            "$ref": "#/components/schemas/UserTokenPolicy"
+          },
+          "RequestedKeyCount": {
+            "maximum": 65535,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "RetryInterval": {
+            "type": "number",
+            "format": "double"
+          },
+          "PushTargetProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyValuePair"
+            }
+          },
+          "SecurityGroups": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "PubSubConfiguration2DataType": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/PubSubConfigurationDataType"
+          }
+        ],
+        "properties": {
+          "SubscribedDataSets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StandaloneSubscribedDataSetDataType"
+            }
+          },
+          "DataSetClasses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataSetMetaDataType"
+            }
+          },
+          "DefaultSecurityKeyServices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EndpointDescription"
+            }
+          },
+          "SecurityGroups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SecurityGroupDataType"
+            }
+          },
+          "PubSubKeyPushTargets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PubSubKeyPushTargetDataType"
+            }
+          },
+          "ConfigurationVersion": {
+            "maximum": 4294967295,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int64"
+          },
+          "ConfigurationProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyValuePair"
+            }
+          }
+        }
+      },
+      "JsonNetworkMessageContentMask": {
+        "maximum": 4294967295,
+        "minimum": 0,
+        "type": "integer",
+        "description": "NetworkMessageHeader=0000, DataSetMessageHeader=0001, SingleDataSetMessage=0002, PublisherId=0003, DataSetClassId=0004, ReplyTo=0005, WriterGroupName=0006",
+        "format": "int64"
+      },
+      "JsonWriterGroupMessageDataType": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/WriterGroupMessageDataType"
+          }
+        ],
+        "properties": {
+          "NetworkMessageContentMask": {
+            "maximum": 4294967295,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "JsonDataSetMessageContentMask": {
+        "maximum": 4294967295,
+        "minimum": 0,
+        "type": "integer",
+        "description": "DataSetWriterId=0000, MetaDataVersion=0001, SequenceNumber=0002, Timestamp=0003, Status=0004, MessageType=0005, DataSetWriterName=0006, ReversibleFieldEncoding=0007, PublisherId=0008, WriterGroupName=0009, MinorVersion=000A",
+        "format": "int64"
+      },
+      "JsonDataSetWriterMessageDataType": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/DataSetWriterMessageDataType"
+          }
+        ],
+        "properties": {
+          "DataSetMessageContentMask": {
+            "maximum": 4294967295,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "JsonDataSetReaderMessageDataType": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/DataSetReaderMessageDataType"
+          }
+        ],
+        "properties": {
+          "NetworkMessageContentMask": {
+            "maximum": 4294967295,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int64"
+          },
+          "DataSetMessageContentMask": {
+            "maximum": 4294967295,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "BrokerConnectionTransportDataType": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ConnectionTransportDataType"
+          }
+        ],
+        "properties": {
+          "ResourceUri": {
+            "type": "string"
+          },
+          "AuthenticationProfileUri": {
+            "type": "string"
+          }
+        }
+      },
+      "BrokerTransportQualityOfService": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "type": "integer",
+        "format": "int32",
+        "x-enum-varnames": [
+          "NotSpecified",
+          "BestEffort",
+          "AtLeastOnce",
+          "AtMostOnce",
+          "ExactlyOnce"
+        ]
+      },
+      "BrokerWriterGroupTransportDataType": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/WriterGroupTransportDataType"
+          }
+        ],
+        "properties": {
+          "QueueName": {
+            "type": "string"
+          },
+          "ResourceUri": {
+            "type": "string"
+          },
+          "AuthenticationProfileUri": {
+            "type": "string"
+          },
+          "RequestedDeliveryGuarantee": {
+            "type": "integer",
+            "format": "BrokerTransportQualityOfService"
+          }
+        }
+      },
+      "BrokerDataSetWriterTransportDataType": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/DataSetWriterTransportDataType"
+          }
+        ],
+        "properties": {
+          "QueueName": {
+            "type": "string"
+          },
+          "ResourceUri": {
+            "type": "string"
+          },
+          "AuthenticationProfileUri": {
+            "type": "string"
+          },
+          "RequestedDeliveryGuarantee": {
+            "type": "integer",
+            "format": "BrokerTransportQualityOfService"
+          },
+          "MetaDataQueueName": {
+            "type": "string"
+          },
+          "MetaDataUpdateTime": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "BrokerDataSetReaderTransportDataType": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/DataSetReaderTransportDataType"
+          }
+        ],
+        "properties": {
+          "QueueName": {
+            "type": "string"
+          },
+          "ResourceUri": {
+            "type": "string"
+          },
+          "AuthenticationProfileUri": {
+            "type": "string"
+          },
+          "RequestedDeliveryGuarantee": {
+            "type": "integer",
+            "format": "BrokerTransportQualityOfService"
+          },
+          "MetaDataQueueName": {
+            "type": "string"
+          }
+        }
+      },
+      "NodeClass": {
+        "enum": [
+          0,
+          1,
+          2,
+          4,
+          8,
+          16,
+          32,
+          64,
+          128
+        ],
+        "type": "integer",
+        "format": "int32",
+        "x-enum-varnames": [
+          "Unspecified",
+          "Object",
+          "Variable",
+          "Method",
+          "ObjectType",
+          "VariableType",
+          "ReferenceType",
+          "DataType",
+          "View"
+        ]
+      },
       "PermissionType": {
         "maximum": 4294967295,
         "minimum": 0,
@@ -960,6 +1934,43 @@
           "StructureWithSubtypedValues",
           "UnionWithSubtypedValues"
         ]
+      },
+      "StructureField": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "Description": {
+            "$ref": "#/components/schemas/LocalizedText"
+          },
+          "DataType": {
+            "type": "string",
+            "format": "opcuaNodeId"
+          },
+          "ValueRank": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ArrayDimensions": {
+            "type": "array",
+            "items": {
+              "maximum": 4294967295,
+              "minimum": 0,
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          "MaxStringLength": {
+            "maximum": 4294967295,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int64"
+          },
+          "IsOptional": {
+            "type": "boolean"
+          }
+        }
       },
       "StructureDefinition": {
         "type": "object",
@@ -1005,105 +2016,6 @@
           }
         }
       },
-      "StructureField": {
-        "type": "object",
-        "properties": {
-          "Name": {
-            "type": "string"
-          },
-          "Description": {
-            "$ref": "#/components/schemas/LocalizedText"
-          },
-          "DataType": {
-            "type": "string",
-            "format": "opcuaNodeId"
-          },
-          "ValueRank": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "ArrayDimensions": {
-            "type": "array",
-            "items": {
-              "maximum": 4294967295,
-              "minimum": 0,
-              "type": "integer",
-              "format": "int64"
-            }
-          },
-          "MaxStringLength": {
-            "maximum": 4294967295,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int64"
-          },
-          "IsOptional": {
-            "type": "boolean"
-          }
-        }
-      },
-      "EnumField": {
-        "type": "object",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/EnumValueType"
-          }
-        ],
-        "properties": {
-          "Name": {
-            "type": "string"
-          }
-        }
-      },
-      "NodeClass": {
-        "enum": [
-          0,
-          1,
-          2,
-          4,
-          8,
-          16,
-          32,
-          64,
-          128
-        ],
-        "type": "integer",
-        "format": "int32",
-        "x-enum-varnames": [
-          "Unspecified",
-          "Object",
-          "Variable",
-          "Method",
-          "ObjectType",
-          "VariableType",
-          "ReferenceType",
-          "DataType",
-          "View"
-        ]
-      },
-      "IntegerId": {
-        "maximum": 4294967295,
-        "minimum": 0,
-        "type": "integer",
-        "format": "int64"
-      },
-      "Counter": {
-        "maximum": 4294967295,
-        "minimum": 0,
-        "type": "integer",
-        "format": "int64"
-      },
-      "Duration": {
-        "type": "number",
-        "format": "double"
-      },
-      "NumericRange": {
-        "type": "string"
-      },
-      "UtcTime": {
-        "type": "string",
-        "format": "date-time"
-      },
       "Argument": {
         "type": "object",
         "properties": {
@@ -1132,58 +2044,47 @@
           }
         }
       },
-      "MessageSecurityMode": {
-        "enum": [
-          0,
-          1,
-          2,
-          3
-        ],
-        "type": "integer",
-        "format": "int32",
-        "x-enum-varnames": [
-          "Invalid",
-          "None",
-          "Sign",
-          "SignAndEncrypt"
-        ]
-      },
-      "UserTokenType": {
-        "enum": [
-          0,
-          1,
-          2,
-          3
-        ],
-        "type": "integer",
-        "format": "int32",
-        "x-enum-varnames": [
-          "Anonymous",
-          "UserName",
-          "Certificate",
-          "IssuedToken"
-        ]
-      },
-      "UserTokenPolicy": {
+      "EnumValueType": {
         "type": "object",
         "properties": {
-          "PolicyId": {
-            "type": "string"
-          },
-          "TokenType": {
+          "Value": {
             "type": "integer",
-            "format": "UserTokenType"
+            "format": "int64"
           },
-          "IssuedTokenType": {
-            "type": "string"
+          "DisplayName": {
+            "$ref": "#/components/schemas/LocalizedText"
           },
-          "IssuerEndpointUrl": {
-            "type": "string"
-          },
-          "SecurityPolicyUri": {
+          "Description": {
+            "$ref": "#/components/schemas/LocalizedText"
+          }
+        }
+      },
+      "EnumField": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/EnumValueType"
+          }
+        ],
+        "properties": {
+          "Name": {
             "type": "string"
           }
         }
+      },
+      "Duration": {
+        "type": "number",
+        "format": "double"
+      },
+      "UtcTime": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "IntegerId": {
+        "maximum": 4294967295,
+        "minimum": 0,
+        "type": "integer",
+        "format": "int64"
       },
       "ApplicationType": {
         "enum": [
@@ -1230,109 +2131,6 @@
             }
           }
         }
-      },
-      "ApplicationInstanceCertificate": {
-        "type": "string",
-        "format": "byte"
-      },
-      "EndpointDescription": {
-        "type": "object",
-        "properties": {
-          "EndpointUrl": {
-            "type": "string"
-          },
-          "Server": {
-            "$ref": "#/components/schemas/ApplicationDescription"
-          },
-          "ServerCertificate": {
-            "type": "string",
-            "format": "byte"
-          },
-          "SecurityMode": {
-            "type": "integer",
-            "format": "MessageSecurityMode"
-          },
-          "SecurityPolicyUri": {
-            "type": "string"
-          },
-          "UserIdentityTokens": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UserTokenPolicy"
-            }
-          },
-          "TransportProfileUri": {
-            "type": "string"
-          },
-          "SecurityLevel": {
-            "maximum": 255,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
-      "UserIdentityToken": {
-        "type": "object",
-        "properties": {
-          "PolicyId": {
-            "type": "string"
-          }
-        }
-      },
-      "AnonymousIdentityToken": {
-        "type": "object"
-      },
-      "UserNameIdentityToken": {
-        "type": "object",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/UserIdentityToken"
-          }
-        ],
-        "properties": {
-          "UserName": {
-            "type": "string"
-          },
-          "Password": {
-            "type": "string",
-            "format": "byte"
-          },
-          "EncryptionAlgorithm": {
-            "type": "string"
-          }
-        }
-      },
-      "X509IdentityToken": {
-        "type": "object",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/UserIdentityToken"
-          }
-        ],
-        "properties": {
-          "CertificateData": {
-            "type": "string",
-            "format": "byte"
-          }
-        }
-      },
-      "SignedSoftwareCertificate": {
-        "type": "object",
-        "properties": {
-          "CertificateData": {
-            "type": "string",
-            "format": "byte"
-          },
-          "Signature": {
-            "type": "string",
-            "format": "byte"
-          }
-        }
-      },
-      "SessionAuthenticationToken": {
-        "type": "string",
-        "format": "opcuaNodeId"
       },
       "RequestHeader": {
         "type": "object",
@@ -1404,6 +2202,12 @@
           }
         }
       },
+      "VersionTime": {
+        "maximum": 4294967295,
+        "minimum": 0,
+        "type": "integer",
+        "format": "int64"
+      },
       "FindServersRequest": {
         "type": "object",
         "properties": {
@@ -1438,6 +2242,100 @@
             "items": {
               "$ref": "#/components/schemas/ApplicationDescription"
             }
+          }
+        }
+      },
+      "ApplicationInstanceCertificate": {
+        "type": "string",
+        "format": "byte"
+      },
+      "MessageSecurityMode": {
+        "enum": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "type": "integer",
+        "format": "int32",
+        "x-enum-varnames": [
+          "Invalid",
+          "None",
+          "Sign",
+          "SignAndEncrypt"
+        ]
+      },
+      "UserTokenType": {
+        "enum": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "type": "integer",
+        "format": "int32",
+        "x-enum-varnames": [
+          "Anonymous",
+          "UserName",
+          "Certificate",
+          "IssuedToken"
+        ]
+      },
+      "UserTokenPolicy": {
+        "type": "object",
+        "properties": {
+          "PolicyId": {
+            "type": "string"
+          },
+          "TokenType": {
+            "type": "integer",
+            "format": "UserTokenType"
+          },
+          "IssuedTokenType": {
+            "type": "string"
+          },
+          "IssuerEndpointUrl": {
+            "type": "string"
+          },
+          "SecurityPolicyUri": {
+            "type": "string"
+          }
+        }
+      },
+      "EndpointDescription": {
+        "type": "object",
+        "properties": {
+          "EndpointUrl": {
+            "type": "string"
+          },
+          "Server": {
+            "$ref": "#/components/schemas/ApplicationDescription"
+          },
+          "ServerCertificate": {
+            "type": "string",
+            "format": "byte"
+          },
+          "SecurityMode": {
+            "type": "integer",
+            "format": "MessageSecurityMode"
+          },
+          "SecurityPolicyUri": {
+            "type": "string"
+          },
+          "UserIdentityTokens": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserTokenPolicy"
+            }
+          },
+          "TransportProfileUri": {
+            "type": "string"
+          },
+          "SecurityLevel": {
+            "maximum": 255,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
           }
         }
       },
@@ -1477,6 +2375,23 @@
             }
           }
         }
+      },
+      "SignedSoftwareCertificate": {
+        "type": "object",
+        "properties": {
+          "CertificateData": {
+            "type": "string",
+            "format": "byte"
+          },
+          "Signature": {
+            "type": "string",
+            "format": "byte"
+          }
+        }
+      },
+      "SessionAuthenticationToken": {
+        "type": "string",
+        "format": "opcuaNodeId"
       },
       "SignatureData": {
         "type": "object",
@@ -1574,6 +2489,68 @@
             "minimum": 0,
             "type": "integer",
             "format": "int64"
+          }
+        }
+      },
+      "UserIdentityToken": {
+        "type": "object",
+        "properties": {
+          "PolicyId": {
+            "type": "string"
+          }
+        }
+      },
+      "AnonymousIdentityToken": {
+        "type": "object"
+      },
+      "UserNameIdentityToken": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/UserIdentityToken"
+          }
+        ],
+        "properties": {
+          "UserName": {
+            "type": "string"
+          },
+          "Password": {
+            "type": "string",
+            "format": "byte"
+          },
+          "EncryptionAlgorithm": {
+            "type": "string"
+          }
+        }
+      },
+      "X509IdentityToken": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/UserIdentityToken"
+          }
+        ],
+        "properties": {
+          "CertificateData": {
+            "type": "string",
+            "format": "byte"
+          }
+        }
+      },
+      "IssuedIdentityToken": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/UserIdentityToken"
+          }
+        ],
+        "properties": {
+          "TokenData": {
+            "type": "string",
+            "format": "byte"
+          },
+          "EncryptionAlgorithm": {
+            "type": "string"
           }
         }
       },
@@ -2045,6 +3022,15 @@
           }
         }
       },
+      "Counter": {
+        "maximum": 4294967295,
+        "minimum": 0,
+        "type": "integer",
+        "format": "int64"
+      },
+      "NumericRange": {
+        "type": "string"
+      },
       "FilterOperator": {
         "enum": [
           0,
@@ -2399,6 +3385,19 @@
           }
         }
       },
+      "ReadEventDetails2": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ReadEventDetails"
+          }
+        ],
+        "properties": {
+          "ReadModified": {
+            "type": "boolean"
+          }
+        }
+      },
       "ReadRawModifiedDetails": {
         "type": "object",
         "allOf": [
@@ -2481,6 +3480,23 @@
           }
         }
       },
+      "ReadAnnotationDataDetails": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/HistoryReadDetails"
+          }
+        ],
+        "properties": {
+          "ReqTimes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        }
+      },
       "HistoryData": {
         "type": "object",
         "properties": {
@@ -2488,6 +3504,38 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/DataValue"
+            }
+          }
+        }
+      },
+      "ModificationInfo": {
+        "type": "object",
+        "properties": {
+          "ModificationTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "UpdateType": {
+            "type": "integer",
+            "format": "HistoryUpdateType"
+          },
+          "UserName": {
+            "type": "string"
+          }
+        }
+      },
+      "HistoryModifiedData": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/HistoryData"
+          }
+        ],
+        "properties": {
+          "ModificationInfos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ModificationInfo"
             }
           }
         }
@@ -2608,7 +3656,63 @@
       "HistoryUpdateDetails": {
         "type": "object"
       },
+      "HistoryUpdateType": {
+        "enum": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "type": "integer",
+        "format": "int32",
+        "x-enum-varnames": [
+          "Insert",
+          "Replace",
+          "Update",
+          "Delete"
+        ]
+      },
+      "PerformUpdateType": {
+        "enum": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "type": "integer",
+        "format": "int32",
+        "x-enum-varnames": [
+          "Insert",
+          "Replace",
+          "Update",
+          "Remove"
+        ]
+      },
       "UpdateDataDetails": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/HistoryUpdateDetails"
+          }
+        ],
+        "properties": {
+          "NodeId": {
+            "type": "string",
+            "format": "opcuaNodeId"
+          },
+          "PerformInsertReplace": {
+            "type": "integer",
+            "format": "PerformUpdateType"
+          },
+          "UpdateValues": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataValue"
+            }
+          }
+        }
+      },
+      "UpdateStructureDataDetails": {
         "type": "object",
         "allOf": [
           {
@@ -2875,6 +3979,32 @@
           },
           "WhereClause": {
             "$ref": "#/components/schemas/ContentFilter"
+          }
+        }
+      },
+      "AggregateConfiguration": {
+        "type": "object",
+        "properties": {
+          "UseServerCapabilitiesDefaults": {
+            "type": "boolean"
+          },
+          "TreatUncertainAsBad": {
+            "type": "boolean"
+          },
+          "PercentDataBad": {
+            "maximum": 255,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "PercentDataGood": {
+            "maximum": 255,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "UseSlopedExtrapolation": {
+            "type": "boolean"
           }
         }
       },
@@ -3524,19 +4654,8 @@
           }
         }
       },
-      "MonitoredItemNotification": {
-        "type": "object",
-        "properties": {
-          "ClientHandle": {
-            "maximum": 4294967295,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int64"
-          },
-          "Value": {
-            "$ref": "#/components/schemas/DataValue"
-          }
-        }
+      "NotificationData": {
+        "type": "object"
       },
       "DataChangeNotification": {
         "type": "object",
@@ -3556,6 +4675,64 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/DiagnosticInfo"
+            }
+          }
+        }
+      },
+      "MonitoredItemNotification": {
+        "type": "object",
+        "properties": {
+          "ClientHandle": {
+            "maximum": 4294967295,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int64"
+          },
+          "Value": {
+            "$ref": "#/components/schemas/DataValue"
+          }
+        }
+      },
+      "EventNotificationList": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/NotificationData"
+          }
+        ],
+        "properties": {
+          "Events": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EventFieldList"
+            }
+          }
+        }
+      },
+      "EventFieldList": {
+        "type": "object",
+        "properties": {
+          "ClientHandle": {
+            "maximum": 4294967295,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int64"
+          },
+          "EventFields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Variant"
+            }
+          }
+        }
+      },
+      "HistoryEventFieldList": {
+        "type": "object",
+        "properties": {
+          "EventFields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Variant"
             }
           }
         }
@@ -3813,1183 +4990,6 @@
           },
           "Description": {
             "$ref": "#/components/schemas/LocalizedText"
-          }
-        }
-      },
-      "EventNotificationList": {
-        "type": "object",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/NotificationData"
-          }
-        ],
-        "properties": {
-          "Events": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/EventFieldList"
-            }
-          }
-        }
-      },
-      "EventFieldList": {
-        "type": "object",
-        "properties": {
-          "ClientHandle": {
-            "maximum": 4294967295,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int64"
-          },
-          "EventFields": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Variant"
-            }
-          }
-        }
-      },
-      "HistoryEventFieldList": {
-        "type": "object",
-        "properties": {
-          "EventFields": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Variant"
-            }
-          }
-        }
-      },
-      "IssuedIdentityToken": {
-        "type": "object",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/UserIdentityToken"
-          }
-        ],
-        "properties": {
-          "TokenData": {
-            "type": "string",
-            "format": "byte"
-          },
-          "EncryptionAlgorithm": {
-            "type": "string"
-          }
-        }
-      },
-      "NotificationData": {
-        "type": "object"
-      },
-      "AggregateConfiguration": {
-        "type": "object",
-        "properties": {
-          "UseServerCapabilitiesDefaults": {
-            "type": "boolean"
-          },
-          "TreatUncertainAsBad": {
-            "type": "boolean"
-          },
-          "PercentDataBad": {
-            "maximum": 255,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int32"
-          },
-          "PercentDataGood": {
-            "maximum": 255,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int32"
-          },
-          "UseSlopedExtrapolation": {
-            "type": "boolean"
-          }
-        }
-      },
-      "EnumValueType": {
-        "type": "object",
-        "properties": {
-          "Value": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "DisplayName": {
-            "$ref": "#/components/schemas/LocalizedText"
-          },
-          "Description": {
-            "$ref": "#/components/schemas/LocalizedText"
-          }
-        }
-      },
-      "ModificationInfo": {
-        "type": "object",
-        "properties": {
-          "ModificationTime": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "UpdateType": {
-            "type": "integer",
-            "format": "HistoryUpdateType"
-          },
-          "UserName": {
-            "type": "string"
-          }
-        }
-      },
-      "HistoryModifiedData": {
-        "type": "object",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/HistoryData"
-          }
-        ],
-        "properties": {
-          "ModificationInfos": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ModificationInfo"
-            }
-          }
-        }
-      },
-      "HistoryUpdateType": {
-        "enum": [
-          1,
-          2,
-          3,
-          4
-        ],
-        "type": "integer",
-        "format": "int32",
-        "x-enum-varnames": [
-          "Insert",
-          "Replace",
-          "Update",
-          "Delete"
-        ]
-      },
-      "PerformUpdateType": {
-        "enum": [
-          1,
-          2,
-          3,
-          4
-        ],
-        "type": "integer",
-        "format": "int32",
-        "x-enum-varnames": [
-          "Insert",
-          "Replace",
-          "Update",
-          "Remove"
-        ]
-      },
-      "UpdateStructureDataDetails": {
-        "type": "object",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/HistoryUpdateDetails"
-          }
-        ],
-        "properties": {
-          "NodeId": {
-            "type": "string",
-            "format": "opcuaNodeId"
-          },
-          "PerformInsertReplace": {
-            "type": "integer",
-            "format": "PerformUpdateType"
-          },
-          "UpdateValues": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/DataValue"
-            }
-          }
-        }
-      },
-      "DataSetMetaDataType": {
-        "type": "object",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/DataTypeSchemaHeader"
-          }
-        ],
-        "properties": {
-          "Name": {
-            "type": "string"
-          },
-          "Description": {
-            "$ref": "#/components/schemas/LocalizedText"
-          },
-          "Fields": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/FieldMetaData"
-            }
-          },
-          "DataSetClassId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "ConfigurationVersion": {
-            "$ref": "#/components/schemas/ConfigurationVersionDataType"
-          }
-        }
-      },
-      "FieldMetaData": {
-        "type": "object",
-        "properties": {
-          "Name": {
-            "type": "string"
-          },
-          "Description": {
-            "$ref": "#/components/schemas/LocalizedText"
-          },
-          "FieldFlags": {
-            "maximum": 65535,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int32"
-          },
-          "BuiltInType": {
-            "maximum": 255,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int32"
-          },
-          "DataType": {
-            "type": "string",
-            "format": "opcuaNodeId"
-          },
-          "ValueRank": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "ArrayDimensions": {
-            "type": "array",
-            "items": {
-              "maximum": 4294967295,
-              "minimum": 0,
-              "type": "integer",
-              "format": "int64"
-            }
-          },
-          "MaxStringLength": {
-            "maximum": 4294967295,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int64"
-          },
-          "DataSetFieldId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "Properties": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/KeyValuePair"
-            }
-          }
-        }
-      },
-      "DataTypeDescription": {
-        "type": "object",
-        "properties": {
-          "DataTypeId": {
-            "type": "string",
-            "format": "opcuaNodeId"
-          },
-          "Name": {
-            "type": "string",
-            "format": "opcuaQualifiedName"
-          }
-        }
-      },
-      "KeyValuePair": {
-        "type": "object",
-        "properties": {
-          "Key": {
-            "type": "string",
-            "format": "opcuaQualifiedName"
-          },
-          "Value": {
-            "$ref": "#/components/schemas/Variant"
-          }
-        }
-      },
-      "ConfigurationVersionDataType": {
-        "type": "object",
-        "properties": {
-          "MajorVersion": {
-            "maximum": 4294967295,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int64"
-          },
-          "MinorVersion": {
-            "maximum": 4294967295,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int64"
-          }
-        }
-      },
-      "PubSubState": {
-        "enum": [
-          0,
-          1,
-          2,
-          3,
-          4
-        ],
-        "type": "integer",
-        "format": "int32",
-        "x-enum-varnames": [
-          "Disabled",
-          "Paused",
-          "Operational",
-          "Error",
-          "PreOperational"
-        ]
-      },
-      "SimpleTypeDescription": {
-        "type": "object",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/DataTypeDescription"
-          }
-        ],
-        "properties": {
-          "BaseDataType": {
-            "type": "string",
-            "format": "opcuaNodeId"
-          },
-          "BuiltInType": {
-            "maximum": 255,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
-      "BrokerConnectionTransportDataType": {
-        "type": "object",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/ConnectionTransportDataType"
-          }
-        ],
-        "properties": {
-          "ResourceUri": {
-            "type": "string"
-          },
-          "AuthenticationProfileUri": {
-            "type": "string"
-          }
-        }
-      },
-      "BrokerTransportQualityOfService": {
-        "enum": [
-          0,
-          1,
-          2,
-          3,
-          4
-        ],
-        "type": "integer",
-        "format": "int32",
-        "x-enum-varnames": [
-          "NotSpecified",
-          "BestEffort",
-          "AtLeastOnce",
-          "AtMostOnce",
-          "ExactlyOnce"
-        ]
-      },
-      "WriterGroupDataType": {
-        "type": "object",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/PubSubGroupDataType"
-          }
-        ],
-        "properties": {
-          "WriterGroupId": {
-            "maximum": 65535,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int32"
-          },
-          "PublishingInterval": {
-            "type": "number",
-            "format": "double"
-          },
-          "KeepAliveTime": {
-            "type": "number",
-            "format": "double"
-          },
-          "Priority": {
-            "maximum": 255,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int32"
-          },
-          "LocaleIds": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "HeaderLayoutUri": {
-            "type": "string"
-          },
-          "TransportSettings": {
-            "$ref": "#/components/schemas/ExtensionObject"
-          },
-          "MessageSettings": {
-            "$ref": "#/components/schemas/ExtensionObject"
-          },
-          "DataSetWriters": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/DataSetWriterDataType"
-            }
-          }
-        }
-      },
-      "StructureDescription": {
-        "type": "object",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/DataTypeDescription"
-          }
-        ],
-        "properties": {
-          "StructureDefinition": {
-            "$ref": "#/components/schemas/StructureDefinition"
-          }
-        }
-      },
-      "EnumDescription": {
-        "type": "object",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/DataTypeDescription"
-          }
-        ],
-        "properties": {
-          "EnumDefinition": {
-            "$ref": "#/components/schemas/EnumDefinition"
-          },
-          "BuiltInType": {
-            "maximum": 255,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
-      "NetworkAddressDataType": {
-        "type": "object",
-        "properties": {
-          "NetworkInterface": {
-            "type": "string"
-          }
-        }
-      },
-      "ReaderGroupDataType": {
-        "type": "object",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/PubSubGroupDataType"
-          }
-        ],
-        "properties": {
-          "TransportSettings": {
-            "$ref": "#/components/schemas/ExtensionObject"
-          },
-          "MessageSettings": {
-            "$ref": "#/components/schemas/ExtensionObject"
-          },
-          "DataSetReaders": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/DataSetReaderDataType"
-            }
-          }
-        }
-      },
-      "PubSubConfigurationDataType": {
-        "type": "object",
-        "properties": {
-          "PublishedDataSets": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PublishedDataSetDataType"
-            }
-          },
-          "Connections": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PubSubConnectionDataType"
-            }
-          },
-          "Enabled": {
-            "type": "boolean"
-          }
-        }
-      },
-      "DataTypeSchemaHeader": {
-        "type": "object",
-        "properties": {
-          "Namespaces": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "StructureDataTypes": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/StructureDescription"
-            }
-          },
-          "EnumDataTypes": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/EnumDescription"
-            }
-          },
-          "SimpleDataTypes": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SimpleTypeDescription"
-            }
-          }
-        }
-      },
-      "PublishedDataSetDataType": {
-        "type": "object",
-        "properties": {
-          "Name": {
-            "type": "string"
-          },
-          "DataSetFolder": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "DataSetMetaData": {
-            "$ref": "#/components/schemas/DataSetMetaDataType"
-          },
-          "ExtensionFields": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/KeyValuePair"
-            }
-          },
-          "DataSetSource": {
-            "$ref": "#/components/schemas/ExtensionObject"
-          }
-        }
-      },
-      "PublishedDataSetSourceDataType": {
-        "type": "object"
-      },
-      "DataSetFieldContentMask": {
-        "maximum": 4294967295,
-        "minimum": 0,
-        "type": "integer",
-        "description": "StatusCode=0000, SourceTimestamp=0001, ServerTimestamp=0002, SourcePicoSeconds=0003, ServerPicoSeconds=0004, RawData=0005",
-        "format": "int64"
-      },
-      "DataSetWriterDataType": {
-        "type": "object",
-        "properties": {
-          "Name": {
-            "type": "string"
-          },
-          "Enabled": {
-            "type": "boolean"
-          },
-          "DataSetWriterId": {
-            "maximum": 65535,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int32"
-          },
-          "DataSetFieldContentMask": {
-            "maximum": 4294967295,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int64"
-          },
-          "KeyFrameCount": {
-            "maximum": 4294967295,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int64"
-          },
-          "DataSetName": {
-            "type": "string"
-          },
-          "DataSetWriterProperties": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/KeyValuePair"
-            }
-          },
-          "TransportSettings": {
-            "$ref": "#/components/schemas/ExtensionObject"
-          },
-          "MessageSettings": {
-            "$ref": "#/components/schemas/ExtensionObject"
-          }
-        }
-      },
-      "DataSetWriterTransportDataType": {
-        "type": "object"
-      },
-      "DataSetWriterMessageDataType": {
-        "type": "object"
-      },
-      "PubSubGroupDataType": {
-        "type": "object",
-        "properties": {
-          "Name": {
-            "type": "string"
-          },
-          "Enabled": {
-            "type": "boolean"
-          },
-          "SecurityMode": {
-            "type": "integer",
-            "format": "MessageSecurityMode"
-          },
-          "SecurityGroupId": {
-            "type": "string"
-          },
-          "SecurityKeyServices": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/EndpointDescription"
-            }
-          },
-          "MaxNetworkMessageSize": {
-            "maximum": 4294967295,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int64"
-          },
-          "GroupProperties": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/KeyValuePair"
-            }
-          }
-        }
-      },
-      "WriterGroupTransportDataType": {
-        "type": "object"
-      },
-      "WriterGroupMessageDataType": {
-        "type": "object"
-      },
-      "PubSubConnectionDataType": {
-        "type": "object",
-        "properties": {
-          "Name": {
-            "type": "string"
-          },
-          "Enabled": {
-            "type": "boolean"
-          },
-          "PublisherId": {
-            "$ref": "#/components/schemas/Variant"
-          },
-          "TransportProfileUri": {
-            "type": "string"
-          },
-          "Address": {
-            "$ref": "#/components/schemas/ExtensionObject"
-          },
-          "ConnectionProperties": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/KeyValuePair"
-            }
-          },
-          "TransportSettings": {
-            "$ref": "#/components/schemas/ExtensionObject"
-          },
-          "WriterGroups": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/WriterGroupDataType"
-            }
-          },
-          "ReaderGroups": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ReaderGroupDataType"
-            }
-          }
-        }
-      },
-      "ConnectionTransportDataType": {
-        "type": "object"
-      },
-      "ReaderGroupTransportDataType": {
-        "type": "object"
-      },
-      "ReaderGroupMessageDataType": {
-        "type": "object"
-      },
-      "DataSetReaderDataType": {
-        "type": "object",
-        "properties": {
-          "Name": {
-            "type": "string"
-          },
-          "Enabled": {
-            "type": "boolean"
-          },
-          "PublisherId": {
-            "$ref": "#/components/schemas/Variant"
-          },
-          "WriterGroupId": {
-            "maximum": 65535,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int32"
-          },
-          "DataSetWriterId": {
-            "maximum": 65535,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int32"
-          },
-          "DataSetMetaData": {
-            "$ref": "#/components/schemas/DataSetMetaDataType"
-          },
-          "DataSetFieldContentMask": {
-            "maximum": 4294967295,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int64"
-          },
-          "MessageReceiveTimeout": {
-            "type": "number",
-            "format": "double"
-          },
-          "KeyFrameCount": {
-            "maximum": 4294967295,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int64"
-          },
-          "HeaderLayoutUri": {
-            "type": "string"
-          },
-          "SecurityMode": {
-            "type": "integer",
-            "format": "MessageSecurityMode"
-          },
-          "SecurityGroupId": {
-            "type": "string"
-          },
-          "SecurityKeyServices": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/EndpointDescription"
-            }
-          },
-          "DataSetReaderProperties": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/KeyValuePair"
-            }
-          },
-          "TransportSettings": {
-            "$ref": "#/components/schemas/ExtensionObject"
-          },
-          "MessageSettings": {
-            "$ref": "#/components/schemas/ExtensionObject"
-          },
-          "SubscribedDataSet": {
-            "$ref": "#/components/schemas/ExtensionObject"
-          }
-        }
-      },
-      "DataSetReaderTransportDataType": {
-        "type": "object"
-      },
-      "DataSetReaderMessageDataType": {
-        "type": "object"
-      },
-      "SubscribedDataSetDataType": {
-        "type": "object"
-      },
-      "JsonNetworkMessageContentMask": {
-        "maximum": 4294967295,
-        "minimum": 0,
-        "type": "integer",
-        "description": "NetworkMessageHeader=0000, DataSetMessageHeader=0001, SingleDataSetMessage=0002, PublisherId=0003, DataSetClassId=0004, ReplyTo=0005, WriterGroupName=0006",
-        "format": "int64"
-      },
-      "JsonWriterGroupMessageDataType": {
-        "type": "object",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/WriterGroupMessageDataType"
-          }
-        ],
-        "properties": {
-          "NetworkMessageContentMask": {
-            "maximum": 4294967295,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int64"
-          }
-        }
-      },
-      "JsonDataSetMessageContentMask": {
-        "maximum": 4294967295,
-        "minimum": 0,
-        "type": "integer",
-        "description": "DataSetWriterId=0000, MetaDataVersion=0001, SequenceNumber=0002, Timestamp=0003, Status=0004, MessageType=0005, DataSetWriterName=0006, ReversibleFieldEncoding=0007, PublisherId=0008, WriterGroupName=0009, MinorVersion=000A",
-        "format": "int64"
-      },
-      "JsonDataSetWriterMessageDataType": {
-        "type": "object",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/DataSetWriterMessageDataType"
-          }
-        ],
-        "properties": {
-          "DataSetMessageContentMask": {
-            "maximum": 4294967295,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int64"
-          }
-        }
-      },
-      "JsonDataSetReaderMessageDataType": {
-        "type": "object",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/DataSetReaderMessageDataType"
-          }
-        ],
-        "properties": {
-          "NetworkMessageContentMask": {
-            "maximum": 4294967295,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int64"
-          },
-          "DataSetMessageContentMask": {
-            "maximum": 4294967295,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int64"
-          }
-        }
-      },
-      "BrokerWriterGroupTransportDataType": {
-        "type": "object",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/WriterGroupTransportDataType"
-          }
-        ],
-        "properties": {
-          "QueueName": {
-            "type": "string"
-          },
-          "ResourceUri": {
-            "type": "string"
-          },
-          "AuthenticationProfileUri": {
-            "type": "string"
-          },
-          "RequestedDeliveryGuarantee": {
-            "type": "integer",
-            "format": "BrokerTransportQualityOfService"
-          }
-        }
-      },
-      "BrokerDataSetWriterTransportDataType": {
-        "type": "object",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/DataSetWriterTransportDataType"
-          }
-        ],
-        "properties": {
-          "QueueName": {
-            "type": "string"
-          },
-          "ResourceUri": {
-            "type": "string"
-          },
-          "AuthenticationProfileUri": {
-            "type": "string"
-          },
-          "RequestedDeliveryGuarantee": {
-            "type": "integer",
-            "format": "BrokerTransportQualityOfService"
-          },
-          "MetaDataQueueName": {
-            "type": "string"
-          },
-          "MetaDataUpdateTime": {
-            "type": "number",
-            "format": "double"
-          }
-        }
-      },
-      "BrokerDataSetReaderTransportDataType": {
-        "type": "object",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/DataSetReaderTransportDataType"
-          }
-        ],
-        "properties": {
-          "QueueName": {
-            "type": "string"
-          },
-          "ResourceUri": {
-            "type": "string"
-          },
-          "AuthenticationProfileUri": {
-            "type": "string"
-          },
-          "RequestedDeliveryGuarantee": {
-            "type": "integer",
-            "format": "BrokerTransportQualityOfService"
-          },
-          "MetaDataQueueName": {
-            "type": "string"
-          }
-        }
-      },
-      "DataSetFieldFlags": {
-        "maximum": 4294967295,
-        "minimum": 0,
-        "type": "integer",
-        "description": "PromotedField=0000",
-        "format": "int64"
-      },
-      "VersionTime": {
-        "maximum": 4294967295,
-        "minimum": 0,
-        "type": "integer",
-        "format": "int64"
-      },
-      "ReadAnnotationDataDetails": {
-        "type": "object",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/HistoryReadDetails"
-          }
-        ],
-        "properties": {
-          "ReqTimes": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "date-time"
-            }
-          }
-        }
-      },
-      "StandaloneSubscribedDataSetDataType": {
-        "type": "object",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/SubscribedDataSetDataType"
-          }
-        ],
-        "properties": {
-          "Name": {
-            "type": "string"
-          },
-          "DataSetFolder": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "DataSetMetaData": {
-            "$ref": "#/components/schemas/DataSetMetaDataType"
-          },
-          "SubscribedDataSet": {
-            "$ref": "#/components/schemas/ExtensionObject"
-          }
-        }
-      },
-      "SecurityGroupDataType": {
-        "type": "object",
-        "properties": {
-          "Name": {
-            "type": "string"
-          },
-          "SecurityGroupFolder": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "KeyLifetime": {
-            "type": "number",
-            "format": "double"
-          },
-          "SecurityPolicyUri": {
-            "type": "string"
-          },
-          "MaxFutureKeyCount": {
-            "maximum": 4294967295,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int64"
-          },
-          "MaxPastKeyCount": {
-            "maximum": 4294967295,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int64"
-          },
-          "SecurityGroupId": {
-            "type": "string"
-          },
-          "RolePermissions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/RolePermissionType"
-            }
-          },
-          "GroupProperties": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/KeyValuePair"
-            }
-          }
-        }
-      },
-      "PubSubConfiguration2DataType": {
-        "type": "object",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/PubSubConfigurationDataType"
-          }
-        ],
-        "properties": {
-          "SubscribedDataSets": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/StandaloneSubscribedDataSetDataType"
-            }
-          },
-          "DataSetClasses": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/DataSetMetaDataType"
-            }
-          },
-          "DefaultSecurityKeyServices": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/EndpointDescription"
-            }
-          },
-          "SecurityGroups": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SecurityGroupDataType"
-            }
-          },
-          "PubSubKeyPushTargets": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PubSubKeyPushTargetDataType"
-            }
-          },
-          "ConfigurationVersion": {
-            "maximum": 4294967295,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int64"
-          },
-          "ConfigurationProperties": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/KeyValuePair"
-            }
-          }
-        }
-      },
-      "PubSubKeyPushTargetDataType": {
-        "type": "object",
-        "properties": {
-          "ApplicationUri": {
-            "type": "string"
-          },
-          "PushTargetFolder": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "EndpointUrl": {
-            "type": "string"
-          },
-          "SecurityPolicyUri": {
-            "type": "string"
-          },
-          "UserTokenType": {
-            "$ref": "#/components/schemas/UserTokenPolicy"
-          },
-          "RequestedKeyCount": {
-            "maximum": 65535,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int32"
-          },
-          "RetryInterval": {
-            "type": "number",
-            "format": "double"
-          },
-          "PushTargetProperties": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/KeyValuePair"
-            }
-          },
-          "SecurityGroups": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "ReadEventDetails2": {
-        "type": "object",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/ReadEventDetails"
-          }
-        ],
-        "properties": {
-          "ReadModified": {
-            "type": "boolean"
           }
         }
       }

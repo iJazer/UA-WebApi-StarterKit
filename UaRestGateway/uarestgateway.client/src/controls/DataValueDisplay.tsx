@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Stack, SxProps, Table, TableBody, TableCell, TableRow, Theme, Typography, styled } from '@mui/material';
 import { format } from 'date-fns'
-import * as OpcUa from '../opcua';
+import * as OpcUa from 'opcua-webapi';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';

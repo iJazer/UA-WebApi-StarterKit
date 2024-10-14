@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as OpcUa from './opcua';
+import * as OpcUa from 'opcua-webapi';
 import { SessionContext } from './SessionProvider';
 import { SubscriptionState } from './service/SubscriptionState';
 import { HandleFactory } from './service/HandleFactory';

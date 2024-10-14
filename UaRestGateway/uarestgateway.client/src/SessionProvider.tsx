@@ -1,7 +1,7 @@
  import * as React from 'react';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 import { UserContext } from './UserProvider';
-import * as OpcUa from './opcua';
+import * as OpcUa from 'opcua-webapi';
 import { UserLoginStatus } from './user';
 import { IRequestMessage } from './service/IRequestMessage';
 import { IResponseMessage } from './service/IResponseMessage';

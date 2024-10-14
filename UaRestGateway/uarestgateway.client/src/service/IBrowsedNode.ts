@@ -1,4 +1,4 @@
-import * as OpcUa from '../opcua';
+import * as OpcUa from 'opcua-webapi';
 
 export interface IBrowsedNode {
    id: string,

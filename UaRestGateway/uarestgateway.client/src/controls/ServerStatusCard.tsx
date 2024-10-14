@@ -7,7 +7,7 @@ import TableBody from '@mui/material/TableBody/TableBody';
 import TableRow from '@mui/material/TableRow/TableRow';
 import TableCell from '@mui/material/TableCell/TableCell';
 import Typography from '@mui/material/Typography/Typography';
-import * as OpcUa from '../opcua';
+import * as OpcUa from 'opcua-webapi';
 import DataValueDisplay from './DataValueDisplay';
 import { HandleFactory } from '../service/HandleFactory';
 import { SubscriptionState } from '../service/SubscriptionState';

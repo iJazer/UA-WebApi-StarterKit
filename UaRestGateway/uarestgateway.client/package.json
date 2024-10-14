@@ -25,7 +25,8 @@
     "react-i18next": "^13.5.0",
     "react-router-dom": "^6.20.0",
     "react-use-websocket": "^4.8.1",
-    "swagger-ui-react": "^5.11.0"
+    "swagger-ui-react": "^5.11.0",
+    "opcua-webapi": "git+https://github.com/OPCFoundation/opcua-webapi-typescript.git"
   },
   "devDependencies": {
     "@types/node": "^20.12.12",

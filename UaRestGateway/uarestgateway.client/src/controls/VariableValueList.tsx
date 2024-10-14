@@ -9,7 +9,7 @@ import TableBody from '@mui/material/TableBody/TableBody';
 import Paper from '@mui/material/Paper/Paper';
 import { Skeleton, Typography } from '@mui/material';
 
-import * as OpcUa from '../opcua';
+import * as OpcUa from 'opcua-webapi';
 import { ApplicationContext } from '../ApplicationProvider';
 import DataValueDisplay from './DataValueDisplay';
 import { IMonitoredItem, SubscriptionContext } from '../SubscriptionProvider';

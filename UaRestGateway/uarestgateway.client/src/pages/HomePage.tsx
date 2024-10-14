@@ -5,7 +5,7 @@ import { BrowseTreeView } from '../controls/BrowseTreeView';
 import VariableValueList from '../controls/VariableValueList';
 import SessionStatusBar from '../controls/SessionStatusBar';
 
-import * as OpcUa from '../opcua';
+import * as OpcUa from 'opcua-webapi';
 import ServerStatusCard from '../controls/ServerStatusCard';
 
 export const HomePage = () => {

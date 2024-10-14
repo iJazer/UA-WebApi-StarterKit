@@ -4,7 +4,7 @@ import Box from '@mui/material/Box/Box';
 import { BrowseTreeView } from '../controls/BrowseTreeView';
 import AttributesView from '../controls/AttributesView';
 
-import * as OpcUa from '../opcua';
+import * as OpcUa from 'opcua-webapi';
 
 export const SubscriptionPage = () => {
    const [selection, setSelection] = React.useState<OpcUa.ReferenceDescription | undefined>();

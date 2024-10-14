@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<opc:ModelDesign
+  xmlns:uax="http://opcfoundation.org/UA/2008/02/Types.xsd"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:ua="http://opcfoundation.org/UA/"
+  xmlns:di="http://opcfoundation.org/UA/DI/"
+  xmlns:opc="http://opcfoundation.org/UA/ModelDesign.xsd"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns="urn:opcfoundation.org:2024-10:starterkit:measurements"
+  TargetNamespace="urn:opcfoundation.org:2024-10:starterkit:measurements"
+  TargetVersion="1.00.0"
+  TargetPublicationDate="2024-10-15T00:00:00Z">
+
+  <opc:Namespaces>
+    <opc:Namespace Name="Measurements" Prefix="Measurements">urn:opcfoundation.org:2024-10:starterkit:measurements</opc:Namespace>
+    <opc:Namespace Name="OpcUa" Prefix="Opc.Ua" Version="1.05.02" PublicationDate="2022-06-28T00:00:00Z" InternalPrefix="Opc.Ua.Server" XmlNamespace="http://opcfoundation.org/UA/2008/02/Types.xsd" XmlPrefix="OpcUa">http://opcfoundation.org/UA/</opc:Namespace>
+  </opc:Namespaces>
+  
+  <opc:ObjectType SymbolicName="MeasurementContainerType" BaseType="ua:BaseObjectType">
+    <opc:Children>
+      <opc:Variable SymbolicName="Temperature" DataType="ua:Double" TypeDefinition="ua:AnalogUnitType" ModellingRule="Mandatory">
+        <opc:Children>
+          <opc:Property SymbolicName="ua:EngineeringUnits" DataType="ua:EUInformation" TypeDefinition="ua:AnalogUnitType" ModellingRule="Mandatory">
+            <opc:DefaultValue>
+              <uax:ExtensionObject>
+                <uax:TypeId>
+                  <uax:Identifier>i=888</uax:Identifier>
+                </uax:TypeId>
+                <uax:Body>
+                  <uax:EUInformation>
+                    <uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri>
+                    <uax:UnitId>4408652</uax:UnitId>
+                    <uax:DisplayName>
+                      <uax:Locale>en</uax:Locale>
+                      <uax:Text>°C</uax:Text>
+                    </uax:DisplayName>
+                    <uax:Description>
+                      <uax:Locale>en</uax:Locale>
+                      <uax:Text>Celsius</uax:Text>
+                    </uax:Description>
+                  </uax:EUInformation>
+                </uax:Body>
+              </uax:ExtensionObject>
+            </opc:DefaultValue>
+          </opc:Property>
+        </opc:Children>
+      </opc:Variable>
+      <opc:Variable SymbolicName="Pressure" DataType="ua:Double" TypeDefinition="ua:AnalogUnitType" ModellingRule="Mandatory">
+        <opc:Children>
+          <opc:Property SymbolicName="ua:EngineeringUnits" DataType="ua:EUInformation" TypeDefinition="ua:AnalogUnitType" ModellingRule="Mandatory">
+            <opc:DefaultValue>
+              <uax:ExtensionObject>
+                <uax:TypeId>
+                  <uax:Identifier>i=888</uax:Identifier>
+                </uax:TypeId>
+                <uax:Body>
+                  <uax:EUInformation>
+                    <uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri>
+                    <uax:UnitId>4935745</uax:UnitId>
+                    <uax:DisplayName>
+                      <uax:Locale>en</uax:Locale>
+                      <uax:Text>kPa</uax:Text>
+                    </uax:DisplayName>
+                    <uax:Description>
+                      <uax:Locale>en</uax:Locale>
+                      <uax:Text>kilopascal</uax:Text>
+                    </uax:Description>
+                  </uax:EUInformation>
+                </uax:Body>
+              </uax:ExtensionObject>
+            </opc:DefaultValue>
+          </opc:Property>
+        </opc:Children>
+      </opc:Variable>
+      <opc:Method SymbolicName="Reset" TypeDefinition="MeasurementResetMethodType" ModellingRule="Mandatory" />
+      <opc:Variable SymbolicName="Orientation" DataType="OrientationDataType" TypeDefinition="ua:BaseDataVariableType" ModellingRule="Mandatory" />
+    </opc:Children>
+  </opc:ObjectType>
+      
+  <opc:Method SymbolicName="MeasurementResetMethodType">
+    <opc:InputArguments>
+      <opc:Argument Name="NewTemperature" DataType="ua:Double" />
+      <opc:Argument Name="NewPressure" DataType="ua:Double" />
+    </opc:InputArguments>
+    <opc:OutputArguments>
+      <opc:Argument Name="OldTemperature" DataType="ua:Double" />
+      <opc:Argument Name="OldPressure" DataType="ua:Double" />
+    </opc:OutputArguments>
+  </opc:Method>
+  
+  <opc:DataType SymbolicName="OrientationDataType" BaseType="ua:Structure">
+    <opc:Fields>
+      <opc:Field Name="ProfileName" DataType="ua:String" />
+      <opc:Field Name="X" DataType="ua:Double" />
+      <opc:Field Name="Y" DataType="ua:Double" />
+      <opc:Field Name="Rotation" DataType="ua:Double" />
+    </opc:Fields>
+  </opc:DataType>
+  
+</opc:ModelDesign>
