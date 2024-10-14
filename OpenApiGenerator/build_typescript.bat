@@ -2,7 +2,7 @@ ECHO OFF
 SETLOCAL
 
 set ROOT=%~dp0
-SET JAVA="C:\Program Files\Java\jdk-21\bin\java.exe" 
+SET JAVA="java.exe" 
 SET NODESETS=%ROOT%..\..\nodesets\v105
 SET OUTPUT=%ROOT%..\UaRestGateway\uarestgateway.client\src\opcua
 
