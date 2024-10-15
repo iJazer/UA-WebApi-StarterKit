@@ -53,9 +53,9 @@ static class Demo
 
         for (int ii = 0; ii < variableIds.Count; ii++)
         {
-            Console.WriteLine($"{references[ii].DisplayName?.Text} = {values[ii].Value.Body}");
+            Console.WriteLine($"{references[ii].DisplayName?.Text} = {values[ii].Value?.Body}");
 
-            if (values[ii].Value.Body is not double)
+            if (values[ii].Value?.Body is not double)
             {
                 continue;
             }
@@ -144,38 +144,38 @@ static class Demo
 
         for (int ii = 0; ii < complexVariables.Count; ii++)
         {
-            if (values[ii].Value.Body is JObject json)
+            Measurements.Model.OrientationDataType orientation = new();
+
+            if (values[ii].Value?.Body is JObject json)
             {
-                var orientation = json["Body"].ToObject<Measurements.Model.OrientationDataType>();
+                orientation = json["Body"].ToObject<Measurements.Model.OrientationDataType>();
 
                 Console.WriteLine($"   ProfileName = {orientation.ProfileName}");
                 Console.WriteLine($"   X = {orientation.X}");
                 Console.WriteLine($"   Y = {orientation.Y}");
                 Console.WriteLine($"   Rotation = {orientation.Rotation}");
-
-                orientation.X += 1.0;
-                orientation.Y += 1.0;
-                orientation.Rotation += 1.0;
-
-                valuesToWrite.Add(new WriteValue()
-                {
-                    NodeId = complexVariables[ii].NodeId,
-                    AttributeId = Attributes.Value,
-                    Value = new DataValue()
-                    {
-                        Value = new Variant()
-                        {
-                            Type = (int)BuiltInType.ExtensionObject,
-                            Body = JObject.Parse(new ExtensionObject(
-                                typeId: Measurements.WebApi.DataTypeIds.OrientationDataType,
-                                body: orientation
-                            ).ToJson())
-                        }
-                    }
-                });
-
-                continue;
             }
+
+            orientation.X += 1.0;
+            orientation.Y += 1.0;
+            orientation.Rotation += 1.0;
+
+            valuesToWrite.Add(new WriteValue()
+            {
+                NodeId = complexVariables[ii].NodeId,
+                AttributeId = Attributes.Value,
+                Value = new DataValue()
+                {
+                    Value = new Variant()
+                    {
+                        Type = (int)BuiltInType.ExtensionObject,
+                        Body = JObject.Parse(new ExtensionObject(
+                            typeId: Measurements.WebApi.DataTypeIds.OrientationDataType,
+                            body: orientation
+                        ).ToJson())
+                    }
+                }
+            });
         }
 
         Console.WriteLine(Environment.NewLine);
