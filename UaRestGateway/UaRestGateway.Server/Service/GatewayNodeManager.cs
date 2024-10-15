@@ -172,7 +172,7 @@ namespace UaRestGateway.Server.Service
                     }
                 }
             }
-                   
+
             return result;
         }
 
@@ -248,6 +248,7 @@ namespace UaRestGateway.Server.Service
                 Rotation = 180.0
             };
 
+            container.Orientation.OnWriteValue += OrientationOnWrite;
             container.Orientation.AccessLevel = container.Orientation.UserAccessLevel = AccessLevels.CurrentReadOrWrite;
 
             container.Reset.OnCallMethod2 += (context, methodToCall, objectId, inputArguments, outputArguments) =>
@@ -273,7 +274,7 @@ namespace UaRestGateway.Server.Service
             };
 
             m_simulationTimer = new Timer(
-                (state) => 
+                (state) =>
                 {
                     lock (Lock)
                     {
@@ -283,12 +284,35 @@ namespace UaRestGateway.Server.Service
 
                     container.Temperature.ClearChangeMasks(SystemContext, false);
                     container.Pressure.ClearChangeMasks(SystemContext, false);
-                }, 
-                null, 
-                1000, 
+                },
+                null,
+                1000,
                 1000);
 
             return container;
+        }
+
+        private ServiceResult OrientationOnWrite(
+            ISystemContext context,
+            NodeState node,
+            NumericRange indexRange,
+            QualifiedName dataEncoding,
+            ref object value,
+            ref StatusCode statusCode,
+            ref DateTime timestamp)
+        {
+            if (value == null)
+            {
+                value = new Measurements.OrientationDataType()
+                {
+                    ProfileName = "Default",
+                    X = 0,
+                    Y = 0,
+                    Rotation = 0
+                };
+            }
+
+            return ServiceResult.Good;
         }
 
         private class FileManager : IDisposable

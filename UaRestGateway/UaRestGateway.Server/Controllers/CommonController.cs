@@ -150,6 +150,14 @@ namespace UaRestGateway.Server.Controllers
             {
                 accessToken = (accessToken != null) ? accessToken : GetAccessToken(context);
 
+                var endpoints = Server.GetEndpoints();
+
+                if (endpoints == null || endpoints.Count == 0)
+                {
+                    var status = Server.GetStatus();
+                    throw new ApiResponseException(ErrorCodes.ServerNotRunning, $"{ErrorCodes.ServerNotRunning}. State={status.State}");
+                }
+
                 var ed = Server.GetEndpoints().Where(x => x.TransportProfileUri == Profiles.HttpsJsonTransport).First();
                 ed.EndpointUrl = $"https://{context.Request.Host}/opcua";
 
