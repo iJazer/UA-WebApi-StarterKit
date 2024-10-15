@@ -42,7 +42,7 @@ class OpcUaClient:
             NodesToBrowse=[
                 BrowseDescription(
                     NodeId=node_id,
-                    BrowseDirection=BrowseDirection.NUMBER_0, # Forward
+                    BrowseDirection=BrowseDirection.Forward,
                     ReferenceTypeId=ReferenceTypeIds.HierarchicalReferences.value,
                     IncludeSubtypes=True,
                     NodeClassMask=0,
