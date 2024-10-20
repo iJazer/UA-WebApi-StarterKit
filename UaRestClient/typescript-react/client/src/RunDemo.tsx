@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import * as OpcUa from 'opcua-webapi';
+import * as Measurements from 'measurements';
 import WebClient from './WebClient';
 
 function variantToArgumentList(input: OpcUa.Variant | undefined): OpcUa.Argument[] {
@@ -22,65 +23,70 @@ function variantToArgumentList(input: OpcUa.Variant | undefined): OpcUa.Argument
 
 const run = async (
    configuration: OpcUa.Configuration,
-   reportProgress: (message: string) => void
+   reportProgress: (message: string, level?: number) => void
 ) => {
    const api = new WebClient(configuration);
 
-   reportProgress("==== Browsing ObjectsFolder");
+   reportProgress("==== Browsing ObjectsFolder", 1);
    let references = await api.browseChildren(OpcUa.ObjectIds.ObjectsFolder);
    references?.map(ii => {
       reportProgress(`${ii?.DisplayName?.Text} [${Object.keys(OpcUa.NodeClass).find(key => (OpcUa.NodeClass as any)[key] === ii.NodeClass)}]`);
    });
 
-   const data = references?.find(x => (x?.BrowseName?.endsWith("Data") ? x : undefined));
+   const data = references?.find(x => (x?.BrowseName?.endsWith("Measurements") ? x : undefined));
 
-   reportProgress("==== Browsing Data");
+   reportProgress("==== Browsing Data", 1);
    references = await api.browseChildren(data?.NodeId ?? '');
    references?.map(ii => {
       reportProgress(`${ii?.DisplayName?.Text} [${Object.keys(OpcUa.NodeClass).find(key => (OpcUa.NodeClass as any)[key] === ii.NodeClass)}]`);
    });
 
-   reportProgress("==== Read Data");
-   const variableIds = references?.filter(x => x.NodeClass === OpcUa.NodeClass.Variable).map(x => x.NodeId ?? '') ?? [];
+   reportProgress("==== Read Data", 1);
+   let variableIds = references?.filter(x => x.NodeClass === OpcUa.NodeClass.Variable).map(x => x.NodeId ?? '') ?? [];
    let values = await api.readValues(variableIds);
 
-   const valuesToWrite: OpcUa.WriteValue[] = [];
+   let valuesToWrite: OpcUa.WriteValue[] = [];
+   const variables: OpcUa.ReferenceDescription[] = [];
    values?.map((value, index) => {
-      const node = references?.[index];
+      const node = references?.find(x => x.NodeId === variableIds[index]);
       reportProgress(`${node?.DisplayName?.Text} = ${JSON.stringify(value.Value?.Body)}`);
-      valuesToWrite.push(OpcUa.WriteValueFromJSON({
-         NodeId: node?.NodeId,
-         AttributeId: OpcUa.Attributes.Value,
-         Value: OpcUa.DataValueFromJSON({
-            Value: {
-               Type: Number(OpcUa.BuiltInType.Double),
-               Body: Number(value?.Value?.Body ?? 0.0) + 1.0
-            }
-         })
-      }));
+      if (value?.Value?.Type === OpcUa.BuiltInType.Double) {
+         if (node) variables.push(node);
+         valuesToWrite.push(OpcUa.WriteValueFromJSON({
+            NodeId: node?.NodeId,
+            AttributeId: OpcUa.Attributes.Value,
+            Value: OpcUa.DataValueFromJSON({
+               Value: {
+                  Type: Number(OpcUa.BuiltInType.Double),
+                  Body: Number(value?.Value?.Body ?? 0.0) + 1.0
+               }
+            })
+         }));
+      }
    });
+   variableIds = variables.map(x => x.NodeId ?? '');
 
-   reportProgress("==== Write Data");
+   reportProgress("==== Write Data", 1);
    const results = await api.writeValues(valuesToWrite ?? []);
    results?.map((value, index) => {
       const node = references?.[index];
       reportProgress(`${node?.DisplayName?.Text} [${OpcUa.StatusCodes[value]}]`);
    });
 
-   reportProgress("==== Read Back Data");
+   reportProgress("==== Read Back Data", 1);
    values = await api.readValues(variableIds);
    values?.map((value, index) => {
-      const node = references?.[index];
+      const node = variables?.[index];
       reportProgress(`${node?.DisplayName?.Text} = ${JSON.stringify(value.Value?.Body)}`);
    });
 
-   reportProgress("==== Browsing Method Arguments");
+   reportProgress("==== Browsing Method Arguments", 1);
    const method = references?.find(x => x.NodeClass === OpcUa.NodeClass.Method);
-   references = await api.browseChildren(method?.NodeId ?? '');
-   const inputArguments = references?.find(x => x.BrowseName === OpcUa.BrowseNames.InputArguments);
-   const outputArguments = references?.find(x => x.BrowseName === OpcUa.BrowseNames.OutputArguments);
+   const properties = await api.browseChildren(method?.NodeId ?? '');
+   const inputArguments = properties?.find(x => x.BrowseName === OpcUa.BrowseNames.InputArguments);
+   const outputArguments = properties?.find(x => x.BrowseName === OpcUa.BrowseNames.OutputArguments);
 
-   reportProgress("==== Reading Method Arguments");
+   reportProgress("==== Reading Method Arguments", 1);
    values = await api.readValues([inputArguments?.NodeId ?? '', outputArguments?.NodeId ?? '']);
 
    reportProgress(`${method?.DisplayName?.Text}(`);
@@ -105,7 +111,7 @@ const run = async (
       { Body: 80.0, Type: Number(OpcUa.BuiltInType.Double) }
    ];
 
-   reportProgress("==== Call Method");
+   reportProgress("==== Call Method", 1);
 
    inputs.map((value, index) => {
       const args = inputArgumentDefinitions?.[index];
@@ -119,12 +125,64 @@ const run = async (
       reportProgress(`${args?.Name} = ${JSON.stringify(value.Body)}`);
    });
 
-   reportProgress("==== Read Back Data");
+   reportProgress("==== Read Back Data", 1);
    values = await api.readValues(variableIds);
    values?.map((value, index) => {
-      const node = references?.[index];
+      const node = variables?.[index];
       reportProgress(`${node?.DisplayName?.Text} = ${JSON.stringify(value.Value?.Body)}`);
    });
+
+   reportProgress('==== Read Complex Data', 1);
+   const complexVariables = references?.filter(x => x.BrowseName?.includes(Measurements.BrowseNames.Orientation)) ?? [];
+   values = await api.readValues(complexVariables.map(x => x.NodeId ?? ''));
+   valuesToWrite = [];
+
+   for (let ii = 0; ii < complexVariables.length; ii++) {
+      let orientation: Measurements.OrientationDataType = { X: 1, Y: 1, Rotation: 90 };
+
+      if (values?.[ii].Value?.Body) {
+         orientation = Measurements.OrientationDataTypeFromJSON(values?.[ii].Value?.Body.Body);
+         reportProgress(`   ProfileName = ${orientation.ProfileName}`);
+         reportProgress(`   X = ${orientation.X}`);
+         reportProgress(`   Y = ${orientation.Y}`);
+         reportProgress(`   Rotation = ${orientation.Rotation}`);
+      }
+
+      orientation.X = !orientation.X ? 1 : orientation.X + 1.0;
+      orientation.Y = !orientation.Y ? 1 : orientation.Y + 1.0;
+      orientation.Rotation = !orientation.Rotation ? 1 : orientation.Rotation + 1.0;
+
+      valuesToWrite.push({
+         NodeId: complexVariables[ii].NodeId,
+         AttributeId: OpcUa.Attributes.Value,
+         Value: {
+            Value: {
+               Type: OpcUa.BuiltInType.ExtensionObject,
+               Body: OpcUa.ExtensionObjectFromJSON({
+                  TypeId: Measurements.DataTypeIds.OrientationDataType,
+                  Body: orientation
+               })
+            }
+         }
+      });
+   }
+
+   reportProgress('==== Write Complex Data', 1);
+   const writeResults = await api.writeValues(valuesToWrite);
+
+   for (let ii = 0; ii < complexVariables.length; ii++) {
+      reportProgress(`${complexVariables[ii].DisplayName?.Text}: ${OpcUa.StatusCodes[writeResults?.[ii] ?? 0]}`);
+   }
+
+   reportProgress('==== Read Back Complex Data', 1);
+
+   // Read the values again to verify the write operation
+   values = await api.readValues(complexVariables.map(x => x.NodeId ?? ''));
+
+   for (let ii = 0; ii < complexVariables.length; ii++) {
+      const node = complexVariables[ii];
+      reportProgress(`${node?.DisplayName?.Text} = ${JSON.stringify(values?.[ii].Value?.Body)}`);
+   }
 }
 
 export interface RunDemoProps {
@@ -134,10 +192,10 @@ export interface RunDemoProps {
 
 export const RunDemo = ({ configuration, isRunning }: RunDemoProps) => {
    const [inProgress, setInProgress] = React.useState<boolean>(false);
-   const [logs, setLogs] = React.useState<string[]>([]);
+   const [logs, setLogs] = React.useState<React.ReactNode[]>([]);
 
-   const handleUpdate = (message: string): void => {
-      setLogs((prevLogs) => [...prevLogs, message]);
+   const handleUpdate = (message: string, level?: number): void => {
+      setLogs((prevLogs) => [...prevLogs, <span style={{ color: (level && level > 0) ? 'blue' : 'black' }}>{message}</span>]);
    };
 
    React.useEffect(() => {
@@ -151,7 +209,7 @@ export const RunDemo = ({ configuration, isRunning }: RunDemoProps) => {
       if (inProgress) {
          const performOperation = async () => {
             await run(configuration, handleUpdate);
-            setLogs((prevLogs) => [...prevLogs, 'Operation complete!']);
+            setLogs((prevLogs) => [...prevLogs, <span style={{ color: 'blue' }}>Operation complete!</span>]);
             setInProgress(false);
          };
          performOperation();
@@ -163,7 +221,7 @@ export const RunDemo = ({ configuration, isRunning }: RunDemoProps) => {
          {logs.length > 0 ? (
             logs.map((log, index) => <p style={{ padding: '1px', margin: '1px' }} key={index}>{log}</p>)
          ) : (
-               <p style={{ padding: '1px', margin: '1px' }}>No logs yet...</p>
+               <p style={{ padding: '1px', margin: '1px' }}><span style={{ color: 'red' }}>No logs yet...</span></p>
          )}
       </div>
    );

@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\opcua-webapi-net\src\Opc.Ua.WebApi\Opc.Ua.WebApi.csproj" />
+    <ProjectReference Include="..\..\opcua-webapi\dotnet\src\Opc.Ua.WebApi\Opc.Ua.WebApi.csproj" />
     <ProjectReference Include="..\Measurements\src\Measurements\Measurements.csproj" />
   </ItemGroup>
 

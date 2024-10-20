@@ -2,7 +2,7 @@ from typing import List
 
 from opcua_webapi import *
 from opcua_client import OpcUaClient
-from Measurements.Measurements import OrientationDataType
+from orientation_data_type import OrientationDataType
 from measurements_constants import BrowseNames as Measurements_BrowseNames, DataTypeIds as Measurements_DataTypeIds
 
 def variant_to_argument_list(input : Variant) -> List[Argument]:    
