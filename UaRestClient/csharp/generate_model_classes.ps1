@@ -16,7 +16,7 @@ $Output = Join-Path $Root $ModelName
     -p targetFramework=netstandard2.0,packageName=$ModelName,packageVersion=1.0.0,optionalProjectFile=$ModelName,generateModelDocumentation=false
 
 $ConstantsFile = $ProjectName + "_constants.cs"
-Copy-Item -Path "$Root\..\Model\$ModelName\CSharp\$ConstantsFile" -Destination "$Root\$ModelName\src\$ModelName\Model\$ConstantsFile"
+Copy-Item -Path "$Root\..\Model\$ModelName\Constants\CSharp\$ConstantsFile" -Destination "$Root\$ModelName\src\$ModelName\Model\$ConstantsFile"
 
 & cd $ModelName
 & dotnet tool install dotnet-outdated-tool --global

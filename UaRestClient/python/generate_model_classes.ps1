@@ -11,7 +11,7 @@ $Output = Join-Path $Root $ProjectName
     -p packageName=$ModelName,projectName=$ProjectName,packageVersion=1.0.0 --global-property models
 
 $ConstantsFile = $ProjectName + "_constants.py"
-Copy-Item -Path "$Root\..\Model\$ModelName\Python\$ConstantsFile" -Destination "$ConstantsFile"
+Copy-Item -Path "$Root\..\Model\$ModelName\Constants\Python\$ConstantsFile" -Destination "$ConstantsFile"
 Copy-Item "$Root\$ProjectName\$ModelName\models\*.py" -Destination "$Root" -Force
 
 Remove-Item -Path "$Root\Response.py"

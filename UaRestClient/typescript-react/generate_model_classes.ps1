@@ -17,7 +17,7 @@ $Output = Join-Path $Root $ProjectName
     -p enumPropertyNaming=PascalCase,modelPropertyNaming=PascalCase,npmName=$ProjectName,supportsES6=true
 
 $ConstantsFile = $ProjectName + "_constants.ts"
-Copy-Item -Path "$Root\..\Model\$ModelName\TypeScript\$ConstantsFile" -Destination "$ProjectName\src\$ConstantsFile"
+Copy-Item -Path "$Root\..\Model\$ModelName\Constants\TypeScript\$ConstantsFile" -Destination "$ProjectName\src\$ConstantsFile"
 $ImportStatement = "export * from './$ProjectName" + "_constants'"
 Add-Content -Path "$ProjectName\src\index.ts" -Value $ImportStatement
 
