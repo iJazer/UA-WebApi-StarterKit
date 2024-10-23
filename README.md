@@ -6,8 +6,8 @@ The OPC UA WebApi describes the OPC UA services described in [Part 4](https://re
 The follow projects are part of the repository:
 | Project | Description | 
 |---|---| 
-| [UaRestGateway](./UaRestGateway/) | A React-TypeScript OPC UA Client to connect to a C# OPC UA Server using the OPC UA WebApi. It supports HTTPS and WebSockets based communication |
-| [UaRestClient](./UaRestClient/) | A number of simple OPC UA Clients written use different development environments that uses the OPC UA WebApi. |
+| [UaWebApiGateway](./UaWebApiGateway/) | A React-TypeScript OPC UA Client to connect to a C# OPC UA Server using the OPC UA WebApi. It supports HTTPS and WebSockets based communication |
+| [UaWebApiClient](./UaWebApiClient/) | A number of simple OPC UA Clients written use different development environments that uses the OPC UA WebApi. |
 | [OpenApiGenerator](./OpenApiGenerator/) | The [OpenApiGenerator](https://openapi-generator.tech/) is a tool written in Java that uses an OpenAPI definition to generate code in different programming languages. | 
 
 The UaRestGateway is available on the [web](https://opcua-rest-gateway.azurewebsites.net/). 
