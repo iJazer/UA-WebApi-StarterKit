@@ -21,7 +21,7 @@ namespace UaRestGateway.Server.Service
         {
             m_application = new ApplicationInstance
             {
-                ApplicationName = "OPC UA REST Gateway",
+                ApplicationName = "OPC UA WebApi Gateway",
                 ApplicationType = ApplicationType.Server
             };
 

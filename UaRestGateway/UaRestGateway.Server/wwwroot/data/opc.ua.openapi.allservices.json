@@ -1177,16 +1177,6 @@
           }
         }
       },
-      "PublishedDataSetSourceDataType": {
-        "type": "object"
-      },
-      "DataSetFieldContentMask": {
-        "maximum": 4294967295,
-        "minimum": 0,
-        "type": "integer",
-        "description": "StatusCode=0000, SourceTimestamp=0001, ServerTimestamp=0002, SourcePicoSeconds=0003, ServerPicoSeconds=0004, RawData=0005",
-        "format": "int64"
-      },
       "DataSetWriterDataType": {
         "type": "object",
         "properties": {
@@ -1373,14 +1363,6 @@
       },
       "ConnectionTransportDataType": {
         "type": "object"
-      },
-      "NetworkAddressDataType": {
-        "type": "object",
-        "properties": {
-          "NetworkInterface": {
-            "type": "string"
-          }
-        }
       },
       "ReaderGroupDataType": {
         "type": "object",

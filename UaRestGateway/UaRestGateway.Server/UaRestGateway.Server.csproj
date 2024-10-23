@@ -3,8 +3,8 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Company>OPC Foundation</Company>
-    <ProductName>OPC UA REST Gateway</ProductName>
-    <Copyright>Copyright © OPC Foundation 2023</Copyright>
+    <ProductName>OPC UA Web API Gateway</ProductName>
+    <Copyright>Copyright © OPC Foundation 2024</Copyright>
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <SpaRoot>..\uarestgateway.client</SpaRoot>

@@ -1,7 +1,7 @@
 ﻿{
   "main": {
-    "title": "OPC UA Rest Prototype",
-    "subtitle": "OPC UA Communication Using REST APIs",
+    "title": "OPC UA Web API Prototype",
+    "subtitle": "OPC UA Communication Using JSON Web APIs",
     "home": "Home",
     "monitoring": "Monitoring",
     "batterypassport": "Battery Passport",
