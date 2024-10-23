@@ -12,7 +12,7 @@ The follow projects are part of the repository:
 
 The UaRestGateway is available on the [web](https://opcua-rest-gateway.azurewebsites.net/). 
 
-The Project [UaRestGateway](./UaRestGateway/UaRestGateway.sln) is a React/TypeScript client that runs in a web browser and a OPC UA Server that supports the basic [OPC UA REST API](https://opcua-rest-gateway.azurewebsites.net/swagger). 
+The Project [UaWebApiGateway](./UaRestGateway/UaRestGateway.sln) is a React/TypeScript client that runs in a web browser and a OPC UA Server that supports the basic [OPC UA Web API](https://opcua-rest-gateway.azurewebsites.net/swagger). 
 The client application uses OAuth2 to authenticate users with the [OPC Foundation website](https://opcfoundation.org/login). The JSON Web Token (JWT) returned by the OPC Foundation website passed in the HTTP Authorization header.  
 
 The UaRestGateway server has two parts: the REST handler and an OPC UA Server. The REST handler validates the JWT passed in the HTTP Authorization header and routes the request (using a UA TCP connection) to the OPC UA Server. 
