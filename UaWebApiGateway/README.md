@@ -11,7 +11,7 @@ The client application uses OAuth2 to authenticate users with the [OPC Foundatio
 
 The OPC UA Server has two parts: the WebApi implementation and an OPC UA Server. The OPC UA WebApi implementation parses the JSON (decompressing first if necessary) and routes the request to the OPC UA Server running inside the process. The OPC UA Server also supports opc.tcp so any standard OPC UA client can connect to it when it is running locally. When the project is published to the web, all non-HTTPS ports are blocked. The following image illustrates the relationship between the components:
 
-[![UaRestGateway](../images/opcua-webapi-overview.png)]
+![UaRestGateway](../images/opcua-webapi-overview.png)
 
 The clean division between the OPC WebApi handler and the OPC UA Server means that the project could be used as a basis for a generic wrapper for any existing OPC UA Server that supports opc.tcp (a future update will include this capability). 
 
