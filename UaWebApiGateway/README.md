@@ -1,4 +1,4 @@
-# OPC REST Gateway
+# OPC UA Web API Gateway
 
 This [project](./UaRestGateway.sln) is a React/TypeScript client that runs in a web browser and a OPC UA Server that supports the [OPC UA WebApi](./wwwroot/data/opc.ua.openapi.allservices.json). 
 
