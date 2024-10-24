@@ -4,7 +4,7 @@
 
 [React](https://react.dev/) is a popular JavaScript runtime environment that is used for single page (SPA) web application development. 
 
-After installing react and , the sample can be built and run with following commands:
+After installing react and , the sample can be built with following commands:
 
 ```
 cd .\measurements
@@ -12,11 +12,15 @@ npm run build
 
 cd ..\client\
 npm link ..\measurements
-npm run build
+```
+
+After building, the sample can be run with following command:
+
+```
 npm run dev
 ```
 
-Then nativate to  http://localhost:5173/ and click the "Run" button.
+Then navigate to  http://localhost:5173/ and click the "Run" button.
 
 [Visual Studio Code](https://code.visualstudio.com/) can be used to edit and debug the sample.
 

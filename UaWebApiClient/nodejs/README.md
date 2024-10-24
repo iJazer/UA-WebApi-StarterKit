@@ -4,7 +4,17 @@
 
 [Node.js](https://nodejs.org/en) is a popular JavaScript runtime environment that is used for Server and Client development. 
 
-After installing node, the sample can be run with following command:
+After installing node, the sample can be built with following commands:
+
+```
+cd .\measurements\
+npm install
+
+cd .\client\
+npm install
+```
+
+After building, the sample can be run with following commands:
 
 ```
 node .\client\app.js
