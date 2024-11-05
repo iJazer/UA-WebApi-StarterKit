@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 Measurements.sln
 README.md
 api/openapi.yaml
@@ -8,10 +7,7 @@ docs/DefaultApi.md
 docs/OrientationDataType.md
 docs/Response.md
 git_push.sh
-src/Measurements.Test/Api/DefaultApiTests.cs
 src/Measurements.Test/Measurements.Test.csproj
-src/Measurements.Test/Model/OrientationDataTypeTests.cs
-src/Measurements.Test/Model/ResponseTests.cs
 src/Measurements/Api/DefaultApi.cs
 src/Measurements/Client/ApiClient.cs
 src/Measurements/Client/ApiException.cs

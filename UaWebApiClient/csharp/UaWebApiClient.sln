@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UaRestClient", "Client\UaRestClient.csproj", "{4B59CD7F-5F87-48B9-8BAE-6CF5F24891E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UaWebApiClient", "Client\UaWebApiClient.csproj", "{4B59CD7F-5F87-48B9-8BAE-6CF5F24891E6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opc.Ua.WebApi", "..\opcua-webapi\dotnet\src\Opc.Ua.WebApi\Opc.Ua.WebApi.csproj", "{3807C73F-7D25-4467-A522-330D18319DAA}"
 EndProject

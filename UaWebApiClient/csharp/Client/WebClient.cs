@@ -49,25 +49,18 @@ namespace UaRestClient
             }
         }
 
-        public List<T> Deserialize<T>(Variant value) where T : class
+        public List<T> Deserialize<T>(DataValue value) where T : class
         {
-            if (value.Type != (int)BuiltInType.ExtensionObject)
+            if (value.UaType != (int)BuiltInType.ExtensionObject)
             {
                 return default;
             }
 
-            if (value.Body is Newtonsoft.Json.Linq.JArray)
+            if (value.Value is Newtonsoft.Json.Linq.JArray)
             {
-                var array = JsonConvert.DeserializeObject<ExtensionObject[]>(value.Body.ToString());
-
-                List<T> items = new();
-
-                foreach (var eo in array)
-                {
-                    items.Add(Deserialize<T>(eo));
-                }
-
-                return items;
+                var json = value.Value.ToString();
+                var array = JsonConvert.DeserializeObject<List<T>>(json);
+                return array;
             }
 
             return default;
@@ -80,7 +73,7 @@ namespace UaRestClient
                 return default;
             }
 
-            return JsonConvert.DeserializeObject<T>(eo.Body.ToString());
+            return JsonConvert.DeserializeObject<T>(eo.ToString());
         }
 
         public async Task<List<ReferenceDescription>> BrowseChildren(string nodeId)
@@ -108,9 +101,9 @@ namespace UaRestClient
 
             var response = await PostAsync<BrowseRequest, BrowseResponse>("browse", message);
 
-            if (response.ResponseHeader.ServiceResult != 0)
+            if (StatusUtils.IsBad(response.ResponseHeader.ServiceResult))
             {
-                throw new Exception($"Browse failed with status code {StatusCodes.ToName(response.ResponseHeader.ServiceResult)}.");
+                throw new Exception($"Browse failed with status code {StatusUtils.ToText(response.ResponseHeader.ServiceResult)}.");
             }
 
             return response.Results[0].References;
@@ -135,15 +128,15 @@ namespace UaRestClient
 
             var response = await PostAsync<ReadRequest, ReadResponse>("read", message);
 
-            if (response.ResponseHeader.ServiceResult != 0)
+            if (StatusUtils.IsBad(response.ResponseHeader.ServiceResult))
             {
-                throw new Exception($"Read failed with status code {StatusCodes.ToName(response.ResponseHeader.ServiceResult)}.");
+                throw new Exception($"Read failed with status code {StatusUtils.ToText(response.ResponseHeader.ServiceResult)}.");
             }
 
             return response.Results;
         }
 
-        public async Task<List<long>> WriteValues(IList<WriteValue> valuesToWrite)
+        public async Task<List<StatusCode>> WriteValues(IList<WriteValue> valuesToWrite)
         {
             var message = new WriteRequest()
             {
@@ -157,9 +150,9 @@ namespace UaRestClient
 
             var response = await PostAsync<WriteRequest, WriteResponse>("write", message);
 
-            if (response.ResponseHeader.ServiceResult != 0)
+            if (StatusUtils.IsBad(response.ResponseHeader.ServiceResult))
             {
-                throw new Exception($"Write failed with status code {StatusCodes.ToName(response.ResponseHeader.ServiceResult)}.");
+                throw new Exception($"Write failed with status code {StatusUtils.ToText(response.ResponseHeader.ServiceResult)}.");
             }
 
             return response.Results;
@@ -187,14 +180,14 @@ namespace UaRestClient
 
             var response = await PostAsync<CallRequest, CallResponse>("call", message);
 
-            if (response.ResponseHeader.ServiceResult != 0)
+            if (StatusUtils.IsBad(response.ResponseHeader.ServiceResult))
             {
-                throw new Exception($"Call failed with status code {StatusCodes.ToName(response.ResponseHeader.ServiceResult)}.");
+                throw new Exception($"Call failed with status code {StatusUtils.ToText(response.ResponseHeader.ServiceResult)}.");
             }
 
-            if (response.Results[0].StatusCode != 0)
+            if (StatusUtils.IsBad(response.Results[0].StatusCode))
             {
-                throw new Exception($"Method return failed status {StatusCodes.ToName(response.Results[0].StatusCode)}.");
+                throw new Exception($"Method return failed status {StatusUtils.ToText(response.Results[0].StatusCode)}.");
             }
 
             return response.Results[0].OutputArguments;

@@ -53,9 +53,9 @@ static class Demo
 
         for (int ii = 0; ii < variableIds.Count; ii++)
         {
-            Console.WriteLine($"{references[ii].DisplayName?.Text} = {values[ii].Value?.Body}");
+            Console.WriteLine($"{references[ii].DisplayName?.Text} = {values[ii].Value}");
 
-            if (values[ii].Value?.Body is not double)
+            if (values[ii].Value is not double)
             {
                 continue;
             }
@@ -66,11 +66,8 @@ static class Demo
                 NodeId = variableIds[ii],
                 Value = new DataValue()
                 {
-                    Value = new Variant()
-                    {
-                        Body = Convert.ToDouble(values[ii].Value.Body) + 1.0,
-                        Type = (int)BuiltInType.Double
-                    }
+                    UaType = (int)BuiltInType.Double,
+                    Value = Convert.ToDouble(values[ii].Value) + 1.0
                 }
             });
 
@@ -83,7 +80,7 @@ static class Demo
 
         for (int ii = 0; ii < variables.Count; ii++)
         {
-            Console.WriteLine($"{variables[ii].DisplayName?.Text}: {StatusCodes.ToName(writeResults[ii])}");
+            Console.WriteLine($"{variables[ii].DisplayName?.Text}: {StatusUtils.ToText(writeResults[ii])}");
         }
 
         Console.WriteLine(Environment.NewLine);
@@ -92,7 +89,7 @@ static class Demo
 
         for (int ii = 0; ii < variables.Count; ii++)
         {
-            Console.WriteLine($"{variables[ii].DisplayName?.Text} = {values[ii].Value.Body}");
+            Console.WriteLine($"{variables[ii].DisplayName?.Text} = {values[ii].Value}");
         }
 
         var method = references.Where(x => x.NodeClass == (uint)NodeClass.Method).FirstOrDefault();
@@ -105,8 +102,8 @@ static class Demo
 
         Console.WriteLine("==== Read Method Arguments");
         var arguments = await client.ReadValues([inputArgumentId, outputArgumentId]);
-        var inputArguments = client.Deserialize<Argument>(arguments[0].Value);
-        var outputArguments = client.Deserialize<Argument>(arguments[1].Value);
+        var inputArguments = client.Deserialize<Argument>(arguments[0]);
+        var outputArguments = client.Deserialize<Argument>(arguments[1]);
 
         Console.WriteLine($"{method.DisplayName?.Text}(");
         inputArguments?.ForEach(action: x => Console.WriteLine($"  [in]  {DataTypeIds.ToName(x.DataType)} {x.Name}"));
@@ -115,8 +112,8 @@ static class Demo
 
         List<Variant> inputs =
         [
-            new Variant() { Body = 40, Type = (int)BuiltInType.Double },
-            new Variant() { Body = 90, Type = (int)BuiltInType.Double },
+            new Variant() { Body = 40, UaType = (int)BuiltInType.Double },
+            new Variant() { Body = 90, UaType = (int)BuiltInType.Double },
         ];
 
         var outputs = await client.Call(data.NodeId, method.NodeId, inputs);
@@ -132,7 +129,7 @@ static class Demo
 
         for (int ii = 0; ii < variables.Count; ii++)
         {
-            Console.WriteLine($"{variables[ii].DisplayName?.Text} = {values[ii].Value.Body}");
+            Console.WriteLine($"{variables[ii].DisplayName?.Text} = {values[ii].Value}");
         }
 
         Console.WriteLine(Environment.NewLine);
@@ -146,9 +143,9 @@ static class Demo
         {
             Measurements.Model.OrientationDataType orientation = new();
 
-            if (values[ii].Value?.Body is JObject json)
+            if (values[ii].Value is JObject json)
             {
-                orientation = json["Body"].ToObject<Measurements.Model.OrientationDataType>();
+                orientation = json.ToObject<Measurements.Model.OrientationDataType>();
 
                 Console.WriteLine($"   ProfileName = {orientation.ProfileName}");
                 Console.WriteLine($"   X = {orientation.X}");
@@ -160,20 +157,17 @@ static class Demo
             orientation.Y += 1.0;
             orientation.Rotation += 1.0;
 
+            var body = JObject.FromObject(orientation);
+            body.AddFirst(new JProperty("UaTypeId", Measurements.WebApi.DataTypeIds.OrientationDataType));
+
             valuesToWrite.Add(new WriteValue()
             {
                 NodeId = complexVariables[ii].NodeId,
                 AttributeId = Attributes.Value,
                 Value = new DataValue()
                 {
-                    Value = new Variant()
-                    {
-                        Type = (int)BuiltInType.ExtensionObject,
-                        Body = JObject.Parse(new ExtensionObject(
-                            typeId: Measurements.WebApi.DataTypeIds.OrientationDataType,
-                            body: orientation
-                        ).ToJson())
-                    }
+                    UaType = (int)BuiltInType.ExtensionObject,
+                    Value = body
                 }
             });
         }
@@ -184,7 +178,7 @@ static class Demo
 
         for (int ii = 0; ii < complexVariables.Count; ii++)
         {
-            Console.WriteLine($"{complexVariables[ii].DisplayName?.Text}: {StatusCodes.ToName(writeResults[ii])}");
+            Console.WriteLine($"{complexVariables[ii].DisplayName?.Text}: {StatusUtils.ToText(writeResults[ii])}");
         }
 
         Console.WriteLine(Environment.NewLine);
@@ -193,7 +187,7 @@ static class Demo
 
         for (int ii = 0; ii < complexVariables.Count; ii++)
         {
-            Console.WriteLine($"{complexVariables[ii].DisplayName?.Text} = {values[ii].Value.Body}");
+            Console.WriteLine($"{complexVariables[ii].DisplayName?.Text} = {values[ii].Value}");
         }
     }
 }
