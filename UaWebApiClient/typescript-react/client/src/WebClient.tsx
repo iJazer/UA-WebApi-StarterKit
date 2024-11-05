@@ -31,8 +31,8 @@ export default class WebClient {
 
       const response = await this.api.browse({ browseRequest: request });
 
-      if (response?.ResponseHeader?.ServiceResult) {
-         throw new Error(`Browse failed with status code ${OpcUa.StatusCodes[response.ResponseHeader.ServiceResult]}.`);
+      if (OpcUa.StatusUtils.isBad(response?.ResponseHeader?.ServiceResult?.Code)) {
+         throw new Error(`Browse failed with status code ${OpcUa.StatusCodes[response?.ResponseHeader?.ServiceResult?.Code ?? 0]}.`);
       }
 
       return response.Results?.[0].References;
@@ -50,14 +50,14 @@ export default class WebClient {
 
       const response = await this.api.read({ readRequest: request });
 
-      if (response?.ResponseHeader?.ServiceResult) {
-         throw new Error(`Read failed with status code ${OpcUa.StatusCodes[response.ResponseHeader.ServiceResult]}.`);
+      if (OpcUa.StatusUtils.isBad(response?.ResponseHeader?.ServiceResult?.Code)) {
+         throw new Error(`Read failed with status code ${OpcUa.StatusCodes[response?.ResponseHeader?.ServiceResult?.Code ?? 0]}.`);
       }
 
       return response.Results;
    }
 
-   async writeValues(nodesToWrite: OpcUa.WriteValue[]): Promise<number[] | undefined>  {
+   async writeValues(nodesToWrite: OpcUa.WriteValue[]): Promise<OpcUa.StatusCode[] | undefined>  {
       const request = OpcUa.WriteRequestFromJSON({
          RequestHeader: {
             RequestHandle: this.requestHandle++,
@@ -69,8 +69,8 @@ export default class WebClient {
 
       const response = await this.api.write({ writeRequest: request });
 
-      if (response?.ResponseHeader?.ServiceResult) {
-         throw new Error(`Write failed with status code ${OpcUa.StatusCodes[response.ResponseHeader.ServiceResult]}.`);
+      if (OpcUa.StatusUtils.isBad(response?.ResponseHeader?.ServiceResult?.Code)) {
+         throw new Error(`Write failed with status code ${OpcUa.StatusCodes[response?.ResponseHeader?.ServiceResult?.Code ?? 0]}.`);
       }
 
       return response.Results;
@@ -94,12 +94,12 @@ export default class WebClient {
 
       const response = await this.api.call({ callRequest: request });
 
-      if (response?.ResponseHeader?.ServiceResult) {
-         throw new Error(`Call failed with status code ${OpcUa.StatusCodes[response.ResponseHeader.ServiceResult]}.`);
+      if (OpcUa.StatusUtils.isBad(response?.ResponseHeader?.ServiceResult?.Code)) {
+         throw new Error(`Call failed with status code ${OpcUa.StatusCodes[response?.ResponseHeader?.ServiceResult?.Code ?? 0]}.`);
       }
 
-      if (response?.Results?.[0].StatusCode) {
-         throw new Error(`Method return failed status ${OpcUa.StatusCodes[response.Results[0].StatusCode]}.`);
+      if (OpcUa.StatusUtils.isBad(response?.Results?.[0].StatusCode?.Code)) {
+         throw new Error(`Method return failed status ${OpcUa.StatusCodes[response?.Results?.[0].StatusCode?.Code ?? 0]}.`);
       }
 
       return response.Results?.[0].OutputArguments;

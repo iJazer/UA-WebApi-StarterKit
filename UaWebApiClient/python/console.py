@@ -5,15 +5,15 @@ from opcua_client import OpcUaClient
 from orientation_data_type import OrientationDataType
 from measurements_constants import BrowseNames as Measurements_BrowseNames, DataTypeIds as Measurements_DataTypeIds
 
-def variant_to_argument_list(input : Variant) -> List[Argument]:    
+def variant_to_argument_list(input : DataValue) -> List[Argument]:    
     output = []
-    if input is not None and input.type == BuiltInType.ExtensionObject.value:
-        if input.body is not None and isinstance(input.body, list):
-            if input.type == BuiltInType.ExtensionObject.value:
-                eo = [ExtensionObject.model_validate(x) for x in input.body]
-                for x in eo:
-                    if x.type_id == DataTypeIds.Argument.value:
-                        output.append(Argument.model_validate(x.body))
+    if input is not None and input.ua_type == BuiltInType.ExtensionObject.value:
+        if input.value is not None and isinstance(input.value, list):
+            if input.ua_type == BuiltInType.ExtensionObject.value:
+                eo = [ExtensionObject.model_validate(x) for x in input.value]
+                for ii in range(len(input.value)):
+                    if eo[ii].ua_type_id == DataTypeIds.Argument.value:
+                        output.append(Argument.model_validate(input.value[ii]))
     return output
 
 useLocalServer = False
@@ -56,17 +56,15 @@ try:
     values_to_write = []
     if values is not None:
         for ii in range(len(variable_ids)):
-            value = x = values[ii].value.body if values[ii].value is not None else None
+            value = x = values[ii].value if values[ii].value is not None else None
             print(f"{nodes[variable_ids[ii]].display_name.text if nodes[variable_ids[ii]].display_name else None} = {value}")
-            if value is not None and values[ii].value.type == BuiltInType.Double.value:
+            if value is not None and values[ii].ua_type == BuiltInType.Double.value:
                 values_to_write.append(WriteValue(
                     NodeId = variable_ids[ii],
                     AttributeId = Attributes.Value.value,
                     Value = DataValue(
-                        Value = Variant(
-                            Body = float(values[ii].value.body) + 1.0,
-                            Type = int(BuiltInType.Double.value)
-                        )
+                        UaType = int(BuiltInType.Double.value),
+                        Value = float(values[ii].value) + 1.0
                     )
                 ))
 
@@ -76,7 +74,7 @@ try:
 
     if write_results is not None:
         for ii in range(len(write_results)):
-            print(f"{nodes[variable_ids[ii]].display_name.text if nodes[variable_ids[ii]].display_name else None} = {StatusCodes(write_results[ii]).name}")
+            print(f"{nodes[variable_ids[ii]].display_name.text if nodes[variable_ids[ii]].display_name else None} = {StatusCodes(write_results[ii].code or 0).name}")
 
     print()
     print("==== Read Back Data")
@@ -85,7 +83,7 @@ try:
     
     if values is not None:
         for ii in range(len(variable_ids)):
-            print(f"{nodes[variable_ids[ii]].display_name.text if nodes[variable_ids[ii]].display_name else None} = {values[ii].value.body}")
+            print(f"{nodes[variable_ids[ii]].display_name.text if nodes[variable_ids[ii]].display_name else None} = {values[ii].value}")
 
     method = [x for x in references if x.node_class == NodeClass.Method][0]
 
@@ -98,8 +96,8 @@ try:
     print()
     print("==== Read Method Arguments")
     arguments = api.read_values([input_argument_id, output_argument_id])
-    input_arguments = variant_to_argument_list(arguments[0].value)
-    output_arguments = variant_to_argument_list(arguments[1].value)
+    input_arguments = variant_to_argument_list(arguments[0])
+    output_arguments = variant_to_argument_list(arguments[1])
 
     print(f"{method.display_name.text if method.display_name else None}(")
     if input_arguments is not None:
@@ -111,8 +109,8 @@ try:
     print(f");")
 
     inputs = [
-        Variant(Body=float(40),Type=int(BuiltInType.Double.value)),
-        Variant(Body=float(80),Type=int(BuiltInType.Double.value))
+        Variant(Body=float(40),UaType=int(BuiltInType.Double.value)),
+        Variant(Body=float(80),UaType=int(BuiltInType.Double.value))
     ]
 
     print()
@@ -121,7 +119,7 @@ try:
 
     if outputs is not None:
         for ii in range(len(output_arguments)):
-            print(f"{output_arguments[ii].name if output_arguments[ii].name else None} = {outputs[ii].body}")
+            print(f"{output_arguments[ii].name if output_arguments[ii].name else None} = {outputs[ii]}")
 
     print()
     print("==== Read Back Data")
@@ -129,7 +127,7 @@ try:
     
     if values is not None:
         for ii in range(len(variable_ids)):
-            print(f"{references[ii].display_name.text if references[ii].display_name else None} = {values[ii].value.body}")
+            print(f"{references[ii].display_name.text if references[ii].display_name else None} = {values[ii].value}")
 
     print()
     print("==== Read Complex Data")
@@ -142,31 +140,29 @@ try:
         value = values[ii]
         orientation = OrientationDataType(ProfileName='Default', X=1, Y=1, Rotation=45) 
 
-        if value.value is not None and isinstance(value.value.body, dict):  
-            eo = ExtensionObject.model_validate(value.value.body)
-            if eo.type_id == Measurements_DataTypeIds.OrientationDataType.value:
-                orientation = OrientationDataType.model_validate(eo.body)
+        if value.value is not None and isinstance(value.value, dict):  
+            eo = ExtensionObject.model_validate(value.value)
+            if eo.ua_type_id == Measurements_DataTypeIds.OrientationDataType.value:
+                orientation = OrientationDataType.model_validate(value.value)
 
-                print(f"   ProfileName = {orientation.profile_name}")
-                print(f"   X = {orientation.x}")
-                print(f"   Y = {orientation.y}")
-                print(f"   Rotation = {orientation.rotation}")
+                print(f"   ProfileName = {orientation.profile_name if orientation.profile_name else ''}")
+                print(f"   X = {orientation.x if orientation.x is not None else 0}")
+                print(f"   Y = {orientation.y if orientation.y is not None else 0}")
+                print(f"   Rotation = {orientation.rotation if orientation.rotation is not None else 0}")
 
-        orientation.x += 1.0
-        orientation.y += 1.0
-        orientation.rotation += 1.0
+        orientation.x = orientation.x + 1 if orientation.x is not None else 1
+        orientation.y = orientation.y + 1 if orientation.y is not None else 1
+        orientation.rotation = orientation.rotation + 1 if orientation.rotation is not None else 1
 
+        body = {'UaTypeId': Measurements_DataTypeIds.OrientationDataType.value}
+        body.update(orientation.to_dict()) 
+    
         values_to_write.append(WriteValue(
             NodeId = variable_id,
             AttributeId=Attributes.Value.value,
             Value=DataValue(
-                Value=Variant(
-                    Type=BuiltInType.ExtensionObject.value,
-                    Body=ExtensionObject(
-                        TypeId=Measurements_DataTypeIds.OrientationDataType.value,
-                        Body=orientation.to_dict()
-                    ) 
-                )
+                UaType=BuiltInType.ExtensionObject.value,
+                Value=body
             )
         ))
 
@@ -176,14 +172,14 @@ try:
 
     if write_results is not None:
         for ii in range(len(write_results)):
-            print(f"{nodes[variable_ids[ii]].display_name.text if nodes[variable_ids[ii]].display_name else None} = {StatusCodes(write_results[ii]).name}")
+            print(f"{nodes[variable_ids[ii]].display_name.text if nodes[variable_ids[ii]].display_name else None} = {StatusCodes(write_results[ii].code  or 0).name}")
 
     print()
     print("==== Complex Read Back Data")
     values = api.read_values(variable_ids)   
 
     for ii, complex_var in enumerate(variable_ids):       
-       value = x = values[ii].value.body if values[ii].value is not None else None
+       value = x = values[ii].value if values[ii].value is not None else None
        print(f"{nodes[variable_ids[ii]].display_name.text if nodes[variable_ids[ii]].display_name else None} = {value}")
 
 except ApiException as e:

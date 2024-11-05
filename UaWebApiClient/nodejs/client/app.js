@@ -27,12 +27,12 @@ function variantToArgumentList(input)
     const output = [];
     if (input)
     {
-        if (input.Type === OpcUa.BuiltInType.ExtensionObject) {
-            if (Array.isArray(input.Body)) {
-                input.Body.map(x => {
+        if (input.UaType === OpcUa.BuiltInType.ExtensionObject) {
+            if (Array.isArray(input.Value)) {
+                input.Value.map(x => {
                     const eo = OpcUa.ExtensionObjectFromJSON(x)
-                    if (eo.TypeId === OpcUa.DataTypeIds.Argument) {
-                        output.push(OpcUa.ArgumentFromJSON(eo.Body));
+                    if (eo.UaTypeId === OpcUa.DataTypeIds.Argument) {
+                        output.push(OpcUa.ArgumentFromJSON(x));
                     }
                 })
             }
@@ -67,17 +67,15 @@ const Run = async () => {
     values.map((value, index) => {
         const node = references.find(x => x.NodeId === variableIds[index])
         variables.push(node);
-        console.log(`${node.DisplayName.Text} = ${JSON.stringify(value.Value?.Body)}`);
-        if (OpcUa.BuiltInType.Double === value.Value?.Type)
+        console.log(`${node.DisplayName.Text} = ${JSON.stringify(value.Value)}`);
+        if (OpcUa.BuiltInType.Double === value.UaType)
         {
             valuesToWrite.push(OpcUa.WriteValueFromJSON({
                 NodeId: node.NodeId,
                 AttributeId: OpcUa.Attributes.Value,
                 Value: OpcUa.DataValueFromJSON({
-                    Value: {
-                        Type: Number(OpcUa.BuiltInType.Double),
-                        Body: Number(value.Value.Body) + 1.0
-                    }
+                    UaType: Number(OpcUa.BuiltInType.Double),
+                    Value: Number(value.Value) + 1.0
                 })
             }));
         }
@@ -87,14 +85,14 @@ const Run = async () => {
     let results = await api.writeValues(valuesToWrite);
     results.map((value, index) => {
         const node = references.find(x => x.NodeId === valuesToWrite[index].NodeId)
-        console.log(`${node.DisplayName.Text} [${Object.keys(OpcUa.StatusCodes).find(key => OpcUa.StatusCodes[key] === value)}]`);
+        console.log(`${node.DisplayName.Text} [${Object.keys(OpcUa.StatusCodes).find(key => OpcUa.StatusCodes[key] === value.Code) ?? "Good"}]`);
     });
 
     console.log("==== Read Back Data");
     values = await api.readValues(variableIds);
     values.map((value, index) => {
         const node = references.find(x => x.NodeId === variableIds[index])
-        console.log(`${node.DisplayName.Text} = ${JSON.stringify(value.Value?.Body)}`);
+        console.log(`${node.DisplayName.Text} = ${JSON.stringify(value.Value)}`);
     });
 
     console.log("==== Browsing Method Arguments");
@@ -109,14 +107,14 @@ const Run = async () => {
     console.log(`${method.DisplayName.Text}(`);
     let inputArgumentDefinitions = null;
     if (inputArguments) {
-        inputArgumentDefinitions = variantToArgumentList(values[0].Value);
+        inputArgumentDefinitions = variantToArgumentList(values[0]);
         inputArgumentDefinitions.map(x => {
             console.log(`   [in]  ${Object.keys(OpcUa.DataTypeIds).find(key => OpcUa.DataTypeIds[key] === x.DataType)} ${x.Name}`);
         });
     }
     let outputArgumentDefinitions = null;
     if (outputArguments) {
-        outputArgumentDefinitions = variantToArgumentList(values[1].Value);
+        outputArgumentDefinitions = variantToArgumentList(values[1]);
         outputArgumentDefinitions.map(x => {
             console.log(`   [out] ${Object.keys(OpcUa.DataTypeIds).find(key => OpcUa.DataTypeIds[key] === x.DataType)} ${x.Name}`);
         });
@@ -124,8 +122,8 @@ const Run = async () => {
     console.log(`);`);
 
     const inputs = [
-        { Body: 40.0, Type: Number(OpcUa.BuiltInType.Double) },
-        { Body: 80.0, Type: Number(OpcUa.BuiltInType.Double) }
+        { Body: 40.0, UaType: Number(OpcUa.BuiltInType.Double) },
+        { Body: 80.0, UaType: Number(OpcUa.BuiltInType.Double) }
     ];
 
     console.log("==== Call Method");
@@ -146,7 +144,7 @@ const Run = async () => {
     values = await api.readValues(variableIds);
     values.map((value, index) => {
         const node = variables[index];
-        console.log(`${node.DisplayName.Text} = ${JSON.stringify(value.Value?.Body)}`);
+        console.log(`${node.DisplayName.Text} = ${JSON.stringify(value.Value)}`);
     });
 
     console.log('==== Read Complex Data');
@@ -158,8 +156,8 @@ const Run = async () => {
     for (let ii = 0; ii < complexVariables.length; ii++) {
         let orientation = {};  
 
-        if (values[ii].Value?.Body) {
-            let json = values[ii].Value.Body.Body;
+        if (values[ii].Value) {
+            let json = values[ii].Value;
             orientation = Measurements.OrientationDataTypeFromJSON(json);  
 
             console.log(`   ProfileName = ${orientation.ProfileName}`);
@@ -176,12 +174,10 @@ const Run = async () => {
             NodeId: complexVariables[ii].NodeId,
             AttributeId: OpcUa.Attributes.Value,  
             Value: {
+                UaType: OpcUa.BuiltInType.ExtensionObject,  
                 Value: {
-                    Type: OpcUa.BuiltInType.ExtensionObject,  
-                    Body: OpcUa.ExtensionObjectFromJSON({
-                        TypeId: Measurements.DataTypeIds.OrientationDataType,
-                        Body: orientation
-                    })
+                    UaTypeId: Measurements.DataTypeIds.OrientationDataType,
+                    ...orientation
                 }
             }
         });
@@ -194,7 +190,7 @@ const Run = async () => {
 
     // Log the results of the write operation
     for (let ii = 0; ii < complexVariables.length; ii++) {
-        console.log(`${complexVariables[ii].DisplayName?.Text}: ${Object.keys(OpcUa.StatusCodes).find(key => OpcUa.StatusCodes[key] === writeResults[ii])}`);
+        console.log(`${complexVariables[ii].DisplayName?.Text}: ${Object.keys(OpcUa.StatusCodes).find(key => OpcUa.StatusCodes[key] === writeResults[ii]) ?? "Good"}`);
     }
 
     console.log('==== Read Back Complex Data');
@@ -204,7 +200,7 @@ const Run = async () => {
 
     for (let ii = 0; ii < complexVariables.length; ii++) {
         const node = complexVariables[ii];
-        console.log(`${node.DisplayName.Text} = ${JSON.stringify(values[ii].Value?.Body)}`);
+        console.log(`${node.DisplayName.Text} = ${JSON.stringify(values[ii].Value)}`);
     }
 };
   

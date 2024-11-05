@@ -10,9 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "opcua-webapi": "git+https://github.com/OPCFoundation/opcua-webapi-typescript.git",
+    "opcua-webapi-client": "file:",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "opcua-webapi": "git+https://github.com/OPCFoundation/opcua-webapi-typescript.git"
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",

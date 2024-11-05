@@ -12,7 +12,7 @@ $ProjectName = $ModelName.ToLower()
 $Output = Join-Path $Root $ProjectName
 
 & $Java -jar "$Root\..\..\OpenApiGenerator\openapi-generator-cli.jar" generate -g typescript-fetch `
-    -i "D:\Work\OPC\UA-REST-StarterKit\UaRestClient\Model\Measurements\measurements.openapi.json" `
+    -i "..\Model\Measurements\measurements.openapi.json" `
     -o $Output `
     -p enumPropertyNaming=PascalCase,modelPropertyNaming=PascalCase,npmName=$ProjectName,supportsES6=false
 

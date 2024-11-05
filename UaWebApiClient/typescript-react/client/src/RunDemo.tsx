@@ -4,15 +4,15 @@ import * as OpcUa from 'opcua-webapi';
 import * as Measurements from 'measurements';
 import WebClient from './WebClient';
 
-function variantToArgumentList(input: OpcUa.Variant | undefined): OpcUa.Argument[] {
+function variantToArgumentList(input: OpcUa.DataValue | undefined): OpcUa.Argument[] {
    const output: OpcUa.Argument[] = [];
    if (input) {
-      if (input.Type === OpcUa.BuiltInType.ExtensionObject) {
-         if (Array.isArray(input.Body)) {
-            input.Body.map(x => {
+      if (input.UaType === OpcUa.BuiltInType.ExtensionObject) {
+         if (Array.isArray(input.Value)) {
+            input.Value.map(x => {
                const eo = OpcUa.ExtensionObjectFromJSON(x)
-               if (eo.TypeId === OpcUa.DataTypeIds.Argument) {
-                  output.push(OpcUa.ArgumentFromJSON(eo.Body));
+               if (eo.UaTypeId === OpcUa.DataTypeIds.Argument) {
+                  output.push(OpcUa.ArgumentFromJSON(x));
                }
             })
          }
@@ -49,17 +49,15 @@ const run = async (
    const variables: OpcUa.ReferenceDescription[] = [];
    values?.map((value, index) => {
       const node = references?.find(x => x.NodeId === variableIds[index]);
-      reportProgress(`${node?.DisplayName?.Text} = ${JSON.stringify(value.Value?.Body)}`);
-      if (value?.Value?.Type === OpcUa.BuiltInType.Double) {
+      reportProgress(`${node?.DisplayName?.Text} = ${JSON.stringify(value.Value)}`);
+      if (value?.UaType === OpcUa.BuiltInType.Double) {
          if (node) variables.push(node);
          valuesToWrite.push(OpcUa.WriteValueFromJSON({
             NodeId: node?.NodeId,
             AttributeId: OpcUa.Attributes.Value,
             Value: OpcUa.DataValueFromJSON({
-               Value: {
-                  Type: Number(OpcUa.BuiltInType.Double),
-                  Body: Number(value?.Value?.Body ?? 0.0) + 1.0
-               }
+               UaType: Number(OpcUa.BuiltInType.Double),
+               Value: Number(value?.Value ?? 0.0) + 1.0
             })
          }));
       }
@@ -70,14 +68,14 @@ const run = async (
    const results = await api.writeValues(valuesToWrite ?? []);
    results?.map((value, index) => {
       const node = references?.[index];
-      reportProgress(`${node?.DisplayName?.Text} [${OpcUa.StatusCodes[value]}]`);
+      reportProgress(`${node?.DisplayName?.Text} [${OpcUa.StatusCodes[value?.Code ?? 0]}]`);
    });
 
    reportProgress("==== Read Back Data", 1);
    values = await api.readValues(variableIds);
    values?.map((value, index) => {
       const node = variables?.[index];
-      reportProgress(`${node?.DisplayName?.Text} = ${JSON.stringify(value.Value?.Body)}`);
+      reportProgress(`${node?.DisplayName?.Text} = ${JSON.stringify(value.Value)}`);
    });
 
    reportProgress("==== Browsing Method Arguments", 1);
@@ -92,14 +90,14 @@ const run = async (
    reportProgress(`${method?.DisplayName?.Text}(`);
    let inputArgumentDefinitions = null;
    if (inputArguments) {
-      inputArgumentDefinitions = variantToArgumentList(values?.[0].Value);
+      inputArgumentDefinitions = variantToArgumentList(values?.[0]);
       inputArgumentDefinitions.map(x => {
          reportProgress(`   [in]  ${Object.keys(OpcUa.DataTypeIds).find(key => (OpcUa.DataTypeIds as any)[key] === x.DataType)} ${x.Name}`);
       });
    }
    let outputArgumentDefinitions = null;
    if (outputArguments) {
-      outputArgumentDefinitions = variantToArgumentList(values?.[1].Value);
+      outputArgumentDefinitions = variantToArgumentList(values?.[1]);
       outputArgumentDefinitions.map(x => {
          reportProgress(`   [out] ${Object.keys(OpcUa.DataTypeIds).find(key => (OpcUa.DataTypeIds as any)[key] === x.DataType)} ${x.Name}`);
       });
@@ -107,8 +105,8 @@ const run = async (
    reportProgress(`);`);
 
    const inputs: OpcUa.Variant[] = [
-      { Body: 40.0, Type: Number(OpcUa.BuiltInType.Double) },
-      { Body: 80.0, Type: Number(OpcUa.BuiltInType.Double) }
+      { Body: 40.0, UaType: Number(OpcUa.BuiltInType.Double) },
+      { Body: 80.0, UaType: Number(OpcUa.BuiltInType.Double) }
    ];
 
    reportProgress("==== Call Method", 1);
@@ -129,7 +127,7 @@ const run = async (
    values = await api.readValues(variableIds);
    values?.map((value, index) => {
       const node = variables?.[index];
-      reportProgress(`${node?.DisplayName?.Text} = ${JSON.stringify(value.Value?.Body)}`);
+      reportProgress(`${node?.DisplayName?.Text} = ${JSON.stringify(value.Value)}`);
    });
 
    reportProgress('==== Read Complex Data', 1);
@@ -140,8 +138,8 @@ const run = async (
    for (let ii = 0; ii < complexVariables.length; ii++) {
       let orientation: Measurements.OrientationDataType = { X: 1, Y: 1, Rotation: 90 };
 
-      if (values?.[ii].Value?.Body) {
-         orientation = Measurements.OrientationDataTypeFromJSON(values?.[ii].Value?.Body.Body);
+      if (values?.[ii].Value) {
+         orientation = Measurements.OrientationDataTypeFromJSON(values?.[ii].Value);
          reportProgress(`   ProfileName = ${orientation.ProfileName}`);
          reportProgress(`   X = ${orientation.X}`);
          reportProgress(`   Y = ${orientation.Y}`);
@@ -156,22 +154,21 @@ const run = async (
          NodeId: complexVariables[ii].NodeId,
          AttributeId: OpcUa.Attributes.Value,
          Value: {
-            Value: {
-               Type: OpcUa.BuiltInType.ExtensionObject,
-               Body: OpcUa.ExtensionObjectFromJSON({
-                  TypeId: Measurements.DataTypeIds.OrientationDataType,
-                  Body: orientation
-               })
+               UaType: OpcUa.BuiltInType.ExtensionObject,
+               Value:  {
+                  UaTypeId: Measurements.DataTypeIds.OrientationDataType,
+                  ...orientation
+              }
             }
          }
-      });
+      );
    }
 
    reportProgress('==== Write Complex Data', 1);
    const writeResults = await api.writeValues(valuesToWrite);
 
    for (let ii = 0; ii < complexVariables.length; ii++) {
-      reportProgress(`${complexVariables[ii].DisplayName?.Text}: ${OpcUa.StatusCodes[writeResults?.[ii] ?? 0]}`);
+      reportProgress(`${complexVariables[ii].DisplayName?.Text}: ${OpcUa.StatusCodes[writeResults?.[ii]?.Code ?? 0]}`);
    }
 
    reportProgress('==== Read Back Complex Data', 1);
@@ -181,7 +178,7 @@ const run = async (
 
    for (let ii = 0; ii < complexVariables.length; ii++) {
       const node = complexVariables[ii];
-      reportProgress(`${node?.DisplayName?.Text} = ${JSON.stringify(values?.[ii].Value?.Body)}`);
+      reportProgress(`${node?.DisplayName?.Text} = ${JSON.stringify(values?.[ii].Value)}`);
    }
 }
 

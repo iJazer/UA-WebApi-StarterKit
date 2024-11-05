@@ -53,11 +53,11 @@ class OpcUaClient:
 
         response = self.client.browse(request);     
 
-        if  StatusCode.is_bad(response.response_header.service_result):
-            raise Exception(f"Browse failed with service level status code {StatusCodes(response.response_header.service_result).name}")
+        if  StatusUtils.is_bad(response.response_header.service_result):
+            raise Exception(f"Browse failed with service level status code {StatusUtils.to_text(response.response_header.service_result)}")
 
-        if  StatusCode.is_bad(response.results[0].status_code):
-            raise Exception(f"Browse failed with operation level status code {StatusCodes(response.results[0].status_code).name}")
+        if  StatusUtils.is_bad(response.results[0].status_code):
+            raise Exception(f"Browse failed with operation level status code {StatusUtils.to_text(response.results[0].status_code)}")
         
         return response.results[0].references
 
@@ -81,12 +81,12 @@ class OpcUaClient:
 
         response = self.client.read(request);     
 
-        if  StatusCode.is_bad(response.response_header.service_result):
-            raise Exception(f"Read failed with service level status code {StatusCodes(response.response_header.service_result).name}")
+        if  StatusUtils.is_bad(response.response_header.service_result):
+            raise Exception(f"Read failed with service level status code {StatusUtils.to_text(response.response_header.service_result)}")
         
         return response.results
     
-    def write_values(self, values_to_write : List[WriteValue]) -> List[int]:
+    def write_values(self, values_to_write : List[WriteValue]) -> List[StatusCode]:
 
         request = WriteRequest(
             RequestHeader=RequestHeader(
@@ -98,8 +98,8 @@ class OpcUaClient:
 
         response = self.client.write(request);     
 
-        if  StatusCode.is_bad(response.response_header.service_result):
-            raise Exception(f"Write failed with service level status code {StatusCodes(response.response_header.service_result).name}")
+        if  StatusUtils.is_bad(response.response_header.service_result):
+            raise Exception(f"Write failed with service level status code {StatusUtils.to_text(response.response_header.service_result)}")
         
         return response.results
     
@@ -119,11 +119,11 @@ class OpcUaClient:
 
         response = self.client.call(request);     
 
-        if  StatusCode.is_bad(response.response_header.service_result):
-            raise Exception(f"Call failed with service level status code {StatusCodes(response.response_header.service_result).name}")
+        if  StatusUtils.is_bad(response.response_header.service_result):
+            raise Exception(f"Call failed with service level status code {StatusUtils.to_text(response.response_header.service_result)}")
         
-        if  StatusCode.is_bad(response.results[0].status_code):
-            raise Exception(f"Call failed with operation level status code {StatusCodes(response.results[0].status_code).name}")
+        if  StatusUtils.is_bad(response.results[0].status_code):
+            raise Exception(f"Call failed with operation level status code {StatusUtils.to_text(response.results[0].status_code)}")
         
         return response.results[0].output_arguments
     
