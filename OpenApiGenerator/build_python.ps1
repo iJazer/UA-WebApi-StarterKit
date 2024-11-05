@@ -29,7 +29,7 @@ from opcua_webapi.opcua_constants import DataTypeIds
 from opcua_webapi.opcua_constants import ReferenceTypeIds
 from opcua_webapi.opcua_attributes import Attributes
 from opcua_webapi.opcua_statuscodes import StatusCodes
-from opcua_webapi.opcua_statuscodes import StatusCodeUtils
+from opcua_webapi.opcua_statuscodes import StatusUtils
 "@
 
 Add-Content -Path "$Output\opcua_webapi\__init__.py" -Value $Imports
