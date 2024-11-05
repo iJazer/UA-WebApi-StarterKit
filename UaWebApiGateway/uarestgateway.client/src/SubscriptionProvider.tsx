@@ -148,7 +148,7 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
                      IsInverse: false,
                      IncludeSubtypes: true,
                      TargetName: path
-                  }
+                  } as OpcUa.ReferenceDescription
                })
             }
          });
@@ -249,7 +249,7 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
                m.current.subscriptionState = SubscriptionState.Open;
                setSubscriptionState(m.current.subscriptionState);
                publish();
-            }
+            } 
          }
          else if (lastCompletedRequest?.response?.ServiceId === OpcUa.DataTypeIds.DeleteSubscriptionsResponse) {
             m.current.subscriptionId = undefined;
@@ -269,8 +269,8 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
                });
                if (prm.NotificationMessage?.NotificationData) {
                   prm.NotificationMessage?.NotificationData.forEach((eo) => {
-                     if (eo.TypeId === OpcUa.DataTypeIds.DataChangeNotification) {
-                        const dcn = eo.Body as OpcUa.DataChangeNotification;
+                     if (eo.UaTypeId === OpcUa.DataTypeIds.DataChangeNotification) {
+                        const dcn = eo as OpcUa.DataChangeNotification;
                         dcn.MonitoredItems?.forEach((ii) => {
                            const item = m.current.monitoredItems.get(ii.ClientHandle ?? 0);
                            if (item) {

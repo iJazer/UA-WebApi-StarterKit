@@ -12,32 +12,32 @@ interface DataValueDisplayProps {
    sx?: SxProps<Theme>
 }
 
-function toText(value?: OpcUa.Variant): string {
+function toText(value?: OpcUa.DataValue): string {
    if (!value) {
       return '';
    }
-   switch (value.Type) {
+   switch (value.UaType) {
       case OpcUa.BuiltInType.Boolean: {
-         return value.Body ? 'True' : 'False';
+         return value.Value ? 'True' : 'False';
       }
       case OpcUa.BuiltInType.DateTime: {
-         const utcDate = new Date(value.Body as string);
+         const utcDate = new Date(value.Value as string);
          const offsetInMinutes = utcDate.getTimezoneOffset();
          const localTimeInMilliseconds = utcDate.getTime() - (offsetInMinutes * 60000);
          const localDate = new Date(localTimeInMilliseconds);
          return format(localDate, 'yyyy-MM-dd HH:mm:ss');
       }
       case OpcUa.BuiltInType.StatusCode: {
-         return OpcUa.StatusCodes[OpcUa.StatusCode.codeBits(value.Body as number)];
+         return OpcUa.StatusCodes[OpcUa.StatusUtils.codeBits(value.Value as number)];
       }
       case OpcUa.BuiltInType.LocalizedText: {
-         const text = value.Body as OpcUa.LocalizedText;
+         const text = value.Value as OpcUa.LocalizedText;
          return text?.Text ?? '';
       }
       case OpcUa.BuiltInType.ByteString: {
-         const text = value.Body as string;
+         const text = value.Value as string;
          if (text) {
-            const buffer = Buffer.from(value.Body as string, 'base64');
+            const buffer = Buffer.from(value.Value as string, 'base64');
             return Array.from(new Uint8Array(buffer))
                .map(byte => byte.toString(16).padStart(2, '0'))
                .join('');
@@ -60,11 +60,11 @@ function toText(value?: OpcUa.Variant): string {
       case OpcUa.BuiltInType.ExpandedNodeId:
       case OpcUa.BuiltInType.QualifiedName:
          {
-            return `${value.Body}`;
+            return `${value.Value}`;
          }
       default:
          {
-            return JSON.stringify(value.Body);
+            return JSON.stringify(value.Value);
          }
    }
 }
@@ -86,10 +86,6 @@ function toBuiltInType(value?: unknown): OpcUa.BuiltInType {
       return toBuiltInType(value.at(0));
    }
    return OpcUa.BuiltInType.ExtensionObject;
-}
-
-function toVariant(value?: unknown): OpcUa.Variant {
-   return { Type: toBuiltInType(value), Body: value } as OpcUa.Variant;
 }
 
 const CustomTable = styled(Table)(({ theme }) => ({
@@ -118,15 +114,15 @@ export const DataValueDisplay = ({ value, sx }: DataValueDisplayProps) => {
    if (!value) {
       return null;
    }
-   if (OpcUa.StatusCode.isBad(value.StatusCode)) {
+   if (OpcUa.StatusUtils.isBad(value.StatusCode)) {
       return (
          <Typography sx={sx}>
-            {OpcUa.StatusCodes[OpcUa.StatusCode.codeBits(value.StatusCode)]}
+            {OpcUa.StatusCodes[OpcUa.StatusUtils.codeBits(value.StatusCode)]}
          </Typography>
       );
    }
-   if (Array.isArray(value.Value?.Body)) {
-      const array = value.Value.Body;
+   if (Array.isArray(value.Value)) {
+      const array = value.Value;
       return (
          <Box sx={{ flexGrow: 0, display: 'flex' }}>
             <Stack>
@@ -145,7 +141,7 @@ export const DataValueDisplay = ({ value, sx }: DataValueDisplayProps) => {
                                     : null
                               }
                            </Box>
-                           <DataValueDisplay value={{ Value: { Type: value.Value?.Type, Body: item }}} />
+                           <DataValueDisplay value={{ UaType: value.UaType, Value: item }} />
                         </Box>
                      );
                   })
@@ -154,8 +150,8 @@ export const DataValueDisplay = ({ value, sx }: DataValueDisplayProps) => {
          </Box>
       );
    }
-   if (value.Value?.Type === OpcUa.BuiltInType.ExtensionObject) {
-      const target = value.Value.Body?.Body ?? value.Value.Body ?? {};
+   if (value.UaType === OpcUa.BuiltInType.ExtensionObject) {
+      const target = value.Value ?? {};
       const keys = Object.keys(target);
       return (
          <Box sx={{ flexGrow: 0, display: 'flex' }}>
@@ -180,7 +176,7 @@ export const DataValueDisplay = ({ value, sx }: DataValueDisplayProps) => {
                                     </Typography>
                                  </TableCell>
                                  <TableCell>
-                                    <DataValueDisplay value={{ Value: toVariant(target[ii]) }} />
+                                    <DataValueDisplay value={{ UaType: toBuiltInType(target[ii]), Value: target[ii] }} />
                                  </TableCell>
                               </CustomTableRow>
                            );
@@ -194,7 +190,7 @@ export const DataValueDisplay = ({ value, sx }: DataValueDisplayProps) => {
    }
    return (
       <Typography sx={sx}>
-         {toText(value.Value)}
+         {toText(value)}
       </Typography>
    );
 }

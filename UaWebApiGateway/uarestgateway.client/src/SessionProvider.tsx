@@ -123,11 +123,9 @@ export const SessionProvider = ({ children }: SessionProps) => {
             (token) => (token.IssuedTokenType === 'http://opcfoundation.org/UA/UserToken#JWT') ? token : undefined
          );
          token = {
-            TypeId: OpcUa.DataTypeIds.IssuedIdentityToken,
-            Body: {
-               PolicyId: policy?.PolicyId,
-               TokenData: btoa(user.accessToken ?? ''),
-            }
+            "@TypeId": OpcUa.DataTypeIds.IssuedIdentityToken,
+            PolicyId: policy?.PolicyId,
+            TokenData: btoa(user.accessToken ?? '')
          } as OpcUa.ExtensionObject;
       }
       const request: OpcUa.ActivateSessionRequest = {

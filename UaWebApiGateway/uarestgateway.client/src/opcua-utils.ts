@@ -12,13 +12,13 @@ import { IResponseBody } from './service/IResponseBody';
 function toFault(request: ICompletedRequest, response?: IResponseBody): ICompletedRequest | null {
    if (response?.ResponseHeader) {
       const responseHeader = response.ResponseHeader;
-      if (!responseHeader.ServiceResult || responseHeader.ServiceResult === 0) {
+      if (!responseHeader.ServiceResult || responseHeader.ServiceResult?.Code === 0) {
          return null;
       }
       const stringTable = response.ResponseHeader?.StringTable;
       const serviceDiagnostics = response.ResponseHeader?.ServiceDiagnostics;
       if (!stringTable?.length || !serviceDiagnostics) {
-         return { ...request, code: responseHeader.ServiceResult };
+         return { ...request, code: responseHeader.ServiceResult?.Code };
       }
       let message = '';
       if ((serviceDiagnostics?.SymbolicId && serviceDiagnostics?.SymbolicId > 0) || serviceDiagnostics?.SymbolicId === 0) {
@@ -29,7 +29,7 @@ function toFault(request: ICompletedRequest, response?: IResponseBody): IComplet
       }
       return {
          ...request,
-         code: responseHeader.ServiceResult,
+         code: responseHeader.ServiceResult?.Code,
          message: message
       }
    }
@@ -178,7 +178,7 @@ export async function browseChildren(
    do {
       continuationPoints = [];
       body.Results?.forEach(x => x.References?.forEach((y) => {
-         if (OpcUa.StatusCode.isGood(x.StatusCode)) {
+         if (OpcUa.StatusUtils.isGood(x.StatusCode)) {
             nodes.push({
                id: `${y.NodeId}`,
                reference: y
@@ -249,7 +249,7 @@ export async function readAttributes(
    if (body.Results && request.NodesToRead) {
       for (let ii = 0; ii < body.Results?.length; ii++) {
          const x = body.Results[ii];
-         if (x.StatusCode !== OpcUa.StatusCodes.BadAttributeIdInvalid) {
+         if (x.StatusCode?.Code !== OpcUa.StatusCodes.BadAttributeIdInvalid) {
             values.push({
                id: HandleFactory.increment(),
                nodeId: reference.NodeId ?? '',
@@ -326,7 +326,7 @@ export async function translateAndReadValues(
          id: item.id ?? values.length,
          nodeId: item.resolvedNodeId ?? item.nodeId,
          attributeId: item.attributeId ?? OpcUa.Attributes.Value,
-         value: { StatusCode: OpcUa.StatusCodes.BadNodeIdUnknown }
+         value: { StatusCode: { Code: OpcUa.StatusCodes.BadNodeIdUnknown } }
       } as IReadResult);  
       if (item.resolvedNodeId) {
          return;
@@ -344,7 +344,7 @@ export async function translateAndReadValues(
                   IsInverse: false,
                   IncludeSubtypes: true,
                   TargetName: path
-               }
+               } as OpcUa.ReferenceDescription
             })
          }
       });

@@ -301,18 +301,16 @@ namespace UaRestGateway.Server.Service
             ref StatusCode statusCode,
             ref DateTime timestamp)
         {
-            if (value == null)
+            if (value is ExtensionObject eo)
             {
-                value = new Measurements.OrientationDataType()
+                if (eo.Body is Measurements.OrientationDataType orientation)
                 {
-                    ProfileName = "Default",
-                    X = 0,
-                    Y = 0,
-                    Rotation = 0
-                };
+                    value = orientation;
+                    return ServiceResult.Good;
+                }
             }
 
-            return ServiceResult.Good;
+            return StatusCodes.BadTypeMismatch;
         }
 
         private class FileManager : IDisposable

@@ -16,6 +16,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="src\opcua\models\" />
+    <TypeScriptConfiguration Remove="src\opcua\models\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\opcua\models\**" />
   </ItemGroup>
 </Project>

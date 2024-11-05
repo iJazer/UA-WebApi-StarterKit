@@ -74,10 +74,10 @@ export const AttributesView = ({ reference, requestTimeout }: AttributesViewProp
                         <Typography variant='body1'>{Web.dateToLocalTime(value.value?.SourceTimestamp ?? value.value?.ServerTimestamp)}</Typography>
                      </TableCell>
                      <TableCell>
-                        <Typography variant='body1'>{OpcUa.StatusCodes[value.value?.StatusCode ?? 0]}</Typography>
+                        <Typography variant='body1'>{OpcUa.StatusCodes[value.value?.StatusCode?.Code ?? 0]}</Typography>
                      </TableCell>
                      <TableCell sx={{ width: '100%' }}>
-                        <Typography variant='body1'>{JSON.stringify(value.value?.Value?.Body)}</Typography>
+                        <Typography variant='body1'>{JSON.stringify(value.value?.Value)}</Typography>
                      </TableCell>
                   </TableRow>
                ))}
