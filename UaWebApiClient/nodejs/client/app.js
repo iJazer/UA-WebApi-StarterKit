@@ -122,22 +122,22 @@ const Run = async () => {
     console.log(`);`);
 
     const inputs = [
-        { Body: 40.0, UaType: Number(OpcUa.BuiltInType.Double) },
-        { Body: 80.0, UaType: Number(OpcUa.BuiltInType.Double) }
+        { Value: 40.0, UaType: Number(OpcUa.BuiltInType.Double) },
+        { Value: 80.0, UaType: Number(OpcUa.BuiltInType.Double) }
     ];
 
     console.log("==== Call Method");
 
     inputs.map((value, index) => {
         const args = inputArgumentDefinitions[index];
-        console.log(`${args.Name} = ${JSON.stringify(value.Body)}`);
+        console.log(`${args.Name} = ${JSON.stringify(value.Value)}`);
     });
 
     const outputs = await api.call(data.NodeId, method.NodeId, inputs);
 
     outputs.map((value, index) => {
         const args = outputArgumentDefinitions[index];
-        console.log(`${args.Name} = ${JSON.stringify(value.Body)}`);
+        console.log(`${args.Name} = ${JSON.stringify(value.Value)}`);
     });
 
     console.log("==== Read Back Data");

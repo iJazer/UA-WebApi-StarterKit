@@ -112,15 +112,15 @@ static class Demo
 
         List<Variant> inputs =
         [
-            new Variant() { Body = 40, UaType = (int)BuiltInType.Double },
-            new Variant() { Body = 90, UaType = (int)BuiltInType.Double },
+            new Variant() { Value = 40, UaType = (int)BuiltInType.Double },
+            new Variant() { Value = 90, UaType = (int)BuiltInType.Double },
         ];
 
         var outputs = await client.Call(data.NodeId, method.NodeId, inputs);
 
         foreach (var output in outputs)
         {
-            Console.WriteLine($"Output: {output.Body}");
+            Console.WriteLine($"Output: {output.Value}");
         }
 
         Console.WriteLine(Environment.NewLine);

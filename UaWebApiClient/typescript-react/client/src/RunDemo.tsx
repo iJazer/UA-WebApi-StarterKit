@@ -105,22 +105,22 @@ const run = async (
    reportProgress(`);`);
 
    const inputs: OpcUa.Variant[] = [
-      { Body: 40.0, UaType: Number(OpcUa.BuiltInType.Double) },
-      { Body: 80.0, UaType: Number(OpcUa.BuiltInType.Double) }
+      { Value: 40.0, UaType: Number(OpcUa.BuiltInType.Double) },
+      { Value: 80.0, UaType: Number(OpcUa.BuiltInType.Double) }
    ];
 
    reportProgress("==== Call Method", 1);
 
    inputs.map((value, index) => {
       const args = inputArgumentDefinitions?.[index];
-      reportProgress(`${args?.Name} = ${JSON.stringify(value.Body)}`);
+      reportProgress(`${args?.Name} = ${JSON.stringify(value.Value)}`);
    });
 
    const outputs = await api.call(data?.NodeId ?? '', method?.NodeId ?? '', inputs);
 
    outputs?.map((value, index) => {
       const args = outputArgumentDefinitions?.[index];
-      reportProgress(`${args?.Name} = ${JSON.stringify(value.Body)}`);
+      reportProgress(`${args?.Name} = ${JSON.stringify(value.Value)}`);
    });
 
    reportProgress("==== Read Back Data", 1);

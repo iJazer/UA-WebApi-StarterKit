@@ -4,7 +4,7 @@ $Java = "java.exe"
 $ModelName = "OpcUa"
 $ModelUri = "http://opcfoundation.org/UA/"
 $ProjectName = "opcua-webapi"
-$Output = "..\UaWebApiClient\opcua-webapi\python"
+$Output = "D:\Work\OPC\UA-IIoT-StarterKit\python\opcua-webapi"
 
 & $Java -jar ".\openapi-generator-cli.jar" generate -g python `
     -i "$NodeSets\Schema\opc.ua.openapi.allservices.json" `

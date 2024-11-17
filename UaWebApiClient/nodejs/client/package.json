@@ -11,7 +11,7 @@
     "opcua-webapi": "git+https://github.com/OPCFoundation/opcua-webapi-typescript.git"
   },
   "devDependencies": {
-    "eslint": "^8.21.0"
+    "eslint": "^9.15.0"
   },
   "eslintConfig": {}
 }

@@ -99,7 +99,7 @@ class WebClient {
 
         const response = await this.api.call({ callRequest: request });
 
-        if (response?.ResponseHeader?.ServiceResul?.Code)
+        if (response?.ResponseHeader?.ServiceResult?.Code)
         {
             throw new Error(`Call failed with status code ${Object.keys(OpcUa.StatusCodes).find(key => OpcUa.StatusCodes[key] === response.ResponseHeader.ServiceResult.Code)}.`);
         }

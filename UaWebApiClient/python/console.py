@@ -109,8 +109,8 @@ try:
     print(f");")
 
     inputs = [
-        Variant(Body=float(40),UaType=int(BuiltInType.Double.value)),
-        Variant(Body=float(80),UaType=int(BuiltInType.Double.value))
+        Variant(Value=float(40),UaType=int(BuiltInType.Double.value)),
+        Variant(Value=float(80),UaType=int(BuiltInType.Double.value))
     ]
 
     print()

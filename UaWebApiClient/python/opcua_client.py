@@ -15,23 +15,6 @@ class OpcUaClient:
             self.client.close()
             self.client = None
 
-    def deserialize(self, value, value_type):
-        if value["Type"] != "ExtensionObject":
-            return None
-
-        if isinstance(value["Body"], list):
-            array = [json.loads(json.dumps(item)) for item in value["Body"]]
-            items = [self.deserialize(eo, value_type) for eo in array]
-            return items
-
-        return None
-
-    def deserialize_eo(self, eo, value_type):
-        if eo is None:
-            return None
-
-        return json.loads(eo["Body"])
-
     def browse_children(self, node_id) -> List[BrowseResult]:
 
         request = BrowseRequest(
