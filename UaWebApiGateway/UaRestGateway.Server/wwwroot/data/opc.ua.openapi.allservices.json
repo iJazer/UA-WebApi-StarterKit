@@ -777,6 +777,21 @@
   },
   "components": {
     "schemas": {
+      "StatusCode": {
+        "type": "object",
+        "properties": {
+          "Code": {
+            "maximum": 4294967295,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int64"
+          },
+          "Symbol": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
       "LocalizedText": {
         "type": "object",
         "properties": {
@@ -793,32 +808,32 @@
       "ExtensionObject": {
         "type": "object",
         "properties": {
-          "TypeId": {
+          "UaTypeId": {
             "type": "string",
-            "format": "opcuaNodeId"
+            "format": "UaNodeId"
           },
-          "Encoding": {
+          "UaEncoding": {
             "maximum": 255,
             "minimum": 0,
             "type": "integer",
             "format": "int32"
           },
-          "Body": {
-            "type": "object"
+          "UaBody": {
+            "type": "string",
+            "format": "byte"
           }
-        },
-        "additionalProperties": false
+        }
       },
       "Variant": {
         "type": "object",
         "properties": {
-          "Type": {
+          "UaType": {
             "maximum": 255,
             "minimum": 0,
             "type": "integer",
             "format": "int32"
           },
-          "Body": { },
+          "Value": { },
           "Dimensions": {
             "type": "array",
             "items": {
@@ -833,20 +848,30 @@
       "DataValue": {
         "type": "object",
         "properties": {
-          "Value": {
-            "$ref": "#/components/schemas/Variant"
-          },
-          "StatusCode": {
-            "maximum": 4294967295,
+          "UaType": {
+            "maximum": 255,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int32",
+            "default": 0
+          },
+          "Value": { },
+          "Dimensions": {
+            "type": "array",
+            "items": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "StatusCode": {
+            "$ref": "#/components/schemas/StatusCode"
           },
           "SourceTimestamp": {
             "type": "string",
             "format": "date-time"
           },
-          "SourcePicoSeconds": {
+          "SourcePicoseconds": {
             "maximum": 65535,
             "minimum": 0,
             "type": "integer",
@@ -856,7 +881,7 @@
             "type": "string",
             "format": "date-time"
           },
-          "ServerPicoSeconds": {
+          "ServerPicoseconds": {
             "maximum": 65535,
             "minimum": 0,
             "type": "integer",
@@ -888,10 +913,7 @@
             "type": "string"
           },
           "InnerStatusCode": {
-            "maximum": 4294967295,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/StatusCode"
           },
           "InnerDiagnosticInfo": {
             "$ref": "#/components/schemas/DiagnosticInfo"
@@ -906,14 +928,36 @@
             "maximum": 32767,
             "minimum": -32768,
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "default": 0
           },
           "Value": {
             "type": "string",
-            "format": "uinteger"
+            "default": "0"
           }
         },
         "additionalProperties": false
+      },
+      "Matrix": {
+        "type": "object",
+        "properties": {
+          "Array": {
+            "type": "array",
+            "items": { }
+          },
+          "Dimensions": {
+            "type": "array",
+            "items": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "Structure": {
+        "type": "object"
       },
       "BaseDataType": {
         "$ref": "#/components/schemas/Variant"
@@ -923,7 +967,7 @@
         "properties": {
           "Key": {
             "type": "string",
-            "format": "opcuaQualifiedName"
+            "format": "UaQualifiedName"
           },
           "Value": {
             "$ref": "#/components/schemas/Variant"
@@ -964,11 +1008,11 @@
         "properties": {
           "DataTypeId": {
             "type": "string",
-            "format": "opcuaNodeId"
+            "format": "UaNodeId"
           },
           "Name": {
             "type": "string",
-            "format": "opcuaQualifiedName"
+            "format": "UaQualifiedName"
           }
         }
       },
@@ -1000,7 +1044,8 @@
             "maximum": 255,
             "minimum": 0,
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "default": 0
           }
         }
       },
@@ -1014,13 +1059,14 @@
         "properties": {
           "BaseDataType": {
             "type": "string",
-            "format": "opcuaNodeId"
+            "format": "UaNodeId"
           },
           "BuiltInType": {
             "maximum": 255,
             "minimum": 0,
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "default": 0
           }
         }
       },
@@ -1084,21 +1130,24 @@
             "maximum": 65535,
             "minimum": 0,
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "default": 0
           },
           "BuiltInType": {
             "maximum": 255,
             "minimum": 0,
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "default": 0
           },
           "DataType": {
             "type": "string",
-            "format": "opcuaNodeId"
+            "format": "UaNodeId"
           },
           "ValueRank": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "default": 0
           },
           "ArrayDimensions": {
             "type": "array",
@@ -1106,14 +1155,16 @@
               "maximum": 4294967295,
               "minimum": 0,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           },
           "MaxStringLength": {
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "DataSetFieldId": {
             "type": "string",
@@ -1127,12 +1178,22 @@
           }
         }
       },
+      "DataSetFieldFlagsBits": {
+        "enum": [
+          1
+        ],
+        "type": "integer",
+        "format": "int32",
+        "x-enum-varnames": [
+          "PromotedField"
+        ]
+      },
       "DataSetFieldFlags": {
         "maximum": 4294967295,
         "minimum": 0,
         "type": "integer",
-        "description": "PromotedField=0000",
-        "format": "int64"
+        "format": "int64",
+        "default": 0
       },
       "ConfigurationVersionDataType": {
         "type": "object",
@@ -1141,13 +1202,15 @@
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "MinorVersion": {
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           }
         }
       },
@@ -1173,9 +1236,81 @@
             }
           },
           "DataSetSource": {
-            "$ref": "#/components/schemas/ExtensionObject"
+            "type": "object"
           }
         }
+      },
+      "ActionTargetDataType": {
+        "type": "object",
+        "properties": {
+          "ActionTargetId": {
+            "maximum": 65535,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32",
+            "default": 0
+          },
+          "Name": {
+            "type": "string"
+          },
+          "Description": {
+            "$ref": "#/components/schemas/LocalizedText"
+          }
+        }
+      },
+      "ActionState": {
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "format": "int32",
+        "x-enum-varnames": [
+          "Idle",
+          "Executing",
+          "Done"
+        ]
+      },
+      "ActionMethodDataType": {
+        "type": "object",
+        "properties": {
+          "ObjectId": {
+            "type": "string",
+            "format": "UaNodeId"
+          },
+          "MethodId": {
+            "type": "string",
+            "format": "UaNodeId"
+          }
+        }
+      },
+      "DataSetFieldContentMaskBits": {
+        "enum": [
+          1,
+          2,
+          4,
+          8,
+          16,
+          32
+        ],
+        "type": "integer",
+        "format": "int32",
+        "x-enum-varnames": [
+          "StatusCode",
+          "SourceTimestamp",
+          "ServerTimestamp",
+          "SourcePicoSeconds",
+          "ServerPicoSeconds",
+          "RawData"
+        ]
+      },
+      "DataSetFieldContentMask": {
+        "maximum": 4294967295,
+        "minimum": 0,
+        "type": "integer",
+        "format": "int64",
+        "default": 0
       },
       "DataSetWriterDataType": {
         "type": "object",
@@ -1184,25 +1319,29 @@
             "type": "string"
           },
           "Enabled": {
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
           },
           "DataSetWriterId": {
             "maximum": 65535,
             "minimum": 0,
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "default": 0
           },
           "DataSetFieldContentMask": {
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "KeyFrameCount": {
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "DataSetName": {
             "type": "string"
@@ -1214,10 +1353,10 @@
             }
           },
           "TransportSettings": {
-            "$ref": "#/components/schemas/ExtensionObject"
+            "type": "object"
           },
           "MessageSettings": {
-            "$ref": "#/components/schemas/ExtensionObject"
+            "type": "object"
           }
         }
       },
@@ -1234,7 +1373,8 @@
             "type": "string"
           },
           "Enabled": {
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
           },
           "SecurityMode": {
             "type": "integer",
@@ -1253,7 +1393,8 @@
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "GroupProperties": {
             "type": "array",
@@ -1275,21 +1416,25 @@
             "maximum": 65535,
             "minimum": 0,
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "default": 0
           },
           "PublishingInterval": {
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "default": 0
           },
           "KeepAliveTime": {
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "default": 0
           },
           "Priority": {
             "maximum": 255,
             "minimum": 0,
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "default": 0
           },
           "LocaleIds": {
             "type": "array",
@@ -1301,10 +1446,10 @@
             "type": "string"
           },
           "TransportSettings": {
-            "$ref": "#/components/schemas/ExtensionObject"
+            "type": "object"
           },
           "MessageSettings": {
-            "$ref": "#/components/schemas/ExtensionObject"
+            "type": "object"
           },
           "DataSetWriters": {
             "type": "array",
@@ -1327,7 +1472,8 @@
             "type": "string"
           },
           "Enabled": {
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
           },
           "PublisherId": {
             "$ref": "#/components/schemas/Variant"
@@ -1336,7 +1482,7 @@
             "type": "string"
           },
           "Address": {
-            "$ref": "#/components/schemas/ExtensionObject"
+            "type": "object"
           },
           "ConnectionProperties": {
             "type": "array",
@@ -1345,7 +1491,7 @@
             }
           },
           "TransportSettings": {
-            "$ref": "#/components/schemas/ExtensionObject"
+            "type": "object"
           },
           "WriterGroups": {
             "type": "array",
@@ -1364,6 +1510,14 @@
       "ConnectionTransportDataType": {
         "type": "object"
       },
+      "NetworkAddressDataType": {
+        "type": "object",
+        "properties": {
+          "NetworkInterface": {
+            "type": "string"
+          }
+        }
+      },
       "ReaderGroupDataType": {
         "type": "object",
         "allOf": [
@@ -1373,10 +1527,10 @@
         ],
         "properties": {
           "TransportSettings": {
-            "$ref": "#/components/schemas/ExtensionObject"
+            "type": "object"
           },
           "MessageSettings": {
-            "$ref": "#/components/schemas/ExtensionObject"
+            "type": "object"
           },
           "DataSetReaders": {
             "type": "array",
@@ -1399,7 +1553,8 @@
             "type": "string"
           },
           "Enabled": {
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
           },
           "PublisherId": {
             "$ref": "#/components/schemas/Variant"
@@ -1408,13 +1563,15 @@
             "maximum": 65535,
             "minimum": 0,
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "default": 0
           },
           "DataSetWriterId": {
             "maximum": 65535,
             "minimum": 0,
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "default": 0
           },
           "DataSetMetaData": {
             "$ref": "#/components/schemas/DataSetMetaDataType"
@@ -1423,17 +1580,20 @@
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "MessageReceiveTimeout": {
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "default": 0
           },
           "KeyFrameCount": {
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "HeaderLayoutUri": {
             "type": "string"
@@ -1458,13 +1618,13 @@
             }
           },
           "TransportSettings": {
-            "$ref": "#/components/schemas/ExtensionObject"
+            "type": "object"
           },
           "MessageSettings": {
-            "$ref": "#/components/schemas/ExtensionObject"
+            "type": "object"
           },
           "SubscribedDataSet": {
-            "$ref": "#/components/schemas/ExtensionObject"
+            "type": "object"
           }
         }
       },
@@ -1493,7 +1653,8 @@
             }
           },
           "Enabled": {
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
           }
         }
       },
@@ -1518,7 +1679,7 @@
             "$ref": "#/components/schemas/DataSetMetaDataType"
           },
           "SubscribedDataSet": {
-            "$ref": "#/components/schemas/ExtensionObject"
+            "type": "object"
           }
         }
       },
@@ -1536,7 +1697,8 @@
           },
           "KeyLifetime": {
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "default": 0
           },
           "SecurityPolicyUri": {
             "type": "string"
@@ -1545,13 +1707,15 @@
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "MaxPastKeyCount": {
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "SecurityGroupId": {
             "type": "string"
@@ -1595,11 +1759,13 @@
             "maximum": 65535,
             "minimum": 0,
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "default": 0
           },
           "RetryInterval": {
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "default": 0
           },
           "PushTargetProperties": {
             "type": "array",
@@ -1657,7 +1823,8 @@
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "ConfigurationProperties": {
             "type": "array",
@@ -1667,12 +1834,34 @@
           }
         }
       },
+      "JsonNetworkMessageContentMaskBits": {
+        "enum": [
+          1,
+          2,
+          4,
+          8,
+          16,
+          32,
+          64
+        ],
+        "type": "integer",
+        "format": "int32",
+        "x-enum-varnames": [
+          "NetworkMessageHeader",
+          "DataSetMessageHeader",
+          "SingleDataSetMessage",
+          "PublisherId",
+          "DataSetClassId",
+          "ReplyTo",
+          "WriterGroupName"
+        ]
+      },
       "JsonNetworkMessageContentMask": {
         "maximum": 4294967295,
         "minimum": 0,
         "type": "integer",
-        "description": "NetworkMessageHeader=0000, DataSetMessageHeader=0001, SingleDataSetMessage=0002, PublisherId=0003, DataSetClassId=0004, ReplyTo=0005, WriterGroupName=0006",
-        "format": "int64"
+        "format": "int64",
+        "default": 0
       },
       "JsonWriterGroupMessageDataType": {
         "type": "object",
@@ -1686,16 +1875,49 @@
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           }
         }
+      },
+      "JsonDataSetMessageContentMaskBits": {
+        "enum": [
+          1,
+          2,
+          4,
+          8,
+          16,
+          32,
+          64,
+          128,
+          256,
+          512,
+          1024,
+          2048
+        ],
+        "type": "integer",
+        "format": "int32",
+        "x-enum-varnames": [
+          "DataSetWriterId",
+          "MetaDataVersion",
+          "SequenceNumber",
+          "Timestamp",
+          "Status",
+          "MessageType",
+          "DataSetWriterName",
+          "FieldEncoding1",
+          "PublisherId",
+          "WriterGroupName",
+          "MinorVersion",
+          "FieldEncoding2"
+        ]
       },
       "JsonDataSetMessageContentMask": {
         "maximum": 4294967295,
         "minimum": 0,
         "type": "integer",
-        "description": "DataSetWriterId=0000, MetaDataVersion=0001, SequenceNumber=0002, Timestamp=0003, Status=0004, MessageType=0005, DataSetWriterName=0006, ReversibleFieldEncoding=0007, PublisherId=0008, WriterGroupName=0009, MinorVersion=000A",
-        "format": "int64"
+        "format": "int64",
+        "default": 0
       },
       "JsonDataSetWriterMessageDataType": {
         "type": "object",
@@ -1709,7 +1931,8 @@
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           }
         }
       },
@@ -1725,13 +1948,15 @@
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "DataSetMessageContentMask": {
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           }
         }
       },
@@ -1818,7 +2043,8 @@
           },
           "MetaDataUpdateTime": {
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "default": 0
           }
         }
       },
@@ -1848,6 +2074,450 @@
           }
         }
       },
+      "JsonNetworkMessage": {
+        "type": "object",
+        "properties": {
+          "MessageId": {
+            "type": "string"
+          },
+          "MessageType": {
+            "type": "string"
+          },
+          "PublisherId": {
+            "type": "string"
+          },
+          "WriterGroupName": {
+            "type": "string"
+          },
+          "DataSetClassId": {
+            "type": "string"
+          },
+          "Messages": { }
+        }
+      },
+      "JsonDataSetMessage": {
+        "type": "object",
+        "properties": {
+          "DataSetWriterId": {
+            "maximum": 65535,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32",
+            "default": 0
+          },
+          "DataSetWriterName": {
+            "type": "string"
+          },
+          "PublisherId": {
+            "type": "string"
+          },
+          "WriterGroupName": {
+            "type": "string"
+          },
+          "SequenceNumber": {
+            "maximum": 4294967295,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int64",
+            "default": 0
+          },
+          "MetaDataVersion": {
+            "$ref": "#/components/schemas/ConfigurationVersionDataType"
+          },
+          "MinorVersion": {
+            "maximum": 4294967295,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int64",
+            "default": 0
+          },
+          "Timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "default": "0001-01-01T00:00:00.0000000+00:00"
+          },
+          "Status": {
+            "$ref": "#/components/schemas/StatusCode"
+          },
+          "MessageType": {
+            "type": "string"
+          },
+          "Payload": {
+            "type": "object"
+          }
+        }
+      },
+      "JsonDataSetMetaDataMessage": {
+        "type": "object",
+        "properties": {
+          "MessageId": {
+            "type": "string"
+          },
+          "MessageType": {
+            "type": "string"
+          },
+          "PublisherId": {
+            "type": "string"
+          },
+          "DataSetWriterId": {
+            "maximum": 65535,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32",
+            "default": 0
+          },
+          "WriterGroupName": {
+            "type": "string"
+          },
+          "DataSetWriterName": {
+            "type": "string"
+          },
+          "Timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "default": "0001-01-01T00:00:00.0000000+00:00"
+          },
+          "MetaData": {
+            "$ref": "#/components/schemas/DataSetMetaDataType"
+          }
+        }
+      },
+      "JsonApplicationDescriptionMessage": {
+        "type": "object",
+        "properties": {
+          "MessageId": {
+            "type": "string"
+          },
+          "MessageType": {
+            "type": "string"
+          },
+          "PublisherId": {
+            "type": "string"
+          },
+          "Timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "default": "0001-01-01T00:00:00.0000000+00:00"
+          },
+          "Description": {
+            "$ref": "#/components/schemas/ApplicationDescription"
+          },
+          "ServerCapabilities": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "JsonServerEndpointsMessage": {
+        "type": "object",
+        "properties": {
+          "MessageId": {
+            "type": "string"
+          },
+          "MessageType": {
+            "type": "string"
+          },
+          "PublisherId": {
+            "type": "string"
+          },
+          "Timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "default": "0001-01-01T00:00:00.0000000+00:00"
+          },
+          "Description": {
+            "$ref": "#/components/schemas/ApplicationDescription"
+          },
+          "Endpoints": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EndpointDescription"
+            }
+          }
+        }
+      },
+      "JsonStatusMessage": {
+        "type": "object",
+        "properties": {
+          "MessageId": {
+            "type": "string"
+          },
+          "MessageType": {
+            "type": "string"
+          },
+          "PublisherId": {
+            "type": "string"
+          },
+          "Timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "default": "0001-01-01T00:00:00.0000000+00:00"
+          },
+          "IsCyclic": {
+            "type": "boolean",
+            "default": false
+          },
+          "Status": {
+            "type": "integer",
+            "format": "PubSubState"
+          },
+          "NextReportTime": {
+            "type": "string",
+            "format": "date-time",
+            "default": "0001-01-01T00:00:00.0000000+00:00"
+          }
+        }
+      },
+      "JsonPubSubConnectionMessage": {
+        "type": "object",
+        "properties": {
+          "MessageId": {
+            "type": "string"
+          },
+          "MessageType": {
+            "type": "string"
+          },
+          "PublisherId": {
+            "type": "string"
+          },
+          "Timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "default": "0001-01-01T00:00:00.0000000+00:00"
+          },
+          "Connection": {
+            "$ref": "#/components/schemas/PubSubConnectionDataType"
+          }
+        }
+      },
+      "JsonActionMetaDataMessage": {
+        "type": "object",
+        "properties": {
+          "MessageId": {
+            "type": "string"
+          },
+          "MessageType": {
+            "type": "string"
+          },
+          "PublisherId": {
+            "type": "string"
+          },
+          "DataSetWriterId": {
+            "maximum": 65535,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32",
+            "default": 0
+          },
+          "DataSetWriterName": {
+            "type": "string"
+          },
+          "Timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "default": "0001-01-01T00:00:00.0000000+00:00"
+          },
+          "ActionTargets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ActionTargetDataType"
+            }
+          },
+          "Request": {
+            "$ref": "#/components/schemas/DataSetMetaDataType"
+          },
+          "Response": {
+            "$ref": "#/components/schemas/DataSetMetaDataType"
+          },
+          "ActionMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ActionMethodDataType"
+            }
+          }
+        }
+      },
+      "JsonActionResponderMessage": {
+        "type": "object",
+        "properties": {
+          "MessageId": {
+            "type": "string"
+          },
+          "MessageType": {
+            "type": "string"
+          },
+          "PublisherId": {
+            "type": "string"
+          },
+          "Timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "default": "0001-01-01T00:00:00.0000000+00:00"
+          },
+          "Connection": {
+            "$ref": "#/components/schemas/PubSubConnectionDataType"
+          }
+        }
+      },
+      "JsonActionNetworkMessage": {
+        "type": "object",
+        "properties": {
+          "MessageId": {
+            "type": "string"
+          },
+          "MessageType": {
+            "type": "string"
+          },
+          "PublisherId": {
+            "type": "string"
+          },
+          "Timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "default": "0001-01-01T00:00:00.0000000+00:00"
+          },
+          "ResponseAddress": {
+            "type": "string"
+          },
+          "CorrelationData": {
+            "type": "string",
+            "format": "byte"
+          },
+          "RequestorId": {
+            "type": "string"
+          },
+          "TimeoutHint": {
+            "type": "number",
+            "format": "double",
+            "default": 0
+          },
+          "Messages": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "JsonActionRequestMessage": {
+        "type": "object",
+        "properties": {
+          "DataSetWriterId": {
+            "maximum": 65535,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32",
+            "default": 0
+          },
+          "ActionTargetId": {
+            "maximum": 65535,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32",
+            "default": 0
+          },
+          "DataSetWriterName": {
+            "type": "string"
+          },
+          "WriterGroupName": {
+            "type": "string"
+          },
+          "MetaDataVersion": {
+            "$ref": "#/components/schemas/ConfigurationVersionDataType"
+          },
+          "MinorVersion": {
+            "maximum": 4294967295,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int64",
+            "default": 0
+          },
+          "Timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "default": "0001-01-01T00:00:00.0000000+00:00"
+          },
+          "MessageType": {
+            "type": "string"
+          },
+          "RequestId": {
+            "maximum": 65535,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32",
+            "default": 0
+          },
+          "ActionState": {
+            "type": "integer",
+            "format": "ActionState"
+          },
+          "Payload": {
+            "type": "object"
+          }
+        }
+      },
+      "JsonActionResponseMessage": {
+        "type": "object",
+        "properties": {
+          "DataSetWriterId": {
+            "maximum": 65535,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32",
+            "default": 0
+          },
+          "ActionTargetId": {
+            "maximum": 65535,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32",
+            "default": 0
+          },
+          "DataSetWriterName": {
+            "type": "string"
+          },
+          "WriterGroupName": {
+            "type": "string"
+          },
+          "MetaDataVersion": {
+            "$ref": "#/components/schemas/ConfigurationVersionDataType"
+          },
+          "MinorVersion": {
+            "maximum": 4294967295,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int64",
+            "default": 0
+          },
+          "Timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "default": "0001-01-01T00:00:00.0000000+00:00"
+          },
+          "Status": {
+            "$ref": "#/components/schemas/StatusCode"
+          },
+          "MessageType": {
+            "type": "string"
+          },
+          "RequestId": {
+            "maximum": 65535,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32",
+            "default": 0
+          },
+          "ActionState": {
+            "type": "integer",
+            "format": "ActionState"
+          },
+          "Payload": {
+            "type": "object"
+          }
+        }
+      },
       "NodeClass": {
         "enum": [
           0,
@@ -1874,25 +2544,68 @@
           "View"
         ]
       },
+      "PermissionTypeBits": {
+        "enum": [
+          1,
+          2,
+          4,
+          8,
+          16,
+          32,
+          64,
+          128,
+          256,
+          512,
+          1024,
+          2048,
+          4096,
+          8192,
+          16384,
+          32768,
+          65536
+        ],
+        "type": "integer",
+        "format": "int32",
+        "x-enum-varnames": [
+          "Browse",
+          "ReadRolePermissions",
+          "WriteAttribute",
+          "WriteRolePermissions",
+          "WriteHistorizing",
+          "Read",
+          "Write",
+          "ReadHistory",
+          "InsertHistory",
+          "ModifyHistory",
+          "DeleteHistory",
+          "ReceiveEvents",
+          "Call",
+          "AddReference",
+          "RemoveReference",
+          "DeleteNode",
+          "AddNode"
+        ]
+      },
       "PermissionType": {
         "maximum": 4294967295,
         "minimum": 0,
         "type": "integer",
-        "description": "Browse=0000, ReadRolePermissions=0001, WriteAttribute=0002, WriteRolePermissions=0003, WriteHistorizing=0004, Read=0005, Write=0006, ReadHistory=0007, InsertHistory=0008, ModifyHistory=0009, DeleteHistory=000A, ReceiveEvents=000B, Call=000C, AddReference=000D, RemoveReference=000E, DeleteNode=000F, AddNode=0010",
-        "format": "int64"
+        "format": "int64",
+        "default": 0
       },
       "RolePermissionType": {
         "type": "object",
         "properties": {
           "RoleId": {
             "type": "string",
-            "format": "opcuaNodeId"
+            "format": "UaNodeId"
           },
           "Permissions": {
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           }
         }
       },
@@ -1928,11 +2641,12 @@
           },
           "DataType": {
             "type": "string",
-            "format": "opcuaNodeId"
+            "format": "UaNodeId"
           },
           "ValueRank": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "default": 0
           },
           "ArrayDimensions": {
             "type": "array",
@@ -1940,17 +2654,20 @@
               "maximum": 4294967295,
               "minimum": 0,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           },
           "MaxStringLength": {
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "IsOptional": {
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
           }
         }
       },
@@ -1964,11 +2681,11 @@
         "properties": {
           "DefaultEncodingId": {
             "type": "string",
-            "format": "opcuaNodeId"
+            "format": "UaNodeId"
           },
           "BaseDataType": {
             "type": "string",
-            "format": "opcuaNodeId"
+            "format": "UaNodeId"
           },
           "StructureType": {
             "type": "integer",
@@ -2006,11 +2723,12 @@
           },
           "DataType": {
             "type": "string",
-            "format": "opcuaNodeId"
+            "format": "UaNodeId"
           },
           "ValueRank": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "default": 0
           },
           "ArrayDimensions": {
             "type": "array",
@@ -2018,7 +2736,8 @@
               "maximum": 4294967295,
               "minimum": 0,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           },
           "Description": {
@@ -2031,7 +2750,8 @@
         "properties": {
           "Value": {
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "DisplayName": {
             "$ref": "#/components/schemas/LocalizedText"
@@ -2056,17 +2776,20 @@
       },
       "Duration": {
         "type": "number",
-        "format": "double"
+        "format": "double",
+        "default": 0
       },
       "UtcTime": {
         "type": "string",
-        "format": "date-time"
+        "format": "date-time",
+        "default": "0001-01-01T00:00:00.0000000+00:00"
       },
       "IntegerId": {
         "maximum": 4294967295,
         "minimum": 0,
         "type": "integer",
-        "format": "int64"
+        "format": "int64",
+        "default": 0
       },
       "ApplicationType": {
         "enum": [
@@ -2119,23 +2842,26 @@
         "properties": {
           "AuthenticationToken": {
             "type": "string",
-            "format": "opcuaNodeId"
+            "format": "UaNodeId"
           },
           "Timestamp": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "default": "0001-01-01T00:00:00.0000000+00:00"
           },
           "RequestHandle": {
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "ReturnDiagnostics": {
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "AuditEntryId": {
             "type": "string"
@@ -2144,7 +2870,8 @@
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "AdditionalHeader": {
             "$ref": "#/components/schemas/ExtensionObject"
@@ -2156,19 +2883,18 @@
         "properties": {
           "Timestamp": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "default": "0001-01-01T00:00:00.0000000+00:00"
           },
           "RequestHandle": {
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "ServiceResult": {
-            "maximum": 4294967295,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/StatusCode"
           },
           "ServiceDiagnostics": {
             "$ref": "#/components/schemas/DiagnosticInfo"
@@ -2188,7 +2914,8 @@
         "maximum": 4294967295,
         "minimum": 0,
         "type": "integer",
-        "format": "int64"
+        "format": "int64",
+        "default": 0
       },
       "FindServersRequest": {
         "type": "object",
@@ -2317,7 +3044,8 @@
             "maximum": 255,
             "minimum": 0,
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "default": 0
           }
         }
       },
@@ -2373,7 +3101,7 @@
       },
       "SessionAuthenticationToken": {
         "type": "string",
-        "format": "opcuaNodeId"
+        "format": "UaNodeId"
       },
       "SignatureData": {
         "type": "object",
@@ -2415,13 +3143,15 @@
           },
           "RequestedSessionTimeout": {
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "default": 0
           },
           "MaxResponseMessageSize": {
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           }
         }
       },
@@ -2433,15 +3163,16 @@
           },
           "SessionId": {
             "type": "string",
-            "format": "opcuaNodeId"
+            "format": "UaNodeId"
           },
           "AuthenticationToken": {
             "type": "string",
-            "format": "opcuaNodeId"
+            "format": "UaNodeId"
           },
           "RevisedSessionTimeout": {
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "default": 0
           },
           "ServerNonce": {
             "type": "string",
@@ -2470,7 +3201,8 @@
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           }
         }
       },
@@ -2578,10 +3310,7 @@
           "Results": {
             "type": "array",
             "items": {
-              "maximum": 4294967295,
-              "minimum": 0,
-              "type": "integer",
-              "format": "int64"
+              "$ref": "#/components/schemas/StatusCode"
             }
           },
           "DiagnosticInfos": {
@@ -2599,7 +3328,8 @@
             "$ref": "#/components/schemas/RequestHeader"
           },
           "DeleteSubscriptions": {
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
           }
         }
       },
@@ -2621,7 +3351,8 @@
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           }
         }
       },
@@ -2635,7 +3366,8 @@
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           }
         }
       },
@@ -2660,17 +3392,19 @@
         "properties": {
           "ViewId": {
             "type": "string",
-            "format": "opcuaNodeId"
+            "format": "UaNodeId"
           },
           "Timestamp": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "default": "0001-01-01T00:00:00.0000000+00:00"
           },
           "ViewVersion": {
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           }
         }
       },
@@ -2679,7 +3413,7 @@
         "properties": {
           "NodeId": {
             "type": "string",
-            "format": "opcuaNodeId"
+            "format": "UaNodeId"
           },
           "BrowseDirection": {
             "type": "integer",
@@ -2687,22 +3421,25 @@
           },
           "ReferenceTypeId": {
             "type": "string",
-            "format": "opcuaNodeId"
+            "format": "UaNodeId"
           },
           "IncludeSubtypes": {
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
           },
           "NodeClassMask": {
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "ResultMask": {
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           }
         }
       },
@@ -2711,18 +3448,19 @@
         "properties": {
           "ReferenceTypeId": {
             "type": "string",
-            "format": "opcuaNodeId"
+            "format": "UaNodeId"
           },
           "IsForward": {
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
           },
           "NodeId": {
             "type": "string",
-            "format": "opcuaExpandedNodeId"
+            "format": "UaExpandedNodeId"
           },
           "BrowseName": {
             "type": "string",
-            "format": "opcuaQualifiedName"
+            "format": "UaQualifiedName"
           },
           "DisplayName": {
             "$ref": "#/components/schemas/LocalizedText"
@@ -2733,7 +3471,7 @@
           },
           "TypeDefinition": {
             "type": "string",
-            "format": "opcuaExpandedNodeId"
+            "format": "UaExpandedNodeId"
           }
         }
       },
@@ -2745,10 +3483,7 @@
         "type": "object",
         "properties": {
           "StatusCode": {
-            "maximum": 4294967295,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/StatusCode"
           },
           "ContinuationPoint": {
             "type": "string",
@@ -2775,7 +3510,8 @@
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "NodesToBrowse": {
             "type": "array",
@@ -2812,7 +3548,8 @@
             "$ref": "#/components/schemas/RequestHeader"
           },
           "ReleaseContinuationPoints": {
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
           },
           "ContinuationPoints": {
             "type": "array",
@@ -2848,17 +3585,19 @@
         "properties": {
           "ReferenceTypeId": {
             "type": "string",
-            "format": "opcuaNodeId"
+            "format": "UaNodeId"
           },
           "IsInverse": {
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
           },
           "IncludeSubtypes": {
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
           },
           "TargetName": {
             "type": "string",
-            "format": "opcuaQualifiedName"
+            "format": "UaQualifiedName"
           }
         }
       },
@@ -2878,7 +3617,7 @@
         "properties": {
           "StartingNode": {
             "type": "string",
-            "format": "opcuaNodeId"
+            "format": "UaNodeId"
           },
           "RelativePath": {
             "$ref": "#/components/schemas/RelativePath"
@@ -2890,13 +3629,14 @@
         "properties": {
           "TargetId": {
             "type": "string",
-            "format": "opcuaExpandedNodeId"
+            "format": "UaExpandedNodeId"
           },
           "RemainingPathIndex": {
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           }
         }
       },
@@ -2904,10 +3644,7 @@
         "type": "object",
         "properties": {
           "StatusCode": {
-            "maximum": 4294967295,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/StatusCode"
           },
           "Targets": {
             "type": "array",
@@ -2961,7 +3698,7 @@
             "type": "array",
             "items": {
               "type": "string",
-              "format": "opcuaNodeId"
+              "format": "UaNodeId"
             }
           }
         }
@@ -2976,7 +3713,7 @@
             "type": "array",
             "items": {
               "type": "string",
-              "format": "opcuaNodeId"
+              "format": "UaNodeId"
             }
           }
         }
@@ -2991,7 +3728,7 @@
             "type": "array",
             "items": {
               "type": "string",
-              "format": "opcuaNodeId"
+              "format": "UaNodeId"
             }
           }
         }
@@ -3008,7 +3745,8 @@
         "maximum": 4294967295,
         "minimum": 0,
         "type": "integer",
-        "format": "int64"
+        "format": "int64",
+        "default": 0
       },
       "NumericRange": {
         "type": "string"
@@ -3098,7 +3836,8 @@
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           }
         }
       },
@@ -3125,7 +3864,7 @@
         "properties": {
           "NodeId": {
             "type": "string",
-            "format": "opcuaNodeId"
+            "format": "UaNodeId"
           },
           "Alias": {
             "type": "string"
@@ -3137,7 +3876,8 @@
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "IndexRange": {
             "type": "string"
@@ -3154,20 +3894,21 @@
         "properties": {
           "TypeDefinitionId": {
             "type": "string",
-            "format": "opcuaNodeId"
+            "format": "UaNodeId"
           },
           "BrowsePath": {
             "type": "array",
             "items": {
               "type": "string",
-              "format": "opcuaQualifiedName"
+              "format": "UaQualifiedName"
             }
           },
           "AttributeId": {
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "IndexRange": {
             "type": "string"
@@ -3178,18 +3919,12 @@
         "type": "object",
         "properties": {
           "StatusCode": {
-            "maximum": 4294967295,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/StatusCode"
           },
           "OperandStatusCodes": {
             "type": "array",
             "items": {
-              "maximum": 4294967295,
-              "minimum": 0,
-              "type": "integer",
-              "format": "int64"
+              "$ref": "#/components/schemas/StatusCode"
             }
           },
           "OperandDiagnosticInfos": {
@@ -3240,20 +3975,21 @@
         "properties": {
           "NodeId": {
             "type": "string",
-            "format": "opcuaNodeId"
+            "format": "UaNodeId"
           },
           "AttributeId": {
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "IndexRange": {
             "type": "string"
           },
           "DataEncoding": {
             "type": "string",
-            "format": "opcuaQualifiedName"
+            "format": "UaQualifiedName"
           }
         }
       },
@@ -3265,7 +4001,8 @@
           },
           "MaxAge": {
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "default": 0
           },
           "TimestampsToReturn": {
             "type": "integer",
@@ -3304,14 +4041,14 @@
         "properties": {
           "NodeId": {
             "type": "string",
-            "format": "opcuaNodeId"
+            "format": "UaNodeId"
           },
           "IndexRange": {
             "type": "string"
           },
           "DataEncoding": {
             "type": "string",
-            "format": "opcuaQualifiedName"
+            "format": "UaQualifiedName"
           },
           "ContinuationPoint": {
             "type": "string",
@@ -3323,10 +4060,7 @@
         "type": "object",
         "properties": {
           "StatusCode": {
-            "maximum": 4294967295,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/StatusCode"
           },
           "ContinuationPoint": {
             "type": "string",
@@ -3352,15 +4086,18 @@
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "StartTime": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "default": "0001-01-01T00:00:00.0000000+00:00"
           },
           "EndTime": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "default": "0001-01-01T00:00:00.0000000+00:00"
           },
           "Filter": {
             "$ref": "#/components/schemas/EventFilter"
@@ -3376,7 +4113,8 @@
         ],
         "properties": {
           "ReadModified": {
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
           }
         }
       },
@@ -3389,24 +4127,29 @@
         ],
         "properties": {
           "IsReadModified": {
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
           },
           "StartTime": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "default": "0001-01-01T00:00:00.0000000+00:00"
           },
           "EndTime": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "default": "0001-01-01T00:00:00.0000000+00:00"
           },
           "NumValuesPerNode": {
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "ReturnBounds": {
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
           }
         }
       },
@@ -3420,21 +4163,24 @@
         "properties": {
           "StartTime": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "default": "0001-01-01T00:00:00.0000000+00:00"
           },
           "EndTime": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "default": "0001-01-01T00:00:00.0000000+00:00"
           },
           "ProcessingInterval": {
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "default": 0
           },
           "AggregateType": {
             "type": "array",
             "items": {
               "type": "string",
-              "format": "opcuaNodeId"
+              "format": "UaNodeId"
             }
           },
           "AggregateConfiguration": {
@@ -3454,11 +4200,13 @@
             "type": "array",
             "items": {
               "type": "string",
-              "format": "date-time"
+              "format": "date-time",
+              "default": "0001-01-01T00:00:00.0000000+00:00"
             }
           },
           "UseSimpleBounds": {
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
           }
         }
       },
@@ -3474,7 +4222,8 @@
             "type": "array",
             "items": {
               "type": "string",
-              "format": "date-time"
+              "format": "date-time",
+              "default": "0001-01-01T00:00:00.0000000+00:00"
             }
           }
         }
@@ -3495,7 +4244,8 @@
         "properties": {
           "ModificationTime": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "default": "0001-01-01T00:00:00.0000000+00:00"
           },
           "UpdateType": {
             "type": "integer",
@@ -3547,7 +4297,8 @@
             "format": "TimestampsToReturn"
           },
           "ReleaseContinuationPoints": {
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
           },
           "NodesToRead": {
             "type": "array",
@@ -3582,13 +4333,14 @@
         "properties": {
           "NodeId": {
             "type": "string",
-            "format": "opcuaNodeId"
+            "format": "UaNodeId"
           },
           "AttributeId": {
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "IndexRange": {
             "type": "string"
@@ -3621,10 +4373,7 @@
           "Results": {
             "type": "array",
             "items": {
-              "maximum": 4294967295,
-              "minimum": 0,
-              "type": "integer",
-              "format": "int64"
+              "$ref": "#/components/schemas/StatusCode"
             }
           },
           "DiagnosticInfos": {
@@ -3680,7 +4429,7 @@
         "properties": {
           "NodeId": {
             "type": "string",
-            "format": "opcuaNodeId"
+            "format": "UaNodeId"
           },
           "PerformInsertReplace": {
             "type": "integer",
@@ -3704,7 +4453,7 @@
         "properties": {
           "NodeId": {
             "type": "string",
-            "format": "opcuaNodeId"
+            "format": "UaNodeId"
           },
           "PerformInsertReplace": {
             "type": "integer",
@@ -3728,7 +4477,7 @@
         "properties": {
           "NodeId": {
             "type": "string",
-            "format": "opcuaNodeId"
+            "format": "UaNodeId"
           },
           "PerformInsertReplace": {
             "type": "integer",
@@ -3749,18 +4498,12 @@
         "type": "object",
         "properties": {
           "StatusCode": {
-            "maximum": 4294967295,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/StatusCode"
           },
           "OperationResults": {
             "type": "array",
             "items": {
-              "maximum": 4294967295,
-              "minimum": 0,
-              "type": "integer",
-              "format": "int64"
+              "$ref": "#/components/schemas/StatusCode"
             }
           },
           "DiagnosticInfos": {
@@ -3810,11 +4553,11 @@
         "properties": {
           "ObjectId": {
             "type": "string",
-            "format": "opcuaNodeId"
+            "format": "UaNodeId"
           },
           "MethodId": {
             "type": "string",
-            "format": "opcuaNodeId"
+            "format": "UaNodeId"
           },
           "InputArguments": {
             "type": "array",
@@ -3828,18 +4571,12 @@
         "type": "object",
         "properties": {
           "StatusCode": {
-            "maximum": 4294967295,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/StatusCode"
           },
           "InputArgumentResults": {
             "type": "array",
             "items": {
-              "maximum": 4294967295,
-              "minimum": 0,
-              "type": "integer",
-              "format": "int64"
+              "$ref": "#/components/schemas/StatusCode"
             }
           },
           "InputArgumentDiagnosticInfos": {
@@ -3937,11 +4674,13 @@
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "DeadbandValue": {
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "default": 0
           }
         }
       },
@@ -3968,25 +4707,30 @@
         "type": "object",
         "properties": {
           "UseServerCapabilitiesDefaults": {
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
           },
           "TreatUncertainAsBad": {
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
           },
           "PercentDataBad": {
             "maximum": 255,
             "minimum": 0,
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "default": 0
           },
           "PercentDataGood": {
             "maximum": 255,
             "minimum": 0,
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "default": 0
           },
           "UseSlopedExtrapolation": {
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
           }
         }
       },
@@ -4000,15 +4744,17 @@
         "properties": {
           "StartTime": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "default": "0001-01-01T00:00:00.0000000+00:00"
           },
           "AggregateType": {
             "type": "string",
-            "format": "opcuaNodeId"
+            "format": "UaNodeId"
           },
           "ProcessingInterval": {
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "default": 0
           },
           "AggregateConfiguration": {
             "$ref": "#/components/schemas/AggregateConfiguration"
@@ -4029,10 +4775,7 @@
           "SelectClauseResults": {
             "type": "array",
             "items": {
-              "maximum": 4294967295,
-              "minimum": 0,
-              "type": "integer",
-              "format": "int64"
+              "$ref": "#/components/schemas/StatusCode"
             }
           },
           "SelectClauseDiagnosticInfos": {
@@ -4056,11 +4799,13 @@
         "properties": {
           "RevisedStartTime": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "default": "0001-01-01T00:00:00.0000000+00:00"
           },
           "RevisedProcessingInterval": {
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "default": 0
           },
           "RevisedAggregateConfiguration": {
             "$ref": "#/components/schemas/AggregateConfiguration"
@@ -4074,11 +4819,13 @@
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "SamplingInterval": {
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "default": 0
           },
           "Filter": {
             "$ref": "#/components/schemas/ExtensionObject"
@@ -4087,10 +4834,12 @@
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "DiscardOldest": {
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
           }
         }
       },
@@ -4113,26 +4862,26 @@
         "type": "object",
         "properties": {
           "StatusCode": {
-            "maximum": 4294967295,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/StatusCode"
           },
           "MonitoredItemId": {
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "RevisedSamplingInterval": {
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "default": 0
           },
           "RevisedQueueSize": {
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "FilterResult": {
             "$ref": "#/components/schemas/ExtensionObject"
@@ -4149,7 +4898,8 @@
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "TimestampsToReturn": {
             "type": "integer",
@@ -4190,7 +4940,8 @@
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "RequestedParameters": {
             "$ref": "#/components/schemas/MonitoringParameters"
@@ -4201,20 +4952,19 @@
         "type": "object",
         "properties": {
           "StatusCode": {
-            "maximum": 4294967295,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/StatusCode"
           },
           "RevisedSamplingInterval": {
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "default": 0
           },
           "RevisedQueueSize": {
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "FilterResult": {
             "$ref": "#/components/schemas/ExtensionObject"
@@ -4231,7 +4981,8 @@
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "TimestampsToReturn": {
             "type": "integer",
@@ -4275,7 +5026,8 @@
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "MonitoringMode": {
             "type": "integer",
@@ -4287,7 +5039,8 @@
               "maximum": 4294967295,
               "minimum": 0,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           }
         }
@@ -4301,10 +5054,7 @@
           "Results": {
             "type": "array",
             "items": {
-              "maximum": 4294967295,
-              "minimum": 0,
-              "type": "integer",
-              "format": "int64"
+              "$ref": "#/components/schemas/StatusCode"
             }
           },
           "DiagnosticInfos": {
@@ -4325,13 +5075,15 @@
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "TriggeringItemId": {
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "LinksToAdd": {
             "type": "array",
@@ -4339,7 +5091,8 @@
               "maximum": 4294967295,
               "minimum": 0,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           },
           "LinksToRemove": {
@@ -4348,7 +5101,8 @@
               "maximum": 4294967295,
               "minimum": 0,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           }
         }
@@ -4362,10 +5116,7 @@
           "AddResults": {
             "type": "array",
             "items": {
-              "maximum": 4294967295,
-              "minimum": 0,
-              "type": "integer",
-              "format": "int64"
+              "$ref": "#/components/schemas/StatusCode"
             }
           },
           "AddDiagnosticInfos": {
@@ -4377,10 +5128,7 @@
           "RemoveResults": {
             "type": "array",
             "items": {
-              "maximum": 4294967295,
-              "minimum": 0,
-              "type": "integer",
-              "format": "int64"
+              "$ref": "#/components/schemas/StatusCode"
             }
           },
           "RemoveDiagnosticInfos": {
@@ -4401,7 +5149,8 @@
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "MonitoredItemIds": {
             "type": "array",
@@ -4409,7 +5158,8 @@
               "maximum": 4294967295,
               "minimum": 0,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           }
         }
@@ -4423,10 +5173,7 @@
           "Results": {
             "type": "array",
             "items": {
-              "maximum": 4294967295,
-              "minimum": 0,
-              "type": "integer",
-              "format": "int64"
+              "$ref": "#/components/schemas/StatusCode"
             }
           },
           "DiagnosticInfos": {
@@ -4445,34 +5192,40 @@
           },
           "RequestedPublishingInterval": {
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "default": 0
           },
           "RequestedLifetimeCount": {
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "RequestedMaxKeepAliveCount": {
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "MaxNotificationsPerPublish": {
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "PublishingEnabled": {
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
           },
           "Priority": {
             "maximum": 255,
             "minimum": 0,
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "default": 0
           }
         }
       },
@@ -4486,23 +5239,27 @@
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "RevisedPublishingInterval": {
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "default": 0
           },
           "RevisedLifetimeCount": {
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "RevisedMaxKeepAliveCount": {
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           }
         }
       },
@@ -4516,35 +5273,41 @@
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "RequestedPublishingInterval": {
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "default": 0
           },
           "RequestedLifetimeCount": {
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "RequestedMaxKeepAliveCount": {
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "MaxNotificationsPerPublish": {
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "Priority": {
             "maximum": 255,
             "minimum": 0,
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "default": 0
           }
         }
       },
@@ -4556,19 +5319,22 @@
           },
           "RevisedPublishingInterval": {
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "default": 0
           },
           "RevisedLifetimeCount": {
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "RevisedMaxKeepAliveCount": {
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           }
         }
       },
@@ -4579,7 +5345,8 @@
             "$ref": "#/components/schemas/RequestHeader"
           },
           "PublishingEnabled": {
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
           },
           "SubscriptionIds": {
             "type": "array",
@@ -4587,7 +5354,8 @@
               "maximum": 4294967295,
               "minimum": 0,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           }
         }
@@ -4601,10 +5369,7 @@
           "Results": {
             "type": "array",
             "items": {
-              "maximum": 4294967295,
-              "minimum": 0,
-              "type": "integer",
-              "format": "int64"
+              "$ref": "#/components/schemas/StatusCode"
             }
           },
           "DiagnosticInfos": {
@@ -4622,11 +5387,13 @@
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "PublishTime": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "default": "0001-01-01T00:00:00.0000000+00:00"
           },
           "NotificationData": {
             "type": "array",
@@ -4668,7 +5435,8 @@
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "Value": {
             "$ref": "#/components/schemas/DataValue"
@@ -4698,7 +5466,8 @@
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "EventFields": {
             "type": "array",
@@ -4728,10 +5497,7 @@
         ],
         "properties": {
           "Status": {
-            "maximum": 4294967295,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/StatusCode"
           },
           "DiagnosticInfo": {
             "$ref": "#/components/schemas/DiagnosticInfo"
@@ -4745,13 +5511,15 @@
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "SequenceNumber": {
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           }
         }
       },
@@ -4779,7 +5547,8 @@
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "AvailableSequenceNumbers": {
             "type": "array",
@@ -4787,11 +5556,13 @@
               "maximum": 4294967295,
               "minimum": 0,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           },
           "MoreNotifications": {
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
           },
           "NotificationMessage": {
             "$ref": "#/components/schemas/NotificationMessage"
@@ -4799,10 +5570,7 @@
           "Results": {
             "type": "array",
             "items": {
-              "maximum": 4294967295,
-              "minimum": 0,
-              "type": "integer",
-              "format": "int64"
+              "$ref": "#/components/schemas/StatusCode"
             }
           },
           "DiagnosticInfos": {
@@ -4823,13 +5591,15 @@
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           },
           "RetransmitSequenceNumber": {
             "maximum": 4294967295,
             "minimum": 0,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": 0
           }
         }
       },
@@ -4848,10 +5618,7 @@
         "type": "object",
         "properties": {
           "StatusCode": {
-            "maximum": 4294967295,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/StatusCode"
           },
           "AvailableSequenceNumbers": {
             "type": "array",
@@ -4859,7 +5626,8 @@
               "maximum": 4294967295,
               "minimum": 0,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           }
         }
@@ -4876,11 +5644,13 @@
               "maximum": 4294967295,
               "minimum": 0,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           },
           "SendInitialValues": {
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
           }
         }
       },
@@ -4916,7 +5686,8 @@
               "maximum": 4294967295,
               "minimum": 0,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           }
         }
@@ -4930,10 +5701,7 @@
           "Results": {
             "type": "array",
             "items": {
-              "maximum": 4294967295,
-              "minimum": 0,
-              "type": "integer",
-              "format": "int64"
+              "$ref": "#/components/schemas/StatusCode"
             }
           },
           "DiagnosticInfos": {
@@ -4949,11 +5717,13 @@
         "properties": {
           "Low": {
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "default": 0
           },
           "High": {
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "default": 0
           }
         }
       },
@@ -4965,7 +5735,8 @@
           },
           "UnitId": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "default": 0
           },
           "DisplayName": {
             "$ref": "#/components/schemas/LocalizedText"
@@ -4974,6 +5745,41 @@
             "$ref": "#/components/schemas/LocalizedText"
           }
         }
+      },
+      "JsonMessageType": {
+        "enum": [
+          "ua-data",
+          "ua-metadata",
+          "ua-application",
+          "ua-endpoints",
+          "ua-status",
+          "ua-connection",
+          "ua-action-request",
+          "ua-action-response",
+          "ua-action-metadata",
+          "ua-action-responder",
+          "ua-keyframe",
+          "ua-deltaframe",
+          "ua-event",
+          "ua-keepalive"
+        ],
+        "type": "string",
+        "x-enum-varnames": [
+          "Data",
+          "DataSetMetadata",
+          "Application",
+          "Endpoints",
+          "Status",
+          "Connection",
+          "ActionRequest",
+          "ActionResponse",
+          "ActionMetadata",
+          "ActionResponder",
+          "KeyFrame",
+          "DeltaFrame",
+          "Event",
+          "KeepAlive"
+        ]
       }
     }
   }
