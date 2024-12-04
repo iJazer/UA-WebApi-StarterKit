@@ -35,10 +35,10 @@ namespace Measurements.Model
         /// Initializes a new instance of the <see cref="OrientationDataType" /> class.
         /// </summary>
         /// <param name="profileName">profileName.</param>
-        /// <param name="x">x.</param>
-        /// <param name="y">y.</param>
-        /// <param name="rotation">rotation.</param>
-        public OrientationDataType(string profileName = default(string), double x = default(double), double y = default(double), double rotation = default(double))
+        /// <param name="x">x (default to 0D).</param>
+        /// <param name="y">y (default to 0D).</param>
+        /// <param name="rotation">rotation (default to 0D).</param>
+        public OrientationDataType(string profileName = default(string), double x = 0D, double y = 0D, double rotation = 0D)
         {
             this.ProfileName = profileName;
             this.X = x;

@@ -44,15 +44,18 @@
           },
           "X": {
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "default": 0
           },
           "Y": {
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "default": 0
           },
           "Rotation": {
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "default": 0
           }
         }
       }

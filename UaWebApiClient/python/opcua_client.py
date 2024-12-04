@@ -32,7 +32,7 @@ class OpcUaClient:
                     ResultMask=63
                 )
             ]
-        );
+        )
 
         response = self.client.browse(request);     
 

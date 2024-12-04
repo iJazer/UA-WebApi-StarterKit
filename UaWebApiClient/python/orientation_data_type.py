@@ -27,9 +27,9 @@ class OrientationDataType(BaseModel):
     OrientationDataType
     """ # noqa: E501
     profile_name: Optional[StrictStr] = Field(default=None, alias="ProfileName")
-    x: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, alias="X")
-    y: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, alias="Y")
-    rotation: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, alias="Rotation")
+    x: Optional[Union[StrictFloat, StrictInt]] = Field(default=0, alias="X")
+    y: Optional[Union[StrictFloat, StrictInt]] = Field(default=0, alias="Y")
+    rotation: Optional[Union[StrictFloat, StrictInt]] = Field(default=0, alias="Rotation")
     __properties: ClassVar[List[str]] = ["ProfileName", "X", "Y", "Rotation"]
 
     model_config = ConfigDict(
@@ -84,9 +84,9 @@ class OrientationDataType(BaseModel):
 
         _obj = cls.model_validate({
             "ProfileName": obj.get("ProfileName"),
-            "X": obj.get("X"),
-            "Y": obj.get("Y"),
-            "Rotation": obj.get("Rotation")
+            "X": obj.get("X") if obj.get("X") is not None else 0,
+            "Y": obj.get("Y") if obj.get("Y") is not None else 0,
+            "Rotation": obj.get("Rotation") if obj.get("Rotation") is not None else 0
         })
         return _obj
 

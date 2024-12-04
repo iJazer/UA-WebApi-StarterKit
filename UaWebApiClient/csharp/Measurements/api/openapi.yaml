@@ -29,12 +29,15 @@ components:
         ProfileName:
           type: string
         X:
+          default: 0
           format: double
           type: number
         "Y":
+          default: 0
           format: double
           type: number
         Rotation:
+          default: 0
           format: double
           type: number
       type: object

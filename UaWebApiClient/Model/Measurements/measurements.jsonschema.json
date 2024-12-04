@@ -9,7 +9,10 @@
       "type": "object",
       "properties": {
         "ProfileName": {
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "X": {
           "type": "number",

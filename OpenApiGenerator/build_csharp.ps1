@@ -5,6 +5,7 @@ $ModelName = "OpcUa"
 $ModelUri = "http://opcfoundation.org/UA/"
 $ProjectName = "opcua-webapi"
 $Output = "D:\Work\OPC\UA-IIoT-StarterKit\dotnet\opcua-webapi"
+$Output = "..\UaWebApiClient\opcua-webapi\dotnet"
 
 & $Java -jar ".\openapi-generator-cli.jar" generate -g csharp `
     -i "$NodeSets\Schema\opc.ua.openapi.allservices.json" `
