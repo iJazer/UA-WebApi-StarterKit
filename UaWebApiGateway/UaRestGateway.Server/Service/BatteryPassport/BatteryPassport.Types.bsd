@@ -1,0 +1,146 @@
+<opc:TypeDictionary
+  xmlns:opc="http://opcfoundation.org/BinarySchema/"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:ua="http://opcfoundation.org/UA/"
+  xmlns:tns="http://opcfoundation.org/UA/BatteryPassport/"
+  DefaultByteOrder="LittleEndian"
+  TargetNamespace="http://opcfoundation.org/UA/BatteryPassport/"
+>
+  <opc:Import Namespace="http://opcfoundation.org/UA/" Location="Opc.Ua.BinarySchema.bsd"/>
+
+  <opc:StructuredType Name="BatteryPassportDataType" BaseType="ua:ExtensionObject">
+    <opc:Field Name="BatteryMaterialsAndComposition" TypeName="tns:BatteryMaterialsAndCompositionDataType" />
+    <opc:Field Name="CarbonFootprint" TypeName="tns:CarbonFootprintDataType" />
+    <opc:Field Name="CircularityAndResourceEfficiency" TypeName="tns:CircularityAndResourceEfficiencyDataType" />
+    <opc:Field Name="Compliance_LabelsAndCertifications" TypeName="tns:Compliance_LabelsAndCertificationsDataType" />
+    <opc:Field Name="GeneralBatteryAndManufacturerInformation" TypeName="tns:GeneralBatteryAndManufacturerInformationDataType" />
+    <opc:Field Name="PerformanceAndDurability" TypeName="tns:PerformanceAndDurabilityDataType" />
+    <opc:Field Name="SupplyChainDueDiligence" TypeName="tns:SupplyChainDueDiligenceDataType" />
+  </opc:StructuredType>
+
+  <opc:StructuredType Name="BatteryMaterialsAndCompositionDataType" BaseType="ua:ExtensionObject">
+    <opc:Field Name="CriticalRawMaterials" TypeName="opc:String" />
+    <opc:Field Name="BatteryChemistry" TypeName="opc:String" />
+    <opc:Field Name="NameOfTheCathode_Anode_ElectrolyteMaterials" TypeName="opc:String" />
+    <opc:Field Name="RelatedIdentifiersOfTheCathode_Anode_ElectrolyteMaterials" TypeName="opc:String" />
+    <opc:Field Name="WeightOfTheCathode_Anode_ElectrolyteMaterials" TypeName="opc:Double" />
+    <opc:Field Name="NameOfHazardousSubstances" TypeName="opc:String" />
+    <opc:Field Name="HazardClassesAnd_OrCategoriesOfHazardousSubstances" TypeName="opc:String" />
+    <opc:Field Name="RelatedIdentifiersOfHazardousSubstances" TypeName="opc:String" />
+    <opc:Field Name="LocationOfHazardousSubstances" TypeName="opc:String" />
+    <opc:Field Name="ConcentrationRangeOfHazardousSubstances" TypeName="opc:Double" />
+    <opc:Field Name="ImpactOfSubstancesOnTheEnvironment_HumanHealth_Safety" TypeName="opc:String" />
+  </opc:StructuredType>
+
+  <opc:StructuredType Name="CarbonFootprintDataType" BaseType="ua:ExtensionObject">
+    <opc:Field Name="BatteryCarbonFootprint" TypeName="opc:Double" />
+    <opc:Field Name="ShareOfBatteryCarbonFootprintPerLifecycleStage_RawMaterialAcquisitionAndPre_Processing" TypeName="opc:Double" />
+    <opc:Field Name="ShareOfBatteryCarbonFootprintPerLifecycleStage_MainProductProduction" TypeName="opc:Double" />
+    <opc:Field Name="ShareOfBatteryCarbonFootprintPerLifecycleStage_Distribution" TypeName="opc:Double" />
+    <opc:Field Name="ShareOfBatteryCarbonFootprintPerLifecycleStage_EndOfLifeAndRecycling" TypeName="opc:Double" />
+    <opc:Field Name="CarbonFootprintPerformanceClass" TypeName="opc:String" />
+    <opc:Field Name="WebLinkToPublicCarbonFootprintStudy" TypeName="opc:String" />
+  </opc:StructuredType>
+
+  <opc:StructuredType Name="CircularityAndResourceEfficiencyDataType" BaseType="ua:ExtensionObject">
+    <opc:Field Name="ManualForRemovalOfTheBatteryFromTheAppliance" TypeName="opc:String" />
+    <opc:Field Name="ManualForDisassemblyAndDismantlingOfTheBatteryPack" TypeName="opc:String" />
+    <opc:Field Name="PostalAddressOfSourcesForSpareParts" TypeName="opc:String" />
+    <opc:Field Name="E_MailAddressOfSourcesForSpareParts" TypeName="opc:String" />
+    <opc:Field Name="WebAddressOfSourcesForSpareParts" TypeName="opc:String" />
+    <opc:Field Name="PartNumbersForComponents" TypeName="opc:String" />
+    <opc:Field Name="ExtinguishingAgent" TypeName="opc:String" />
+    <opc:Field Name="SafetyMeasures_Instructions" TypeName="opc:String" />
+    <opc:Field Name="Pre_ConsumerRecycledNickelShare" TypeName="opc:Double" />
+    <opc:Field Name="Pre_ConsumerRecycledCobaltShare" TypeName="opc:Double" />
+    <opc:Field Name="Pre_ConsumerRecycledLithiumShare" TypeName="opc:Double" />
+    <opc:Field Name="Pre_ConsumerRecycledLeadShare" TypeName="opc:Double" />
+    <opc:Field Name="Post_ConsumerRecycledNickelShare" TypeName="opc:Double" />
+    <opc:Field Name="Post_ConsumerRecycledCobaltShare" TypeName="opc:Double" />
+    <opc:Field Name="Post_ConsumerRecycledLithiumShare" TypeName="opc:Double" />
+    <opc:Field Name="Post_ConsumerRecycledLeadShare" TypeName="opc:Double" />
+    <opc:Field Name="RenewableContentShare" TypeName="opc:Double" />
+    <opc:Field Name="RoleOfEnd_UsersInContributingToWastePrevention" TypeName="opc:String" />
+    <opc:Field Name="RoleOfEnd_UsersInContributingToTheSeparateCollectionOfWasteBatteries" TypeName="opc:String" />
+    <opc:Field Name="InformationOnSeparateCollection_TakeBack_CollectionPointsAndPreparingForRe_Use_PreparingForRepurposingAndRecyclingOperations" TypeName="opc:String" />
+  </opc:StructuredType>
+
+  <opc:StructuredType Name="Compliance_LabelsAndCertificationsDataType" BaseType="ua:ExtensionObject">
+    <opc:Field Name="ResultsOfTestsReports" TypeName="opc:String" />
+    <opc:Field Name="SeparateCollectionSymbol" TypeName="opc:String" />
+    <opc:Field Name="MeaningOfLabelsAndSymbols" TypeName="opc:String" />
+    <opc:Field Name="CadmiumAndLeadSymbols" TypeName="opc:String" />
+    <opc:Field Name="EUDeclarationOfConformity" TypeName="opc:String" />
+    <opc:Field Name="IDOfEUDeclarationOfConformity" TypeName="opc:String" />
+  </opc:StructuredType>
+
+  <opc:StructuredType Name="GeneralBatteryAndManufacturerInformationDataType" BaseType="ua:ExtensionObject">
+    <opc:Field Name="BatteryUniqueIdentifier" TypeName="opc:String" />
+    <opc:Field Name="ManufacturersIdentification" TypeName="opc:String" />
+    <opc:Field Name="ManufacturingDate" TypeName="opc:DateTime" />
+    <opc:Field Name="ManufacturingPlace" TypeName="opc:String" />
+    <opc:Field Name="BatteryCategory" TypeName="opc:String" />
+    <opc:Field Name="BatteryWeight" TypeName="opc:Double" />
+    <opc:Field Name="BatteryStatus" TypeName="opc:String" />
+  </opc:StructuredType>
+
+  <opc:StructuredType Name="PerformanceAndDurabilityDataType" BaseType="ua:ExtensionObject">
+    <opc:Field Name="TimeSpentChargingDuringExtremeTemperaturesAboveBoundary" TypeName="opc:Int64" />
+    <opc:Field Name="TimeSpentChargingDuringExtremeTemperaturesBelowBoundary" TypeName="opc:Int64" />
+    <opc:Field Name="InformationOnAccidents" TypeName="opc:Int64" />
+    <opc:Field Name="NumberOfDeepDischargeEvents" TypeName="opc:Int64" />
+    <opc:Field Name="NumberOfOverchargeEvents" TypeName="opc:Int64" />
+    <opc:Field Name="CertifiedUsableBatteryEnergy_UBEcertified" TypeName="opc:Int64" />
+    <opc:Field Name="RemainingUsableBatteryEnergy_UBEmeasured" TypeName="opc:Int64" />
+    <opc:Field Name="StateOfCertifiedEnergy_SOCE" TypeName="opc:Int64" />
+    <opc:Field Name="InitialSelf_DischargingRate" TypeName="opc:Double" />
+    <opc:Field Name="CurrentSelf_DischargingRate" TypeName="opc:Double" />
+    <opc:Field Name="EvolutionOfSelf_DischargingRates" TypeName="opc:Int64" />
+    <opc:Field Name="RatedCapacity" TypeName="opc:Int64" />
+    <opc:Field Name="RemainingCapacity" TypeName="opc:Int64" />
+    <opc:Field Name="CapacityFade" TypeName="opc:Int64" />
+    <opc:Field Name="StateOfCharge_SoC" TypeName="opc:Int64" />
+    <opc:Field Name="NominalVoltage" TypeName="opc:Int64" />
+    <opc:Field Name="MinimumVoltage" TypeName="opc:Int64" />
+    <opc:Field Name="MaximumVoltage" TypeName="opc:Int64" />
+    <opc:Field Name="OriginalPowerCapability" TypeName="opc:Int64" />
+    <opc:Field Name="RemainingPowerCapability" TypeName="opc:Int64" />
+    <opc:Field Name="PowerCapabilityFade" TypeName="opc:Int64" />
+    <opc:Field Name="MaximumPermittedBatteryPower" TypeName="opc:Int64" />
+    <opc:Field Name="RatioBetweenNominalAllowedBatteryPower_W_AndBatteryEnergy_Wh" TypeName="opc:Int64" />
+    <opc:Field Name="InitialRoundTripEnergyEfficiency" TypeName="opc:Int64" />
+    <opc:Field Name="RoundTripEnergyEfficiencyAt50_OfCycleLife" TypeName="opc:Int64" />
+    <opc:Field Name="RemainingRoundTripEnergyEfficiency" TypeName="opc:Int64" />
+    <opc:Field Name="RoundTripEnergyEfficiencyFade" TypeName="opc:Int64" />
+    <opc:Field Name="InitialInternalResistanceOnBatteryCellLevel" TypeName="opc:Int64" />
+    <opc:Field Name="CurrentInternalResistanceOnBatteryCellLevel" TypeName="opc:Int64" />
+    <opc:Field Name="InternalResistanceIncreaseOnBatteryCellLevel" TypeName="opc:Int64" />
+    <opc:Field Name="InitialInternalResistanceOnBatteryPackLevel" TypeName="opc:Int64" />
+    <opc:Field Name="CurrentInternalResistanceOnBatteryPackLevel" TypeName="opc:Int64" />
+    <opc:Field Name="InitialInternalResistanceOnBatteryModuleLevel" TypeName="opc:Int64" />
+    <opc:Field Name="CurrentInternalResistanceOnBatteryModuleLevel" TypeName="opc:Int64" />
+    <opc:Field Name="InternalResistanceIncreaseOnBatteryModuleLevel" TypeName="opc:Int64" />
+    <opc:Field Name="ExpectedLifetime_NumberOfCharge_DischargeCycles" TypeName="opc:Int64" />
+    <opc:Field Name="NumberOf_Full_Charge_DischargeCycles" TypeName="opc:Int64" />
+    <opc:Field Name="Cycle_LifeReferenceTest" TypeName="opc:String" />
+    <opc:Field Name="C_RateOfRelevantCycle_LifeTest" TypeName="opc:Double" />
+    <opc:Field Name="EnergyThroughput" TypeName="opc:Double" />
+    <opc:Field Name="CapacityThroughput" TypeName="opc:Double" />
+    <opc:Field Name="CapacityThresholdForExhaustion" TypeName="opc:Int64" />
+    <opc:Field Name="SOCEThresholdForExhaustion" TypeName="opc:Int64" />
+    <opc:Field Name="WarrantyPeriodOfTheBattery" TypeName="opc:Int64" />
+    <opc:Field Name="DateOfPuttingTheBatteryIntoService" TypeName="opc:DateTime" />
+    <opc:Field Name="TemperatureRangeIdleState_LowerBoundary" TypeName="opc:Int64" />
+    <opc:Field Name="TemperatureRangeIdleState_UpperBoundary" TypeName="opc:Int64" />
+    <opc:Field Name="TimeSpentInExtremeTemperaturesAboveBoundary" TypeName="opc:Int64" />
+    <opc:Field Name="TimeSpentInExtremeTemperaturesBelowBoundary" TypeName="opc:Int64" />
+  </opc:StructuredType>
+
+  <opc:StructuredType Name="SupplyChainDueDiligenceDataType" BaseType="ua:ExtensionObject">
+    <opc:Field Name="InformationOfTheDueDiligenceReport" TypeName="opc:String" />
+    <opc:Field Name="ThirdPartySupplyChainAssurances" TypeName="opc:String" />
+    <opc:Field Name="EUTaxonomyDisclosureStatement" TypeName="opc:String" />
+    <opc:Field Name="SustainabilityReport" TypeName="opc:String" />
+  </opc:StructuredType>
+
+</opc:TypeDictionary>

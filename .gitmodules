@@ -1,0 +1,18 @@
+[submodule "UaStack"]
+	path = UaStack
+	url = https://github.com/OPCFoundation/UA-.NETStandard.git
+[submodule "UaRestClient/opcua-webapi-python"]
+	path = UaRestClient/opcua-webapi-python
+	url = https://github.com/OPCFoundation/opcua-webapi-python
+[submodule "UaRestClient/opcua-webapi/net"]
+	path = UaRestClient/opcua-webapi/net
+	url = https://github.com/OPCFoundation/opcua-webapi-net.git
+[submodule "UaRestClient/opcua-webapi/python"]
+	path = UaWebApiClient/opcua-webapi/python
+	url = https://github.com/OPCFoundation/opcua-webapi-python.git
+[submodule "UaRestClient/opcua-webapi/typescript"]
+	path = UaWebApiClient/opcua-webapi/typescript
+	url = https://github.com/OPCFoundation/opcua-webapi-typescript.git
+[submodule "UaRestClient/opcua-webapi/dotnet"]
+	path = UaWebApiClient/opcua-webapi/dotnet
+	url = https://github.com/OPCFoundation/opcua-webapi-dotnet.git

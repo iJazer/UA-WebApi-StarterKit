@@ -1,0 +1,30 @@
+﻿{
+  "main": {
+    "title": "OPC UA Web API Prototype",
+    "subtitle": "OPC UA Communication Using JSON Web APIs",
+    "home": "Home",
+    "monitoring": "Monitoring",
+    "batterypassport": "Battery Passport",
+    "swagger": "API",
+    "account": "Account",
+    "login": "Login",
+    "logout": "Logout",
+    "settings": "Settings",
+    "darkMode": "Dark Mode",
+    "language": "Language",
+    "languages": {
+      "en": "English",
+      "de": "Deutsch",
+      "jp": "日本語"
+    },
+    "loginError": "<0>Please try again later or contact the <0>administrator</0>.</0>"
+  },
+  "error": {
+    "recordNotFound": "No Record Found",
+    "notLoggedIn": "User Unknown",
+    "notLoggedInText": "<0>Access to this site requires an account on the OPC Foundation <1>website</1>.</0>"
+  },
+  "home": {
+    "welcome": "This is the home page."
+  }
+}

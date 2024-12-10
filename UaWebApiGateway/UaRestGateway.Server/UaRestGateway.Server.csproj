@@ -1,0 +1,106 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Company>OPC Foundation</Company>
+    <ProductName>OPC UA Web API Gateway</ProductName>
+    <Copyright>Copyright © OPC Foundation 2024</Copyright>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <SpaRoot>..\uarestgateway.client</SpaRoot>
+    <SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand>
+    <SpaProxyServerUrl>https://localhost:44428</SpaProxyServerUrl>
+    <UserSecretsId>287a97ae-45c4-4359-b7ab-01fc5438b5d5</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Service\BatteryPassport\**" />
+    <Compile Remove="Service\I4AAS\**" />
+    <Compile Remove="Service\Measurements\CSharp\**" />
+    <Compile Remove="Service\Measurements\JavaScript\**" />
+    <Compile Remove="Service\Measurements\Python\**" />
+    <Compile Remove="Service\Measurements\TypeScript\**" />
+    <Compile Remove="Service\WoT\**" />
+    <Content Remove="Service\BatteryPassport\**" />
+    <Content Remove="Service\I4AAS\**" />
+    <Content Remove="Service\Measurements\CSharp\**" />
+    <Content Remove="Service\Measurements\JavaScript\**" />
+    <Content Remove="Service\Measurements\Python\**" />
+    <Content Remove="Service\Measurements\TypeScript\**" />
+    <Content Remove="Service\WoT\**" />
+    <EmbeddedResource Remove="Service\BatteryPassport\**" />
+    <EmbeddedResource Remove="Service\I4AAS\**" />
+    <EmbeddedResource Remove="Service\Measurements\CSharp\**" />
+    <EmbeddedResource Remove="Service\Measurements\JavaScript\**" />
+    <EmbeddedResource Remove="Service\Measurements\Python\**" />
+    <EmbeddedResource Remove="Service\Measurements\TypeScript\**" />
+    <EmbeddedResource Remove="Service\WoT\**" />
+    <None Remove="Service\BatteryPassport\**" />
+    <None Remove="Service\I4AAS\**" />
+    <None Remove="Service\Measurements\CSharp\**" />
+    <None Remove="Service\Measurements\JavaScript\**" />
+    <None Remove="Service\Measurements\Python\**" />
+    <None Remove="Service\Measurements\TypeScript\**" />
+    <None Remove="Service\WoT\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\RequestDispatcher.cs" />
+    <Compile Remove="Service\DPPNodeManager.cs" />
+    <Compile Remove="Service\WoTNodeManager.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Service\Measurements\Measurements.PredefinedNodes.uanodes" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Service\Measurements\Measurements.PredefinedNodes.uanodes" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Azure.Identity" Version="1.13.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaProxy">
+      <Version>8.0.10</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.10" />
+    <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.1.2" />
+    <PackageReference Include="OPCFoundation.NetStandard.Opc.Ua.Client" Version="1.5.377-preview.ga511586173" />
+    <PackageReference Include="OPCFoundation.NetStandard.Opc.Ua.Server" Version="1.5.377-preview.ga511586173" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.9.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\uarestgateway.client\uarestgateway.client.esproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="config\uaserver-configuration.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="UaRestGateway.sqllite">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Data\BatteryPassportSample.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\PublishProfiles\" />
+    <Folder Include="wwwroot\data\" />
+  </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="powershell .\incrementbuildverision.ps1" />
+  </Target>
+
+</Project>
