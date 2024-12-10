@@ -7,8 +7,8 @@ const Measurements = require('../Measurements');
 const testUserName = 'user1';
 const testUserPassword = 'password1';
 const allowLocalServerDebugging = false;
-const defaultUrl = (allowLocalServerDebugging) ? "https://localhost:44429/opcua" : "https://opcua-rest-dashboard.azurewebsites.net/opcua";
-  
+const defaultUrl = (allowLocalServerDebugging) ? "https://localhost:44428/opcua" : "https://webapi.opcfoundation.org/opcua";
+
 const configuration = new OpcUa.Configuration({
     basePath: defaultUrl,
 

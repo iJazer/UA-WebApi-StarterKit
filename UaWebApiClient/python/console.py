@@ -17,7 +17,7 @@ def variant_to_argument_list(input : DataValue) -> List[Argument]:
     return output
 
 useLocalServer = False
-url = "https://localhost:44429/opcua/" if useLocalServer else "https://opcua-rest-dashboard.azurewebsites.net/opcua/"
+url = "https://localhost:44428/opcua/" if useLocalServer else "https://webapi.opcfoundation.org/opcua/"
 
 configuration = Configuration(
     host=url,
