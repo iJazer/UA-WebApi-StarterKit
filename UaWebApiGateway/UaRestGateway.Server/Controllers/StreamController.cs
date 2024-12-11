@@ -44,7 +44,7 @@ namespace UaRestGateway.Server.Controllers
 
                     if (!cache.TryGetValue(nameof(TokenValidationParameters.IssuerSigningKey), out JsonWebKey key))
                     {
-                        using (var client = new HttpClient())
+                        using (var client = CreateClient())
                         {
                             var response = client.GetAsync(parameters.ValidIssuer + "/.well-known/keys").ConfigureAwait(false).GetAwaiter().GetResult();
                             response.EnsureSuccessStatusCode();

@@ -196,6 +196,8 @@ namespace UaRestGateway.Server.Service
 
             using (var client = new HttpClient())
             {
+                client.DefaultRequestHeaders.UserAgent.ParseAdd(UserAgents.Default);
+
                 var response = await client.GetAsync(parameters.ValidIssuer + "/.well-known/keys").ConfigureAwait(false);
                 response.EnsureSuccessStatusCode();
 
