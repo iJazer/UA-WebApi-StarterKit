@@ -78,7 +78,9 @@ namespace UaRestGateway.Server.Controllers
                     return policyErrors == System.Net.Security.SslPolicyErrors.None;
                 };
 
-            return new HttpClient(handler);
+           var client = new HttpClient(handler);
+           client.DefaultRequestHeaders.UserAgent.ParseAdd(UserAgents.Default);
+           return client;
         }
 
         protected ApiResponse<T> ReturnError<T>(string code, string text) where T : class

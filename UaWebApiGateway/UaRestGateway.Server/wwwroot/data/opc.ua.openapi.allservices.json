@@ -17,7 +17,7 @@
       "url": "https://webapi.opcfoundation.org/opcua"
     },
     {
-      "url": "https://localhost:44428/opcua"
+      "url": "https://localhost:44430/opcua"
     }
   ],
   "paths": {

@@ -9,7 +9,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <SpaRoot>..\uarestgateway.client</SpaRoot>
     <SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand>
-    <SpaProxyServerUrl>https://localhost:44428</SpaProxyServerUrl>
+    <SpaProxyServerUrl>https://localhost:44430</SpaProxyServerUrl>
     <UserSecretsId>287a97ae-45c4-4359-b7ab-01fc5438b5d5</UserSecretsId>
   </PropertyGroup>
 
