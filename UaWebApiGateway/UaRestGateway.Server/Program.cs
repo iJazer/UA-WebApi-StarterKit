@@ -108,6 +108,17 @@ namespace UaRestGateway.Server
             var app = builder.Build();
 
             app.UseDefaultFiles();
+            
+            app.Use(async (context, next) =>
+            {
+                if (context.Request.Path == "/data/opc.ua.openapi.allservices.json")
+                {
+                    context.Response.Headers.Append("Access-Control-Allow-Origin", "*");
+                    context.Response.Headers.Append("Access-Control-Allow-Methods", "GET");
+                    context.Response.Headers.Append("Access-Control-Allow-Headers", "Content-Type");
+                }
+                await next();
+            });
 
             app.UseStaticFiles();
             
