@@ -11,9 +11,11 @@ import * as OpcUa from 'opcua-webapi';
 import DataValueDisplay from './DataValueDisplay';
 import { HandleFactory } from '../service/HandleFactory';
 import { SubscriptionState } from '../service/SubscriptionState';
-import { translateAndReadValues } from '../opcua-utils';
+//import { translateAndReadValues } from '../opcua-utils';
 import { IReadValueId } from '../service/IReadValueId';
 import { UserContext } from '../UserProvider';
+
+import { SessionContext } from '../SessionProvider';
 
 interface TypeDefinitionCardProps {
    children?: React.ReactNode,
@@ -106,7 +108,8 @@ const TypeDefinitionCard: React.FC<TypeDefinitionCardProps> = ({ children, varia
                attributeId: OpcUa.Attributes.Value
             } as IReadValueId;
          });
-         const results = await translateAndReadValues(nodesToRead, 60000, user);
+          //const results = await translateAndReadValues(nodesToRead, 60000, user);
+         const results = await translateAndReadValues(nodesToRead, 60000);
          if (results) {
             results.forEach((result) => {
                const mi = variables.find(x => x.subscriberHandle === result.id)
@@ -146,6 +149,7 @@ enum ServerStatusField {
 export const ServerStatusCard = ({ rootId }: ServerStatusCardProps) => {
    const [variables, setVariables] = React.useState<IMonitoredItem[]>([]);
    const [counter, setCounter] = React.useState<number>(1);
+   const { translateAndReadValues } = React.useContext(SessionContext);
 
    React.useEffect(() => {
       const items = [];

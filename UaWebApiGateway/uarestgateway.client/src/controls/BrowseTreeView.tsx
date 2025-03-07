@@ -7,10 +7,12 @@ import { TreeView } from '@mui/x-tree-view/TreeView/TreeView';
 import Paper from '@mui/material/Paper/Paper';
 
 import * as OpcUa from 'opcua-webapi';
-import { ApplicationContext } from '../ApplicationProvider';
+//import { ApplicationContext } from '../ApplicationProvider';
 import { TreeItem } from '@mui/x-tree-view/TreeItem/TreeItem';
 import { NodeIcon } from './NodeIcon';
 import { IBrowsedNode } from '../service/IBrowsedNode';
+
+import { SessionContext } from '../SessionProvider';
 
 export interface BrowseTreeNodeProps {
    parentId?: string
@@ -21,7 +23,8 @@ export interface BrowseTreeNodeProps {
 
 export const BrowseTreeNode = ({ parentId, selectionId, onSelectionChanged }: BrowseTreeNodeProps) => {
    const [children, setChildren] = React.useState<IBrowsedNode[]>([]);
-   const { browseChildren, visibleNodes, nodes } = React.useContext(ApplicationContext);
+    //const { browseChildren, visibleNodes, nodes } = React.useContext(ApplicationContext);
+    const { browseChildren, visibleNodes, nodes } = React.useContext(SessionContext);
 
    React.useEffect(() => {
       if (browseChildren && parentId && selectionId === parentId) {
@@ -61,7 +64,8 @@ interface BrowseTreeViewProps {
 
 export const BrowseTreeView = ({ rootNodeId, onSelectionChanged }: BrowseTreeViewProps) => {
    const [selectionId, setSelectionId] = React.useState<string | undefined>();
-   const { visibleNodes, setVisibleNodes, nodes } = React.useContext(ApplicationContext);
+    //const { visibleNodes, setVisibleNodes, nodes } = React.useContext(ApplicationContext);
+    const { visibleNodes, setVisibleNodes, nodes } = React.useContext(SessionContext);
 
    const handleNodeSelect = React.useCallback((_e: React.SyntheticEvent, nodeId: string) => {
       //console.error(`SELECT node ${nodeId}`);

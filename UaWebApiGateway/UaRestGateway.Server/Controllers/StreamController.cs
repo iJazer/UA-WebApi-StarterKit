@@ -6,17 +6,21 @@ using Microsoft.Extensions.Caching.Memory;
 using UaRestGateway.Server.Model;
 using Opc.Ua;
 using Opc.Ua.Server;
+using Opc.Ua.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Runtime.CompilerServices;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using Opc.Ua.Configuration;
 
 namespace UaRestGateway.Server.Controllers
 {
     [Route("[controller]")]
     public class StreamController : CommonController
     {
+        private Opc.Ua.Client.ISession m_opcSession;
+
         public StreamController(
             IConfiguration configuration,
             ILogger<UaServerController> logger,
@@ -26,6 +30,7 @@ namespace UaRestGateway.Server.Controllers
         :
             base(configuration, logger, context, cache, communicationService)
         {
+            
         }
 
         private ClaimsPrincipal VerifyToken(string token)
@@ -285,7 +290,12 @@ namespace UaRestGateway.Server.Controllers
                             break;
 
                         case ReadRequest input:
+                            //response = await MessageUtils.Read_with_Client(sessionContext, input);
                             response = await MessageUtils.Read(sessionContext, server, input);
+                            //foreach (var node in input.NodesToRead)
+                            //{
+                            //    Console.WriteLine(node.NodeId);
+                            //}
                             break;
 
                         case WriteRequest input:

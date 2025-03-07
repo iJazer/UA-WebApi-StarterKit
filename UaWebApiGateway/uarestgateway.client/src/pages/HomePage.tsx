@@ -7,6 +7,12 @@ import SessionStatusBar from '../controls/SessionStatusBar';
 
 import * as OpcUa from 'opcua-webapi';
 import ServerStatusCard from '../controls/ServerStatusCard';
+import OpcFunctions from '../controls/OpcFunctions';
+import CompanionSpec from '../controls/CompanionSpec';
+import AASSubmodel from '../controls/AASSubmodel';
+import AASFunctions from '../controls/AASFunctions';
+import NetworkListener from '../controls/NetworkListener';
+
 
 export const HomePage = () => {
    const [selection, setSelection] = React.useState<OpcUa.ReferenceDescription | undefined>();
@@ -39,6 +45,25 @@ export const HomePage = () => {
                {selectPanel(selection)}
             </Box>
          </Box>
+           <Box display="flex" p={2} pb={4} sx={{ width: '100%' }}>
+               <Box flexGrow={0}>
+                   <OpcFunctions />
+               </Box>
+               <Box flexGrow={1}>
+                   <CompanionSpec />
+               </Box>
+           </Box>
+           <Box display="flex" p={2} pb={4} sx={{ width: '100%' }}>
+               <Box flexGrow={0}>
+                   <AASFunctions />
+               </Box>
+               <Box flexGrow={1}>
+                   <AASSubmodel />
+               </Box>
+           </Box>
+           <Box display="flex" p={2} pb={4} sx={{ width: '100%' }}>
+               <NetworkListener />
+           </Box>
       </Box>
    );
 };

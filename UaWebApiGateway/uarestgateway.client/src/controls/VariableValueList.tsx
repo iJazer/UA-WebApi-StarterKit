@@ -10,14 +10,16 @@ import Paper from '@mui/material/Paper/Paper';
 import { Skeleton, Typography } from '@mui/material';
 
 import * as OpcUa from 'opcua-webapi';
-import { ApplicationContext } from '../ApplicationProvider';
+//import { ApplicationContext } from '../ApplicationProvider';
 import DataValueDisplay from './DataValueDisplay';
 import { IMonitoredItem, SubscriptionContext } from '../SubscriptionProvider';
 import { HandleFactory } from '../service/HandleFactory';
 import { SubscriptionState } from '../service/SubscriptionState';
 import { IReadValueId } from '../service/IReadValueId';
-import { translateAndReadValues } from '../opcua-utils';
+//import { translateAndReadValues } from '../opcua-utils';
 import { UserContext } from '../UserProvider';
+
+import { SessionContext } from '../SessionProvider';
 
 interface VariableValueListInternals {
    clientHandle: number,
@@ -35,7 +37,9 @@ interface Row {
 }
 
 export const VariableValueList = ({ rootId }: VariableValueListProps) => {
-   const { browseChildren } = React.useContext(ApplicationContext);
+   //const { browseChildren } = React.useContext(ApplicationContext);
+   const { browseChildren } = React.useContext(SessionContext);
+   const { translateAndReadValues } = React.useContext(SessionContext);
    const { user } = React.useContext(UserContext);
    const [variables, setVariables] = React.useState<Row[]>([]);
    const [counter, setCounter] = React.useState<number>(1);
@@ -139,7 +143,8 @@ export const VariableValueList = ({ rootId }: VariableValueListProps) => {
                attributeId: OpcUa.Attributes.Value
             } as IReadValueId;
          });
-         const results = await translateAndReadValues(nodesToRead, 60000, user);
+         //const results = await translateAndReadValues(nodesToRead, 60000, user);
+         const results = await translateAndReadValues(nodesToRead, 60000);
          if (results) {
             results.forEach((result) => {
                const mi = variables.find(x => x.item.subscriberHandle === result.id)

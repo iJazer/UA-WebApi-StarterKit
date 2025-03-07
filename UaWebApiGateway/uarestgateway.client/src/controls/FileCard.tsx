@@ -11,12 +11,14 @@ import * as OpcUa from 'opcua-webapi';
 import DataValueDisplay from './DataValueDisplay';
 import { HandleFactory } from '../service/HandleFactory';
 import { SubscriptionState } from '../service/SubscriptionState';
-import { translateAndReadValues } from '../opcua-utils';
+//import { translateAndReadValues } from '../opcua-utils';
 import { IReadValueId } from '../service/IReadValueId';
 import { UserContext } from '../UserProvider';
 
 import DownloadIcon from '@mui/icons-material/Download';
 import UploadIcon from '@mui/icons-material/Upload';
+
+import { SessionContext } from '../SessionProvider';
 
 interface FileCardProps {
    rootId?: string
@@ -39,7 +41,8 @@ interface FileCardInternals {
 
 export const FileCard = ({ rootId }: FileCardProps) => {
    const { user } = React.useContext(UserContext);
-   const [counter, setCounter] = React.useState<number>(1);
+    const [counter, setCounter] = React.useState<number>(1);
+    const { translateAndReadValues } = React.useContext(SessionContext);
 
    const m = React.useRef<FileCardInternals>({
       clientHandle: HandleFactory.increment(),
@@ -125,7 +128,8 @@ export const FileCard = ({ rootId }: FileCardProps) => {
                attributeId: OpcUa.Attributes.Value
             } as IReadValueId;
          });
-         translateAndReadValues(nodesToRead, 60000, user).then((results) => {
+          //translateAndReadValues(nodesToRead, 60000, user).then((results) => {
+          translateAndReadValues(nodesToRead, 60000).then((results) => {
             if (results) {
                results.forEach((result, index) => {
                   const item = m.current.monitoredItems.at(index)
