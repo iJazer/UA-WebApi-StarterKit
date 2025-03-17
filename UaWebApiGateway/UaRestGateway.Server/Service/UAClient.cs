@@ -1,6 +1,7 @@
 ﻿using Opc.Ua;
 using Opc.Ua.Client;
 using Opc.Ua.Configuration;
+using Opc.Ua.Server;
 using System.Reflection;
 using ISession = Opc.Ua.Client.ISession;
 using StatusCodes = Opc.Ua.StatusCodes;
@@ -25,6 +26,52 @@ namespace UaRestGateway.Server.Service
             m_settings = settings;
             m_logger = logger;
             m_configuration.CertificateValidator.CertificateValidation += CertificateValidation;
+        }
+
+        public UAClient()
+        {
+            //ToDo use with Client
+            //InitializeAsync().GetAwaiter().GetResult();
+        }
+
+        private async Task InitializeAsync()
+        {
+            Console.WriteLine("UAClient created");
+
+            string password = null;
+            var applicationName = "ConsoleReferenceClient";
+            var configSectionName = "Quickstarts.ReferenceClient";
+
+            Uri serverUrl = new Uri("opc.tcp://192.168.119.131:4840");
+
+            CertificatePasswordProvider PasswordProvider = new CertificatePasswordProvider(password);
+            ApplicationInstance application = new ApplicationInstance
+            {
+                ApplicationName = applicationName,
+                ApplicationType = ApplicationType.Client,
+                ConfigSectionName = configSectionName,
+                CertificatePasswordProvider = PasswordProvider
+            };
+
+            var config = await application.LoadApplicationConfiguration(silent: false).ConfigureAwait(false);
+
+            config.TraceConfiguration.ApplySettings();
+
+
+            bool haveAppCertificate = await application.CheckApplicationInstanceCertificate(silent: false, minimumKeySize: 0);
+            if (!haveAppCertificate)
+            {
+                throw new Exception("Application instance certificate invalid!");
+            }
+
+            // Create a session with the server
+            var endpointDescription = CoreClientUtils.SelectEndpoint(serverUrl.ToString(), useSecurity: false);
+            var endpointConfiguration = EndpointConfiguration.Create(config);
+            var endpoint = new ConfiguredEndpoint(null, endpointDescription, endpointConfiguration);
+
+            m_session = await Opc.Ua.Client.Session.Create(config, endpoint, false, applicationName, 60000, new UserIdentity(new AnonymousIdentityToken()), null);
+            Console.WriteLine("Session is activated with intial ID: " + m_session.SessionId);
+            Console.WriteLine("Created Session on " + serverUrl);
         }
         #endregion
 

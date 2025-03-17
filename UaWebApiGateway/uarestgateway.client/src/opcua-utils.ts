@@ -143,7 +143,7 @@ export async function call(
 export async function browseChildren(
    nodeId: string,
    requestTimeout: number = 120000,
-   user?: Account
+    user?: Account,
 ): Promise<IBrowsedNode[] | undefined> {
 
    const controller: AbortController = new AbortController();

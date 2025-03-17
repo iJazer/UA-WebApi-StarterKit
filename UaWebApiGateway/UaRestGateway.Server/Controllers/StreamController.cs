@@ -13,13 +13,15 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Opc.Ua.Configuration;
+using Azure;
 
 namespace UaRestGateway.Server.Controllers
 {
     [Route("[controller]")]
     public class StreamController : CommonController
     {
-        private Opc.Ua.Client.ISession m_opcSession;
+   
+        private UAClient m_opcClient;
 
         public StreamController(
             IConfiguration configuration,
@@ -130,7 +132,7 @@ namespace UaRestGateway.Server.Controllers
 
             while (webSocket.State == WebSocketState.Open)
             {
-                await DispatchMessage(Server, httpContext, sessionContext, webSocket);
+                await DispatchMessage(Server, Client, httpContext, sessionContext, webSocket);
             }
         }
 
@@ -157,6 +159,7 @@ namespace UaRestGateway.Server.Controllers
 
         private async Task DispatchMessage(
             StandardServer server,
+            UAClient client,
             HttpContext httpContext,
             SessionContext sessionContext,
             WebSocket webSocket)
@@ -230,6 +233,7 @@ namespace UaRestGateway.Server.Controllers
                 }
 
                 response = await MessageUtils.CreateSession(sessionContext, server, csr);
+                //response = await MessageUtils.CreateSession_with_Client(sessionContext, client, csr);
 
                 lock (sessionContext)
                 {
@@ -248,9 +252,11 @@ namespace UaRestGateway.Server.Controllers
                 return;
             }
 
+            
             if (request is ActivateSessionRequest asr)
             {
                 response = await MessageUtils.ActivateSession(sessionContext, server, asr);
+                //response = await MessageUtils.ActivateSession_with_Client(sessionContext, client, asr);
                 sessionContext.IsActivated = true;
                 await SendResponse(webSocket, server.MessageContext, response, compress);
                 return;
@@ -262,10 +268,11 @@ namespace UaRestGateway.Server.Controllers
                 Logger.LogError($"BadSessionNotActivated {request.RequestHeader.RequestHandle}");
                 return;
             }
+            
 
             var task = Task.Run(async () =>
             {
-                await ProcessRequest(webSocket, stream, sessionContext, server, request, result.MessageType == WebSocketMessageType.Binary);
+                await ProcessRequest(webSocket, stream, sessionContext, server, client, request, result.MessageType == WebSocketMessageType.Binary);
             });
         }
 
@@ -274,6 +281,7 @@ namespace UaRestGateway.Server.Controllers
             Stream stream, 
             SessionContext sessionContext,
             StandardServer server,
+            UAClient client,
             IServiceRequest request,
             bool compress)
         {
@@ -290,12 +298,12 @@ namespace UaRestGateway.Server.Controllers
                             break;
 
                         case ReadRequest input:
-                            //response = await MessageUtils.Read_with_Client(sessionContext, input);
+//#ifdef ClientAccess
+                            //response = await MessageUtils.Read_with_Client(sessionContext, client, input);
+//#endif
+//#ifdef ServerAccess
                             response = await MessageUtils.Read(sessionContext, server, input);
-                            //foreach (var node in input.NodesToRead)
-                            //{
-                            //    Console.WriteLine(node.NodeId);
-                            //}
+//#endif
                             break;
 
                         case WriteRequest input:
@@ -307,10 +315,12 @@ namespace UaRestGateway.Server.Controllers
                             break;
 
                         case BrowseRequest input:
+                            //response = await MessageUtils.Browse_with_Client(sessionContext, client, input);
                             response = await MessageUtils.Browse(sessionContext, server, input);
                             break;
 
                         case BrowseNextRequest input:
+                            //response = await MessageUtils.BrowseNext_with_Client(sessionContext, client, input);
                             response = await MessageUtils.BrowseNext(sessionContext, server, input);
                             break;
 
@@ -349,7 +359,6 @@ namespace UaRestGateway.Server.Controllers
                         case DeleteMonitoredItemsRequest input:
                             response = await MessageUtils.DeleteMonitoredItems(sessionContext, server, input);
                             break;
-
                         default:
                             throw new ServiceResultException(Opc.Ua.StatusCodes.BadNotSupported, "Request not supported.");
                     }

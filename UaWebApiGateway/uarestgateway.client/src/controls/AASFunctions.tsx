@@ -1,21 +1,34 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper/Paper';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box/Box';
 
+import { updateAAS } from '../controls/AASSubmodel';
 //import * as OpcUa from 'opcua-webapi';
 //import { IBrowsedNode } from '../service/IBrowsedNode';
-//import { SessionContext } from '../SessionProvider';
-
+import { SessionContext } from '../SessionProvider';
 
 interface AASFunctionsProps {
-    // Define any props if needed
+    setMessage: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const AASFunctions: React.FC<AASFunctionsProps> = () => {
-    //const session = useContext(SessionContext);
+const AASFunctions: React.FC<AASFunctionsProps> = ({ setMessage }) => {
+    const [clickCount, setClickCount] = useState(0);
+    const { getSubmodelNodes } = useContext(SessionContext);
+
+    const handleButtonClick = async () => {
+        const newCount = clickCount + 1;
+        setClickCount(newCount);
+        const message = `Button was clicked: ${newCount} times Function not implemented`;
+        try {
+            const result = await getSubmodelNodes(message);
+            updateAAS(setMessage, result);
+        } catch (error) {
+            setMessage('Error fetching submodel nodes');
+        }
+    };
 
     return (
         <Paper elevation={3} sx={{ minWidth: '300px', mr: '5px', height: '100%', width: 'auto' }}>
@@ -23,8 +36,10 @@ const AASFunctions: React.FC<AASFunctionsProps> = () => {
                 AAS
             </Typography>
             <Box display="flex" justifyContent="center">
-                <Button>
-                    Test
+                <Button sx={{
+                    fontSize: '1rem', padding: '10px 20px', backgroundColor: '#333', color: 'white', '&:hover': { color: 'white', backgroundColor: '#555' }
+                }} onClick={handleButtonClick}>
+                    Get Submodel
                 </Button>
             </Box>
         </Paper>

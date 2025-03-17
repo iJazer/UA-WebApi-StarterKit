@@ -1,4 +1,4 @@
- import * as React from 'react';
+import React from 'react';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 import { UserContext } from './UserProvider';
 import * as OpcUa from 'opcua-webapi';
@@ -10,13 +10,13 @@ import { SessionState } from './service/SessionState';
 import { HandleFactory } from './service/HandleFactory';
 
 const DefaultServerUrl = `wss://${location.host}/stream`;
-const DefaultMessage = `No Message send`;
 
 import * as Utils from './opcua-utils';
 import { IBrowsedNode } from './service/IBrowsedNode';
 import { IReadValueId } from './service/IReadValueId';
 import { IReadResult } from './service/IReadResult';
 
+import { setNetworkMessage } from './controls/NetworkListener';
 
 export interface ISessionContext {
    nodes: Map<string, IBrowsedNode>,
@@ -38,7 +38,8 @@ export interface ISessionContext {
    setVisibleNodes: (items: string[]) => void,
    translateAndReadValues: (nodesToRead: IReadValueId[], requestTimeout: number) => Promise<IReadResult[] | null>
    //readPathsAndValues: (nodeIds: IReadValueId[]) => Promise<IBrowsedNode[]>,
-   message: string,
+    message: string,
+    getSubmodelNodes: (aas: string) => Promise<string>
 }
 
 export const SessionContext = React.createContext<ISessionContext>({
@@ -60,8 +61,8 @@ export const SessionContext = React.createContext<ISessionContext>({
    setVisibleNodes: () => { },
    translateAndReadValues: async () => Promise.resolve([]),
    //readPathsAndValues: (): Promise<IBrowsedNode[]> => Promise.resolve([])
-    message: DefaultMessage
-
+    message: "",
+    getSubmodelNodes: (): Promise<string> => Promise.resolve("")
 });
 
 interface SessionProps {
@@ -93,7 +94,6 @@ export const SessionProvider = ({ children }: SessionProps) => {
    const [lastUpdatedNode, setLastUpdatedNode] = React.useState<string>();
    const [visibleNodes, setVisibleNodes] = React.useState<string[]>([]);
    const [message, setMessage] = React.useState<string>("");
-
 
    const m = React.useRef<SessionInternals>({
       nodes: new Map<string, IBrowsedNode>(),
@@ -143,9 +143,17 @@ export const SessionProvider = ({ children }: SessionProps) => {
       //if not use REST
       //if REST create a queue with REST requests
       // Update network message state
-      
-      setMessage(JSON.stringify(request));
-      sendMessage(JSON.stringify(request));
+
+       //setMessage(JSON.stringify(request));
+       // Update network message state
+       setNetworkMessage(setMessage, JSON.stringify(request));
+       
+       try {
+           sendMessage(JSON.stringify(request));
+       } catch (error) {
+           console.error('Failed to send request:', error);
+           // Handle the error appropriately
+       }
    }, [sendMessage]);
 
    const activateSession = React.useCallback((createSessionResponse: OpcUa.CreateSessionResponse) => {
@@ -274,12 +282,40 @@ export const SessionProvider = ({ children }: SessionProps) => {
 
 
     /////----------------------------------------Browse and Read----------------------------------------/////
-    const browseChildren = React.useCallback(async (parentId: string, maxAge: number): Promise<IBrowsedNode[]> => {
-        const cache = Array.from(m.current.nodes.values());
-        const node = cache.find((node) => node.id === parentId);
-        if (maxAge && node && node.lastUpdated && (new Date().getTime() - node.lastUpdated.getTime()) < maxAge) {
-            return cache.filter((node) => node.parentId === parentId);
+    const getSubmodelNodes = React.useCallback(async (aas: string): Promise<string> => {
+        if (m.current.sessionState === SessionState.SessionActive) {
+            /*
+            const request: AAS.GetSubmodelRequest = {
+                RequestHeader: {
+                    Timestamp: new Date(),
+                    TimeoutHint: m.current.requestTimeout,
+                    AuthenticationToken: m.current.authenticationToken
+                },
+                NodesToRead: [
+                    {
+                    }
+                ]
+            };
+
+            const message: IRequestMessage = {
+                ServiceId: OpcUa.DataTypeIds.BrowseRequest,
+                Body: request
+            };
+
+            // Send the request using sendRequest
+            sendRequest(message);
+            */
         }
+            return `Function called: ${aas}`;
+    }, []);
+
+
+    const browseChildren = React.useCallback(async (parentId: string, maxAge: number): Promise<IBrowsedNode[]> => {
+        //const cache = Array.from(m.current.nodes.values());
+        //const node = cache.find((node) => node.id === parentId);
+        //if (maxAge && node && node.lastUpdated && (new Date().getTime() - node.lastUpdated.getTime()) < maxAge) {
+        //    return cache.filter((node) => node.parentId === parentId);
+        //}
         if (m.current.sessionState === SessionState.SessionActive) {
             // Construct the BrowseRequest
             const request: OpcUa.BrowseRequest = {
@@ -288,13 +324,13 @@ export const SessionProvider = ({ children }: SessionProps) => {
                     TimeoutHint: m.current.requestTimeout,
                     AuthenticationToken: m.current.authenticationToken
                 },
+                RequestedMaxReferencesPerNode: 20,
                 NodesToBrowse: [
                     {
                         NodeId: parentId,
                         BrowseDirection: OpcUa.BrowseDirection.Forward,
                         ReferenceTypeId: OpcUa.ReferenceTypeIds.HierarchicalReferences,
                         IncludeSubtypes: true,
-                        NodeClassMask: 0,
                         ResultMask: 63
                     }
                 ]
@@ -309,28 +345,31 @@ export const SessionProvider = ({ children }: SessionProps) => {
             sendRequest(message);
 
             // Wait for the response and process it
-            return new Promise<IBrowsedNode[]>((resolve) => {
+            const response = await new Promise<IResponseMessage>((resolve) => {
                 const interval = setInterval(() => {
                     const response = m.current.lastCompletedRequest?.response;
                     if (response && response.ServiceId === OpcUa.DataTypeIds.BrowseResponse) {
                         clearInterval(interval);
-                        const browseResponse = response.Body as OpcUa.BrowseResponse;
-                        const children = browseResponse.Results?.[0]?.References?.map((reference) => ({
-                            id: reference.NodeId ?? '',
-                            reference,
-                            parentId,
-                            lastUpdated: new Date()
-                        })) ?? [];
-                        children.forEach((child) => {
-                            if (child.id) {
-                                m.current.nodes.set(child.id, child);
-                                setLastUpdatedNode(child.id);
-                            }
-                        });
-                        resolve(children.filter(child => child.id));
+                        resolve(response);
                     }
                 }, 100);
             });
+
+            const browseResponse = response.Body as OpcUa.BrowseResponse;
+            const children = browseResponse.Results?.[0]?.References?.map((reference) => ({
+                id: reference.NodeId ?? '',
+                reference,
+                parentId,
+                lastUpdated: new Date()
+            })) ?? [];
+            children.forEach((child) => {
+                if (child.id) {
+                    m.current.nodes.set(child.id, child);
+                    setLastUpdatedNode(child.id);
+                }
+            });
+            // Filter the nodes based on parentId and resolve the promise
+            return Array.from(m.current.nodes.values()).filter((node) => node.parentId === parentId);
 
         } else {
             const cache = Array.from(m.current.nodes.values());
@@ -497,7 +536,8 @@ export const SessionProvider = ({ children }: SessionProps) => {
       setVisibleNodes,
       translateAndReadValues,
       message,
-      setMessage: setMessageImpl
+      setMessage: setMessageImpl,
+      getSubmodelNodes
    } as ISessionContext;
 
    const processResponse = React.useCallback((response: IResponseMessage) => {
@@ -540,11 +580,11 @@ export const SessionProvider = ({ children }: SessionProps) => {
       }
    }, [lastMessage, processResponse])
 
-   return (
-      <SessionContext.Provider value={sessionContext}>
-         {children}
-      </SessionContext.Provider>
-   );
+    return (
+        <SessionContext.Provider value={sessionContext}>
+            {children}
+        </SessionContext.Provider>
+    );
 };
 
 export default SessionProvider;

@@ -10,12 +10,15 @@ namespace UaRestGateway.Server.Service
         Task<ISession> FindSession(string id, string accessToken = "");
 
         StandardServer ServerApi { get; }
+
+        UAClient ClientAPI { get; }
     }
 
     public class UACommunicationService : BackgroundService, IUACommunicationService
     {
         private readonly Dictionary<string, UAClient> m_sessions = new();
         private readonly GatewayServer m_server;
+        private readonly UAClient m_client;
         private CancellationToken m_stoppingToken;
 
         protected IConfiguration Configuration { get; private set; }
@@ -25,10 +28,13 @@ namespace UaRestGateway.Server.Service
         public override void Dispose()
         {
             Utils.SilentDispose(m_server);
+            //Utils.SilentDispose(m_client);
             base.Dispose();
         }
 
         public StandardServer ServerApi { get { return m_server.ServerApi; } }
+
+        public UAClient ClientAPI { get { return m_client; } }
 
         public async Task<ISession> FindSession(string id, string accessToken = "")
         {
@@ -74,6 +80,7 @@ namespace UaRestGateway.Server.Service
             Configuration = configuration;
             Logger = logger;
             m_server = new GatewayServer();
+            m_client = new UAClient();
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)

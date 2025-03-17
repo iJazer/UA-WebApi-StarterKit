@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box/Box';
 
 import { BrowseTreeView } from '../controls/BrowseTreeView';
@@ -7,8 +7,6 @@ import SessionStatusBar from '../controls/SessionStatusBar';
 
 import * as OpcUa from 'opcua-webapi';
 import ServerStatusCard from '../controls/ServerStatusCard';
-import OpcFunctions from '../controls/OpcFunctions';
-import CompanionSpec from '../controls/CompanionSpec';
 import AASSubmodel from '../controls/AASSubmodel';
 import AASFunctions from '../controls/AASFunctions';
 import NetworkListener from '../controls/NetworkListener';
@@ -16,6 +14,7 @@ import NetworkListener from '../controls/NetworkListener';
 
 export const HomePage = () => {
    const [selection, setSelection] = React.useState<OpcUa.ReferenceDescription | undefined>();
+   const [message, setMessage] = useState<string>('');
 
    const selectPanel = React.useCallback((reference?: OpcUa.ReferenceDescription) => {
       if (!reference) {
@@ -37,33 +36,27 @@ export const HomePage = () => {
    return (
       <Box display="flex" flexDirection="column" p={2} sx={{ width: '100%' }}>
          <SessionStatusBar />
-         <Box display="flex" p={2} pb={4} sx={{ width: '100%' }}>
-            <Box flexGrow={0}>
+         <Box display="flex" p={2} pb={4} sx={{ width: '100%', height: '33.33vh' }}>
+            <Box flexGrow={0} sx={{ overflow: 'auto' }}>
                <BrowseTreeView rootNodeId={OpcUa.ObjectIds.RootFolder} onSelectionChanged={onSelectionChanged} />
             </Box>
-            <Box flexGrow={1}>
+            <Box flexGrow={0} sx={{ overflow: 'auto' }} >
                {selectPanel(selection)}
             </Box>
          </Box>
-           <Box display="flex" p={2} pb={4} sx={{ width: '100%' }}>
-               <Box flexGrow={0}>
-                   <OpcFunctions />
-               </Box>
-               <Box flexGrow={1}>
-                   <CompanionSpec />
-               </Box>
-           </Box>
-           <Box display="flex" p={2} pb={4} sx={{ width: '100%' }}>
-               <Box flexGrow={0}>
-                   <AASFunctions />
-               </Box>
-               <Box flexGrow={1}>
-                   <AASSubmodel />
-               </Box>
-           </Box>
-           <Box display="flex" p={2} pb={4} sx={{ width: '100%' }}>
-               <NetworkListener />
-           </Box>
+         <Box display="flex" p={2} pb={4} sx={{ width: '100%', height: '33.33vh' }}>
+            <Box flexGrow={0} sx={{ overflow: 'auto' }}>
+                   <AASFunctions setMessage={setMessage} />
+            </Box>
+            <Box flexGrow={1} sx={{ overflow: 'auto' }}>
+                   <AASSubmodel message={message} />
+            </Box>
+         </Box>
+         <Box display="flex" p={2} pb={4} sx={{ width: '100%'}}>
+            <Box flexGrow={0} sx={{ width: '100%'}}>
+                   <NetworkListener />
+            </Box>
+         </Box>
       </Box>
    );
 };

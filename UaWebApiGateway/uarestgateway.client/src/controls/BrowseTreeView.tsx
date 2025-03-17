@@ -5,6 +5,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { TreeView } from '@mui/x-tree-view/TreeView/TreeView';
 import Paper from '@mui/material/Paper/Paper';
+import Typography from '@mui/material/Typography';
 
 import * as OpcUa from 'opcua-webapi';
 //import { ApplicationContext } from '../ApplicationProvider';
@@ -28,7 +29,7 @@ export const BrowseTreeNode = ({ parentId, selectionId, onSelectionChanged }: Br
 
    React.useEffect(() => {
       if (browseChildren && parentId && selectionId === parentId) {
-         browseChildren(parentId, 0).then((x) => {
+          browseChildren(parentId, 0).then((x) => {
             setChildren(x);
          });
       }
@@ -82,7 +83,10 @@ export const BrowseTreeView = ({ rootNodeId, onSelectionChanged }: BrowseTreeVie
    }
 
    return (
-      <Paper elevation={3} sx={{ minWidth: '300px', mr: '5px', height: '100%', width: 'auto' }}>
+       <Paper elevation={3} sx={{ minWidth: '300px', mr: '5px', height: '100%', width: 'auto' }}>
+           <Typography variant="h5" component="h2" gutterBottom>
+               OPC UA
+           </Typography>
          <TreeView
             defaultCollapseIcon={<ExpandMoreIcon />}
             defaultExpandIcon={<ChevronRightIcon />}

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useContext } from 'react'
 import TableContainer from '@mui/material/TableContainer/TableContainer';
 import Table from '@mui/material/Table/Table';
 import TableHead from '@mui/material/TableHead/TableHead';
@@ -8,22 +8,23 @@ import TableCell from '@mui/material/TableCell/TableCell';
 import TableBody from '@mui/material/TableBody/TableBody';
 import Paper from '@mui/material/Paper/Paper';
 import { Typography } from '@mui/material';
-
 import { SessionContext } from '../SessionProvider';
 
 
-export const NetworkListener = () => {
-    const { message: sessionMessage } = React.useContext(SessionContext);
-    const [networkMessage, setMessage] = useState<string>("");
+interface NetworkListenerProps {
+    message: string;
+}
 
-    useEffect(() => {
-        setMessage(sessionMessage);
-    }, [sessionMessage]);
+// Define and export a function
+export const setNetworkMessage = (
+    setMessage: React.Dispatch<React.SetStateAction<string>>,
+    message: string,
+) => {
+    setMessage(message ? JSON.stringify(JSON.parse(message), null, 2) : "");
+}
 
-    const formattedMessage = useMemo(() => {
-        return networkMessage ? JSON.stringify(JSON.parse(networkMessage), null, 2) : "";
-    }, [networkMessage]);
-
+const NetworkListener: React.FC<NetworkListenerProps> = () => {
+    const { message } = useContext(SessionContext);
 
     return (
         <TableContainer component={Paper} elevation={3} sx={{ height: '100%', width: '100%' }}>
@@ -36,13 +37,13 @@ export const NetworkListener = () => {
                 <TableBody>
                     <TableRow>
                         <TableCell>
-                            <pre>{formattedMessage}</pre>
+                            <pre>{message}</pre>
                         </TableCell>
                     </TableRow>
                 </TableBody>
             </Table>
         </TableContainer>
     );
-}
+};
 
 export default NetworkListener;

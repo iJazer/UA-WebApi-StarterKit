@@ -1,20 +1,21 @@
 import React from 'react';
 import Box from '@mui/material/Box/Box';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import StopIcon from '@mui/icons-material/Stop';
+//import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+//import StopIcon from '@mui/icons-material/Stop';
 import { Button, Toolbar, Typography, useTheme } from '@mui/material';
 
 import * as OpcUa from 'opcua-webapi';
 import * as Web from '../Web';
 import { SessionContext } from '../SessionProvider';
 
-import { styled } from '@mui/material/styles';
+//import { styled } from '@mui/material/styles';
 import { IMonitoredItem, SubscriptionContext } from '../SubscriptionProvider';
 import { HandleFactory } from '../service/HandleFactory';
 import { SubscriptionState } from '../service/SubscriptionState';
 import { SessionState } from '../service/SessionState';
 import { IRequestMessage } from '../service/IRequestMessage';
 
+/*
 const CustomButton = styled(Button)(({ theme }) => ({
    paddingLeft: 0,
    paddingRight: 0,
@@ -23,6 +24,7 @@ const CustomButton = styled(Button)(({ theme }) => ({
       color: theme.palette.primary.dark
    }
 }));
+*/
 
 export const SessionStatusBar = () => {
    const theme = useTheme();
@@ -59,7 +61,6 @@ export const SessionStatusBar = () => {
          }
       }
    }, [lastCompletedRequest, clientHandle]);
-
    React.useEffect(() => {
       if (subscriptionState === SubscriptionState.Open) {
          const itemsToCreate = monitoredItems.filter(item => !item.monitoredItemId && !item.creationError);
@@ -125,11 +126,11 @@ export const SessionStatusBar = () => {
    return (
       <Toolbar variant='dense' disableGutters sx={{ py: 0, minHeight: '36px', justifyContent: 'space-between' }}>
          <Box ml={6} sx={{ flexGrow: 0, display: { xs: 'none', color: theme.palette.text.primary, md: 'flex' } }}>
-            <CustomButton sx={{ mr: 2 }} onClick={() => handleConnect(sessionState)}>
-               {(sessionState === SessionState.Disconnected) ? <PlayArrowIcon /> : <StopIcon />}
-            </CustomButton>
+               {/* <CustomButton sx={{ mr: 2 }} onClick={() => handleConnect(sessionState)}>
+                    {(sessionState === SessionState.Disconnected) ? <PlayArrowIcon /> : <StopIcon />}
+                </CustomButton> */}
             <Button sx={{ mr: 2 }} onClick={() => handleConnect(sessionState)} >
-               <Typography variant='body2' sx={{ pr: 4 }}>Session:</Typography>
+               <Typography variant='body2' sx={{ pr: 4 }}>Websocket:</Typography>
                <Typography variant='body2' fontWeight={'bolder'}>{SessionState[sessionState]}</Typography>
             </Button>
             <Button sx={{ my: 2 }}>

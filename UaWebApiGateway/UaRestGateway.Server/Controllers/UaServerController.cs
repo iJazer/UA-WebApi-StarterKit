@@ -94,6 +94,7 @@ namespace UaRestGateway.Server.Controllers
             {
                 var context = GetSessionContext(HttpContext);
                 var request = await Decode<ReadRequest>(Server.MessageContext);
+                //var response = await MessageUtils.Read_with_Client(context, Client, request);
                 var response = await MessageUtils.Read(context, Server, request);
                 return await Encode(Server.MessageContext, response);
             }
@@ -146,6 +147,7 @@ namespace UaRestGateway.Server.Controllers
                 var context = GetSessionContext(HttpContext);
                 var request = await Decode<BrowseRequest>(Server.MessageContext);
                 var response = await MessageUtils.Browse(context, Server, request);
+                //var response = await MessageUtils.Browse_with_Client(context, Client, request);
                 return await Encode(Server.MessageContext, response);
             }
             catch (Exception e)
@@ -162,6 +164,7 @@ namespace UaRestGateway.Server.Controllers
             {
                 var context = GetSessionContext(HttpContext);
                 var request = await Decode<BrowseNextRequest>(Server.MessageContext);
+                //var response = await MessageUtils.BrowseNext_with_Client(context, Client, request);
                 var response = await MessageUtils.BrowseNext(context, Server, request);
                 return await Encode(Server.MessageContext, response);
             }

@@ -5,6 +5,10 @@ using Opc.Ua.Server;
 using Opc.Ua.Client;
 using Opc.Ua.Configuration;
 using UaRestGateway.Server.Service;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Newtonsoft.Json.Linq;
+using UaRestGateway.Server.Model;
+using System;
 
 namespace UaRestGateway.Server.Controllers
 {
@@ -312,83 +316,224 @@ namespace UaRestGateway.Server.Controllers
             }
         }
 
-        public static async Task<IServiceResponse> Read_with_Client(
+        public static Task<IServiceResponse> CreateSession_with_Client(
             SessionContext context,
-            ReadRequest request)
+            UAClient client,
+            CreateSessionRequest request)
         {
-            UAClient client = null;
-
             try
             {
-                string password = null;
-                var applicationName = "ConsoleReferenceClient";
-                var configSectionName = "Quickstarts.ReferenceClient";
+                SecureChannelContext.Current = context.ChannelContext;
 
-                Uri serverUrl = new Uri("opc.tcp://192.168.119.131:4840");
+                var responseHeader = client.Session.CreateSession(
+                    request.RequestHeader,
+                    request.ClientDescription,
+                    request.ServerUri,
+                    request.EndpointUrl,
+                    request.SessionName,
+                    request.ClientNonce,
+                    request.ClientCertificate,
+                    request.RequestedSessionTimeout,
+                    request.MaxResponseMessageSize,
+                    out NodeId sessionId,
+                    out NodeId authenticationToken,
+                    out double revisedSessionTimeout,
+                    out byte[] serverNonce,
+                    out byte[] serverCertificate,
+                    out EndpointDescriptionCollection serverEndpoints,
+                    out SignedSoftwareCertificateCollection serverSoftwareCertificates,
+                    out SignatureData serverSignature,
+                    out uint maxRequestMessageSize);
 
-                CertificatePasswordProvider PasswordProvider = new CertificatePasswordProvider(password);
-                ApplicationInstance application = new ApplicationInstance
+                serverEndpoints = new EndpointDescriptionCollection(new EndpointDescription[] { SecureChannelContext.Current.EndpointDescription });
+
+                var response = new CreateSessionResponse()
                 {
-                    ApplicationName = applicationName,
-                    ApplicationType = ApplicationType.Client,
-                    ConfigSectionName = configSectionName,
-                    CertificatePasswordProvider = PasswordProvider
+                    ResponseHeader = responseHeader,
+                    SessionId = sessionId,
+                    AuthenticationToken = authenticationToken,
+                    RevisedSessionTimeout = revisedSessionTimeout,
+                    ServerNonce = serverNonce,
+                    ServerCertificate = serverCertificate,
+                    ServerEndpoints = serverEndpoints,
+                    ServerSoftwareCertificates = serverSoftwareCertificates,
+                    ServerSignature = serverSignature,
+                    MaxRequestMessageSize = maxRequestMessageSize
                 };
 
-                var config = await application.LoadApplicationConfiguration(silent: false).ConfigureAwait(false);
+                return Task.FromResult<IServiceResponse>(response);
+            }
+            catch (Exception e)
+            {
+                return Task.FromResult(Fault(request, e));
+            }
+        }
+        public static Task<IServiceResponse> ActivateSession_with_Client(
+            SessionContext context,
+            UAClient client,
+            ActivateSessionRequest request,
+            string accessToken = null)
+        {
+            try
+            {
+                SecureChannelContext.Current = context.ChannelContext;
 
-                config.TraceConfiguration.ApplySettings();
+                var userIdentity =
+                    (request?.UserIdentityToken?.Body == null)
+                    ? request.UserIdentityToken
+                    : ((!String.IsNullOrEmpty(accessToken))
+                    ? new ExtensionObject(new IssuedIdentityToken()
+                    {
+                        PolicyId = SecureChannelContext.Current.EndpointDescription.UserIdentityTokens.Where(x => x.TokenType == UserTokenType.IssuedToken).FirstOrDefault()?.PolicyId,
+                        DecryptedTokenData = new UTF8Encoding(false).GetBytes(accessToken)
+                    })
+                    : null);
 
+                var responseHeader = client.Session.ActivateSession(
+                    request.RequestHeader,
+                    request.ClientSignature,
+                    request.ClientSoftwareCertificates,
+                    request.LocaleIds,
+                    userIdentity,
+                    request.UserTokenSignature,
+                    out byte[] serverNonce,
+                    out StatusCodeCollection results,
+                    out DiagnosticInfoCollection diagnosticInfos);
 
-                bool haveAppCertificate = await application.CheckApplicationInstanceCertificate(silent: false, minimumKeySize: 0);
-                if (!haveAppCertificate)
+                var response = new ActivateSessionResponse()
                 {
-                    throw new Exception("Application instance certificate invalid!");
+                    ResponseHeader = responseHeader,
+                    ServerNonce = serverNonce,
+                    Results = results,
+                    DiagnosticInfos = diagnosticInfos
+                };
+
+                return Task.FromResult<IServiceResponse>(response);
+            }
+            catch (Exception e)
+            {
+                return Task.FromResult(Fault(request, e));
+            }
+        }
+
+        public static Task<IServiceResponse> BrowseNext_with_Client(
+            SessionContext context,
+            UAClient client,
+            BrowseNextRequest request)
+        {
+            try
+            {
+                SecureChannelContext.Current = context.ChannelContext;
+
+                if (NodeId.IsNull(request.RequestHeader.AuthenticationToken))
+                {
+                    request.RequestHeader.AuthenticationToken = context.AuthenticationToken;
                 }
 
-                // Create a session with the server
-                var endpointDescription = CoreClientUtils.SelectEndpoint(serverUrl.ToString(), useSecurity: false);
-                var endpointConfiguration = EndpointConfiguration.Create(config);
-                var endpoint = new ConfiguredEndpoint(null, endpointDescription, endpointConfiguration);
+                var responseHeader = client.Session.BrowseNext(
+                    request.RequestHeader,
+                    request.ReleaseContinuationPoints,
+                    request.ContinuationPoints,
+                    out BrowseResultCollection results,
+                    out DiagnosticInfoCollection diagnosticInfos);
 
-                var session = await Opc.Ua.Client.Session.Create(config, endpoint, false, applicationName, 60000, new UserIdentity(new AnonymousIdentityToken()), null);
-
-                Console.WriteLine("Created Session on " + serverUrl);
-
-                NodeId nodeId = request.NodesToRead[0].NodeId;
-
-                //NodeId nodeId = new NodeId("ns=4;i=6024");
-                DataValue value = session.ReadValue(nodeId);
-
-                Console.WriteLine("Value of node {0}: {1}", nodeId, value.Value);
-
-                var responseHeader = new ResponseHeader()
-                {
-                    Timestamp = DateTime.UtcNow,
-                    RequestHandle = request.RequestHeader.RequestHandle,
-                    ServiceResult = Opc.Ua.StatusCodes.Good
-                };
-
-                var results = new DataValueCollection { value };
-                var diagnosticInfos = new DiagnosticInfoCollection();
-
-                var response = new ReadResponse()
+                var response = new BrowseNextResponse()
                 {
                     ResponseHeader = responseHeader,
                     Results = results,
                     DiagnosticInfos = diagnosticInfos
                 };
 
-                return response;
+                return Task.FromResult<IServiceResponse>(response);
             }
             catch (Exception e)
             {
-                return MessageUtils.Fault(request, e);
+                return Task.FromResult(Fault(request, e));
             }
-            finally
+        }
+
+        public static Task<IServiceResponse> Browse_with_Client(
+            SessionContext context,
+            UAClient client,
+            BrowseRequest request)
+        {
+            try
             {
-                client?.Dispose();
+                var session = client.Session;
+
+                SecureChannelContext.Current = context.ChannelContext;
+                if (context.IsActivated) { 
+                    if (NodeId.IsNull(request.RequestHeader.AuthenticationToken))
+                    {
+                        request.RequestHeader.AuthenticationToken = context.AuthenticationToken;
+                    }
+                }
+
+                var responseHeader = session.Browse(
+                    request.RequestHeader,
+                    request.View,
+                    request.RequestedMaxReferencesPerNode,
+                    request.NodesToBrowse,
+                    out BrowseResultCollection results,
+                    out DiagnosticInfoCollection diagnosticInfos);
+                
+                var response = new BrowseResponse()
+                {
+                    ResponseHeader = responseHeader,
+                    Results = results,
+                    DiagnosticInfos = diagnosticInfos
+                };
+
+                return Task.FromResult<IServiceResponse>(response);
             }
+            catch (Exception e)
+            {
+                return Task.FromResult(Fault(request, e));
+            }
+        }
+
+        public static Task<IServiceResponse> Read_with_Client(
+            SessionContext context,
+            UAClient client,
+            ReadRequest request)
+        {
+            return Task.Run(() =>
+            {
+                try
+                {
+                    // Set the current secure channel context
+                    SecureChannelContext.Current = context.ChannelContext;
+
+                    // Use the authentication token from the context if not provided in the request
+                    if (NodeId.IsNull(request.RequestHeader.AuthenticationToken))
+                    {
+                        request.RequestHeader.AuthenticationToken = context.AuthenticationToken;
+                    }
+
+                    // Perform the read operation
+                    var responseHeader = client.Session.Read(
+                        request.RequestHeader,
+                        request.MaxAge,
+                        request.TimestampsToReturn,
+                        request.NodesToRead,
+                        out DataValueCollection results,
+                        out DiagnosticInfoCollection diagnosticInfos);
+
+                    // Create and return the response
+                    var response = new ReadResponse()
+                    {
+                        ResponseHeader = responseHeader,
+                        Results = results,
+                        DiagnosticInfos = diagnosticInfos
+                    };
+
+                    return (IServiceResponse)response;
+                }
+                catch (Exception e)
+                {
+                    return MessageUtils.Fault(request, e);
+                }
+            });
         }
         public static Task<IServiceResponse> Read(
             SessionContext context,
@@ -510,7 +655,7 @@ namespace UaRestGateway.Server.Controllers
                 {
                     request.RequestHeader.AuthenticationToken = context.AuthenticationToken;
                 }
-
+          
                 var responseHeader = server.Browse(
                     request.RequestHeader,
                     request.View,
