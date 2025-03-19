@@ -31,7 +31,7 @@ namespace UaRestGateway.Server.Service
         public UAClient()
         {
             //ToDo use with Client
-            //InitializeAsync().GetAwaiter().GetResult();
+            InitializeAsync().GetAwaiter().GetResult();
         }
 
         private async Task InitializeAsync()
@@ -42,6 +42,7 @@ namespace UaRestGateway.Server.Service
             var applicationName = "ConsoleReferenceClient";
             var configSectionName = "Quickstarts.ReferenceClient";
 
+            //Change Server URL
             Uri serverUrl = new Uri("opc.tcp://192.168.119.131:4840");
 
             CertificatePasswordProvider PasswordProvider = new CertificatePasswordProvider(password);

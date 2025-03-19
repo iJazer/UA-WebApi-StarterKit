@@ -315,107 +315,7 @@ namespace UaRestGateway.Server.Controllers
                 return Task.FromResult(Fault(request, e));
             }
         }
-
-        public static Task<IServiceResponse> CreateSession_with_Client(
-            SessionContext context,
-            UAClient client,
-            CreateSessionRequest request)
-        {
-            try
-            {
-                SecureChannelContext.Current = context.ChannelContext;
-
-                var responseHeader = client.Session.CreateSession(
-                    request.RequestHeader,
-                    request.ClientDescription,
-                    request.ServerUri,
-                    request.EndpointUrl,
-                    request.SessionName,
-                    request.ClientNonce,
-                    request.ClientCertificate,
-                    request.RequestedSessionTimeout,
-                    request.MaxResponseMessageSize,
-                    out NodeId sessionId,
-                    out NodeId authenticationToken,
-                    out double revisedSessionTimeout,
-                    out byte[] serverNonce,
-                    out byte[] serverCertificate,
-                    out EndpointDescriptionCollection serverEndpoints,
-                    out SignedSoftwareCertificateCollection serverSoftwareCertificates,
-                    out SignatureData serverSignature,
-                    out uint maxRequestMessageSize);
-
-                serverEndpoints = new EndpointDescriptionCollection(new EndpointDescription[] { SecureChannelContext.Current.EndpointDescription });
-
-                var response = new CreateSessionResponse()
-                {
-                    ResponseHeader = responseHeader,
-                    SessionId = sessionId,
-                    AuthenticationToken = authenticationToken,
-                    RevisedSessionTimeout = revisedSessionTimeout,
-                    ServerNonce = serverNonce,
-                    ServerCertificate = serverCertificate,
-                    ServerEndpoints = serverEndpoints,
-                    ServerSoftwareCertificates = serverSoftwareCertificates,
-                    ServerSignature = serverSignature,
-                    MaxRequestMessageSize = maxRequestMessageSize
-                };
-
-                return Task.FromResult<IServiceResponse>(response);
-            }
-            catch (Exception e)
-            {
-                return Task.FromResult(Fault(request, e));
-            }
-        }
-        public static Task<IServiceResponse> ActivateSession_with_Client(
-            SessionContext context,
-            UAClient client,
-            ActivateSessionRequest request,
-            string accessToken = null)
-        {
-            try
-            {
-                SecureChannelContext.Current = context.ChannelContext;
-
-                var userIdentity =
-                    (request?.UserIdentityToken?.Body == null)
-                    ? request.UserIdentityToken
-                    : ((!String.IsNullOrEmpty(accessToken))
-                    ? new ExtensionObject(new IssuedIdentityToken()
-                    {
-                        PolicyId = SecureChannelContext.Current.EndpointDescription.UserIdentityTokens.Where(x => x.TokenType == UserTokenType.IssuedToken).FirstOrDefault()?.PolicyId,
-                        DecryptedTokenData = new UTF8Encoding(false).GetBytes(accessToken)
-                    })
-                    : null);
-
-                var responseHeader = client.Session.ActivateSession(
-                    request.RequestHeader,
-                    request.ClientSignature,
-                    request.ClientSoftwareCertificates,
-                    request.LocaleIds,
-                    userIdentity,
-                    request.UserTokenSignature,
-                    out byte[] serverNonce,
-                    out StatusCodeCollection results,
-                    out DiagnosticInfoCollection diagnosticInfos);
-
-                var response = new ActivateSessionResponse()
-                {
-                    ResponseHeader = responseHeader,
-                    ServerNonce = serverNonce,
-                    Results = results,
-                    DiagnosticInfos = diagnosticInfos
-                };
-
-                return Task.FromResult<IServiceResponse>(response);
-            }
-            catch (Exception e)
-            {
-                return Task.FromResult(Fault(request, e));
-            }
-        }
-
+     
         public static Task<IServiceResponse> BrowseNext_with_Client(
             SessionContext context,
             UAClient client,
@@ -425,10 +325,13 @@ namespace UaRestGateway.Server.Controllers
             {
                 SecureChannelContext.Current = context.ChannelContext;
 
+                /*
                 if (NodeId.IsNull(request.RequestHeader.AuthenticationToken))
                 {
-                    request.RequestHeader.AuthenticationToken = context.AuthenticationToken;
+                    throw new ServiceResultException(Opc.Ua.StatusCodes.BadSessionIdInvalid, "Session not specified.");
                 }
+                */
+                request.RequestHeader.AuthenticationToken = NodeId.Null;
 
                 var responseHeader = client.Session.BrowseNext(
                     request.RequestHeader,
@@ -462,13 +365,15 @@ namespace UaRestGateway.Server.Controllers
                 var session = client.Session;
 
                 SecureChannelContext.Current = context.ChannelContext;
+                /*
                 if (context.IsActivated) { 
                     if (NodeId.IsNull(request.RequestHeader.AuthenticationToken))
                     {
                         request.RequestHeader.AuthenticationToken = context.AuthenticationToken;
                     }
                 }
-
+                */
+                request.RequestHeader.AuthenticationToken = NodeId.Null;
                 var responseHeader = session.Browse(
                     request.RequestHeader,
                     request.View,
@@ -476,7 +381,15 @@ namespace UaRestGateway.Server.Controllers
                     request.NodesToBrowse,
                     out BrowseResultCollection results,
                     out DiagnosticInfoCollection diagnosticInfos);
-                
+
+                if (context.IsActivated)
+                {
+                    if (NodeId.IsNull(request.RequestHeader.AuthenticationToken))
+                    {
+                        request.RequestHeader.AuthenticationToken = context.AuthenticationToken;
+                    }
+                }
+
                 var response = new BrowseResponse()
                 {
                     ResponseHeader = responseHeader,
@@ -505,11 +418,13 @@ namespace UaRestGateway.Server.Controllers
                     SecureChannelContext.Current = context.ChannelContext;
 
                     // Use the authentication token from the context if not provided in the request
+                    /*
                     if (NodeId.IsNull(request.RequestHeader.AuthenticationToken))
                     {
                         request.RequestHeader.AuthenticationToken = context.AuthenticationToken;
                     }
-
+                    */
+                    request.RequestHeader.AuthenticationToken = NodeId.Null;
                     // Perform the read operation
                     var responseHeader = client.Session.Read(
                         request.RequestHeader,
@@ -534,6 +449,99 @@ namespace UaRestGateway.Server.Controllers
                     return MessageUtils.Fault(request, e);
                 }
             });
+        }
+
+        public static Task<IServiceResponse> CreateSubscription_with_Client(
+            SessionContext context,
+            UAClient client,
+            CreateSubscriptionRequest request)
+        {
+            try
+            {
+                SecureChannelContext.Current = context.ChannelContext;
+
+                /*
+                if (NodeId.IsNull(request.RequestHeader.AuthenticationToken))
+                {
+                    throw new ServiceResultException(Opc.Ua.StatusCodes.BadSessionIdInvalid, "Session not specified.");
+                }
+                */
+                request.RequestHeader.AuthenticationToken = NodeId.Null;
+
+                var responseHeader = client.Session.CreateSubscription(
+                    request.RequestHeader,
+                    request.RequestedPublishingInterval,
+                    request.RequestedLifetimeCount,
+                    request.RequestedMaxKeepAliveCount,
+                    request.MaxNotificationsPerPublish,
+                    request.PublishingEnabled,
+                    request.Priority,
+                    out uint subscriptionId,
+                    out double revisedPublishingInterval,
+                    out uint revisedLifetimeCount,
+                    out uint revisedMaxKeepAliveCount);
+
+                var response = new CreateSubscriptionResponse()
+                {
+                    ResponseHeader = responseHeader,
+                    SubscriptionId = subscriptionId,
+                    RevisedPublishingInterval = revisedPublishingInterval,
+                    RevisedLifetimeCount = revisedLifetimeCount,
+                    RevisedMaxKeepAliveCount = revisedMaxKeepAliveCount
+                };
+
+                return Task.FromResult<IServiceResponse>(response);
+            }
+            catch (Exception e)
+            {
+                return Task.FromResult(Fault(request, e));
+            }
+        }
+
+        public static Task<IServiceResponse> Publish_with_Client(
+            SessionContext context,
+            UAClient client,
+            PublishRequest request)
+        {
+            try
+            {
+                SecureChannelContext.Current = context.ChannelContext;
+
+                /*
+                if (NodeId.IsNull(request.RequestHeader.AuthenticationToken))
+                {
+                    throw new ServiceResultException(Opc.Ua.StatusCodes.BadSessionIdInvalid, "Session not specified.");
+                }
+                */
+                request.RequestHeader.AuthenticationToken = NodeId.Null;
+
+                var responseHeader = client.Session.Publish(
+                    request.RequestHeader,
+                    request.SubscriptionAcknowledgements,
+                    out var subscriptionId,
+                    out var availableSequenceNumbers,
+                    out var moreNotifications,
+                    out var notificationMessage,
+                    out var results,
+                    out var diagnosticInfos);
+
+                var response = new PublishResponse()
+                {
+                    ResponseHeader = responseHeader,
+                    SubscriptionId = subscriptionId,
+                    AvailableSequenceNumbers = availableSequenceNumbers,
+                    MoreNotifications = moreNotifications,
+                    NotificationMessage = notificationMessage,
+                    Results = results,
+                    DiagnosticInfos = diagnosticInfos
+                };
+
+                return Task.FromResult<IServiceResponse>(response);
+            }
+            catch (Exception e)
+            {
+                return Task.FromResult(Fault(request, e));
+            }
         }
         public static Task<IServiceResponse> Read(
             SessionContext context,

@@ -233,17 +233,17 @@ namespace UaRestGateway.Server.Controllers
                 }
 
                 response = await MessageUtils.CreateSession(sessionContext, server, csr);
-                //response = await MessageUtils.CreateSession_with_Client(sessionContext, client, csr);
-
+                
                 lock (sessionContext)
                 {
                     sessionContext.AuthenticationToken = ((CreateSessionResponse)response).AuthenticationToken;
                 }
-
+                
                 await SendResponse(webSocket, server.MessageContext, response, compress);
                 return;
             }
 
+            
             if (sessionContext.AuthenticationToken == null || sessionContext.AuthenticationToken != request.RequestHeader.AuthenticationToken)
             {
                 response = MessageUtils.Fault(request, new ServiceResultException(Opc.Ua.StatusCodes.BadSessionIdInvalid, "Session not created."));
@@ -251,12 +251,11 @@ namespace UaRestGateway.Server.Controllers
                 Logger.LogError($"BadSessionIdInvalid {request.RequestHeader.RequestHandle}");
                 return;
             }
-
+            
             
             if (request is ActivateSessionRequest asr)
             {
                 response = await MessageUtils.ActivateSession(sessionContext, server, asr);
-                //response = await MessageUtils.ActivateSession_with_Client(sessionContext, client, asr);
                 sessionContext.IsActivated = true;
                 await SendResponse(webSocket, server.MessageContext, response, compress);
                 return;
@@ -299,10 +298,10 @@ namespace UaRestGateway.Server.Controllers
 
                         case ReadRequest input:
 //#ifdef ClientAccess
-                            //response = await MessageUtils.Read_with_Client(sessionContext, client, input);
+                            response = await MessageUtils.Read_with_Client(sessionContext, client, input);
 //#endif
 //#ifdef ServerAccess
-                            response = await MessageUtils.Read(sessionContext, server, input);
+                            //response = await MessageUtils.Read(sessionContext, server, input);
 //#endif
                             break;
 
@@ -315,13 +314,13 @@ namespace UaRestGateway.Server.Controllers
                             break;
 
                         case BrowseRequest input:
-                            //response = await MessageUtils.Browse_with_Client(sessionContext, client, input);
-                            response = await MessageUtils.Browse(sessionContext, server, input);
+                            response = await MessageUtils.Browse_with_Client(sessionContext, client, input);
+                            //response = await MessageUtils.Browse(sessionContext, server, input);
                             break;
 
                         case BrowseNextRequest input:
-                            //response = await MessageUtils.BrowseNext_with_Client(sessionContext, client, input);
-                            response = await MessageUtils.BrowseNext(sessionContext, server, input);
+                            response = await MessageUtils.BrowseNext_with_Client(sessionContext, client, input);
+                            //response = await MessageUtils.BrowseNext(sessionContext, server, input);
                             break;
 
                         case TranslateBrowsePathsToNodeIdsRequest input:
@@ -337,7 +336,8 @@ namespace UaRestGateway.Server.Controllers
                             break;
 
                         case CreateSubscriptionRequest input:
-                            response = await MessageUtils.CreateSubscription(sessionContext, server, input);
+                            response = await MessageUtils.CreateSubscription_with_Client(sessionContext, client, input);
+                            //response = await MessageUtils.CreateSubscription(sessionContext, server, input);
                             break;
 
                         case DeleteSubscriptionsRequest input:
@@ -345,7 +345,8 @@ namespace UaRestGateway.Server.Controllers
                             break;
 
                         case PublishRequest input:
-                            response = await MessageUtils.Publish(sessionContext, server, input);
+                            response = await MessageUtils.Publish_with_Client(sessionContext, client, input);
+                            //response = await MessageUtils.Publish(sessionContext, server, input);
                             break;
 
                         case CreateMonitoredItemsRequest input:

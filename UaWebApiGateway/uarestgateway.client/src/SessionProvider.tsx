@@ -440,8 +440,6 @@ export const SessionProvider = ({ children }: SessionProps) => {
 
         sendRequest(message);
 
-        await sendRequest(message);
-
         const interval = setInterval(() => {
             const response = m.current.lastCompletedRequest?.response;
             if (response && response.ServiceId === OpcUa.DataTypeIds.TranslateBrowsePathsToNodeIdsResponse) {
@@ -569,7 +567,7 @@ export const SessionProvider = ({ children }: SessionProps) => {
    }, [activateSession])
 
    React.useEffect(() => {
-      if (lastMessage?.data) {
+     if (lastMessage?.data) {
          try {
             const message = JSON.parse(lastMessage.data) as IResponseMessage;
             processResponse(message);
