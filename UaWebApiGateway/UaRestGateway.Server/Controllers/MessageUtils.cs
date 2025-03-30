@@ -299,6 +299,8 @@ namespace UaRestGateway.Server.Controllers
                     request.RequestHeader.AuthenticationToken = context.AuthenticationToken;
                 }
 
+                var requestHandle = request.RequestHeader.RequestHandle;
+
                 var responseHeader = server.CloseSession(
                     request.RequestHeader,
                     request.DeleteSubscriptions);
@@ -307,6 +309,8 @@ namespace UaRestGateway.Server.Controllers
                 {
                     ResponseHeader = responseHeader
                 };
+
+                response.ResponseHeader.RequestHandle = requestHandle;
 
                 return Task.FromResult<IServiceResponse>(response);
             }
@@ -332,6 +336,7 @@ namespace UaRestGateway.Server.Controllers
                 }
                 */
                 request.RequestHeader.AuthenticationToken = NodeId.Null;
+                var requestHandle = request.RequestHeader.RequestHandle;
 
                 var responseHeader = client.Session.BrowseNext(
                     request.RequestHeader,
@@ -346,6 +351,8 @@ namespace UaRestGateway.Server.Controllers
                     Results = results,
                     DiagnosticInfos = diagnosticInfos
                 };
+
+                response.ResponseHeader.RequestHandle = requestHandle;
 
                 return Task.FromResult<IServiceResponse>(response);
             }
@@ -363,7 +370,6 @@ namespace UaRestGateway.Server.Controllers
             try
             {
                 var session = client.Session;
-
                 SecureChannelContext.Current = context.ChannelContext;
                 /*
                 if (context.IsActivated) { 
@@ -374,6 +380,8 @@ namespace UaRestGateway.Server.Controllers
                 }
                 */
                 request.RequestHeader.AuthenticationToken = NodeId.Null;
+                var requestHandle = request.RequestHeader.RequestHandle;
+
                 var responseHeader = session.Browse(
                     request.RequestHeader,
                     request.View,
@@ -396,6 +404,8 @@ namespace UaRestGateway.Server.Controllers
                     Results = results,
                     DiagnosticInfos = diagnosticInfos
                 };
+
+                response.ResponseHeader.RequestHandle = requestHandle;
 
                 return Task.FromResult<IServiceResponse>(response);
             }
@@ -425,6 +435,7 @@ namespace UaRestGateway.Server.Controllers
                     }
                     */
                     request.RequestHeader.AuthenticationToken = NodeId.Null;
+                    var requestHandle = request.RequestHeader.RequestHandle;
                     // Perform the read operation
                     var responseHeader = client.Session.Read(
                         request.RequestHeader,
@@ -441,6 +452,8 @@ namespace UaRestGateway.Server.Controllers
                         Results = results,
                         DiagnosticInfos = diagnosticInfos
                     };
+
+                    response.ResponseHeader.RequestHandle = requestHandle;
 
                     return (IServiceResponse)response;
                 }
@@ -467,6 +480,7 @@ namespace UaRestGateway.Server.Controllers
                 }
                 */
                 request.RequestHeader.AuthenticationToken = NodeId.Null;
+                var requestHandle = request.RequestHeader.RequestHandle;
 
                 var responseHeader = client.Session.CreateSubscription(
                     request.RequestHeader,
@@ -489,6 +503,129 @@ namespace UaRestGateway.Server.Controllers
                     RevisedLifetimeCount = revisedLifetimeCount,
                     RevisedMaxKeepAliveCount = revisedMaxKeepAliveCount
                 };
+
+                response.ResponseHeader.RequestHandle = requestHandle;
+
+                return Task.FromResult<IServiceResponse>(response);
+            }
+            catch (Exception e)
+            {
+                return Task.FromResult(Fault(request, e));
+            }
+        }
+
+        public static Task<IServiceResponse> CreateMonitoredItems_with_Client(
+            SessionContext context,
+            UAClient client,
+            CreateMonitoredItemsRequest request)
+        {
+            try
+            {
+                SecureChannelContext.Current = context.ChannelContext;
+
+                /*
+                if (NodeId.IsNull(request.RequestHeader.AuthenticationToken))
+                {
+                    throw new ServiceResultException(Opc.Ua.StatusCodes.BadSessionIdInvalid, "Session not specified.");
+                }
+                */
+                request.RequestHeader.AuthenticationToken = NodeId.Null;
+                var requestHandle = request.RequestHeader.RequestHandle;
+
+                var responseHeader = client.Session.CreateMonitoredItems(
+                    request.RequestHeader,
+                    request.SubscriptionId,
+                    request.TimestampsToReturn,
+                    request.ItemsToCreate,
+                    out var results,
+                    out var diagnostics);
+
+                var response = new CreateMonitoredItemsResponse()
+                {
+                    ResponseHeader = responseHeader,
+                    Results = results,
+                    DiagnosticInfos = diagnostics
+                };
+
+                response.ResponseHeader.RequestHandle = requestHandle;
+
+                return Task.FromResult<IServiceResponse>(response);
+            }
+            catch (Exception e)
+            {
+                return Task.FromResult(Fault(request, e));
+            }
+        }
+
+        public static Task<IServiceResponse> ModifyMonitoredItems_with_Client(
+            SessionContext context,
+            UAClient client,
+            ModifyMonitoredItemsRequest request)
+        {
+            try
+            {
+                SecureChannelContext.Current = context.ChannelContext;
+
+                /*
+                if (NodeId.IsNull(request.RequestHeader.AuthenticationToken))
+                {
+                    throw new ServiceResultException(Opc.Ua.StatusCodes.BadSessionIdInvalid, "Session not specified.");
+                }
+                */
+                request.RequestHeader.AuthenticationToken = NodeId.Null;
+                var requestHandle = request.RequestHeader.RequestHandle;
+
+                var responseHeader = client.Session.ModifyMonitoredItems(
+                    request.RequestHeader,
+                    request.SubscriptionId,
+                    request.TimestampsToReturn,
+                    request.ItemsToModify,
+                    out var results,
+                    out var diagnostics);
+
+                var response = new ModifyMonitoredItemsResponse()
+                {
+                    ResponseHeader = responseHeader,
+                    Results = results,
+                    DiagnosticInfos = diagnostics
+                };
+
+                response.ResponseHeader.RequestHandle = requestHandle;
+
+                return Task.FromResult<IServiceResponse>(response);
+            }
+            catch (Exception e)
+            {
+                return Task.FromResult(Fault(request, e));
+            }
+        }
+
+        public static Task<IServiceResponse> DeleteMonitoredItems_with_Client(
+            SessionContext context,
+            UAClient client,
+            DeleteMonitoredItemsRequest request)
+        {
+            try
+            {
+                SecureChannelContext.Current = context.ChannelContext;
+                request.RequestHeader.AuthenticationToken = NodeId.Null;
+                var requestHandle = request.RequestHeader.RequestHandle;
+
+                var responseHeader = client.Session.DeleteMonitoredItems(
+                    request.RequestHeader,
+                    request.SubscriptionId,
+                    request.MonitoredItemIds,
+                    out var results,
+                    out var diagnostics);
+
+                var response = new DeleteMonitoredItemsResponse()
+                {
+                    ResponseHeader = responseHeader,
+                    Results = results,
+                    DiagnosticInfos = diagnostics
+                };
+
+                response.ResponseHeader.RequestHandle = requestHandle;
 
                 return Task.FromResult<IServiceResponse>(response);
             }
@@ -514,6 +651,7 @@ namespace UaRestGateway.Server.Controllers
                 }
                 */
                 request.RequestHeader.AuthenticationToken = NodeId.Null;
+                var requestHandle = request.RequestHeader.RequestHandle;
 
                 var responseHeader = client.Session.Publish(
                     request.RequestHeader,
@@ -536,6 +674,8 @@ namespace UaRestGateway.Server.Controllers
                     DiagnosticInfos = diagnosticInfos
                 };
 
+                response.ResponseHeader.RequestHandle = requestHandle;
+
                 return Task.FromResult<IServiceResponse>(response);
             }
             catch (Exception e)
@@ -557,6 +697,8 @@ namespace UaRestGateway.Server.Controllers
                     request.RequestHeader.AuthenticationToken = context.AuthenticationToken;
                 }
 
+                var requestHandle = request.RequestHeader.RequestHandle;
+
                 var responseHeader = server.Read(
                     request.RequestHeader,
                     request.MaxAge,
@@ -571,6 +713,8 @@ namespace UaRestGateway.Server.Controllers
                     Results = results,
                     DiagnosticInfos = diagnosticInfos
                 };
+
+                response.ResponseHeader.RequestHandle = requestHandle;
 
                 return Task.FromResult<IServiceResponse>(response);
             }
@@ -594,6 +738,8 @@ namespace UaRestGateway.Server.Controllers
                     request.RequestHeader.AuthenticationToken = context.AuthenticationToken;
                 }
 
+                var requestHandle = request.RequestHeader.RequestHandle;
+
                 var responseHeader = server.Write(
                     request.RequestHeader,
                     request.NodesToWrite,
@@ -606,6 +752,8 @@ namespace UaRestGateway.Server.Controllers
                     Results = results,
                     DiagnosticInfos = diagnosticInfos
                 };
+
+                response.ResponseHeader.RequestHandle = requestHandle;
 
                 return Task.FromResult<IServiceResponse>(response);
             }
@@ -629,6 +777,8 @@ namespace UaRestGateway.Server.Controllers
                     request.RequestHeader.AuthenticationToken = context.AuthenticationToken;
                 }
 
+                var requestHandle = request.RequestHeader.RequestHandle;
+
                 var responseHeader = server.Call(
                     request.RequestHeader,
                     request.MethodsToCall,
@@ -641,6 +791,8 @@ namespace UaRestGateway.Server.Controllers
                     Results = results,
                     DiagnosticInfos = diagnosticInfos
                 };
+
+                response.ResponseHeader.RequestHandle = requestHandle;
 
                 return Task.FromResult<IServiceResponse>(response);
             }
@@ -663,7 +815,9 @@ namespace UaRestGateway.Server.Controllers
                 {
                     request.RequestHeader.AuthenticationToken = context.AuthenticationToken;
                 }
-          
+
+                var requestHandle = request.RequestHeader.RequestHandle;
+
                 var responseHeader = server.Browse(
                     request.RequestHeader,
                     request.View,
@@ -678,6 +832,8 @@ namespace UaRestGateway.Server.Controllers
                     Results = results,
                     DiagnosticInfos = diagnosticInfos
                 };
+
+                response.ResponseHeader.RequestHandle = requestHandle;
 
                 return Task.FromResult<IServiceResponse>(response);
             }
@@ -701,6 +857,8 @@ namespace UaRestGateway.Server.Controllers
                     request.RequestHeader.AuthenticationToken = context.AuthenticationToken;
                 }
 
+                var requestHandle = request.RequestHeader.RequestHandle;
+
                 var responseHeader = server.BrowseNext(
                     request.RequestHeader,
                     request.ReleaseContinuationPoints,
@@ -714,6 +872,8 @@ namespace UaRestGateway.Server.Controllers
                     Results = results,
                     DiagnosticInfos = diagnosticInfos
                 };
+
+                response.ResponseHeader.RequestHandle = requestHandle;
 
                 return Task.FromResult<IServiceResponse>(response);
             }
@@ -737,6 +897,8 @@ namespace UaRestGateway.Server.Controllers
                     request.RequestHeader.AuthenticationToken = context.AuthenticationToken;
                 }
 
+                var requestHandle = request.RequestHeader.RequestHandle;
+
                 var responseHeader = server.TranslateBrowsePathsToNodeIds(
                     request.RequestHeader,
                     request.BrowsePaths,
@@ -749,6 +911,8 @@ namespace UaRestGateway.Server.Controllers
                     Results = results,
                     DiagnosticInfos = diagnosticInfos
                 };
+
+                response.ResponseHeader.RequestHandle = requestHandle;
 
                 return Task.FromResult<IServiceResponse>(response);
             }
@@ -772,6 +936,8 @@ namespace UaRestGateway.Server.Controllers
                     request.RequestHeader.AuthenticationToken = context.AuthenticationToken;
                 }
 
+                var requestHandle = request.RequestHeader.RequestHandle;
+
                 var responseHeader = server.HistoryRead(
                     request.RequestHeader,
                     request.HistoryReadDetails,
@@ -787,6 +953,8 @@ namespace UaRestGateway.Server.Controllers
                     Results = results,
                     DiagnosticInfos = diagnosticInfos
                 };
+
+                response.ResponseHeader.RequestHandle = requestHandle;
 
                 return Task.FromResult<IServiceResponse>(response);
             }
@@ -810,6 +978,8 @@ namespace UaRestGateway.Server.Controllers
                     request.RequestHeader.AuthenticationToken = context.AuthenticationToken;
                 }
 
+                var requestHandle = request.RequestHeader.RequestHandle;
+
                 var responseHeader = server.HistoryUpdate(
                     request.RequestHeader,
                     request.HistoryUpdateDetails,
@@ -822,6 +992,8 @@ namespace UaRestGateway.Server.Controllers
                     Results = results,
                     DiagnosticInfos = diagnosticInfos
                 };
+
+                response.ResponseHeader.RequestHandle = requestHandle;
 
                 return Task.FromResult<IServiceResponse>(response);
             }
@@ -839,6 +1011,7 @@ namespace UaRestGateway.Server.Controllers
             try
             {
                 SecureChannelContext.Current = context.ChannelContext;
+                var requestHandle = request.RequestHeader.RequestHandle;
 
                 var responseHeader = server.CreateSession(
                     request.RequestHeader,
@@ -876,6 +1049,8 @@ namespace UaRestGateway.Server.Controllers
                     MaxRequestMessageSize = maxRequestMessageSize
                 };
 
+                response.ResponseHeader.RequestHandle = requestHandle;
+
                 return Task.FromResult<IServiceResponse>(response);
             }
             catch (Exception e)
@@ -905,6 +1080,8 @@ namespace UaRestGateway.Server.Controllers
                     })
                     : null);
 
+                var requestHandle = request.RequestHeader.RequestHandle;
+
                 var responseHeader = server.ActivateSession(
                     request.RequestHeader,
                     request.ClientSignature,
@@ -923,6 +1100,8 @@ namespace UaRestGateway.Server.Controllers
                     Results = results,
                     DiagnosticInfos = diagnosticInfos
                 };
+
+                response.ResponseHeader.RequestHandle = requestHandle;
 
                 return Task.FromResult<IServiceResponse>(response);
             }
@@ -946,6 +1125,8 @@ namespace UaRestGateway.Server.Controllers
                     throw new ServiceResultException(Opc.Ua.StatusCodes.BadSessionIdInvalid, "Session not specified.");
                 }
 
+                var requestHandle = request.RequestHeader.RequestHandle;
+
                 var responseHeader = server.CreateSubscription(
                     request.RequestHeader,
                     request.RequestedPublishingInterval,
@@ -967,6 +1148,8 @@ namespace UaRestGateway.Server.Controllers
                     RevisedLifetimeCount = revisedLifetimeCount,
                     RevisedMaxKeepAliveCount = revisedMaxKeepAliveCount
                 };
+
+                response.ResponseHeader.RequestHandle = requestHandle;
 
                 return Task.FromResult<IServiceResponse>(response);
             }
@@ -990,6 +1173,8 @@ namespace UaRestGateway.Server.Controllers
                     throw new ServiceResultException(Opc.Ua.StatusCodes.BadSessionIdInvalid, "Session not specified.");
                 }
 
+                var requestHandle = request.RequestHeader.RequestHandle;
+
                 var responseHeader = server.DeleteSubscriptions(
                     request.RequestHeader,
                     request.SubscriptionIds,
@@ -1002,6 +1187,8 @@ namespace UaRestGateway.Server.Controllers
                     Results = results,
                     DiagnosticInfos = diagnosticInfos
                 };
+
+                response.ResponseHeader.RequestHandle = requestHandle;
 
                 return Task.FromResult<IServiceResponse>(response);
             }
@@ -1025,6 +1212,8 @@ namespace UaRestGateway.Server.Controllers
                     throw new ServiceResultException(Opc.Ua.StatusCodes.BadSessionIdInvalid, "Session not specified.");
                 }
 
+                var requestHandle = request.RequestHeader.RequestHandle;
+
                 var responseHeader = server.Publish(
                     request.RequestHeader,
                     request.SubscriptionAcknowledgements,
@@ -1045,6 +1234,8 @@ namespace UaRestGateway.Server.Controllers
                     Results = results,
                     DiagnosticInfos = diagnosticInfos
                 };
+
+                response.ResponseHeader.RequestHandle = requestHandle;
 
                 return Task.FromResult<IServiceResponse>(response);
             }
@@ -1068,6 +1259,8 @@ namespace UaRestGateway.Server.Controllers
                     throw new ServiceResultException(Opc.Ua.StatusCodes.BadSessionIdInvalid, "Session not specified.");
                 }
 
+                var requestHandle = request.RequestHeader.RequestHandle;
+
                 var responseHeader = server.CreateMonitoredItems(
                     request.RequestHeader,
                     request.SubscriptionId,
@@ -1082,6 +1275,8 @@ namespace UaRestGateway.Server.Controllers
                     Results = results,
                     DiagnosticInfos = diagnosticInfos
                 };
+
+                response.ResponseHeader.RequestHandle = requestHandle;
 
                 return Task.FromResult<IServiceResponse>(response);
             }
@@ -1105,6 +1300,8 @@ namespace UaRestGateway.Server.Controllers
                     throw new ServiceResultException(Opc.Ua.StatusCodes.BadSessionIdInvalid, "Session not specified.");
                 }
 
+                var requestHandle = request.RequestHeader.RequestHandle;
+
                 var responseHeader = server.ModifyMonitoredItems(
                     request.RequestHeader,
                     request.SubscriptionId,
@@ -1119,6 +1316,8 @@ namespace UaRestGateway.Server.Controllers
                     Results = results,
                     DiagnosticInfos = diagnosticInfos
                 };
+
+                response.ResponseHeader.RequestHandle = requestHandle;
 
                 return Task.FromResult<IServiceResponse>(response);
             }
@@ -1142,6 +1341,8 @@ namespace UaRestGateway.Server.Controllers
                     throw new ServiceResultException(Opc.Ua.StatusCodes.BadSessionIdInvalid, "Session not specified.");
                 }
 
+                var requestHandle = request.RequestHeader.RequestHandle;
+
                 var responseHeader = server.DeleteMonitoredItems(
                     request.RequestHeader,
                     request.SubscriptionId,
@@ -1155,6 +1356,8 @@ namespace UaRestGateway.Server.Controllers
                     Results = results,
                     DiagnosticInfos = diagnosticInfos
                 };
+
+                response.ResponseHeader.RequestHandle = requestHandle;
 
                 return Task.FromResult<IServiceResponse>(response);
             }

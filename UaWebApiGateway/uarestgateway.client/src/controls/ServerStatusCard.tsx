@@ -1,5 +1,6 @@
 import React from 'react';
-import { IMonitoredItem, SubscriptionContext } from '../SubscriptionProvider';
+import { IMonitoredItem } from '../SubscriptionProvider';
+import { SubscriptionContext } from '../SubscriptionContext';
 import Card from '@mui/material/Card/Card';
 import CardContent from '@mui/material/CardContent/CardContent';
 import Table from '@mui/material/Table/Table';
@@ -15,7 +16,7 @@ import { SubscriptionState } from '../service/SubscriptionState';
 import { IReadValueId } from '../service/IReadValueId';
 import { UserContext } from '../UserProvider';
 
-import { SessionContext } from '../SessionProvider';
+import { SessionContext } from '../SessionContext';
 
 interface TypeDefinitionCardProps {
    children?: React.ReactNode,
@@ -98,33 +99,33 @@ const TypeDefinitionCard: React.FC<TypeDefinitionCardProps> = ({ children, varia
    }, [lastSequenceNumber, onValueUpdate]);
 
    // Read the initial value. 
-   React.useEffect(() => {
-      async function read(variables: IMonitoredItem[]) {
-         const nodesToRead: IReadValueId[] = variables.map(x => {
-            return {
-               id: x.subscriberHandle,
-               nodeId: x.nodeId,
-               path: x.path,
-               attributeId: OpcUa.Attributes.Value
-            } as IReadValueId;
-         });
-          //const results = await translateAndReadValues(nodesToRead, 60000, user);
-         const results = await translateAndReadValues(nodesToRead, 60000);
-         if (results) {
-            results.forEach((result) => {
-               const mi = variables.find(x => x.subscriberHandle === result.id)
-               if (mi) {
-                  mi.value = result.value;
-               }
-            });
-            // Trigger render after updating the monitored items.
-            onValueUpdate();
-         }
-      }
-      if (variables) {
-         read(variables);
-      }
-   }, [variables, user, onValueUpdate]);
+   //React.useEffect(() => {
+   //   async function read(variables: IMonitoredItem[]) {
+   //      const nodesToRead: IReadValueId[] = variables.map(x => {
+   //         return {
+   //            id: x.subscriberHandle,
+   //            nodeId: x.nodeId,
+   //            path: x.path,
+   //            attributeId: OpcUa.Attributes.Value
+   //         } as IReadValueId;
+   //      });
+   //       //const results = await translateAndReadValues(nodesToRead, 60000, user);
+   //      const results = await translateAndReadValues(nodesToRead, 60000);
+   //      if (results) {
+   //         results.forEach((result) => {
+   //            const mi = variables.find(x => x.subscriberHandle === result.id)
+   //            if (mi) {
+   //               mi.value = result.value;
+   //            }
+   //         });
+   //         // Trigger render after updating the monitored items.
+   //         onValueUpdate();
+   //      }
+   //   }
+   //   if (variables) {
+   //      read(variables);
+   //   }
+   //}, [variables, user, onValueUpdate]);
 
    return (<React.Fragment>{children}</React.Fragment>);
 }

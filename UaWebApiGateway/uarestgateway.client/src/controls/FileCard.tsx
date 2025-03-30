@@ -1,5 +1,6 @@
 import React from 'react';
-import { IMonitoredItem, SubscriptionContext } from '../SubscriptionProvider';
+import { IMonitoredItem } from '../SubscriptionProvider';
+import { SubscriptionContext } from '../SubscriptionContext';
 import Card from '@mui/material/Card/Card';
 import CardContent from '@mui/material/CardContent/CardContent';
 import Table from '@mui/material/Table/Table';
@@ -18,7 +19,7 @@ import { UserContext } from '../UserProvider';
 import DownloadIcon from '@mui/icons-material/Download';
 import UploadIcon from '@mui/icons-material/Upload';
 
-import { SessionContext } from '../SessionProvider';
+import { SessionContext } from '../SessionContext';
 
 interface FileCardProps {
    rootId?: string

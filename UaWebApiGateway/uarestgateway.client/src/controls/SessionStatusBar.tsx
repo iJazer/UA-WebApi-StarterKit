@@ -6,10 +6,11 @@ import { Button, Toolbar, Typography, useTheme } from '@mui/material';
 
 import * as OpcUa from 'opcua-webapi';
 import * as Web from '../Web';
-import { SessionContext } from '../SessionProvider';
+import { SessionContext } from '../SessionContext';
 
 //import { styled } from '@mui/material/styles';
-import { IMonitoredItem, SubscriptionContext } from '../SubscriptionProvider';
+import { IMonitoredItem } from '../SubscriptionProvider';
+import { SubscriptionContext } from '../SubscriptionContext';
 import { HandleFactory } from '../service/HandleFactory';
 import { SubscriptionState } from '../service/SubscriptionState';
 import { SessionState } from '../service/SessionState';
@@ -42,6 +43,7 @@ export const SessionStatusBar = () => {
       sessionState,
       sendRequest,
       setIsEnabled,
+      isSessionEnabled,
       setIsSessionEnabled,
       lastCompletedRequest
    } = React.useContext(SessionContext);
@@ -49,26 +51,30 @@ export const SessionStatusBar = () => {
    const {
       setIsSubscriptionEnabled,
       subscriptionState,
-      lastSequenceNumber,
-      subscribe,
+      lastSequenceNumber
    } = React.useContext(SubscriptionContext);
 
    React.useEffect(() => {
-      if (lastCompletedRequest?.clientHandle === clientHandle) {
+      if (lastCompletedRequest?.callerHandle === clientHandle) {
          if (lastCompletedRequest?.response?.ServiceId === OpcUa.DataTypeIds.ReadResponse) {
             const rrm = lastCompletedRequest.response.Body as OpcUa.ReadResponse;
             setCurrentTime(rrm?.Results?.at(0));
          }
       }
    }, [lastCompletedRequest, clientHandle]);
+
    React.useEffect(() => {
-      if (subscriptionState === SubscriptionState.Open) {
-         const itemsToCreate = monitoredItems.filter(item => !item.monitoredItemId && !item.creationError);
-         if (itemsToCreate.length) {
-            subscribe(itemsToCreate, clientHandle);
+      setIsSubscriptionEnabled(isSessionEnabled);
+   }, [isSessionEnabled, setIsSubscriptionEnabled]);
+
+   React.useEffect(() => {
+      if (lastCompletedRequest?.callerHandle === clientHandle) {
+         if (lastCompletedRequest?.response?.ServiceId === OpcUa.DataTypeIds.ReadResponse) {
+            const rrm = lastCompletedRequest.response.Body as OpcUa.ReadResponse;
+            setCurrentTime(rrm?.Results?.at(0));
          }
       }
-   }, [subscriptionState, monitoredItems, clientHandle, subscribe]);
+   }, [lastCompletedRequest, clientHandle]);
 
    const sendRead = React.useCallback(() => {
       const request: OpcUa.ReadRequest= {
@@ -102,7 +108,6 @@ export const SessionStatusBar = () => {
 
    const handleConnect = React.useCallback((state: SessionState) => {
       if (state === SessionState.Disconnected) {
-         setIsSubscriptionEnabled(true);
          setIsSessionEnabled(true);
          setIsEnabled(true);
       }
@@ -112,7 +117,7 @@ export const SessionStatusBar = () => {
       else if (state === SessionState.NoSession) {
          setIsEnabled(false);
       }
-   }, [setIsEnabled, setIsSessionEnabled, setIsSubscriptionEnabled]);
+   }, [setIsEnabled, setIsSessionEnabled]);
 
    React.useEffect(() => {
       if (sessionState === SessionState.SessionActive) {

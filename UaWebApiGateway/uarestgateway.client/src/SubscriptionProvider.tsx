@@ -1,10 +1,11 @@
 import * as React from 'react';
 import * as OpcUa from 'opcua-webapi';
-import { SessionContext } from './SessionProvider';
+import { SessionContext } from './SessionContext';
 import { SubscriptionState } from './service/SubscriptionState';
 import { HandleFactory } from './service/HandleFactory';
 import { SessionState } from './service/SessionState';
 import { IRequestMessage } from './service/IRequestMessage';
+import { SubscriptionContext } from './SubscriptionContext';
 
 export interface IMonitoredItem {
    nodeId: string,
@@ -18,6 +19,7 @@ export interface IMonitoredItem {
    value?: OpcUa.DataValue,
    creationError?: OpcUa.StatusCode,
 }
+
 export interface ISubscriptionContext {
    publishingInterval?: number,
    setPublishingInterval: (interval: number) => void,
@@ -31,25 +33,12 @@ export interface ISubscriptionContext {
    unsubscribe: (items: IMonitoredItem[], clientHandle: number) => void
 }
 
-export const SubscriptionContext = React.createContext<ISubscriptionContext>({
-   publishingInterval: 1000,
-   setPublishingInterval: () => { },
-   samplingInterval: 1000,
-   setSamplingInterval: () => { },
-   isSubscriptionEnabled: false,
-   setIsSubscriptionEnabled: () => { },
-   subscriptionState: SubscriptionState.Closed,
-   lastSequenceNumber: 0,
-   subscribe: () => { },
-   unsubscribe: () => { }
-});
-
 interface SubscriptionProps {
    children?: React.ReactNode
 }
 
 interface InternalRequest {
-   clientHandle: number,
+   internalHandle: number,
    serviceId: string,
    items: IMonitoredItem[]
 }
@@ -72,6 +61,7 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
    const [samplingInterval, setSamplingInterval] = React.useState<number>(1000);
    const [subscriptionState, setSubscriptionState] = React.useState<SubscriptionState>(SubscriptionState.Closed);
    const [lastSequenceNumber, setLastSequenceNumber] = React.useState<number>(0);
+   const [publishCount, setPublishCount] = React.useState<number>(0);
    const [componentHandle] = React.useState<number>(HandleFactory.increment());
 
    const {
@@ -103,6 +93,7 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
          ServiceId: OpcUa.DataTypeIds.CreateSubscriptionRequest,
          Body: request
       };
+      console.warn("createSubscription");
       sendRequest(message, componentHandle);
    }, [sendRequest, publishingInterval, componentHandle]);
 
@@ -114,6 +105,7 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
          ServiceId: OpcUa.DataTypeIds.DeleteSubscriptionsRequest,
          Body: request
       };
+      console.warn("deleteSubscription");
       sendRequest(message, componentHandle);
    }, [sendRequest, componentHandle]);
 
@@ -125,6 +117,7 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
          ServiceId: OpcUa.DataTypeIds.PublishRequest,
          Body: request
       };
+      console.warn("publish");
       sendRequest(message, componentHandle);
    }, [sendRequest, componentHandle]);
 
@@ -163,12 +156,13 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
             Body: request
          };
          const state = {
-            clientHandle: HandleFactory.increment(),
+            internalHandle: HandleFactory.increment(),
             serviceId: message.ServiceId ?? '',
             items: itemsToTranslate
          };
          m.current.requests.push(state);
-         sendRequest(message, state.clientHandle);
+         console.warn("translate");
+         sendRequest(message, state.internalHandle);
       }
    }, [sendRequest]);
 
@@ -204,12 +198,13 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
             Body: request
          };
          const state = {
-            clientHandle: HandleFactory.increment(),
+            internalHandle: HandleFactory.increment(),
             serviceId: message.ServiceId ?? '',
             items: itemsToMonitor
          };
          m.current.requests.push(state);
-         sendRequest(message, state.clientHandle);
+         console.warn("createMonitoredItems");
+         sendRequest(message, state.internalHandle);
       }
    }, [sendRequest]);
 
@@ -231,23 +226,25 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
             Body: request
          };
          const state = {
-            clientHandle: HandleFactory.increment(),
+            internalHandle: HandleFactory.increment(),
             serviceId: message.ServiceId ?? '',
             items: []
          } as InternalRequest;
          m.current.requests.push(state);
-         sendRequest(message, state.clientHandle);
+         console.warn("deleteMonitoredItems");
+         sendRequest(message, state.internalHandle);
       }
    }, [sendRequest]);
 
    React.useEffect(() => {
-      if (lastCompletedRequest?.clientHandle === componentHandle) {
+      if (lastCompletedRequest?.callerHandle === componentHandle) {
          if (lastCompletedRequest?.response?.ServiceId === OpcUa.DataTypeIds.CreateSubscriptionResponse) {
             const csrm = lastCompletedRequest?.response?.Body as OpcUa.CreateSubscriptionResponse;
             if (csrm?.ResponseHeader && !csrm?.ResponseHeader.ServiceResult) {
                m.current.subscriptionId = csrm?.SubscriptionId;
                m.current.subscriptionState = SubscriptionState.Open;
                setSubscriptionState(m.current.subscriptionState);
+               console.warn("CreateSubscriptionResponse");
                publish();
             } 
          }
@@ -280,34 +277,60 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
                      }
                   });
                }
-               publish();
+               console.warn("setPublishCount");
+               setPublishCount(count => count + 1);
                return prm.NotificationMessage?.SequenceNumber ?? 1;
             });
          }
       }
-      const request = m.current.requests.find((r) => r.clientHandle === lastCompletedRequest?.clientHandle);
+      const request = m.current.requests.find((r) => r.internalHandle === lastCompletedRequest?.callerHandle);
       if (request) {
-         if (lastCompletedRequest?.response?.ServiceId === OpcUa.DataTypeIds.TranslateBrowsePathsToNodeIdsResponse) {
+         if (lastCompletedRequest?.request?.ServiceId === OpcUa.DataTypeIds.TranslateBrowsePathsToNodeIdsRequest) {
             const response = lastCompletedRequest.response?.Body as OpcUa.TranslateBrowsePathsToNodeIdsResponse;
-            response?.Results?.forEach((result, index) => {
-               request.items[index].creationError = result?.StatusCode;
-               if (!result?.StatusCode) {
-                  request.items[index].resolvedNodeId = result?.Targets?.at(0)?.TargetId;
-               }
-            });
-            createMonitoredItems(request.items);
+            if (response.ResponseHeader?.ServiceResult?.Code) {
+               request?.items?.forEach((item) => {
+                  item.creationError = response.ResponseHeader?.ServiceResult;
+               });
+            }
+            else {
+               response?.Results?.forEach((result, index) => {
+                  request.items[index].creationError = result?.StatusCode;
+                  if (!result?.StatusCode) {
+                     request.items[index].resolvedNodeId = result?.Targets?.at(0)?.TargetId;
+                  }
+               });
+               createMonitoredItems(request.items);
+            }
          }
-         if (lastCompletedRequest?.response?.ServiceId === OpcUa.DataTypeIds.CreateMonitoredItemsResponse) {
+         if (lastCompletedRequest?.request?.ServiceId === OpcUa.DataTypeIds.CreateMonitoredItemsRequest) {
             const response = lastCompletedRequest.response?.Body as OpcUa.CreateMonitoredItemsResponse;
-            response?.Results?.forEach((result, index) => {
-               request.items[index].creationError = result?.StatusCode;
-               if (!result?.StatusCode) {
-                  request.items[index].monitoredItemId = result?.MonitoredItemId;
-               }
-            });
+            if (response.ResponseHeader?.ServiceResult?.Code) {
+               request?.items?.forEach((item) => {
+                  item.creationError = response.ResponseHeader?.ServiceResult;
+               });
+            }
+            else {
+               response?.Results?.forEach((result, index) => {
+                  request.items[index].creationError = result?.StatusCode;
+                  if (!result?.StatusCode) {
+                     request.items[index].monitoredItemId = result?.MonitoredItemId;
+                  }
+               });
+            }
          }
       }
    }, [lastCompletedRequest, publish, deleteSubscription, createMonitoredItems, componentHandle]);
+
+   React.useEffect(() => {
+      if (publishCount !== 0) {
+         if (sessionState === SessionState.SessionActive) {
+            if (m.current.isEnabled && m.current.subscriptionState === SubscriptionState.Open) {
+               console.warn("Publish " + publishCount);
+               publish();
+            }
+         }
+      }
+   }, [publishCount, sessionState, publish]);
 
    React.useEffect(() => {
       switch (sessionState) {

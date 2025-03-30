@@ -163,7 +163,7 @@ export async function browseChildren(
          }
       ]
    };
-   const result: ICompletedRequest = { clientHandle: HandleFactory.increment(), request: { Body: request } };
+   const result: ICompletedRequest = { callerHandle: HandleFactory.increment(), request: { Body: request } };
    const response = await call(`/opcua/browse`, result, controller, user, true);
    if (!response) {
       return undefined;
@@ -236,7 +236,7 @@ export async function readAttributes(
             AttributeId: Number(OpcUa.Attributes[id])
          });
    }
-   const response = await call(`/opcua/read`, { clientHandle: HandleFactory.increment(), request: { Body: request } }, controller, user, true);
+   const response = await call(`/opcua/read`, { callerHandle: HandleFactory.increment(), request: { Body: request } }, controller, user, true);
    if (!response) {
       return null;
    }
@@ -288,7 +288,7 @@ export async function readValues(
    });
    const values: IReadResult[] = [];
    if (request.NodesToRead?.length) {
-      const response = await call(`/opcua/read`, { clientHandle: HandleFactory.increment(), request: { Body: request } }, controller, user, true);
+      const response = await call(`/opcua/read`, { callerHandle: HandleFactory.increment(), request: { Body: request } }, controller, user, true);
       if (!response) {
          return null;
       }
@@ -358,7 +358,7 @@ export async function translateAndReadValues(
          },
          BrowsePaths: browsePaths
       };
-      const response = await call(`/opcua/translate`, { clientHandle: HandleFactory.increment(), request: { Body: request } }, controller, user, true);
+      const response = await call(`/opcua/translate`, { callerHandle: HandleFactory.increment(), request: { Body: request } }, controller, user, true);
       if (!response) {
          return null;
       }
@@ -395,7 +395,7 @@ export async function translateAndReadValues(
          MaxAge: 0,
          NodesToRead: valuesToRead
       };
-      const response = await call(`/opcua/read`, { clientHandle: HandleFactory.increment(), request: { Body: request } }, controller, user, true);
+      const response = await call(`/opcua/read`, { callerHandle: HandleFactory.increment(), request: { Body: request } }, controller, user, true);
       if (!response) {
          return null;
       }
