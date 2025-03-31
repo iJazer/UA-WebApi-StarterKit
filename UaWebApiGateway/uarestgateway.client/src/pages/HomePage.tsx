@@ -10,11 +10,12 @@ import ServerStatusCard from '../controls/ServerStatusCard';
 import AASSubmodel from '../controls/AASSubmodel';
 import AASFunctions from '../controls/AASFunctions';
 import NetworkListener from '../controls/NetworkListener';
+import DataAccessView from '../controls/DataAccessView';
 
 
 export const HomePage = () => {
    const [selection, setSelection] = React.useState<OpcUa.ReferenceDescription | undefined>();
-   const [message, setMessage] = useState<string>('');
+    const [message, setMessage] = useState<string>('');
 
    const selectPanel = React.useCallback((reference?: OpcUa.ReferenceDescription) => {
       if (!reference) {
@@ -36,19 +37,21 @@ export const HomePage = () => {
    return (
       <Box display="flex" flexDirection="column" p={2} sx={{ width: '100%' }}>
          <SessionStatusBar />
-         <Box display="flex" p={2} pb={4} sx={{ width: '100%', height: '33.33vh' }}>
-            <Box flexGrow={0} sx={{ overflow: 'auto' }}>
-               <BrowseTreeView rootNodeId={OpcUa.ObjectIds.RootFolder} onSelectionChanged={onSelectionChanged} />
+         <Box display="flex" p={2} pb={4} sx={{ width: '100%', height: '33.33vh'}}>
+               <Box sx={{ width: '20%', overflow: 'auto', mr: 15 }}>
+                   <BrowseTreeView rootNodeId={OpcUa.ObjectIds.RootFolder} onSelectionChanged={onSelectionChanged} />
             </Box>
-            <Box flexGrow={0} sx={{ overflow: 'auto' }} >
-               {selectPanel(selection)}
+            <DataAccessView>
+            </DataAccessView> 
+            <Box sx={{ width: '40%', overflow: 'auto' }} >
+                {selectPanel(selection)}
             </Box>
          </Box>
          <Box display="flex" p={2} pb={4} sx={{ width: '100%', height: '33.33vh' }}>
-            <Box flexGrow={0} sx={{ overflow: 'auto' }}>
+               <Box sx={{ width: '20%', overflow: 'auto', mr: 15 }}>
                    <AASFunctions setMessage={setMessage} />
             </Box>
-            <Box flexGrow={1} sx={{ overflow: 'auto' }}>
+               <Box flexGrow={1} sx={{ width: '80%', overflow: 'auto' }}>
                    <AASSubmodel message={message} />
             </Box>
          </Box>

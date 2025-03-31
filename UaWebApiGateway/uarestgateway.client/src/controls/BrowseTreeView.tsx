@@ -19,7 +19,7 @@ export interface BrowseTreeNodeProps {
    parentId?: string
    selectionId?: string,
    onChildrenUpdated?: (oldNodes: IBrowsedNode[], newNodes: IBrowsedNode[]) => void,
-   onSelectionChanged?: (node: OpcUa.ReferenceDescription) => void
+   onSelectionChanged?: (node: OpcUa.ReferenceDescription) => void,
 }
 
 export const BrowseTreeNode = ({ parentId, selectionId, onSelectionChanged }: BrowseTreeNodeProps) => {
@@ -31,27 +31,30 @@ export const BrowseTreeNode = ({ parentId, selectionId, onSelectionChanged }: Br
       if (browseChildren && parentId && selectionId === parentId) {
           browseChildren(parentId, 0).then((x) => {
             setChildren(x);
-         });
+          });
       }
    }, [browseChildren, visibleNodes, selectionId, parentId, nodes, onSelectionChanged]);
 
    return (
-      <React.Fragment>
+      <React.Fragment >
          {children?.map((node) => {
             if (!node?.reference?.NodeId) {
                return null;
             }
             return (
                <TreeItem
-                  key={node.id}
-                  nodeId={`${node.reference.NodeId}`}
-                  label={node?.reference?.DisplayName?.Text ?? node?.reference?.BrowseName}
-                  icon={<NodeIcon nodeClass={node?.reference?.NodeClass} typeDefinitionId={node?.reference?.TypeDefinition} />}
-               >
+                    key={node.id}
+                    nodeId={`${node.reference.NodeId}`}
+                    label={node?.reference?.DisplayName?.Text ?? node?.reference?.BrowseName}
+                    icon={<NodeIcon nodeClass={node?.reference?.NodeClass} typeDefinitionId={node?.reference?.TypeDefinition} />}
+                    draggable
+                    onDragStart={(event) => {
+                        event.dataTransfer.setData('text/plain', JSON.stringify(node.reference))
+                    }}>
                   <BrowseTreeNode
-                     parentId={node.reference.NodeId}
-                     selectionId={selectionId}
-                     onSelectionChanged={onSelectionChanged}
+                        parentId={node.reference.NodeId}
+                        selectionId={selectionId}
+                        onSelectionChanged={onSelectionChanged}
                   />
                </TreeItem>)
          })}
@@ -60,7 +63,7 @@ export const BrowseTreeNode = ({ parentId, selectionId, onSelectionChanged }: Br
 
 interface BrowseTreeViewProps {
    rootNodeId?: string
-   onSelectionChanged?: (node: OpcUa.ReferenceDescription) => void
+    onSelectionChanged?: (node: OpcUa.ReferenceDescription) => void
 }
 
 export const BrowseTreeView = ({ rootNodeId, onSelectionChanged }: BrowseTreeViewProps) => {
@@ -69,18 +72,21 @@ export const BrowseTreeView = ({ rootNodeId, onSelectionChanged }: BrowseTreeVie
     const { visibleNodes, setVisibleNodes, nodes } = React.useContext(SessionContext);
 
    const handleNodeSelect = React.useCallback((_e: React.SyntheticEvent, nodeId: string) => {
-      //console.error(`SELECT node ${nodeId}`);
+     // console.error(`SELECT node ${nodeId}`);
       const treeNode: IBrowsedNode | undefined = nodes.get(nodeId);
       if (treeNode && onSelectionChanged) {
          onSelectionChanged(treeNode.reference);
       }
-      setSelectionId(treeNode?.id);
+       setSelectionId(treeNode?.id);
+
+       // call read method for right window
+
    }, [onSelectionChanged, nodes]);
 
    const handleToggle = (_e: React.SyntheticEvent, nodeIds: string[]) => {
       //console.error(`TOGGLE node ${nodeIds.join()}`);
       setVisibleNodes(nodeIds);
-   }
+    }
 
    return (
        <Paper elevation={3} sx={{ minWidth: '300px', mr: '5px', height: '100%', width: 'auto' }}>
@@ -88,16 +94,16 @@ export const BrowseTreeView = ({ rootNodeId, onSelectionChanged }: BrowseTreeVie
                OPC UA
            </Typography>
          <TreeView
-            defaultCollapseIcon={<ExpandMoreIcon />}
-            defaultExpandIcon={<ChevronRightIcon />}
-            expanded={visibleNodes}
-            onNodeSelect={(e: React.SyntheticEvent, nodeId: string) => handleNodeSelect(e, nodeId)}
-            onNodeToggle={(e: React.SyntheticEvent, nodeIds: string[]) => handleToggle(e, nodeIds)}
+               defaultCollapseIcon={<ExpandMoreIcon />}
+               defaultExpandIcon={<ChevronRightIcon />}
+               expanded={visibleNodes}
+               onNodeSelect={(e: React.SyntheticEvent, nodeId: string) => handleNodeSelect(e, nodeId)}
+               onNodeToggle={(e: React.SyntheticEvent, nodeIds: string[]) => handleToggle(e, nodeIds)}
          >
             <BrowseTreeNode
-               parentId={rootNodeId}
-               selectionId={selectionId ?? rootNodeId}
-               onSelectionChanged={onSelectionChanged}
+                parentId={rootNodeId}
+                selectionId={selectionId ?? rootNodeId}
+                onSelectionChanged={onSelectionChanged}
             />
          </TreeView>
       </Paper>
