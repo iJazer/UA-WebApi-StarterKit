@@ -20,9 +20,6 @@ namespace UaRestGateway.Server.Controllers
     [Route("[controller]")]
     public class StreamController : CommonController
     {
-   
-        private UAClient m_opcClient;
-
         public StreamController(
             IConfiguration configuration,
             ILogger<UaServerController> logger,
@@ -81,12 +78,13 @@ namespace UaRestGateway.Server.Controllers
         {
             try
             {
-                var context = ControllerContext.HttpContext;
-                var isSocketRequest = context.WebSockets.IsWebSocketRequest;
+                var sessionContext = GetSessionContext(HttpContext);
+                var httpContext = ControllerContext.HttpContext;
+                var isSocketRequest = httpContext.WebSockets.IsWebSocketRequest;
 
                 if (isSocketRequest)
                 {
-                    var protocols = context.WebSockets.WebSocketRequestedProtocols;
+                    var protocols = httpContext.WebSockets.WebSocketRequestedProtocols;
 
                     string selectedProtocol = "opcua+uajson";
 
@@ -112,12 +110,12 @@ namespace UaRestGateway.Server.Controllers
                         }
                     }
 
-                    WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync(selectedProtocol);
-                    await ProcessMessages(context, webSocket, accessToken);
+                    WebSocket webSocket = await httpContext.WebSockets.AcceptWebSocketAsync(selectedProtocol);
+                    await ProcessMessages(httpContext, sessionContext, webSocket, accessToken);
                 }
                 else
                 {
-                    context.Response.StatusCode = 400;
+                    httpContext.Response.StatusCode = 400;
                 }
             }
             catch (Exception ex)
@@ -126,10 +124,8 @@ namespace UaRestGateway.Server.Controllers
             }
         }
 
-        private async Task ProcessMessages(HttpContext httpContext, WebSocket webSocket, string accessToken)
+        private async Task ProcessMessages(HttpContext httpContext, SessionContext sessionContext, WebSocket webSocket, string accessToken)
         {
-            var sessionContext = GetSessionContext(httpContext, accessToken);
-
             while (webSocket.State == WebSocketState.Open)
             {
                 await DispatchMessage(Server, Client, httpContext, sessionContext, webSocket);
@@ -350,15 +346,18 @@ namespace UaRestGateway.Server.Controllers
                             break;
 
                         case CreateMonitoredItemsRequest input:
-                            response = await MessageUtils.CreateMonitoredItems(sessionContext, server, input);
+                            response = await MessageUtils.CreateMonitoredItems_with_Client(sessionContext, client, input);
+                           // response = await MessageUtils.CreateMonitoredItems(sessionContext, server, input);
                             break;
 
                         case ModifyMonitoredItemsRequest input:
-                            response = await MessageUtils.ModifyMonitoredItems(sessionContext, server, input);
+                            response = await MessageUtils.ModifyMonitoredItems_with_Client(sessionContext, client, input);
+                            //response = await MessageUtils.ModifyMonitoredItems(sessionContext, server, input);
                             break;
 
                         case DeleteMonitoredItemsRequest input:
-                            response = await MessageUtils.DeleteMonitoredItems(sessionContext, server, input);
+                            response = await MessageUtils.DeleteMonitoredItems_with_Client(sessionContext, client, input);
+                            //response = await MessageUtils.DeleteMonitoredItems(sessionContext, server, input);
                             break;
                         default:
                             throw new ServiceResultException(Opc.Ua.StatusCodes.BadNotSupported, "Request not supported.");

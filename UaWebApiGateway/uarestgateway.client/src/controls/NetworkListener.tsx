@@ -8,7 +8,7 @@ import TableCell from '@mui/material/TableCell/TableCell';
 import TableBody from '@mui/material/TableBody/TableBody';
 import Paper from '@mui/material/Paper/Paper';
 import { Typography } from '@mui/material';
-import { SessionContext } from '../SessionProvider';
+import { SessionContext } from '../SessionContext';
 
 
 interface NetworkListenerProps {

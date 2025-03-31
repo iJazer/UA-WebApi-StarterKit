@@ -43,7 +43,7 @@ namespace UaRestGateway.Server.Service
             var configSectionName = "Quickstarts.ReferenceClient";
 
             //Change Server URL
-            Uri serverUrl = new Uri("opc.tcp://192.168.119.131:4840");
+            Uri serverUrl = new Uri("opc.tcp://WhiteCat:48030/");
 
             CertificatePasswordProvider PasswordProvider = new CertificatePasswordProvider(password);
             ApplicationInstance application = new ApplicationInstance

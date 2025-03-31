@@ -11,7 +11,7 @@ import AASSubmodel from '../controls/AASSubmodel';
 import AASFunctions from '../controls/AASFunctions';
 import NetworkListener from '../controls/NetworkListener';
 import DataAccessView from '../controls/DataAccessView';
-
+import BrowseProvider from '../BrowseProvider';
 
 export const HomePage = () => {
    const [selection, setSelection] = React.useState<OpcUa.ReferenceDescription | undefined>();
@@ -26,16 +26,17 @@ export const HomePage = () => {
             return <ServerStatusCard rootId={reference.NodeId} />;
          }
          default:
-         {
-            return <VariableValueList rootId={reference?.NodeId} />;
-         }
+            {
+               return <VariableValueList rootId={reference?.NodeId} />;
+            }
       }
    }, []);
 
    const onSelectionChanged = React.useCallback((x: OpcUa.ReferenceDescription | undefined) => setSelection({ ...x }), []);
 
    return (
-      <Box display="flex" flexDirection="column" p={2} sx={{ width: '100%' }}>
+       <BrowseProvider>
+       <Box display="flex" flexDirection="column" p={2} sx={{ width: '100%' }}>
          <SessionStatusBar />
          <Box display="flex" p={2} pb={4} sx={{ width: '100%', height: '33.33vh'}}>
                <Box sx={{ width: '20%', overflow: 'auto', mr: 15 }}>
@@ -59,8 +60,9 @@ export const HomePage = () => {
             <Box flexGrow={0} sx={{ width: '100%'}}>
                    <NetworkListener />
             </Box>
-         </Box>
-      </Box>
+               </Box>
+           </Box>
+       </BrowseProvider>
    );
 };
 

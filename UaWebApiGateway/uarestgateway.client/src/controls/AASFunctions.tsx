@@ -8,7 +8,7 @@ import Box from '@mui/material/Box/Box';
 import { updateAAS } from '../controls/AASSubmodel';
 //import * as OpcUa from 'opcua-webapi';
 //import { IBrowsedNode } from '../service/IBrowsedNode';
-import { SessionContext } from '../SessionProvider';
+import { SessionContext } from '../SessionContext';
 
 interface AASFunctionsProps {
     setMessage: React.Dispatch<React.SetStateAction<string>>;
