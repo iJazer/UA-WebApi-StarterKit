@@ -93,6 +93,13 @@ export const SessionProvider = ({ children }: SessionProps) => {
       },
    );
 
+   /**
+    * processRawResponse: Function which processes the raw response from the server
+    * 
+    * @param response: IResponseMessage - the response from the server
+    * 
+    * The function checks the requestHandle of the response and processes the response accordingly
+    */
    const processRawResponse = React.useCallback((response: IResponseMessage) => {
       if (response) {
          const requestHandle = response?.Body?.ResponseHeader?.RequestHandle ?? 0;
@@ -104,6 +111,17 @@ export const SessionProvider = ({ children }: SessionProps) => {
       }
    }, [])
 
+   /**
+    * sendRequest is the connection link between the client and the server
+    *
+    * @parma request: IRequestMessage - the full request message for the server
+    * @param callerHandle?: number - The handle of the caller initiating the read operation.
+    * 
+    * If the readyState is open, a WebSocket is established and the calls are send over WebSocket
+    * If the readyState is close, the call is send over REST
+    * 
+    * For REST, a secound comparison has to be made, if it's a AAS call or an OPC UA call
+    */
    const sendRequest = React.useCallback((request: IRequestMessage, callerHandle?: number) => {
       if (!request.Body.RequestHeader) {
          request.Body.RequestHeader = {}
@@ -124,33 +142,36 @@ export const SessionProvider = ({ children }: SessionProps) => {
          { callerHandle: callerHandle ?? requestHeader.RequestHandle, request }
       );
 
-      //if webSocket is setup --> SendMessage
-      //if not use REST
-      //if REST create a queue with REST requests
-      // Update network message state
-
-      //setMessage(JSON.stringify(request));
-      // Update network message state
       setNetworkMessage(setMessage, JSON.stringify(request));
 
       try {
-         if (readyState === ReadyState.OPEN) {
+          if (readyState === ReadyState.OPEN) {
+            console.log("WebSocket call");
             sendMessage(JSON.stringify(request));
          }
          else {
             const clientHandle = requestHeader.RequestHandle;
 
-            call(`/opcua/${apiNames[request.ServiceId ?? ''].path}`,
-                  { callerHandle: clientHandle, request: { Body: request.Body } },
-                  undefined,
-                  user,
-                  true)
-               .then(response => {
-                  processRawResponse({ ServiceId: apiNames[request.ServiceId ?? ''].response, Body: response });
-               })
-               .catch(error => {
-                  console.error('Failed to send request:', error);
-               });
+             if (request.CallerId == "opc") {
+                 console.log("OPC UA REST call");
+                 call(`/opcua/${apiNames[request.ServiceId ?? ''].path}`,
+                     { callerHandle: clientHandle, request: { Body: request.Body } },
+                     undefined,
+                     user,
+                     true)
+                     .then(response => {
+                         processRawResponse({ ServiceId: apiNames[request.ServiceId ?? ''].response, Body: response });
+                     })
+                     .catch(error => {
+                         console.error('Failed to send request:', error);
+                     });
+             }
+             else if (request.CallerId == "aas") {
+                 console.log("AAS call");
+             }
+             else {
+                 console.error("Unknown callerId");
+             }
          }
       } catch (error) {
          console.error('Failed to send request:', error);
@@ -158,6 +179,14 @@ export const SessionProvider = ({ children }: SessionProps) => {
       }
    }, [sendMessage, processRawResponse, readyState, user]);
 
+
+   /**
+    * activateSession: Function which is the second step in the connection process after the createSession call
+    * 
+    * @param createSessionResponse: OpcUa.CreateSessionResponse - the response from the server after the createSession call
+    * 
+    * The function searches for the correct endpoint and token to activate the session
+    */
    const activateSession = React.useCallback((createSessionResponse: OpcUa.CreateSessionResponse) => {
       const endpoint = createSessionResponse?.ServerEndpoints?.find((endpoint) => {
          if (endpoint.TransportProfileUri === "http://opcfoundation.org/UA-Profile/Transport/wss-uajson") {
@@ -191,6 +220,11 @@ export const SessionProvider = ({ children }: SessionProps) => {
       sendRequest(message);
    }, [sendRequest, loginStatus, user?.accessToken]);
 
+   /**
+    * createSession: Function which is the first step in the connection process
+    * 
+    * The function creates a session with the server and sets the sessionState to creating
+    */
    const createSession = React.useCallback(() => {
       const request: OpcUa.CreateSessionRequest = {
          ClientDescription: {
@@ -304,6 +338,13 @@ export const SessionProvider = ({ children }: SessionProps) => {
       setMessage: setMessageImpl
    } as ISessionContext;
 
+   /**
+    * processResponse: Function which processes the response from the server
+    * 
+    * @param response: IResponseMessage - the response from the server
+    * 
+    * The function checks the ServiceId of the response and processes the response accordingly
+    */
    const processResponse = React.useCallback((response: IResponseMessage) => {
       if (response?.ServiceId === OpcUa.DataTypeIds.CreateSessionResponse) {
          const csr = response.Body as OpcUa.CreateSessionResponse;

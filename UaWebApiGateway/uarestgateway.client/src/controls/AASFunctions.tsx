@@ -1,33 +1,24 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper/Paper';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box/Box';
 
-import { updateAAS } from '../controls/AASSubmodel';
 //import * as OpcUa from 'opcua-webapi';
 //import { IBrowsedNode } from '../service/IBrowsedNode';
-import { SessionContext } from '../SessionContext';
 
 interface AASFunctionsProps {
     setMessage: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const AASFunctions: React.FC<AASFunctionsProps> = ({ setMessage }) => {
+export const AASFunctions: React.FC<AASFunctionsProps> = ({ setMessage }) => {
     const [clickCount, setClickCount] = useState(0);
-    const { getSubmodelNodes } = useContext(SessionContext);
 
     const handleButtonClick = async () => {
         const newCount = clickCount + 1;
         setClickCount(newCount);
-        const message = `Button was clicked: ${newCount} times Function not implemented`;
-        try {
-            const result = await getSubmodelNodes(message);
-            updateAAS(setMessage, result);
-        } catch (error) {
-            setMessage('Error fetching submodel nodes');
-        }
+        setMessage('Error fetching submodel nodes');
     };
 
     return (

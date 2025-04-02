@@ -16,6 +16,11 @@ import { IBrowsedNode } from '../service/IBrowsedNode';
 import { BrowseContext } from '../BrowseContext';
 import { HandleFactory } from '../service/HandleFactory';
 
+import { addAccessViewItem } from './DataAccessView'; // Adjust the import path as necessary
+
+
+import ContextMenu from '../ContextMenu';
+
 interface BrowseTreeNodeProps {
    parentId?: string
    selectionId?: string,
@@ -30,8 +35,9 @@ interface BrowseTreeNodeInternals {
 const BrowseTreeNode = ({ parentId, selectionId, onSelectionChanged }: BrowseTreeNodeProps) => {
    const [children, setChildren] = React.useState<IBrowsedNode[]>([]);
    const { browseChildren, lastCompletedRequest, stateChangeCount } = React.useContext(BrowseContext);
+   const [contextMenu, setContextMenu] = React.useState<{ mouseX: number, mouseY: number, displayName: string } | null>(null);
 
-   const m = React.useRef<BrowseTreeNodeInternals>({
+    const m = React.useRef<BrowseTreeNodeInternals>({
       requestId: HandleFactory.increment()
    });
 
@@ -47,7 +53,32 @@ const BrowseTreeNode = ({ parentId, selectionId, onSelectionChanged }: BrowseTre
       }
    }, [lastCompletedRequest, setChildren]);
 
-   return (
+    const handleContextMenu = React.useCallback((event: React.MouseEvent, displayName: string) => {
+        event.preventDefault();
+        event.stopPropagation();
+        setContextMenu((prevContextMenu) =>
+            prevContextMenu === null
+                ? { mouseX: event.clientX - 2, mouseY: event.clientY - 4, displayName }
+                : null,
+        );
+    }, []);
+
+    const handleClose = React.useCallback(() => {
+        setContextMenu(null);
+    }, []);
+
+    const handleOnAddAccessView = React.useCallback(() => {
+        if (contextMenu) {
+            const { displayName } = contextMenu;
+            const nodeId = children.find(node => node.reference.DisplayName.Text === displayName)?.reference.NodeId;
+            if (nodeId) {
+                addAccessViewItem(displayName, nodeId);
+            }
+        }
+        handleClose();
+    }, [contextMenu, handleClose, children]);
+
+      return (
       <React.Fragment >
          {children?.map((node) => {
             if (!node?.reference?.NodeId) {
@@ -59,17 +90,19 @@ const BrowseTreeNode = ({ parentId, selectionId, onSelectionChanged }: BrowseTre
                     nodeId={`${node.reference.NodeId}`}
                     label={node?.reference?.DisplayName?.Text ?? node?.reference?.BrowseName}
                     icon={<NodeIcon nodeClass={node?.reference?.NodeClass} typeDefinitionId={node?.reference?.TypeDefinition} />}
-                    draggable
-                    onDragStart={(event) => {
-                        event.dataTransfer.setData('text/plain', JSON.stringify(node.reference))
-                    }}>
-                  <BrowseTreeNode
+                    onContextMenu={(event) => handleContextMenu(event, node?.reference?.DisplayName?.Text ?? '')}>
+                    <BrowseTreeNode
                         parentId={node.reference.NodeId}
                         selectionId={selectionId}
                         onSelectionChanged={onSelectionChanged}
-                  />
+                    />
                </TreeItem>)
          })}
+        <ContextMenu
+            anchorPosition={contextMenu}
+            handleClose={handleClose}
+            onAddAccessView={handleOnAddAccessView}
+        />
       </React.Fragment>);
 };
 
@@ -88,8 +121,6 @@ const BrowseTreeRoot = ({ rootNodeId, onSelectionChanged }: BrowseTreeViewProps)
          onSelectionChanged(treeNode.reference);
       }
        setSelectionId(treeNode?.id);
-
-       // call read method for right window
 
    }, [onSelectionChanged, nodes]);
 

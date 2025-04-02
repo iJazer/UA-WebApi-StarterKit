@@ -66,7 +66,20 @@ export const BrowseProvider = ({ children }: BrowseProviderProps) => {
       m.current.stateChangeCount++;
    }, [sessionState]);
 
-   const prepareAndSend = React.useCallback((serviceId: string, request: IRequestBody, state?: InternalRequest, callerHandle?: number) => {
+   /**
+   * prepareAndSend: Function to handle a specific request function (like Browse or Read).
+   * 
+   * @param serviceId - The ID of the service to be requested.
+   * @param request - The request body containing the details of the request.
+   * @param state - The internal request state containing details of the current operation (optional).
+   * @param callerHandle - The handle of the caller initiating the request (optional).
+   * @param callerId - The ID of the caller / technology initiating the request (optional).
+   * 
+   * If the state is undefined, it will be set to an internal request with the callerHandle and the serviceId.
+   * After creating the RequestMessage, the state will be set into a request map.
+   * This function sends the request using the sendRequest function from the SessionContext.
+   */
+   const prepareAndSend = React.useCallback((serviceId: string, request: IRequestBody, state?: InternalRequest, callerHandle?: number, callerId?: string) => {
       if (!state) {
          state = {
             callerHandle: callerHandle,
@@ -74,7 +87,8 @@ export const BrowseProvider = ({ children }: BrowseProviderProps) => {
             serviceId: serviceId
          } as InternalRequest;
       }
-      const message: IRequestMessage = {
+       const message: IRequestMessage = {
+         CallerId: callerId,
          ServiceId: serviceId,
          Body: request
       };
@@ -83,6 +97,15 @@ export const BrowseProvider = ({ children }: BrowseProviderProps) => {
       sendRequest(message, state.internalHandle);
    }, [sendRequest]);
 
+  /**
+  * browseChildren: Function to handle a browse operation in OPC UA.
+  * 
+  * @param callerHandle - The handle of the caller initiating the browse operation.
+  * @param parentId - The NodeId of the parent node to browse.
+  * 
+  * This function prepares an OPC UA BrowseRequest and sends it using the prepareAndSend function.
+  * If the parentId is not provided, it sets the last completed browse result with the caller handle.
+  */
    const browseChildren = React.useCallback(async (callerHandle: number, parentId: string): Promise<void> => {
       if (!parentId) {
          setLastCompletedBrowse({ callerHandle: callerHandle });
@@ -100,17 +123,34 @@ export const BrowseProvider = ({ children }: BrowseProviderProps) => {
             }
          ]
       };
-      prepareAndSend(OpcUa.DataTypeIds.BrowseRequest, request, undefined, callerHandle);
+      prepareAndSend(OpcUa.DataTypeIds.BrowseRequest, request, undefined, callerHandle, "opc");
    }, [prepareAndSend]);
 
+  /**
+  * browseNext: Function to handle the continuation of a browse operation in OPC UA.
+  * 
+  * @param state - The internal request state containing details of the current browse operation.
+  * @param continuationPoint - The continuation point to resume the browse operation.
+  * @param releaseContinuationPoints - A boolean indicating whether to release the continuation points after the browse operation.
+  * 
+  * This function prepares an OPC UA BrowseNextRequest and sends it using the prepareAndSend function.
+  */
    const browseNext = React.useCallback(async (state: InternalRequest, continuationPoint: string, releaseContinuationPoints: boolean): Promise<void> => {
       const request: OpcUa.BrowseNextRequest = {
          ReleaseContinuationPoints: releaseContinuationPoints,
          ContinuationPoints: [ continuationPoint ]
       };
-      prepareAndSend(OpcUa.DataTypeIds.BrowseNextRequest, request, state, undefined);
+       prepareAndSend(OpcUa.DataTypeIds.BrowseNextRequest, request, state, undefined, "opc");
    }, [prepareAndSend]);
 
+   /**
+   * read: Function to handle a read operation in OPC UA.
+   * 
+   * @param state - The internal request state containing details of the current read operation.
+   * 
+   * This function prepares an OPC UA ReadRequest using the nodes to read from the state.
+   * It then sends the request using the prepareAndSend function.
+   */
    const read = React.useCallback(async (state: InternalRequest): Promise<void> => {
       const valuesToRead: OpcUa.ReadValueId[] = [];
       state.nodesToRead?.forEach((item) => {
@@ -123,9 +163,20 @@ export const BrowseProvider = ({ children }: BrowseProviderProps) => {
          MaxAge: 0,
          NodesToRead: valuesToRead
       };
-      prepareAndSend(OpcUa.DataTypeIds.ReadRequest, request, state, undefined);
+       prepareAndSend(OpcUa.DataTypeIds.ReadRequest, request, state, undefined, "opc");
    }, [prepareAndSend]);
 
+   /**
+   * readValues: Function to handle reading values of nodes found during browsing in OPC UA.
+   *
+   * @param callerHandle - The handle of the caller initiating the read operation.
+   * @param nodesToRead - An array of nodes to read, each containing details like nodeId, attributeId, and path.
+   * 
+   * This function prepares an OPC UA ReadRequest or TranslateBrowsePathsToNodeIdsRequest based on the nodes to read.
+   * If the nodes have unresolved node IDs and paths, it prepares a TranslateBrowsePathsToNodeIdsRequest to resolve them.
+   * Otherwise, it directly prepares a ReadRequest to read the values of the nodes.
+   * The request is sent using the prepareAndSend function.
+   */
    const readValues = React.useCallback(async (callerHandle: number, nodesToRead: IReadValueId[]): Promise<void> => {
       if (!nodesToRead.length) {
          setLastCompletedBrowse({ callerHandle: callerHandle });
@@ -173,11 +224,21 @@ export const BrowseProvider = ({ children }: BrowseProviderProps) => {
             BrowsePaths: browsePaths
          };
          state.nodesToTranslate = nodesToTranslate;
-         prepareAndSend(OpcUa.DataTypeIds.TranslateBrowsePathsToNodeIdsRequest, request, state);
+          prepareAndSend(OpcUa.DataTypeIds.TranslateBrowsePathsToNodeIdsRequest, request, state, undefined, "opc");
          return;
       }
       read(state);
    }, [prepareAndSend, read]);
+
+   /*
+   const getSubmodel = React.useCallback(async (callerHandle: number, parentId: string): Promise<void> => {
+        
+      const request: AAS.GetSubmodelRequest = {
+            
+      };
+      prepareAndSend(AAS.DataTypeIds.GetSubmodelRequest, request, undefined, callerHandle, "aas");
+   }, [prepareAndSend]);
+   */
 
    React.useEffect(() => {
       const request = m.current.requests.get(lastCompletedRequest?.callerHandle ?? 0);

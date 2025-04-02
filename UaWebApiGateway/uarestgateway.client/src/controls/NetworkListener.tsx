@@ -12,7 +12,6 @@ import { SessionContext } from '../SessionContext';
 
 
 interface NetworkListenerProps {
-    message: string;
 }
 
 // Define and export a function
