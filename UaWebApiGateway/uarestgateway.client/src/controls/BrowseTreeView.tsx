@@ -1,11 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
+import Box from '@mui/material/Box/Box';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { TreeView } from '@mui/x-tree-view/TreeView/TreeView';
 import Paper from '@mui/material/Paper/Paper';
 import Typography from '@mui/material/Typography';
+
+import DataAccessView from '../controls/DataAccessView';
+import { addAccessViewItem } from '../controls/DataAccessView';
 
 import * as OpcUa from 'opcua-webapi';
 //import { ApplicationContext } from '../ApplicationProvider';
@@ -15,8 +19,6 @@ import { IBrowsedNode } from '../service/IBrowsedNode';
 
 import { BrowseContext } from '../BrowseContext';
 import { HandleFactory } from '../service/HandleFactory';
-
-import { addAccessViewItem } from './DataAccessView'; // Adjust the import path as necessary
 
 
 import ContextMenu from '../ContextMenu';
@@ -36,6 +38,7 @@ const BrowseTreeNode = ({ parentId, selectionId, onSelectionChanged }: BrowseTre
    const [children, setChildren] = React.useState<IBrowsedNode[]>([]);
    const { browseChildren, lastCompletedRequest, stateChangeCount } = React.useContext(BrowseContext);
    const [contextMenu, setContextMenu] = React.useState<{ mouseX: number, mouseY: number, displayName: string } | null>(null);
+   
 
     const m = React.useRef<BrowseTreeNodeInternals>({
       requestId: HandleFactory.increment()
@@ -70,9 +73,9 @@ const BrowseTreeNode = ({ parentId, selectionId, onSelectionChanged }: BrowseTre
     const handleOnAddAccessView = React.useCallback(() => {
         if (contextMenu) {
             const { displayName } = contextMenu;
-            const nodeId = children.find(node => node.reference.DisplayName.Text === displayName)?.reference.NodeId;
+            const nodeId = children.find(node => (node.reference.DisplayName?.Text ?? '') === displayName)?.reference.NodeId;
             if (nodeId) {
-                addAccessViewItem(displayName, nodeId);
+                    addAccessViewItem(displayName, nodeId);
             }
         }
         handleClose();
@@ -128,25 +131,28 @@ const BrowseTreeRoot = ({ rootNodeId, onSelectionChanged }: BrowseTreeViewProps)
       setVisibleNodes(nodeIds);
     }
 
-   return (
-      <Paper elevation={3} sx={{ minWidth: '300px', mr: '5px', height: '100%', width: 'auto' }}>
-         <Typography variant="h5" component="h2" gutterBottom>
-            OPC UA
-         </Typography>
-         <TreeView
-               defaultCollapseIcon={<ExpandMoreIcon />}
-               defaultExpandIcon={<ChevronRightIcon />}
-               expanded={visibleNodes}
-               onNodeSelect={(e: React.SyntheticEvent, nodeId: string) => handleNodeSelect(e, nodeId)}
-               onNodeToggle={(e: React.SyntheticEvent, nodeIds: string[]) => handleToggle(e, nodeIds)}
-         >
-            <BrowseTreeNode
-                parentId={rootNodeId}
-                selectionId={selectionId ?? rootNodeId}
-                onSelectionChanged={onSelectionChanged}
-            />
-         </TreeView>
-      </Paper>
+    return (
+        <Box display="flex" p={2} pb={4} sx={{ width: '100%', height: '33.33vh' }}>
+            <Paper sx={{ mr: '5px', height: '100%', width: '40%', overflow: 'auto' }}>
+             <Typography variant="h5" component="h2" gutterBottom>
+                OPC UA
+             </Typography>
+             <TreeView
+                   defaultCollapseIcon={<ExpandMoreIcon />}
+                   defaultExpandIcon={<ChevronRightIcon />}
+                   expanded={visibleNodes}
+                   onNodeSelect={(e: React.SyntheticEvent, nodeId: string) => handleNodeSelect(e, nodeId)}
+                   onNodeToggle={(e: React.SyntheticEvent, nodeIds: string[]) => handleToggle(e, nodeIds)}
+             >
+                <BrowseTreeNode
+                    parentId={rootNodeId}
+                    selectionId={selectionId ?? rootNodeId}
+                    onSelectionChanged={onSelectionChanged}
+                />
+             </TreeView>
+            </Paper>
+            <DataAccessView /> 
+        </Box>
    );
 }
 

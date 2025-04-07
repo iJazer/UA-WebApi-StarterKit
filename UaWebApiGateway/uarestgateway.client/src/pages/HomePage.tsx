@@ -10,8 +10,8 @@ import ServerStatusCard from '../controls/ServerStatusCard';
 import AASSubmodel from '../controls/AASSubmodel';
 import AASFunctions from '../controls/AASFunctions';
 import NetworkListener from '../controls/NetworkListener';
-import DataAccessView from '../controls/DataAccessView';
 import BrowseProvider from '../BrowseProvider';
+import SubscriptionPage from './SubscriptionPage';
 
 
 export const HomePage = () => {
@@ -33,7 +33,7 @@ export const HomePage = () => {
       }
    }, []);
 
-    const onSelectionChanged = React.useCallback((x: OpcUa.ReferenceDescription | undefined) => setSelection({ ...x }), []);
+   //const onSelectionChanged = React.useCallback((x: OpcUa.ReferenceDescription | undefined) => setSelection({ ...x }), []);
 
 
    return (
@@ -41,14 +41,7 @@ export const HomePage = () => {
        <Box display="flex" flexDirection="column" p={2} sx={{ width: '100%' }}>
          <SessionStatusBar />
          <Box display="flex" p={2} pb={4} sx={{ width: '100%', height: '33.33vh'}}>
-            <Box sx={{ width: '30%', overflow: 'auto', mr: 15 }}>
-                       <BrowseTreeView rootNodeId={OpcUa.ObjectIds.RootFolder} onSelectionChanged={onSelectionChanged} />
-            </Box>
-            <DataAccessView >
-            </DataAccessView> 
-            <Box sx={{ width: '40%', overflow: 'auto', mr: 15 }} >
-                {selectPanel(selection)}
-            </Box>
+            <SubscriptionPage />
          </Box>
          <Box display="flex" p={2} pb={4} sx={{ width: '100%', height: '33.33vh' }}>
                <Box sx={{ width: '20%', overflow: 'auto', mr: 15 }}>
@@ -62,8 +55,10 @@ export const HomePage = () => {
             <Box flexGrow={0} sx={{ width: '100%'}}>
                    <NetworkListener />
             </Box>
-               </Box>
-           </Box>
+         </Box>
+       </Box>
+
+           
        </BrowseProvider>
    );
 };

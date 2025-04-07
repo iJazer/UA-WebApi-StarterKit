@@ -50,11 +50,6 @@ export const AttributesView = ({ reference, requestTimeout }: AttributesViewProp
          <Table>
             <TableHead>
                <TableRow>
-                  <TableCell colSpan={4} sx={{ width: '100%', backgroundColor: theme.palette.primary.light }}>
-                     <Typography variant='h6'>{(reference) ? `${name} [${reference?.NodeId}]` : "   "}</Typography>
-                  </TableCell>
-               </TableRow>
-               <TableRow>
                   <TableCell><Typography variant='h6'>Attribute</Typography></TableCell>
                   <TableCell><Typography variant='h6'>Timestamp</Typography></TableCell>
                   <TableCell ><Typography variant='h6'>StatusCode</Typography></TableCell>
