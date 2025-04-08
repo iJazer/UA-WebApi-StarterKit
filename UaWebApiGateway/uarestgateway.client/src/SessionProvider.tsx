@@ -152,7 +152,7 @@ export const SessionProvider = ({ children }: SessionProps) => {
          else {
             const clientHandle = requestHeader.RequestHandle;
 
-             if (request.CallerId == "opc") {
+              if (request.Body.RequestHeader.RequestHandle) { //Erkennung ob es ein OPC UA request ist, da RequestHandle nur für OPC UA calls genutzt werden
                  console.log("OPC UA REST call");
                  call(`/opcua/${apiNames[request.ServiceId ?? ''].path}`,
                      { callerHandle: clientHandle, request: { Body: request.Body } },
@@ -166,7 +166,7 @@ export const SessionProvider = ({ children }: SessionProps) => {
                          console.error('Failed to send request:', error);
                      });
              }
-             else if (request.CallerId == "aas") {
+             else if (request.Body.RequestHeader.AASRequestHandle) { //Erkennung ob es ein AAS request ist --> Für Juliee
                  console.log("AAS call");
              }
              else {

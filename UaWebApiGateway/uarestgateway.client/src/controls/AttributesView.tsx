@@ -15,6 +15,8 @@ import { readAttributes } from '../opcua-utils';
 import { IReadResult } from '../service/IReadResult';
 import { UserContext } from '../UserProvider';
 
+import { BrowseContext } from '../BrowseContext';
+
 interface AttributesViewProps {
    reference?: OpcUa.ReferenceDescription
    requestTimeout?: number

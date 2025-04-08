@@ -79,7 +79,7 @@ export const BrowseProvider = ({ children }: BrowseProviderProps) => {
    * After creating the RequestMessage, the state will be set into a request map.
    * This function sends the request using the sendRequest function from the SessionContext.
    */
-   const prepareAndSend = React.useCallback((serviceId: string, request: IRequestBody, state?: InternalRequest, callerHandle?: number, callerId?: string) => {
+   const prepareAndSend = React.useCallback((serviceId: string, request: IRequestBody, state?: InternalRequest, callerHandle?: number) => {
       if (!state) {
          state = {
             callerHandle: callerHandle,
@@ -88,7 +88,6 @@ export const BrowseProvider = ({ children }: BrowseProviderProps) => {
          } as InternalRequest;
       }
        const message: IRequestMessage = {
-         CallerId: callerId,
          ServiceId: serviceId,
          Body: request
       };
@@ -123,7 +122,7 @@ export const BrowseProvider = ({ children }: BrowseProviderProps) => {
             }
          ]
       };
-      prepareAndSend(OpcUa.DataTypeIds.BrowseRequest, request, undefined, callerHandle, "opc");
+      prepareAndSend(OpcUa.DataTypeIds.BrowseRequest, request, undefined, callerHandle);
    }, [prepareAndSend]);
 
   /**
@@ -140,7 +139,7 @@ export const BrowseProvider = ({ children }: BrowseProviderProps) => {
          ReleaseContinuationPoints: releaseContinuationPoints,
          ContinuationPoints: [ continuationPoint ]
       };
-       prepareAndSend(OpcUa.DataTypeIds.BrowseNextRequest, request, state, undefined, "opc");
+       prepareAndSend(OpcUa.DataTypeIds.BrowseNextRequest, request, state, undefined);
    }, [prepareAndSend]);
 
    /**
@@ -163,7 +162,7 @@ export const BrowseProvider = ({ children }: BrowseProviderProps) => {
          MaxAge: 0,
          NodesToRead: valuesToRead
       };
-       prepareAndSend(OpcUa.DataTypeIds.ReadRequest, request, state, undefined, "opc");
+       prepareAndSend(OpcUa.DataTypeIds.ReadRequest, request, state, undefined);
    }, [prepareAndSend]);
 
    /**
@@ -224,11 +223,12 @@ export const BrowseProvider = ({ children }: BrowseProviderProps) => {
             BrowsePaths: browsePaths
          };
          state.nodesToTranslate = nodesToTranslate;
-          prepareAndSend(OpcUa.DataTypeIds.TranslateBrowsePathsToNodeIdsRequest, request, state, undefined, "opc");
+          prepareAndSend(OpcUa.DataTypeIds.TranslateBrowsePathsToNodeIdsRequest, request, state, undefined);
          return;
       }
       read(state);
    }, [prepareAndSend, read]);
+
 
    /*
    const getSubmodel = React.useCallback(async (callerHandle: number, parentId: string): Promise<void> => {
@@ -240,89 +240,100 @@ export const BrowseProvider = ({ children }: BrowseProviderProps) => {
    }, [prepareAndSend]);
    */
 
+  /**
+   * Response handling
+   * 
+   * 
+   */
    React.useEffect(() => {
       const request = m.current.requests.get(lastCompletedRequest?.callerHandle ?? 0);
-      console.error("lastCompletedRequest(internal=" + (lastCompletedRequest?.callerHandle ?? 0) + ", caller=" + (request?.callerHandle ?? 0) + ")");
-      if (request) {
-         if (lastCompletedRequest?.response?.ServiceId === OpcUa.DataTypeIds.BrowseResponse) {
-            const children: IBrowsedNode[] = request.children = [];
-            const response = lastCompletedRequest.response?.Body as OpcUa.BrowseResponse;
-            response?.Results?.forEach((result) => {
-               if (!result?.StatusCode) {
-                  result?.References?.forEach((reference) => {
-                     children.push({
-                        id: reference.NodeId ?? '',
-                        reference: reference
-                     });
-                  });
-                  if (result?.ContinuationPoint) {
-                     console.error("browseNext[" + children.length + "]: " + request.callerHandle);
-                     browseNext(request, result?.ContinuationPoint, false);
-                  }
-                  else {
-                     children.forEach((child) => m.current.nodes.set(child.id, child));
-                     console.error("BrowseResponse[" + children.length + "]: " + request.callerHandle);
-                     setLastCompletedBrowse({ callerHandle: request.callerHandle, children: children });
-                  }
+       console.error("lastCompletedRequest(internal=" + (lastCompletedRequest?.callerHandle ?? 0) + ", caller=" + (request?.callerHandle ?? 0) + ")");
+       //Check if response is from OPC UA or AAS
+       if (lastCompletedRequest?.response?.Body?.ResponseHeader?.RequestHandle) {
+           if (request) {
+               if (lastCompletedRequest?.response?.ServiceId === OpcUa.DataTypeIds.BrowseResponse) {
+                   const children: IBrowsedNode[] = request.children = [];
+                   const response = lastCompletedRequest.response?.Body as OpcUa.BrowseResponse;
+                   response?.Results?.forEach((result) => {
+                       if (!result?.StatusCode) {
+                           result?.References?.forEach((reference) => {
+                               children.push({
+                                   id: reference.NodeId ?? '',
+                                   reference: reference
+                               });
+                           });
+                           if (result?.ContinuationPoint) {
+                               console.error("browseNext[" + children.length + "]: " + request.callerHandle);
+                               browseNext(request, result?.ContinuationPoint, false);
+                           }
+                           else {
+                               children.forEach((child) => m.current.nodes.set(child.id, child));
+                               console.error("BrowseResponse[" + children.length + "]: " + request.callerHandle);
+                               setLastCompletedBrowse({ callerHandle: request.callerHandle, children: children });
+                           }
+                       }
+                   });
                }
-            });
-         }
-         else if (lastCompletedRequest?.response?.ServiceId === OpcUa.DataTypeIds.BrowseNextResponse) {
-            const children: IBrowsedNode[] = request.children ?? [];
-            const response = lastCompletedRequest.response?.Body as OpcUa.BrowseNextResponse;
-            response?.Results?.forEach((result) => {
-               if (!result?.StatusCode) {
-                  result?.References?.forEach((reference) => {
-                     children.push({
-                        id: reference.NodeId ?? '',
-                        reference: reference
-                     });
-                  });
-                  if (result?.ContinuationPoint) {
-                     console.error("browseNext[" + children.length + "]: " + request.callerHandle);
-                     browseNext(request, result?.ContinuationPoint, false);
-                  }
-                  else {
-                     children.forEach((child) => m.current.nodes.set(child.id, child));
-                     console.error("BrowseNextResponse[" + children.length + "]: " + request.callerHandle);
-                     setLastCompletedBrowse({ callerHandle: request.callerHandle, children: children });
-                  }
+               else if (lastCompletedRequest?.response?.ServiceId === OpcUa.DataTypeIds.BrowseNextResponse) {
+                   const children: IBrowsedNode[] = request.children ?? [];
+                   const response = lastCompletedRequest.response?.Body as OpcUa.BrowseNextResponse;
+                   response?.Results?.forEach((result) => {
+                       if (!result?.StatusCode) {
+                           result?.References?.forEach((reference) => {
+                               children.push({
+                                   id: reference.NodeId ?? '',
+                                   reference: reference
+                               });
+                           });
+                           if (result?.ContinuationPoint) {
+                               console.error("browseNext[" + children.length + "]: " + request.callerHandle);
+                               browseNext(request, result?.ContinuationPoint, false);
+                           }
+                           else {
+                               children.forEach((child) => m.current.nodes.set(child.id, child));
+                               console.error("BrowseNextResponse[" + children.length + "]: " + request.callerHandle);
+                               setLastCompletedBrowse({ callerHandle: request.callerHandle, children: children });
+                           }
+                       }
+                   });
                }
-            });
-         }
-         else if (lastCompletedRequest?.response?.ServiceId === OpcUa.DataTypeIds.TranslateBrowsePathsToNodeIdsResponse) {
-            const nodesToTranslate: IReadValueId[] = request.nodesToTranslate ?? [];
-            const response = lastCompletedRequest.response?.Body as OpcUa.TranslateBrowsePathsToNodeIdsResponse;
-            response.Results?.forEach((item, index) => {
-               if (!item.StatusCode && item?.Targets?.at(0)?.RemainingPathIndex === 4294967295) {
-                  nodesToTranslate[index].resolvedNodeId = item.Targets[0].TargetId;
+               else if (lastCompletedRequest?.response?.ServiceId === OpcUa.DataTypeIds.TranslateBrowsePathsToNodeIdsResponse) {
+                   const nodesToTranslate: IReadValueId[] = request.nodesToTranslate ?? [];
+                   const response = lastCompletedRequest.response?.Body as OpcUa.TranslateBrowsePathsToNodeIdsResponse;
+                   response.Results?.forEach((item, index) => {
+                       if (!item.StatusCode && item?.Targets?.at(0)?.RemainingPathIndex === 4294967295) {
+                           nodesToTranslate[index].resolvedNodeId = item.Targets[0].TargetId;
+                       }
+                   });
+                   console.error("read[" + nodesToTranslate.length + "]: " + request.callerHandle);
+                   read(request);
                }
-            });
-            console.error("read[" + nodesToTranslate.length + "]: " + request.callerHandle);
-            read(request);
-         }
-         else if (lastCompletedRequest?.response?.ServiceId === OpcUa.DataTypeIds.ReadResponse) {
-            const values: IReadResult[] = [];
-            const nodesToRead: IReadValueId[] = request.nodesToRead ?? [];
-            const response = lastCompletedRequest.response?.Body as OpcUa.ReadResponse;
-            response.Results?.forEach((item, index) => {
-               values.push({
-                  id: nodesToRead[index].id,
-                  nodeId: nodesToRead[index].nodeId,
-                  attributeId: nodesToRead[index].attributeId,
-                  value: item
-               });
-               if (nodesToRead[index].attributeId == OpcUa.Attributes.Value) {
-                  const node = m.current.nodes.get(nodesToRead[index].nodeId);
-                  if (node) {
-                     node.value = item;
-                  }
+               else if (lastCompletedRequest?.response?.ServiceId === OpcUa.DataTypeIds.ReadResponse) {
+                   const values: IReadResult[] = [];
+                   const nodesToRead: IReadValueId[] = request.nodesToRead ?? [];
+                   const response = lastCompletedRequest.response?.Body as OpcUa.ReadResponse;
+                   response.Results?.forEach((item, index) => {
+                       values.push({
+                           id: nodesToRead[index].id,
+                           nodeId: nodesToRead[index].nodeId,
+                           attributeId: nodesToRead[index].attributeId,
+                           value: item
+                       });
+                       if (nodesToRead[index].attributeId == OpcUa.Attributes.Value) {
+                           const node = m.current.nodes.get(nodesToRead[index].nodeId);
+                           if (node) {
+                               node.value = item;
+                           }
+                       }
+                   });
+                   console.error("ReadResponse[" + values.length + "]: " + request.callerHandle);
+                   setLastCompletedBrowse({ callerHandle: request.callerHandle, values: values });
                }
-            });
-            console.error("ReadResponse[" + values.length + "]: " + request.callerHandle);
-            setLastCompletedBrowse({ callerHandle: request.callerHandle, values: values });
-         }
-      }
+           }
+       }
+       else if (lastCompletedRequest?.response?.Body?.ResponseHeader?.AASRequestHandle) { // --> for Juliee 
+           
+       }
    }, [lastCompletedRequest, setLastCompletedBrowse, browseNext, read]);
    
    const browseContext = {
