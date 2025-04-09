@@ -7,10 +7,11 @@ import TableRow from '@mui/material/TableRow/TableRow';
 import TableCell from '@mui/material/TableCell/TableCell';
 import TableBody from '@mui/material/TableBody/TableBody';
 import Paper from '@mui/material/Paper/Paper';
-import { Skeleton, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 
 import * as OpcUa from 'opcua-webapi';
 
+import DataValueDisplay from './DataValueDisplay';
 import { IMonitoredItem } from '../SubscriptionProvider';
 import { SubscriptionContext } from '../SubscriptionContext';
 import { HandleFactory } from '../service/HandleFactory';
@@ -30,7 +31,7 @@ interface VariableValueListInternals {
 interface VariableValueListProps {
     rootId?: string
     items?: AccessViewItem[];
-    accessViewItems?: { displayName: string, nodeId: string }[];
+    accessViewItems?: { displayName: string, nodeId: string, value?: OpcUa.DataValue }[];
 }
 
 interface Row {
@@ -41,7 +42,7 @@ interface Row {
 export interface AccessViewItem {
     displayName: string;
     nodeId: string;
-    value?: string;
+    value?: OpcUa.DataValue;
 }
 
 export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValueListProps) => {
@@ -72,6 +73,7 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
         subscriptionState,
         subscribe,
         unsubscribe,
+        unsubscribeElement,
         lastSequenceNumber
     } = React.useContext(SubscriptionContext);
 
@@ -82,22 +84,35 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
         stateChangeCount
     } = React.useContext(BrowseContext);
 
-    //-------------------------------------------------------------
     React.useEffect(() => {
-        //call read and set subscription
 
-        
+        const items: IMonitoredItem[] = [];
+        const newVariables: Row[] = [];
 
-        setItems(accessViewItems);
-        
-    }, [accessViewItems, readValues, variables]);
+        accessViewItems.forEach((x) => {
+            items.push({
+                nodeId: x.nodeId,
+                subscriberHandle: HandleFactory.increment()
+            });
+            if (x?.displayName) {
+                newVariables.push({ name: x?.displayName, item: items[items.length - 1] });
+            }
+        });
+        if (subscriptionState === SubscriptionState.Open) {
+            subscribe(items, m.current.internalHandle);
+            m.current.monitoredItems = items;
+        }
+        setVariables(newVariables);
+    }, [accessViewItems]);
 
     const onDeleteItem = (index: number) => {
-        const newAccessViewItems = items.filter((_, i) => i !== index);
-        setItems(newAccessViewItems);
+        unsubscribeElement(m.current.monitoredItems, index, m.current.internalHandle);
+        accessViewItems.splice(index, 1);
+        variables.splice(index, 1);
+        setVariables(variables);
+        setItems(accessViewItems);
+        m.current.monitoredItems = items;
     };
-
-    //-------------------------------------------------------------
 
     // Unsubscribe when component is unmounted
     React.useEffect(() => {
@@ -149,6 +164,7 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
     // Trigger render when a publish response is received.
     React.useEffect(() => {
         setCounter(counter => counter + 1);
+        setItems(accessViewItems);
     }, [lastSequenceNumber]);
 
     React.useEffect(() => {
@@ -208,7 +224,7 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
             }
             m.current.requests = m.current.requests.filter(x => x !== lastCompletedRequest.callerHandle);
         }
-    }, [lastCompletedRequest, variables, subscribe, subscriptionState]);
+    }, [lastCompletedRequest, variables, subscribe, subscriptionState, setItems]);
 
     /*
     if (!variables?.length || counter === 0) {
@@ -229,16 +245,23 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {accessViewItems.map((item, index) => (
-                        <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} onClick={() => onDeleteItem(index)} >
-                            <TableCell sx={{ width: 'auto' }}>
-                                <Typography variant='body1' sx={{ minWidth: '300px' }}>{item.displayName}</Typography>
-                            </TableCell>
-                            <TableCell>
-                                <Typography variant='body1'>{item.nodeId}</Typography>
-                            </TableCell>
-                        </TableRow>
-                    ))}
+                    {variables?.map((variable, index) => {
+                        if (!variable) return null;
+                        return (
+                            <TableRow
+                                key={variable.name}
+                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                onClick={() => onDeleteItem(index)}
+                            >
+                                <TableCell sx={{ width: 'auto' }}>
+                                    <Typography variant='body1' sx={{ minWidth: '300px' }}>{variable.name}</Typography>
+                                </TableCell>
+                                <TableCell>
+                                    <DataValueDisplay value={variable.item.value} />
+                                </TableCell>
+                            </TableRow>
+                        );
+                    })}
                 </TableBody>
             </Table>
         </TableContainer>

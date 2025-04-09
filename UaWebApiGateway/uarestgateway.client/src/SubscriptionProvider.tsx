@@ -30,7 +30,8 @@ export interface ISubscriptionContext {
    subscriptionState: SubscriptionState,
    lastSequenceNumber: number,
    subscribe: (items: IMonitoredItem[], clientHandle: number) => void,
-   unsubscribe: (items: IMonitoredItem[], clientHandle: number) => void
+   unsubscribe: (items: IMonitoredItem[], clientHandle: number) => void,
+   unsubscribeElement: (items: IMonitoredItem[], index:number, clientHandle: number) => void
 }
 
 interface SubscriptionProps {
@@ -208,6 +209,34 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
       }
    }, [sendRequest]);
 
+    const deleteMonitoredItem = React.useCallback((item: IMonitoredItem) => {
+        const itemsToDelete: number[] = [];
+
+        if (item.monitoredItemId) {
+            itemsToDelete.push(item.monitoredItemId);
+            item.monitoredItemId = undefined;
+        }
+
+        if (itemsToDelete.length) {
+            const request: OpcUa.DeleteMonitoredItemsRequest = {
+                SubscriptionId: m.current.subscriptionId,
+                MonitoredItemIds: itemsToDelete
+            }
+            const message: IRequestMessage = {
+                ServiceId: OpcUa.DataTypeIds.DeleteMonitoredItemsRequest,
+                Body: request
+            };
+            const state = {
+                internalHandle: HandleFactory.increment(),
+                serviceId: message.ServiceId ?? '',
+                items: []
+            } as InternalRequest;
+            m.current.requests.push(state);
+            console.warn("deleteMonitoredItem");
+            sendRequest(message, state.internalHandle);
+        }
+    }, [sendRequest]);
+
    const deleteMonitoredItems = React.useCallback((items: IMonitoredItem[]) => {
       const itemsToDelete: number[] = [];
       items.forEach((item) => {
@@ -360,6 +389,14 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
       createMonitoredItems(items);
    }, [translate, createMonitoredItems]);
 
+    const unsubscribeElement = React.useCallback((items: IMonitoredItem[], index: number) => {
+        if (items[index].itemHandle) {
+            m.current.monitoredItems.delete(items[index].itemHandle);
+        }
+
+        deleteMonitoredItem(items[index]);
+    }, [deleteMonitoredItems]);
+
    const unsubscribe = React.useCallback((items: IMonitoredItem[]) => {
       items.forEach((item) => {
          if (item.itemHandle) {
@@ -405,7 +442,8 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
       subscriptionState,
       lastSequenceNumber,
       subscribe: subscribe,
-      unsubscribe: unsubscribe
+      unsubscribe: unsubscribe,
+      unsubscribeElement: unsubscribeElement
    } as ISubscriptionContext;
 
    return (

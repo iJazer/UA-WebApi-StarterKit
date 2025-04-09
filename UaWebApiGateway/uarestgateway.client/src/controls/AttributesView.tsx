@@ -15,7 +15,14 @@ import { readAttributes } from '../opcua-utils';
 import { IReadResult } from '../service/IReadResult';
 import { UserContext } from '../UserProvider';
 
+import { IReadValueId } from '../service/IReadValueId';
+import { HandleFactory } from '../service/HandleFactory';
 import { BrowseContext } from '../BrowseContext';
+
+interface VariableValueListInternals {
+    internalHandle: number,
+    requests: number[]
+}
 
 interface AttributesViewProps {
    reference?: OpcUa.ReferenceDescription
@@ -23,16 +30,60 @@ interface AttributesViewProps {
 }
 
 export const AttributesView = ({ reference, requestTimeout }: AttributesViewProps) => {
-   const [values, setValues] = React.useState<IReadResult[]>([]);
-   const name = reference?.DisplayName?.Text ?? reference?.BrowseName ?? reference?.NodeId;
-   const theme = useTheme();
-   const { user } = React.useContext(UserContext);
+    const [values, setValues] = React.useState<IReadResult[]>([]);
+    const name = reference?.DisplayName?.Text ?? reference?.BrowseName ?? reference?.NodeId;
+    const theme = useTheme();
+    const { user } = React.useContext(UserContext);
 
-   React.useEffect(() => {
-      if (reference?.NodeId) {
-         readAttributes(reference, requestTimeout, user).then((x) => setValues(x ?? []));
-      }
-   }, [reference, reference?.NodeId, requestTimeout, user]);
+    const m = React.useRef<VariableValueListInternals>({
+        internalHandle: HandleFactory.increment(),
+        requests: []
+    });
+
+    const {
+        readValues,
+        lastCompletedRequest
+    } = React.useContext(BrowseContext);
+
+    React.useEffect(() => {
+        if (reference?.NodeId) {
+            //readAttributes(reference, requestTimeout, user).then((x) => setValues(x ?? []));
+            const nodesToRead: IReadValueId[] = [];
+
+            for (const id in OpcUa.Attributes) {
+                nodesToRead.push({
+                    id: HandleFactory.increment(),
+                    nodeId: reference.NodeId,
+                    attributeId: Number(OpcUa.Attributes[id])
+                });
+            }
+
+            m.current.internalHandle = HandleFactory.increment();
+            m.current.requests.push(m.current.internalHandle);
+            readValues(m.current.internalHandle, nodesToRead);
+        }
+    }, [reference, reference?.NodeId, requestTimeout, user, readValues]);
+
+    React.useEffect(() => {
+        if (lastCompletedRequest && m.current.requests.find(x => x === lastCompletedRequest.callerHandle)) {
+            const values: IReadResult[] = [];
+            if (lastCompletedRequest.values) {
+                for (let ii = 0; ii < lastCompletedRequest.values.length; ii++) {
+                    const x = lastCompletedRequest.values[ii];
+                    if (x.value?.StatusCode?.Code !== OpcUa.StatusCodes.BadAttributeIdInvalid) {
+                        values.push({
+                            id: HandleFactory.increment(),
+                            nodeId: x.nodeId ?? '',
+                            attributeId: x.attributeId ?? 0,
+                            value: x.value
+                        });
+                    }
+                }
+            }
+            setValues(values ?? []);
+        }
+    }, [lastCompletedRequest]);
+
 
    if (!reference) {
       return (
