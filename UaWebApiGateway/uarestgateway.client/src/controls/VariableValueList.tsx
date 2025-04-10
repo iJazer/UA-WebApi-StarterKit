@@ -106,12 +106,16 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
     }, [accessViewItems]);
 
     const onDeleteItem = (index: number) => {
-        unsubscribeElement(m.current.monitoredItems, index, m.current.internalHandle);
+        if (subscriptionState === SubscriptionState.Open) {
+            unsubscribeElement(m.current.monitoredItems, index, m.current.internalHandle);
+        }
         accessViewItems.splice(index, 1);
         variables.splice(index, 1);
         setVariables(variables);
         setItems(accessViewItems);
-        m.current.monitoredItems = items;
+        if (subscriptionState === SubscriptionState.Open) {
+            m.current.monitoredItems = items;
+        }
     };
 
     // Unsubscribe when component is unmounted

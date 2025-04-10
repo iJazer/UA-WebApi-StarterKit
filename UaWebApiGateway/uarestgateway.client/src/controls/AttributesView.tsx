@@ -47,7 +47,6 @@ export const AttributesView = ({ reference, requestTimeout }: AttributesViewProp
 
     React.useEffect(() => {
         if (reference?.NodeId) {
-            //readAttributes(reference, requestTimeout, user).then((x) => setValues(x ?? []));
             const nodesToRead: IReadValueId[] = [];
 
             for (const id in OpcUa.Attributes) {

@@ -146,14 +146,12 @@ export const SessionProvider = ({ children }: SessionProps) => {
 
       try {
           if (readyState === ReadyState.OPEN) {
-            console.log("WebSocket call");
             sendMessage(JSON.stringify(request));
          }
          else {
             const clientHandle = requestHeader.RequestHandle;
 
               if (request.Body.RequestHeader.RequestHandle) { //Erkennung ob es ein OPC UA request ist, da RequestHandle nur für OPC UA calls genutzt werden
-                 console.log("OPC UA REST call");
                  call(`/opcua/${apiNames[request.ServiceId ?? ''].path}`,
                      { callerHandle: clientHandle, request: { Body: request.Body } },
                      undefined,
