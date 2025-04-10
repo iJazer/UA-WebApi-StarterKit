@@ -62,6 +62,10 @@ export default defineConfig({
             target: 'wss://localhost:7010/',
             ws: true,
             secure: false
+           },
+           '^/api/aas': {
+               target: 'https://localhost:7010/',
+            secure: false
          }
       },
       port: 44430,
