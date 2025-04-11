@@ -86,7 +86,7 @@ namespace UaRestGateway.Server.Controllers
                 {
                     var protocols = httpContext.WebSockets.WebSocketRequestedProtocols;
 
-                    string selectedProtocol = "opcua+uajson";
+                    string selectedProtocol = "aas+opcua+uajson";
 
                     if (protocols == null || !protocols.Contains(selectedProtocol))
                     {

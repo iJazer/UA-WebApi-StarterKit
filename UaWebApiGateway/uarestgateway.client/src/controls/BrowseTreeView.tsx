@@ -20,6 +20,17 @@ import { HandleFactory } from '../service/HandleFactory';
 import ContextMenu from '../ContextMenu';
 import VariableValueList from './VariableValueList';
 
+/**
+ * 
+ * Props for the BrowseTreeNode component.
+ * @param parentId - The ID of the parent node.
+ * @param selectionId - The ID of the selected node.
+ * @param onChildrenUpdated - Callback function to be called when the children of the node are updated.
+ * @param onSelectionChanged - Callback function to be called when the selection changes.
+ * @param onAddAccessViewItem - Callback function to be called when an access view item is added.
+ * @returns {JSX.Element} The rendered BrowseTreeNode component.
+ * 
+ */
 interface BrowseTreeNodeProps {
     parentId?: string;
     selectionId?: string;
@@ -28,10 +39,27 @@ interface BrowseTreeNodeProps {
     onAddAccessViewItem: (displayName: string, nodeId: string) => void;
 }
 
+/**
+ * 
+ */
 interface BrowseTreeNodeInternals {
     requestId: number;
 }
 
+/**
+ * 
+ * BrowseTreeNode component that represents a node in the browse tree.
+ * It fetches and displays the children of the node.
+ * 
+ * @param {BrowseTreeNodeProps} props - The props for the component.
+ * @param {string} props.parentId - The ID of the parent node.
+ * @param {string} props.selectionId - The ID of the selected node.
+ * @param {function} props.onChildrenUpdated - Callback function to be called when the children of the node are updated.
+ * @param {function} props.onSelectionChanged - Callback function to be called when the selection changes.
+ * @param {function} props.onAddAccessViewItem - Callback function to be called when an access view item is added.
+ * @returns {JSX.Element} The rendered BrowseTreeNode component.
+ * 
+ */
 const BrowseTreeNode = ({ parentId, selectionId, onSelectionChanged, onAddAccessViewItem }: BrowseTreeNodeProps) => {
     const [children, setChildren] = React.useState<IBrowsedNode[]>([]);
     const { browseChildren, lastCompletedRequest, stateChangeCount } = React.useContext(BrowseContext);
@@ -41,18 +69,31 @@ const BrowseTreeNode = ({ parentId, selectionId, onSelectionChanged, onAddAccess
         requestId: HandleFactory.increment()
     });
 
+    /**
+     * Effect to fetch children nodes when parentId or selectionId changes.
+     * If browseChildren is available and parentId is defined, it calls browseChildren with the current requestId and parentId.
+     */
     React.useEffect(() => {
         if (browseChildren && parentId && selectionId === parentId) {
             browseChildren(m.current.requestId, parentId);
         }
     }, [browseChildren, parentId, selectionId, stateChangeCount]);
 
+    /**
+     * Effect to update children nodes when a request completes.
+     * If the last completed request matches the current requestId, it updates the children state with the new nodes.
+     */
     React.useEffect(() => {
         if (lastCompletedRequest && m.current.requestId && m.current.requestId === lastCompletedRequest.callerHandle) {
             setChildren(lastCompletedRequest.children ?? []);
         }
     }, [lastCompletedRequest, setChildren]);
 
+    /**
+     * Handles the context menu opening on right-click.
+     * @param event - The mouse event.
+     * @param displayName - The display name of the node.
+     */
     const handleContextMenu = React.useCallback((event: React.MouseEvent, displayName: string) => {
         event.preventDefault();
         event.stopPropagation();
@@ -63,10 +104,17 @@ const BrowseTreeNode = ({ parentId, selectionId, onSelectionChanged, onAddAccess
         );
     }, []);
 
+    /**
+     * Handles the context menu closing.
+     */
     const handleClose = React.useCallback(() => {
         setContextMenu(null);
     }, []);
 
+    /**
+     * Handles the addition of an access view item.
+     * If contextMenu is available, it finds the nodeId based on the displayName and calls onAddAccessViewItem with the displayName and nodeId.
+     */
     const handleOnAddAccessView = React.useCallback(() => {
         if (contextMenu) {
             const { displayName } = contextMenu;
@@ -109,17 +157,39 @@ const BrowseTreeNode = ({ parentId, selectionId, onSelectionChanged, onAddAccess
     );
 };
 
+/**
+ * Props for the BrowseTreeView component.
+ * This component is responsible for rendering the browse tree view.
+ * 
+ * @param rootNodeId - The ID of the root node.
+ * @param onSelectionChanged - Callback function to be called when the selection changes.
+ */
 interface BrowseTreeViewProps {
     rootNodeId?: string;
     onSelectionChanged?: (node: OpcUa.ReferenceDescription) => void;
 }
 
+/**
+ * BrowseTreeRoot component that serves as the root of the browse tree.
+ * It manages the state of the visible nodes and handles selection changes.
+ * 
+ * @param {BrowseTreeViewProps} props - The props for the component.
+ * @param {string} props.rootNodeId - The ID of the root node.
+ * @param {function} props.onSelectionChanged - Callback function to be called when the selection changes.
+ * @returns {JSX.Element} The rendered BrowseTreeRoot component.
+ */
 const BrowseTreeRoot = ({ rootNodeId, onSelectionChanged }: BrowseTreeViewProps) => {
     const [selectionId, setSelectionId] = React.useState<string | undefined>();
     const { visibleNodes, setVisibleNodes, nodes } = React.useContext(BrowseContext);
     const [accessViewItems, setAccessViewItems] = React.useState<{ displayName: string, nodeId: string }[]>([]);
 
-
+    /**
+     * Handles the selection of a node.
+     * It updates the selectionId state and calls the onSelectionChanged callback if available.
+     * 
+     * @param {React.SyntheticEvent} _e - The synthetic event.
+     * @param {string} nodeId - The ID of the selected node.
+     */
     const handleNodeSelect = React.useCallback((_e: React.SyntheticEvent, nodeId: string) => {
         const treeNode: IBrowsedNode | undefined = nodes.get(nodeId);
         if (treeNode && onSelectionChanged) {
@@ -128,10 +198,24 @@ const BrowseTreeRoot = ({ rootNodeId, onSelectionChanged }: BrowseTreeViewProps)
         setSelectionId(treeNode?.id);
     }, [onSelectionChanged, nodes]);
 
+    /**
+     * Handles the toggle of nodes in the tree view.
+     * It updates the visibleNodes state with the new node IDs.
+     * 
+     * @param {React.SyntheticEvent} _e - The synthetic event.
+     * @param {string[]} nodeIds - The array of node IDs that are currently expanded.
+     */
     const handleToggle = (_e: React.SyntheticEvent, nodeIds: string[]) => {
         setVisibleNodes(nodeIds);
     };
 
+    /**
+     * Handles the addition of an access view item.
+     * It updates the accessViewItems state with the new item.
+     * 
+     * @param {string} displayName - The display name of the node.
+     * @param {string} nodeId - The ID of the node.
+     */
     const handleAddAccessViewItem = React.useCallback((displayName: string, nodeId: string) => {
         setAccessViewItems((prevItems) => [...prevItems, { displayName, nodeId }]);
     }, []);
@@ -162,6 +246,15 @@ const BrowseTreeRoot = ({ rootNodeId, onSelectionChanged }: BrowseTreeViewProps)
     );
 };
 
+/**
+ * BrowseTreeView component that serves as the main entry point for the browse tree.
+ * It renders the BrowseTreeRoot component and manages the selection changes.
+ * 
+ * @param {BrowseTreeViewProps} props - The props for the component.
+ * @param {string} props.rootNodeId - The ID of the root node.
+ * @param {function} props.onSelectionChanged - Callback function to be called when the selection changes.
+ * @returns {JSX.Element} The rendered BrowseTreeView component.
+ */
 export const BrowseTreeView = ({ rootNodeId, onSelectionChanged }: BrowseTreeViewProps) => {
     return (
         <BrowseTreeRoot rootNodeId={rootNodeId} onSelectionChanged={onSelectionChanged} />

@@ -86,7 +86,7 @@ export const SessionProvider = ({ children }: SessionProps) => {
       (isEnabled) ? serverUrl : null,
       {
          share: true,
-         protocols: (user?.accessToken) ? ["opcua+uajson", `opcua+token+${user?.accessToken}`] : ["opcua+uajson"],
+          protocols: (user?.accessToken) ? ["aas+opcua+uajson", `opcua+token+${user?.accessToken}`] : ["aas+opcua+uajson"],
          shouldReconnect: () => {
             return isEnabled;
          }
@@ -165,7 +165,7 @@ export const SessionProvider = ({ children }: SessionProps) => {
                      });
              }
              else if (request.Body.RequestHeader.AASRequestHandle) { //Erkennung ob es ein AAS request ist --> Für Juliee
-                 console.log("AAS call");
+                  console.log("AAS call");
              }
              else {
                  console.error("Unknown callerId");

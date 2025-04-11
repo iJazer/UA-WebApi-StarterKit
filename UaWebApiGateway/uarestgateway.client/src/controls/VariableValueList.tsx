@@ -20,6 +20,10 @@ import { IReadValueId } from '../service/IReadValueId';
 
 import { BrowseContext } from '../BrowseContext';
 
+/**
+ * A component that displays a list of variable values.
+ * It subscribes to the variables and updates the values when they change.
+ */
 interface VariableValueListInternals {
     internalHandle: number,
     monitoredItems: IMonitoredItem[],
@@ -45,12 +49,26 @@ export interface AccessViewItem {
     value?: OpcUa.DataValue;
 }
 
+/**
+ * 
+ * A component that displays a list of variable values.
+ * It subscribes to the variables and updates the values when they change.
+ * 
+ * @param rootId - The root node id to browse.
+ * @param accessViewItems - The list of access view items to display.
+ * @param items - The list of items to display.
+ * @param setItems - The function to set the items.
+ * @param setVariables - The function to set the variables.
+ * @param counter - The counter to trigger re-rendering.
+ * @param setCounter - The function to set the counter.
+ * @param m - The reference to the internal state of the component.
+ */
 export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValueListProps) => {
     const [items, setItems] = React.useState<AccessViewItem[]>(accessViewItems);
     const [variables, setVariables] = React.useState<Row[]>([]);
     const [counter, setCounter] = React.useState<number>(1);
-    
 
+    // The reference to the internal state of the component.
     const m = React.useRef<VariableValueListInternals>({
         internalHandle: HandleFactory.increment(),
         monitoredItems: [],
@@ -59,7 +77,10 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
         cleanedUp: false
     });
 
-    // Set flags to trigger clean up when component is unmounted
+    /**
+     * The effect to clean up the component when it is unmounted.
+     * It unsubscribes from the variables and clears the internal state.
+     */
     React.useEffect(() => {
         const state = m.current;
         return () => {
@@ -68,7 +89,7 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
         };
     }, []);
 
-    // The hook to access active subscription.
+
     const {
         subscriptionState,
         subscribe,
@@ -84,6 +105,12 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
         stateChangeCount
     } = React.useContext(BrowseContext);
 
+    /**
+     * The effect to subscribe to the variables when the component is mounted.
+     * It creates monitored items for each variable and subscribes to them.
+     * 
+     * @param accessViewItems - The list of access view items to subscribe to.
+     */
     React.useEffect(() => {
 
         const items: IMonitoredItem[] = [];
@@ -105,6 +132,11 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
         setVariables(newVariables);
     }, [accessViewItems]);
 
+
+    /**
+     * Deletes an item from the list and unsubscribes it.
+     * @param index - The index of the item to delete.
+     */
     const onDeleteItem = (index: number) => {
         if (subscriptionState === SubscriptionState.Open) {
             unsubscribeElement(m.current.monitoredItems, index, m.current.internalHandle);
@@ -118,7 +150,9 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
         }
     };
 
-    // Unsubscribe when component is unmounted
+    /**
+     * Effect to unsubscribe when the component is unmounted.
+     */
     React.useEffect(() => {
         const state = m.current;
         return () => {
@@ -129,7 +163,9 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
         };
     }, [unsubscribe]);
 
-    // Handle state changes to the subscription.
+    /**
+     * Effect to handle state changes to the subscription.
+     */
     React.useEffect(() => {
         if (subscriptionState === SubscriptionState.Open) {
             const itemsToCreate = m.current.monitoredItems.filter(item => !item.itemHandle);
@@ -143,7 +179,9 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
         }
     }, [subscriptionState, subscribe, unsubscribe]);
 
-    // Browse the root node when it changes and subscribe to the variables
+    /**
+     * Effect to browse the root node when it changes and subscribe to the variables.
+     */
     React.useEffect(() => {
         async function changeRoot() {
             const items: IMonitoredItem[] = m.current.monitoredItems;
@@ -165,12 +203,19 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
         }
     }, [rootId, browseChildren, subscriptionState, unsubscribe, subscribe]);
 
-    // Trigger render when a publish response is received.
+    /**
+     * Effect to trigger render when a publish response is received.
+     * It updates the counter and sets the items.
+     */
     React.useEffect(() => {
         setCounter(counter => counter + 1);
         setItems(accessViewItems);
     }, [lastSequenceNumber]);
 
+    /**
+     * Effect to read values when the state changes.
+     * It creates a list of nodes to read and calls the readValues function.
+     */
     React.useEffect(() => {
         if (readValues && variables.length) {
             const nodesToRead: IReadValueId[] = [];
@@ -191,6 +236,10 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
         }
     }, [readValues, variables, stateChangeCount]);
 
+    /**
+     * Effect to handle the last completed request.
+     * It updates the variables and subscribes to them if needed.
+     */
     React.useEffect(() => {
         console.error("ValueList[" + m.current.requests.join(",") + "]: " + (lastCompletedRequest?.callerHandle ?? 0));
         if (lastCompletedRequest && m.current.requests.find(x => x === lastCompletedRequest.callerHandle)) {
@@ -208,10 +257,12 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
                         }
                     }
                 });
+                /*
                 m.current.monitoredItems = items;
                 if (subscriptionState === SubscriptionState.Open) {
                     subscribe(items, m.current.internalHandle);
                 }
+                */
                 console.error("setVariables[" + newVariables.length + "]: " + lastCompletedRequest.callerHandle);
                 setVariables(newVariables);
             }
