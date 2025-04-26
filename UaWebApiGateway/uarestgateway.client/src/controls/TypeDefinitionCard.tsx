@@ -115,7 +115,7 @@ export const TypeDefinitionCard: React.FC<TypeDefinitionCardProps> = ({ children
          });
          m.current.internalHandle = HandleFactory.increment() + 20000;
          m.current.requests.push(m.current.internalHandle);
-         console.error("ValueList ADD (" + m.current.requests.join(",") + "): " + (m.current.internalHandle ?? 0));
+         // console.error("ValueList ADD (" + m.current.requests.join(",") + "): " + (m.current.internalHandle ?? 0));
          readValues(m.current.internalHandle, nodesToRead);
       }
    }, [readValues, variables, readTrigger]);

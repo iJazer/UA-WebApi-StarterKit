@@ -51,7 +51,7 @@ async function gzip(data: string): Promise<Uint8Array> {
 async function readResponseBody(url: string, response: Response) {
    const content = response.headers.get("Content-Type");
    if (content && content.indexOf("json") < 0) {
-      console.error("UnexpectedResponse: " + await response.text());
+      // console.error("UnexpectedResponse: " + await response.text());
       return null;
    }
    return await response.clone().json();

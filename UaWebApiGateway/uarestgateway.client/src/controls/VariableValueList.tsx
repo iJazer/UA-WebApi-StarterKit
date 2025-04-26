@@ -139,7 +139,7 @@ export const VariableValueList = ({ rootId }: VariableValueListProps) => {
          });
          m.current.internalHandle = HandleFactory.increment() + 20000;
          m.current.requests.push(m.current.internalHandle);
-         console.error("ValueList ADD (" + m.current.requests.join(",") + "): " + (m.current.internalHandle ?? 0));
+         // console.error("ValueList ADD (" + m.current.requests.join(",") + "): " + (m.current.internalHandle ?? 0));
          readValues(m.current.internalHandle, nodesToRead);
       }
    }, [readValues, variables]);

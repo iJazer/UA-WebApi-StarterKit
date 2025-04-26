@@ -88,7 +88,7 @@ export const BrowseProvider = ({ children }: BrowseProviderProps) => {
          Body: request
       };
       m.current.requests.set(state.internalHandle, state);
-      console.error("Browse ADD (" + Array.from(m.current.requests.keys()).join(",") + "): " + (state.internalHandle ?? 0));
+      // console.error("Browse ADD (" + Array.from(m.current.requests.keys()).join(",") + "): " + (state.internalHandle ?? 0));
       sendRequest(message, state.internalHandle);
    }, [sendRequest]);
 
@@ -198,7 +198,7 @@ export const BrowseProvider = ({ children }: BrowseProviderProps) => {
          const request = m.current.requests.get(message?.callerHandle ?? 0);
          if (request) {
             m.current.requests.delete(message?.callerHandle ?? 0);
-            console.error("Browse SUB (" + Array.from(m.current.requests.keys()).join(",") + "): " + (message?.callerHandle ?? 0));
+            // console.error("Browse SUB (" + Array.from(m.current.requests.keys()).join(",") + "): " + (message?.callerHandle ?? 0));
 
             if (message?.response?.ServiceId === OpcUa.DataTypeIds.BrowseResponse) {
                const children: IBrowsedNode[] = request.children = [];

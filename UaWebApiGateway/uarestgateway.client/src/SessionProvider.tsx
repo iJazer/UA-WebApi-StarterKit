@@ -113,8 +113,8 @@ export const SessionProvider = ({ children }: SessionProps) => {
             m.current.requests.delete(callerHandle);
             request.response = response;
             m.current.responses.push(request);
-            console.error("Session SUB (" + Array.from(m.current.requests.keys()).join(",") + "): " + callerHandle);
-            console.error(`===>>> RESPONSE: ${getApiName(response?.ServiceId ?? '')} ${callerHandle}`);
+            // console.error("Session SUB (" + Array.from(m.current.requests.keys()).join(",") + "): " + callerHandle);
+            // console.error(`===>>> RESPONSE: ${getApiName(response?.ServiceId ?? '')} ${callerHandle}`);
             setMessageCounter(x => x + 1);
          }
       }
@@ -139,7 +139,7 @@ export const SessionProvider = ({ children }: SessionProps) => {
          requestHeader.RequestHandle,
          { callerHandle: callerHandle ?? requestHeader.RequestHandle, request }
       );
-      console.error("Session ADD (" + Array.from(m.current.requests.keys()).join(",") + "): " + (requestHeader.RequestHandle ?? 0));
+      // console.error("Session ADD (" + Array.from(m.current.requests.keys()).join(",") + "): " + (requestHeader.RequestHandle ?? 0));
 
       try {
          if (readyState === ReadyState.OPEN) {
@@ -147,7 +147,7 @@ export const SessionProvider = ({ children }: SessionProps) => {
          }
          else {
             const callerHandle = requestHeader.RequestHandle;
-            console.error(`===>>> REQUEST: ${apiNames[request.ServiceId ?? ''].path} ${requestHeader.RequestHandle}`);
+            // console.error(`===>>> REQUEST: ${apiNames[request.ServiceId ?? ''].path} ${requestHeader.RequestHandle}`);
 
             call(
                `/opcua/${apiNames[request.ServiceId ?? ''].path}`,
