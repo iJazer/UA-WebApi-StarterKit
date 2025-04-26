@@ -70,7 +70,7 @@ export async function httpGet(url: string, controller?: AbortController) {
             };
          }
          else {
-            console.info(`httpGet: ${body?.errorCode} ${body?.errorText}`);
+            console.info(`  httpGet: ${body?.errorCode} ${body?.errorText}`);
             return {
                failed: body?.failed ?? true,
                errorCode: body?.errorCode,

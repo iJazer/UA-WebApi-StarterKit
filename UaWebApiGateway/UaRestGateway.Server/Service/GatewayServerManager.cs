@@ -27,14 +27,11 @@
  * http://opcfoundation.org/License/MIT/1.00/
  * ======================================================================*/
 
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using Microsoft.IdentityModel.Tokens;
 using Opc.Ua;
 using Opc.Ua.Bindings;
@@ -168,7 +165,7 @@ namespace UaRestGateway.Server.Service
                         configuration.SecurityConfiguration.UserIssuerCertificates != null)
                     {
                         CertificateValidator certificateValidator = new CertificateValidator();
-                        certificateValidator.Update(configuration.SecurityConfiguration).Wait();
+                        certificateValidator.Update(configuration).Wait();
                         certificateValidator.Update(configuration.SecurityConfiguration.UserIssuerCertificates,
                             configuration.SecurityConfiguration.TrustedUserCertificates,
                             configuration.SecurityConfiguration.RejectedCertificateStore);

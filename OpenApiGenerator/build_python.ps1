@@ -4,13 +4,13 @@ $Java = "java.exe"
 $ModelName = "OpcUa"
 $ModelUri = "http://opcfoundation.org/UA/"
 $ProjectName = "opcua-webapi"
-$Output = "D:\Work\OPC\UA-IIoT-StarterKit\python\opcua-webapi"
+# $Output = "D:\Work\OPC\UA-IIoT-StarterKit\python\opcua-webapi"
 $Output = "..\UaWebApiClient\opcua-webapi\python"
 
 & $Java -jar ".\openapi-generator-cli.jar" generate -g python `
     -i "$NodeSets\Schema\opc.ua.openapi.allservices.json" `
     -o $Output `
-    -p packageName=opcua_webapi,projectName=$ProjectName,packageVersion=1.504.0,packageUrl=https://github.com/opcfoundation-org/opcua-webapi-python/
+    -p packageName=opcua_webapi,projectName=$ProjectName,packageVersion=1.504.1,packageUrl=https://github.com/opcfoundation-org/opcua-webapi-python/
 
 Get-ChildItem -Path "$NodeSets\OpenApi\Constants\Python" -Filter "*.py" | ForEach-Object {
     Copy-Item  -Path "$NodeSets\OpenApi\Constants\Python\$_" -Destination "$Output\opcua_webapi"
@@ -45,7 +45,7 @@ $content | Set-Content opcua_webapi\models\message_security_mode.py
 
 & pip uninstall -y opcua-webapi
 & python setup.py bdist_wheel
-& pip install dist/opcua_webapi-1.504.0-py3-none-any.whl
+& pip install dist/opcua_webapi-1.504.1-py3-none-any.whl
 
 cd $Root 
 

@@ -10,18 +10,20 @@ import Paper from '@mui/material/Paper/Paper';
 import { Skeleton, Typography } from '@mui/material';
 
 import * as OpcUa from 'opcua-webapi';
-import { ApplicationContext } from '../ApplicationProvider';
+
 import DataValueDisplay from './DataValueDisplay';
-import { IMonitoredItem, SubscriptionContext } from '../SubscriptionProvider';
+import { IMonitoredItem } from '../SubscriptionProvider';
+import { SubscriptionContext } from '../SubscriptionContext';
 import { HandleFactory } from '../service/HandleFactory';
 import { SubscriptionState } from '../service/SubscriptionState';
 import { IReadValueId } from '../service/IReadValueId';
-import { translateAndReadValues } from '../opcua-utils';
-import { UserContext } from '../UserProvider';
+
+import { BrowseContext } from '../BrowseContext';
 
 interface VariableValueListInternals {
-   clientHandle: number,
+   internalHandle: number,
    monitoredItems: IMonitoredItem[],
+   requests: number[],
    mounted: boolean,
    cleanedUp: boolean
 }
@@ -29,20 +31,20 @@ interface VariableValueListInternals {
 interface VariableValueListProps {
    rootId?: string
 }
+
 interface Row {
    name: string,
    item: IMonitoredItem
 }
 
 export const VariableValueList = ({ rootId }: VariableValueListProps) => {
-   const { browseChildren } = React.useContext(ApplicationContext);
-   const { user } = React.useContext(UserContext);
    const [variables, setVariables] = React.useState<Row[]>([]);
    const [counter, setCounter] = React.useState<number>(1);
 
    const m = React.useRef<VariableValueListInternals>({
-      clientHandle: HandleFactory.increment(),
+      internalHandle: HandleFactory.increment() + 20000,
       monitoredItems: [],
+      requests: [],
       mounted: true,
       cleanedUp: false
    });
@@ -64,12 +66,19 @@ export const VariableValueList = ({ rootId }: VariableValueListProps) => {
       lastSequenceNumber
    } = React.useContext(SubscriptionContext);
 
+   const {
+      browseChildren,
+      readValues,
+      responseCount,
+      processResults
+   } = React.useContext(BrowseContext);
+
    // Unsubscribe when component is unmounted
    React.useEffect(() => {
       const state = m.current;
       return () => {
          if (!state.mounted && !state.cleanedUp && state.monitoredItems.length) {
-            unsubscribe(state.monitoredItems, state.clientHandle);
+            unsubscribe(state.monitoredItems, state.internalHandle);
             state.cleanedUp = true;
          }
       };
@@ -80,11 +89,11 @@ export const VariableValueList = ({ rootId }: VariableValueListProps) => {
       if (subscriptionState === SubscriptionState.Open) {
          const itemsToCreate = m.current.monitoredItems.filter(item => !item.itemHandle);
          if (itemsToCreate.length) {
-            subscribe(itemsToCreate, m.current.clientHandle);
+            subscribe(itemsToCreate, m.current.internalHandle);
          }
       }
       else {
-         unsubscribe(m.current.monitoredItems, m.current.clientHandle);
+         unsubscribe(m.current.monitoredItems, m.current.internalHandle);
          m.current.monitoredItems = [];
       }
    }, [subscriptionState, subscribe, unsubscribe]);
@@ -93,30 +102,17 @@ export const VariableValueList = ({ rootId }: VariableValueListProps) => {
    React.useEffect(() => {
       async function changeRoot() {
          const items: IMonitoredItem[] = m.current.monitoredItems;
-         unsubscribe(items, m.current.clientHandle);
+         unsubscribe(items, m.current.internalHandle);
          m.current.monitoredItems = [];
+         setVariables([]);
       }
       async function browse(nodeId: string) {
          await changeRoot();
-         const items: IMonitoredItem[] = [];
-         const variables : Row[] = [];
-         const children = await browseChildren(nodeId, 0);
-         children.forEach((x) => {
-            if (x?.reference?.NodeClass === OpcUa.NodeClass.Variable && x?.reference?.NodeId) {
-               items.push({
-                  nodeId: x.reference.NodeId,
-                  subscriberHandle: HandleFactory.increment()
-               });
-               if (x?.reference?.DisplayName?.Text) {
-                  variables.push({ name: x?.reference?.DisplayName?.Text, item: items[items.length - 1] });
-               }
-            }
-         });
-         m.current.monitoredItems = items;
-         if (subscriptionState === SubscriptionState.Open) {
-            subscribe(items, m.current.clientHandle);
+         if (nodeId) {
+            m.current.internalHandle = HandleFactory.increment() + 20000
+            m.current.requests.push(m.current.internalHandle);
+            browseChildren(m.current.internalHandle, nodeId);
          }
-         setVariables(variables);
       }
       if (rootId) {
          browse(rootId);
@@ -128,34 +124,67 @@ export const VariableValueList = ({ rootId }: VariableValueListProps) => {
       setCounter(counter => counter + 1);
    }, [lastSequenceNumber]);
 
-   // Read the initial value. 
    React.useEffect(() => {
-      async function read(variables: Row[]) {
-         const nodesToRead: IReadValueId[] = variables.map(x => {
-            return {
-               id: x.item.subscriberHandle,
-               nodeId: x.item.nodeId,
-               resolvedNodeId: x.item.nodeId,
-               attributeId: OpcUa.Attributes.Value
-            } as IReadValueId;
+      if (readValues && variables.length) {
+         const nodesToRead: IReadValueId[] = [];
+         variables.forEach((x) => {
+            if (x.item.nodeId) {
+               nodesToRead.push({
+                  id: x.item.subscriberHandle ?? 0,
+                  nodeId: x.item.nodeId,
+                  path: x.item.path,
+                  attributeId: x.item.attributeId
+               });
+            }
          });
-         const results = await translateAndReadValues(nodesToRead, 60000, user);
-         if (results) {
-            results.forEach((result) => {
-               const mi = variables.find(x => x.item.subscriberHandle === result.id)
-               if (mi) {
-                  mi.item.value = result.value;
+         m.current.internalHandle = HandleFactory.increment() + 20000;
+         m.current.requests.push(m.current.internalHandle);
+         console.error("ValueList ADD (" + m.current.requests.join(",") + "): " + (m.current.internalHandle ?? 0));
+         readValues(m.current.internalHandle, nodesToRead);
+      }
+   }, [readValues, variables]);
+
+   React.useEffect(() => {
+      const results = processResults((result) => {
+         return m.current.requests.find(x => x === result.callerHandle) ? true : false;
+      });
+      if (results) {
+         results?.forEach(result => {
+            m.current.requests = m.current.requests.filter(x => x !== result.callerHandle);
+            if (result.children) {
+               const items: IMonitoredItem[] = [];
+               const newVariables: Row[] = [];
+               result.children.forEach((x) => {
+                  if (x?.reference?.NodeClass === OpcUa.NodeClass.Variable && x?.reference?.NodeId) {
+                     items.push({
+                        nodeId: x.reference.NodeId,
+                        subscriberHandle: HandleFactory.increment() + 20000
+                     });
+                     if (x?.reference?.DisplayName?.Text) {
+                        newVariables.push({ name: x?.reference?.DisplayName?.Text, item: items[items.length - 1] });
+                     }
+                  }
+               });
+               m.current.monitoredItems = items;
+               if (subscriptionState === SubscriptionState.Open) {
+                  subscribe(items, m.current.internalHandle);
                }
-            });
-            // Trigger render after updating the values.
-            setCounter(counter => counter + 1);
-         }
+               setVariables(newVariables);
+            }
+            else if (result.values) {
+               result.values.forEach((x) => {
+                  const mi = variables.find(y => y.item.subscriberHandle === x.id)
+                  if (mi) {
+                     mi.item.value = x.value;
+                  }
+               });
+               // trigger render after updating the values.
+               setCounter(counter => counter + 1);
+            }
+         });
       }
-      if (variables) {
-         read(variables);
-      }
-   }, [variables, user]);
-   
+   }, [responseCount, processResults, variables, subscribe, subscriptionState]);
+      
    if (!variables?.length || counter === 0) {
       return (
          <Paper elevation={3} sx={{ height: '100%', width: 'auto', p: '4px' }} >

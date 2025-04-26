@@ -27,17 +27,12 @@
  * http://opcfoundation.org/License/MIT/1.00/
  * ======================================================================*/
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Xml;
-using System.Runtime.Serialization;
 using Opc.Ua;
 
 namespace Measurements
 {
     #region MeasurementContainerState Class
-    #if (!OPCUA_EXCLUDE_MeasurementContainerState)
+#if (!OPCUA_EXCLUDE_MeasurementContainerState)
     /// <remarks />
     /// <exclude />
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Opc.Ua.ModelCompiler", "1.0.0.0")]
@@ -82,21 +77,22 @@ namespace Measurements
            "AQAAADUAAAB1cm46b3BjZm91bmRhdGlvbi5vcmc6MjAyNC0xMDpzdGFydGVya2l0Om1lYXN1cmVtZW50" +
            "c/////8EYIACAQAAAAEAIAAAAE1lYXN1cmVtZW50Q29udGFpbmVyVHlwZUluc3RhbmNlAQEBAAEBAQAB" +
            "AAAA/////wQAAAAVYIkKAgAAAAEACwAAAFRlbXBlcmF0dXJlAQECAAAvAQBZRAIAAAAAC/////8BAf//" +
-           "//8BAAAAFWCpCgIAAAAAABAAAABFbmdpbmVlcmluZ1VuaXRzAQEHAAAuAQBZRAcAAAAWAQB5AwFXAAAA" +
-           "LwAAAGh0dHA6Ly93d3cub3BjZm91bmRhdGlvbi5vcmcvVUEvdW5pdHMvdW4vY2VmYWN0TEVDAAMCAAAA" +
-           "ZW4DAAAAwrBDAwIAAABlbgcAAABDZWxzaXVzAQB3A/////8BAf////8BAAAAFWCJCgIAAAAAABAAAABF" +
-           "bmdpbmVlcmluZ1VuaXRzAQEMAAAuAEQMAAAAAQB3A/////8BAf////8AAAAAFWCJCgIAAAABAAgAAABQ" +
-           "cmVzc3VyZQEBDQAALwEAWUQNAAAAAAv/////AQH/////AQAAABVgqQoCAAAAAAAQAAAARW5naW5lZXJp" +
-           "bmdVbml0cwEBEgAALgEAWUQSAAAAFgEAeQMBWgAAAC8AAABodHRwOi8vd3d3Lm9wY2ZvdW5kYXRpb24u" +
-           "b3JnL1VBL3VuaXRzL3VuL2NlZmFjdEFQSwADAgAAAGVuAwAAAGtQYQMCAAAAZW4KAAAAa2lsb3Bhc2Nh" +
-           "bAEAdwP/////AQH/////AQAAABVgiQoCAAAAAAAQAAAARW5naW5lZXJpbmdVbml0cwEBFwAALgBEFwAA" +
-           "AAEAdwP/////AQH/////AAAAAARhggoEAAAAAQAFAAAAUmVzZXQBARgAAC8BARgAGAAAAAEB/////wIA" +
-           "AAAXYKkKAgAAAAAADgAAAElucHV0QXJndW1lbnRzAQEZAAAuAEQZAAAAlgIAAAABACoBAR0AAAAOAAAA" +
-           "TmV3VGVtcGVyYXR1cmUAC/////8AAAAAAAEAKgEBGgAAAAsAAABOZXdQcmVzc3VyZQAL/////wAAAAAA" +
-           "AQAoAQEAAAABAAAAAgAAAAEB/////wAAAAAXYKkKAgAAAAAADwAAAE91dHB1dEFyZ3VtZW50cwEBGgAA" +
-           "LgBEGgAAAJYCAAAAAQAqAQEdAAAADgAAAE9sZFRlbXBlcmF0dXJlAAv/////AAAAAAABACoBARoAAAAL" +
-           "AAAAT2xkUHJlc3N1cmUAC/////8AAAAAAAEAKAEBAAAAAQAAAAIAAAABAf////8AAAAAFWCJCgIAAAAB" +
-           "AAsAAABPcmllbnRhdGlvbgEBGwAALwA/GwAAAAEBHwD/////AQH/////AAAAAA==";
+           "//8CAAAAFWCpCgIAAAAAAAcAAABFVVJhbmdlAQEGAAAuAEQGAAAAFgEAdgMBEAAAAAAAAAAAAAAAAAAA" +
+           "AAAAWUABAHQD/////wEB/////wAAAAAVYKkKAgAAAAAAEAAAAEVuZ2luZWVyaW5nVW5pdHMBAQcAAC4A" +
+           "RAcAAAAWAQB5AwFXAAAALwAAAGh0dHA6Ly93d3cub3BjZm91bmRhdGlvbi5vcmcvVUEvdW5pdHMvdW4v" +
+           "Y2VmYWN0TEVDAAMCAAAAZW4DAAAAwrBDAwIAAABlbgcAAABDZWxzaXVzAQB3A/////8BAf////8AAAAA" +
+           "FWCJCgIAAAABAAgAAABQcmVzc3VyZQEBDQAALwEAWUQNAAAAAAv/////AQH/////AgAAABVgqQoCAAAA" +
+           "AAAHAAAARVVSYW5nZQEBEQAALgBEEQAAABYBAHYDARAAAAAAAAAAAAAkQAAAAAAAQI9AAQB0A/////8B" +
+           "Af////8AAAAAFWCpCgIAAAAAABAAAABFbmdpbmVlcmluZ1VuaXRzAQESAAAuAEQSAAAAFgEAeQMBWgAA" +
+           "AC8AAABodHRwOi8vd3d3Lm9wY2ZvdW5kYXRpb24ub3JnL1VBL3VuaXRzL3VuL2NlZmFjdEFQSwADAgAA" +
+           "AGVuAwAAAGtQYQMCAAAAZW4KAAAAa2lsb3Bhc2NhbAEAdwP/////AQH/////AAAAAARhggoEAAAAAQAF" +
+           "AAAAUmVzZXQBARgAAC8BARgAGAAAAAEB/////wIAAAAXYKkKAgAAAAAADgAAAElucHV0QXJndW1lbnRz" +
+           "AQEZAAAuAEQZAAAAlgIAAAABACoBAR0AAAAOAAAATmV3VGVtcGVyYXR1cmUAC/////8AAAAAAAEAKgEB" +
+           "GgAAAAsAAABOZXdQcmVzc3VyZQAL/////wAAAAAAAQAoAQEAAAABAAAAAgAAAAEB/////wAAAAAXYKkK" +
+           "AgAAAAAADwAAAE91dHB1dEFyZ3VtZW50cwEBGgAALgBEGgAAAJYCAAAAAQAqAQEdAAAADgAAAE9sZFRl" +
+           "bXBlcmF0dXJlAAv/////AAAAAAABACoBARoAAAALAAAAT2xkUHJlc3N1cmUAC/////8AAAAAAAEAKAEB" +
+           "AAAAAQAAAAIAAAABAf////8AAAAAFWCJCgIAAAABAAsAAABPcmllbnRhdGlvbgEBGwAALwA/GwAAAAEB" +
+           "HwD/////AQH/////AAAAAA==";
         #endregion
         #endif
         #endregion

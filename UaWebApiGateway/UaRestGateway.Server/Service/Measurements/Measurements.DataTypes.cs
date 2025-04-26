@@ -27,17 +27,13 @@
  * http://opcfoundation.org/License/MIT/1.00/
  * ======================================================================*/
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Xml;
 using System.Runtime.Serialization;
 using Opc.Ua;
 
 namespace Measurements
 {
     #region OrientationDataType Class
-    #if (!OPCUA_EXCLUDE_OrientationDataType)
+#if (!OPCUA_EXCLUDE_OrientationDataType)
     /// <remarks />
     /// <exclude />
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Opc.Ua.ModelCompiler", "1.0.0.0")]

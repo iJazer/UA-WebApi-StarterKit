@@ -6,14 +6,14 @@ import { Button, Toolbar, Typography, useTheme } from '@mui/material';
 
 import * as OpcUa from 'opcua-webapi';
 import * as Web from '../Web';
-import { SessionContext } from '../SessionProvider';
 
 import { styled } from '@mui/material/styles';
-import { IMonitoredItem, SubscriptionContext } from '../SubscriptionProvider';
-import { HandleFactory } from '../service/HandleFactory';
+import { IMonitoredItem } from '../SubscriptionProvider';
 import { SubscriptionState } from '../service/SubscriptionState';
 import { SessionState } from '../service/SessionState';
-import { IRequestMessage } from '../service/IRequestMessage';
+import { SessionContext } from '../SessionContext';
+import { SubscriptionContext } from '../SubscriptionContext';
+import { TypeDefinitionCard } from './TypeDefinitionCard';
 
 const CustomButton = styled(Button)(({ theme }) => ({
    paddingLeft: 0,
@@ -26,71 +26,47 @@ const CustomButton = styled(Button)(({ theme }) => ({
 
 export const SessionStatusBar = () => {
    const theme = useTheme();
-   const [currentTime, setCurrentTime] = React.useState<OpcUa.DataValue | undefined>();
    const timer = React.useRef<NodeJS.Timeout | null>(null);
-   const [clientHandle] = React.useState<number>(HandleFactory.increment());
-   const [monitoredItems] = React.useState<IMonitoredItem[]>([
-      {
-         itemHandle: 2,
-         nodeId: OpcUa.VariableIds.Server_ServerStatus,
-         path: ['State'],
-      }]);
+   const [variables, setVariables] = React.useState<IMonitoredItem[]>([]);
+   const [, setCounter] = React.useState<number>(1);
+   const [tickCount, setTickCount] = React.useState<number>(1);
 
    const {
       sessionState,
-      sendRequest,
       setIsEnabled,
-      setIsSessionEnabled,
-      lastCompletedRequest
+      setIsSessionEnabled
    } = React.useContext(SessionContext);
 
    const {
       setIsSubscriptionEnabled,
       subscriptionState,
       lastSequenceNumber,
-      subscribe,
    } = React.useContext(SubscriptionContext);
 
    React.useEffect(() => {
-      if (lastCompletedRequest?.clientHandle === clientHandle) {
-         if (lastCompletedRequest?.response?.ServiceId === OpcUa.DataTypeIds.ReadResponse) {
-            const rrm = lastCompletedRequest.response.Body as OpcUa.ReadResponse;
-            setCurrentTime(rrm?.Results?.at(0));
-         }
-      }
-   }, [lastCompletedRequest, clientHandle]);
+      const items = [{
+         subscriberHandle: 1,
+         nodeId: OpcUa.VariableIds.Server_ServerStatus,
+         path: [OpcUa.BrowseNames.CurrentTime]
+      }];
+      setVariables(items);
+   }, []);
 
-   React.useEffect(() => {
-      if (subscriptionState === SubscriptionState.Open) {
-         const itemsToCreate = monitoredItems.filter(item => !item.monitoredItemId && !item.creationError);
-         if (itemsToCreate.length) {
-            subscribe(itemsToCreate, clientHandle);
-         }
-      }
-   }, [subscriptionState, monitoredItems, clientHandle, subscribe]);
+   const getValue = React.useCallback((field: number) => {
+      const value = variables.find(x => x.subscriberHandle === field)?.value;
+      return value;
+   }, [variables]);
 
-   const sendRead = React.useCallback(() => {
-      const request: OpcUa.ReadRequest= {
-         NodesToRead: [
-            {
-               NodeId: OpcUa.VariableIds.Server_ServerStatus_CurrentTime,
-               AttributeId: OpcUa.Attributes.Value
-            }
-         ]
-      };
-      const message: IRequestMessage = {
-         ServiceId: OpcUa.DataTypeIds.ReadRequest,
-         Body: request
-      };
-      sendRequest(message, clientHandle);
-   }, [sendRequest, clientHandle]);
+   const valueUpdated = React.useCallback(() => {
+      setCounter(counter => counter + 1);
+   }, []);
 
    const startTimer = React.useCallback(() => {
       if (timer.current !== null) return; // Prevent starting multiple timers
       timer.current = setInterval(() => {
-         sendRead();
+         setTickCount(count => count + 1);
       }, 1000);
-   }, [sendRead]);
+   }, [setTickCount]);
 
    const stopTimer = React.useCallback(() => {
       if (timer.current !== null) {
@@ -115,10 +91,10 @@ export const SessionStatusBar = () => {
 
    React.useEffect(() => {
       if (sessionState === SessionState.SessionActive) {
-         startTimer();
+         stopTimer();
       }
       else {
-         stopTimer();
+         startTimer();
       }
    }, [sessionState, startTimer, stopTimer]);
 
@@ -133,8 +109,10 @@ export const SessionStatusBar = () => {
                <Typography variant='body2' fontWeight={'bolder'}>{SessionState[sessionState]}</Typography>
             </Button>
             <Button sx={{ my: 2 }}>
-               <Typography variant='body2' sx={{ pr: 4 }}>Server Time:</Typography>
-               <Typography variant='body2' fontWeight={'bolder'}>{Web.formatTime(currentTime?.Value) ?? '---'}</Typography>
+               <TypeDefinitionCard variables={variables} onValueUpdate={valueUpdated} readTrigger={tickCount}>
+                  <Typography variant='body2' sx={{ pr: 4 }}>Server Time:</Typography>
+                  <Typography variant='body2' fontWeight={'bolder'}>{Web.formatTime(getValue(1)?.Value) ?? '---'}</Typography>
+               </TypeDefinitionCard>
             </Button>
             <Button sx={{ my: 2 }}>
                <Typography variant='body2' sx={{ pr: 4 }}>Subscription:</Typography>

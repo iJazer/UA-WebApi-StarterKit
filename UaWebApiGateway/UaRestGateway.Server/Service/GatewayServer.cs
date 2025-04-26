@@ -31,10 +31,7 @@ namespace UaRestGateway.Server.Service
             var config = await m_application.LoadApplicationConfiguration("config/uaserver-configuration.xml", false).ConfigureAwait(false);
 
             // check the application certificate.
-            bool haveAppCertificate = await m_application.CheckApplicationInstanceCertificate(
-                false,
-                CertificateFactory.DefaultKeySize,
-                CertificateFactory.DefaultLifeTime).ConfigureAwait(false);
+            bool haveAppCertificate = await m_application.CheckApplicationInstanceCertificates(false).ConfigureAwait(false);
 
             if (!haveAppCertificate)
             {

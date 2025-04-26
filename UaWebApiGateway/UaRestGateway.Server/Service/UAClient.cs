@@ -75,7 +75,7 @@ namespace UaRestGateway.Server.Service
 
                 // check the application certificate.
                 bool haveAppCertificate = await application
-                    .CheckApplicationInstanceCertificate(false, minimumKeySize: 0)
+                    .CheckApplicationInstanceCertificates(false)
                     .ConfigureAwait(false);
 
                 if (!haveAppCertificate)

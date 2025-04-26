@@ -40,7 +40,7 @@ namespace UaRestGateway.Server.Service
     {
         #region Private Fields
         private Dictionary<NodeId, FileManager> m_fileManagers = new();
-        private ushort MeasurementsNamespaceIndex => (NamespaceIndexes?.Length > 0) ? NamespaceIndexes[0] : (ushort)0;
+        private ushort MeasurementsNamespaceIndex => (NamespaceIndexes?.Count > 0) ? NamespaceIndexes[0] : (ushort)0;
         private Timer m_simulationTimer;
         #endregion
 
@@ -260,6 +260,37 @@ namespace UaRestGateway.Server.Service
 
                 lock (Lock)
                 {
+                    // create new URI.
+                    var guid = Guid.NewGuid().ToString();
+                    var newUri = $"urn:{guid}";
+
+                    var arguments = new List<string>(NamespaceUris)
+                    {
+                        newUri
+                    };
+
+                    // Update the table used by this NodeManager.
+                    SetNamespaces(arguments.ToArray());
+
+                    // Register the new URI with the MasterNodeManager (note possible deadlock here).
+                    Server.NodeManager.RegisterNamespaceManager(newUri, this);
+
+                    // Get the new NamespaceIndex
+                    var index = Server.NamespaceUris.GetIndex(newUri);
+
+                    // Create a new Node using the new URI.
+                    var container1 = new Measurements.MeasurementContainerState(null);
+
+                    container1.Create(
+                        SystemContext,
+                        new NodeId($"Measurements-{guid.Substring(0, 6)}", (ushort)index),
+                        new QualifiedName($"Measurements-{guid.Substring(0, 6)}", (ushort)index),
+                        null,
+                        true);
+
+                    AddPredefinedNode(SystemContext, container1);
+                    container.AddReference(Opc.Ua.ReferenceTypeIds.Organizes, false, container1.NodeId);
+
                     double oldTemperature = container.Temperature.Value;
                     double oldPressure = container.Pressure.Value;
 

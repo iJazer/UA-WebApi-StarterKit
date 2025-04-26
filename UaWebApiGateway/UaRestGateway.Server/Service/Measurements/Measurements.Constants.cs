@@ -27,12 +27,6 @@
  * http://opcfoundation.org/License/MIT/1.00/
  * ======================================================================*/
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Reflection;
-using System.Xml;
-using System.Runtime.Serialization;
 using Opc.Ua;
 
 namespace Measurements
@@ -97,19 +91,19 @@ namespace Measurements
         public const uint MeasurementContainerType_Temperature = 2;
 
         /// <remarks />
-        public const uint MeasurementContainerType_Temperature_EngineeringUnits = 7;
+        public const uint MeasurementContainerType_Temperature_EURange = 6;
 
         /// <remarks />
-        public const uint MeasurementContainerType_Temperature_EngineeringUnits_EngineeringUnits = 12;
+        public const uint MeasurementContainerType_Temperature_EngineeringUnits = 7;
 
         /// <remarks />
         public const uint MeasurementContainerType_Pressure = 13;
 
         /// <remarks />
-        public const uint MeasurementContainerType_Pressure_EngineeringUnits = 18;
+        public const uint MeasurementContainerType_Pressure_EURange = 17;
 
         /// <remarks />
-        public const uint MeasurementContainerType_Pressure_EngineeringUnits_EngineeringUnits = 23;
+        public const uint MeasurementContainerType_Pressure_EngineeringUnits = 18;
 
         /// <remarks />
         public const uint MeasurementContainerType_Reset_InputArguments = 25;
@@ -206,19 +200,19 @@ namespace Measurements
         public static readonly ExpandedNodeId MeasurementContainerType_Temperature = new ExpandedNodeId(Measurements.Variables.MeasurementContainerType_Temperature, Measurements.Namespaces.Measurements);
 
         /// <remarks />
-        public static readonly ExpandedNodeId MeasurementContainerType_Temperature_EngineeringUnits = new ExpandedNodeId(Measurements.Variables.MeasurementContainerType_Temperature_EngineeringUnits, Measurements.Namespaces.Measurements);
+        public static readonly ExpandedNodeId MeasurementContainerType_Temperature_EURange = new ExpandedNodeId(Measurements.Variables.MeasurementContainerType_Temperature_EURange, Measurements.Namespaces.Measurements);
 
         /// <remarks />
-        public static readonly ExpandedNodeId MeasurementContainerType_Temperature_EngineeringUnits_EngineeringUnits = new ExpandedNodeId(Measurements.Variables.MeasurementContainerType_Temperature_EngineeringUnits_EngineeringUnits, Measurements.Namespaces.Measurements);
+        public static readonly ExpandedNodeId MeasurementContainerType_Temperature_EngineeringUnits = new ExpandedNodeId(Measurements.Variables.MeasurementContainerType_Temperature_EngineeringUnits, Measurements.Namespaces.Measurements);
 
         /// <remarks />
         public static readonly ExpandedNodeId MeasurementContainerType_Pressure = new ExpandedNodeId(Measurements.Variables.MeasurementContainerType_Pressure, Measurements.Namespaces.Measurements);
 
         /// <remarks />
-        public static readonly ExpandedNodeId MeasurementContainerType_Pressure_EngineeringUnits = new ExpandedNodeId(Measurements.Variables.MeasurementContainerType_Pressure_EngineeringUnits, Measurements.Namespaces.Measurements);
+        public static readonly ExpandedNodeId MeasurementContainerType_Pressure_EURange = new ExpandedNodeId(Measurements.Variables.MeasurementContainerType_Pressure_EURange, Measurements.Namespaces.Measurements);
 
         /// <remarks />
-        public static readonly ExpandedNodeId MeasurementContainerType_Pressure_EngineeringUnits_EngineeringUnits = new ExpandedNodeId(Measurements.Variables.MeasurementContainerType_Pressure_EngineeringUnits_EngineeringUnits, Measurements.Namespaces.Measurements);
+        public static readonly ExpandedNodeId MeasurementContainerType_Pressure_EngineeringUnits = new ExpandedNodeId(Measurements.Variables.MeasurementContainerType_Pressure_EngineeringUnits, Measurements.Namespaces.Measurements);
 
         /// <remarks />
         public static readonly ExpandedNodeId MeasurementContainerType_Reset_InputArguments = new ExpandedNodeId(Measurements.Variables.MeasurementContainerType_Reset_InputArguments, Measurements.Namespaces.Measurements);

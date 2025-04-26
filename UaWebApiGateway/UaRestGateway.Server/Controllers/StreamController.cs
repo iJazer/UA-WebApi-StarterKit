@@ -1,13 +1,10 @@
 ﻿using System.Net.WebSockets;
-using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using UaRestGateway.Server.Service;
 using Microsoft.Extensions.Caching.Memory;
 using UaRestGateway.Server.Model;
 using Opc.Ua;
 using Opc.Ua.Server;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using System.Runtime.CompilerServices;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;

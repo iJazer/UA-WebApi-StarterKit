@@ -1,5 +1,6 @@
 ﻿using System.IO.Compression;
 using System.Text;
+using Newtonsoft.Json.Linq;
 using Opc.Ua;
 using Opc.Ua.Server;
 
@@ -309,6 +310,89 @@ namespace UaRestGateway.Server.Controllers
             }
         }
 
+        public static DataValue ReadProperties(
+            SessionContext context,
+            StandardServer server,
+            ReadRequest request,
+            ReadValueId nodeToRead)
+        {
+            server.Browse(
+                request.RequestHeader,
+                null,
+                0,
+                new BrowseDescriptionCollection([
+                    new BrowseDescription(){
+                                NodeId = nodeToRead.NodeId,
+                                ReferenceTypeId = Opc.Ua.ReferenceTypeIds.HasProperty,
+                                BrowseDirection = BrowseDirection.Forward,
+                                IncludeSubtypes = true,
+                                NodeClassMask = (uint)NodeClass.Variable,
+                                ResultMask = (uint)BrowseResultMask.BrowseName
+                            }
+                ]),
+                out var results1,
+                out var diagnosticInfos1);
+
+            if (results1.Count == 0)
+            {
+                return new DataValue() { StatusCode = Opc.Ua.StatusCodes.BadNotFound, ServerTimestamp = DateTime.UtcNow };
+            }
+
+            ReadValueIdCollection nodesToRead = new();
+
+            foreach (var node in results1)
+            {
+                foreach (var reference in node.References)
+                {
+                    nodesToRead.Add(new ReadValueId()
+                    {
+                        NodeId = (NodeId)reference.NodeId,
+                        AttributeId = Attributes.Value,
+                        Handle = reference
+                    });
+                }
+            }
+
+            var responseHeader = server.Read(
+                request.RequestHeader,
+                request.MaxAge,
+                TimestampsToReturn.Neither,
+                nodesToRead,
+                out DataValueCollection results,
+                out DiagnosticInfoCollection diagnosticInfos);
+
+            using (var encoder = new JsonEncoder(ServiceMessageContext.GlobalContext, JsonEncodingType.Compact))
+            {
+                encoder.SuppressArtifacts = true;
+
+                for (int ii = 0; ii < nodesToRead.Count; ii++) 
+                {
+                    var reference = nodesToRead[ii].Handle as ReferenceDescription;
+
+                    encoder.WriteRawValue(
+                        new FieldMetaData()
+                        {
+                            Name = reference.BrowseName.Name,
+                            BuiltInType = (byte)results[ii].WrappedValue.TypeInfo.BuiltInType,
+                            ValueRank = results[ii].WrappedValue.TypeInfo.ValueRank,
+                            DataType = DataTypeIds.BaseDataType                                 
+                        },
+                        results[ii],
+                        DataSetFieldContentMask.RawData);
+                }
+
+                var json = encoder.CloseAndReturnText();
+                JObject jobject = JObject.Parse(json);
+
+                return new DataValue()
+                {
+                    WrappedValue = new ExtensionObject(nodeToRead.NodeId, jobject),
+                    StatusCode = Opc.Ua.StatusCodes.Good,
+                    ServerTimestamp = DateTime.UtcNow
+                };
+            }
+        }
+
         public static Task<IServiceResponse> Read(
             SessionContext context,
             StandardServer server,
@@ -330,6 +414,14 @@ namespace UaRestGateway.Server.Controllers
                     request.NodesToRead,
                     out DataValueCollection results,
                     out DiagnosticInfoCollection diagnosticInfos);
+
+                for (int ii = 0; ii < request.NodesToRead.Count; ii++)
+                {
+                    if (request.NodesToRead[ii].AttributeId == 60)
+                    {
+                        results[ii] = ReadProperties(context, server, request, request.NodesToRead[ii]);
+                    }
+                }
 
                 var response = new ReadResponse()
                 {

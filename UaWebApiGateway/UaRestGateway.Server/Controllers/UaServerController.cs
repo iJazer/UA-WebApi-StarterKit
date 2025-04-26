@@ -3,7 +3,6 @@ using Microsoft.Extensions.Caching.Memory;
 using Opc.Ua;
 using UaRestGateway.Server.Service;
 using StatusCodes = Opc.Ua.StatusCodes;
-using ISession = Opc.Ua.Client.ISession;
 using UaRestGateway.Server.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

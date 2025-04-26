@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using Opc.Ua;
+﻿using Opc.Ua;
 
 namespace UaRestGateway.Server.Controllers
 {

@@ -9,7 +9,7 @@ $Output = "..\UaWebApiClient\opcua-webapi\typescript"
 & $Java -jar ".\openapi-generator-cli.jar" generate -g typescript-fetch `
     -i "$NodeSets\Schema\opc.ua.openapi.allservices.json" `
     -o $Output `
-    -p enumPropertyNaming=PascalCase,modelPropertyNaming=PascalCase,npmName=$ProjectName,npmRepository=https://github.com/OPCFoundation/opcua-webapi-dotnet,supportsES6=true
+    -p enumPropertyNaming=PascalCase,modelPropertyNaming=PascalCase,npmName=$ProjectName,npmRepository=https://github.com/OPCFoundation/opcua-webapi-typescript,supportsES6=true,npmVersion=1.504.1
 
 Get-ChildItem -Path "$NodeSets\OpenApi\Constants\TypeScript" -Filter "*.ts" | ForEach-Object {
     $export = "export * from './" + $_.BaseName + "';"

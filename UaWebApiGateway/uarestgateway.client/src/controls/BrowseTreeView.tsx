@@ -7,29 +7,50 @@ import { TreeView } from '@mui/x-tree-view/TreeView/TreeView';
 import Paper from '@mui/material/Paper/Paper';
 
 import * as OpcUa from 'opcua-webapi';
-import { ApplicationContext } from '../ApplicationProvider';
 import { TreeItem } from '@mui/x-tree-view/TreeItem/TreeItem';
 import { NodeIcon } from './NodeIcon';
 import { IBrowsedNode } from '../service/IBrowsedNode';
 
-export interface BrowseTreeNodeProps {
+import { BrowseContext } from '../BrowseContext';
+import { HandleFactory } from '../service/HandleFactory';
+import { SessionContext } from '../SessionContext';
+
+interface BrowseTreeNodeProps {
    parentId?: string
    selectionId?: string,
    onChildrenUpdated?: (oldNodes: IBrowsedNode[], newNodes: IBrowsedNode[]) => void,
    onSelectionChanged?: (node: OpcUa.ReferenceDescription) => void
 }
 
-export const BrowseTreeNode = ({ parentId, selectionId, onSelectionChanged }: BrowseTreeNodeProps) => {
+interface BrowseTreeNodeInternals {
+   requestId: number
+}
+
+const BrowseTreeNode = ({ parentId, selectionId, onSelectionChanged }: BrowseTreeNodeProps) => {
    const [children, setChildren] = React.useState<IBrowsedNode[]>([]);
-   const { browseChildren, visibleNodes, nodes } = React.useContext(ApplicationContext);
+   const { browseChildren, processResults, responseCount } = React.useContext(BrowseContext);
+   const { isConnected } = React.useContext(SessionContext);
+
+   const m = React.useRef<BrowseTreeNodeInternals>({
+      requestId: HandleFactory.increment()
+   });
 
    React.useEffect(() => {
       if (browseChildren && parentId && selectionId === parentId) {
-         browseChildren(parentId, 0).then((x) => {
-            setChildren(x);
+         browseChildren(m.current.requestId, parentId);
+      }
+   }, [browseChildren, parentId, selectionId, isConnected]);
+
+   React.useEffect(() => {
+      const results = processResults((result) => {
+         return m.current.requestId && m.current.requestId === result.callerHandle ? true : false;
+      });
+      if (results) {
+         results?.forEach(result => {
+            setChildren(result.children ?? []);
          });
       }
-   }, [browseChildren, visibleNodes, selectionId, parentId, nodes, onSelectionChanged]);
+   }, [processResults, responseCount, setChildren]);
 
    return (
       <React.Fragment>
@@ -59,12 +80,11 @@ interface BrowseTreeViewProps {
    onSelectionChanged?: (node: OpcUa.ReferenceDescription) => void
 }
 
-export const BrowseTreeView = ({ rootNodeId, onSelectionChanged }: BrowseTreeViewProps) => {
+const BrowseTreeRoot = ({ rootNodeId, onSelectionChanged }: BrowseTreeViewProps) => {
    const [selectionId, setSelectionId] = React.useState<string | undefined>();
-   const { visibleNodes, setVisibleNodes, nodes } = React.useContext(ApplicationContext);
+   const { visibleNodes, setVisibleNodes, nodes } = React.useContext(BrowseContext);
 
    const handleNodeSelect = React.useCallback((_e: React.SyntheticEvent, nodeId: string) => {
-      //console.error(`SELECT node ${nodeId}`);
       const treeNode: IBrowsedNode | undefined = nodes.get(nodeId);
       if (treeNode && onSelectionChanged) {
          onSelectionChanged(treeNode.reference);
@@ -73,7 +93,6 @@ export const BrowseTreeView = ({ rootNodeId, onSelectionChanged }: BrowseTreeVie
    }, [onSelectionChanged, nodes]);
 
    const handleToggle = (_e: React.SyntheticEvent, nodeIds: string[]) => {
-      //console.error(`TOGGLE node ${nodeIds.join()}`);
       setVisibleNodes(nodeIds);
    }
 
@@ -93,6 +112,13 @@ export const BrowseTreeView = ({ rootNodeId, onSelectionChanged }: BrowseTreeVie
             />
          </TreeView>
       </Paper>
+   );
+}
+
+
+export const BrowseTreeView = ({ rootNodeId, onSelectionChanged }: BrowseTreeViewProps) => {
+   return (
+      <BrowseTreeRoot rootNodeId={rootNodeId} onSelectionChanged={onSelectionChanged} />
    );
 }
 

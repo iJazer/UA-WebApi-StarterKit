@@ -1,4 +1,4 @@
- import * as React from 'react';
+import React from 'react';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 import { UserContext } from './UserProvider';
 import * as OpcUa from 'opcua-webapi';
@@ -8,8 +8,11 @@ import { IResponseMessage } from './service/IResponseMessage';
 import { ICompletedRequest } from './service/ICompletedRequest';
 import { SessionState } from './service/SessionState';
 import { HandleFactory } from './service/HandleFactory';
+import { call } from './opcua-utils';
 
-const DefaultServerUrl = `wss://${location.host}/stream`;
+export const DefaultServerUrl = `wss://${location.host}/stream`;
+
+import { SessionContext } from './SessionContext';
 
 export interface ISessionContext {
    serverUrl: string,
@@ -22,25 +25,10 @@ export interface ISessionContext {
    setIsSessionEnabled: (value: boolean) => void,
    requestTimeout: number,
    setRequestTimeout: (value: number) => void,
-   sendRequest: (request: IRequestMessage, clientHandle?: number) => void
-   lastCompletedRequest?: ICompletedRequest
+   sendRequest: (request: IRequestMessage, callerHandle?: number) => void
+   messageCounter?: number,
+   processMessages: (matcher: (message: ICompletedRequest) => boolean) => ICompletedRequest[]
 }
-
-export const SessionContext = React.createContext<ISessionContext>({
-   serverUrl: DefaultServerUrl,
-   setServerUrl: () => { },
-   isConnected: false,
-   sessionState: SessionState.Disconnected,
-   isEnabled: false,
-   setIsEnabled: () => { },
-   isSessionEnabled: false,
-   setIsSessionEnabled: () => { },
-   requestTimeout: 60000,
-   setRequestTimeout: () => { },
-   sendRequest: () => { },
-   lastCompletedRequest: undefined
-});
-
 interface SessionProps {
    children?: React.ReactNode
 }
@@ -55,8 +43,27 @@ interface SessionInternals {
    authenticationToken?: string,
    serverNonce?: string,
    requests: Map<number, ICompletedRequest>,
-   responses: IResponseMessage[],
-   lastCompletedRequest?: ICompletedRequest
+   responses: ICompletedRequest[]
+}
+
+const apiNames = {
+   [OpcUa.DataTypeIds.BrowseRequest]: { path: "browse", response: OpcUa.DataTypeIds.BrowseResponse },
+   [OpcUa.DataTypeIds.BrowseNextRequest]: { path: "browsenext", response: OpcUa.DataTypeIds.BrowseNextResponse }, 
+   [OpcUa.DataTypeIds.ReadRequest]: { path: "read", response: OpcUa.DataTypeIds.ReadResponse },
+   [OpcUa.DataTypeIds.WriteRequest]: { path: "write", response: OpcUa.DataTypeIds.WriteResponse },
+   [OpcUa.DataTypeIds.CallRequest]: { path: "call", response: OpcUa.DataTypeIds.CallResponse },
+   [OpcUa.DataTypeIds.TranslateBrowsePathsToNodeIdsRequest]: { path: "translate", response: OpcUa.DataTypeIds.TranslateBrowsePathsToNodeIdsResponse },
+   [OpcUa.DataTypeIds.HistoryReadRequest]: { path: "historyread", response: OpcUa.DataTypeIds.HistoryReadResponse }, 
+   [OpcUa.DataTypeIds.HistoryUpdateRequest]: { path: "historyupdate", response: OpcUa.DataTypeIds.HistoryUpdateResponse }
+};
+
+function getApiName(responseId: string): string | undefined {
+   for (const [, value] of Object.entries(apiNames)) {
+      if (value.response === responseId) {
+         return value.path;
+      }
+   }
+   return undefined; 
 }
 
 export const SessionProvider = ({ children }: SessionProps) => {
@@ -64,6 +71,8 @@ export const SessionProvider = ({ children }: SessionProps) => {
    const [isEnabled, setIsEnabled] = React.useState<boolean>(false);
    const [isSessionEnabled, setIsSessionEnabled] = React.useState<boolean>(false);
    const [sessionState, setSessionState] = React.useState<SessionState>(SessionState.Disconnected);
+   const [messageCounter, setMessageCounter] = React.useState<number>(0);
+
    const { user, loginStatus } = React.useContext(UserContext);
 
    const m = React.useRef<SessionInternals>({
@@ -77,18 +86,41 @@ export const SessionProvider = ({ children }: SessionProps) => {
       responses: []
    });
 
-   const { sendMessage, lastMessage, readyState } = useWebSocket(
+   const handleOnMessage = React.useCallback((event: MessageEvent) => {
+      try {
+         const response = JSON.parse(event.data) as IResponseMessage;
+         processRawResponse(response);
+      } catch (error) {
+         console.warn('SessionProvider:WebSocket:OnMesssage', error);
+      }
+   }, []);
+
+   const { sendMessage, readyState } = useWebSocket(
       (isEnabled) ? serverUrl : null,
       {
          share: true,
          protocols: (user?.accessToken) ? ["opcua+uajson", `opcua+token+${user?.accessToken}`] : ["opcua+uajson"],
-         shouldReconnect: () => {
-            return isEnabled;
-         }
+         shouldReconnect: () => isEnabled,
+         onMessage: handleOnMessage
       },
    );
 
-   const sendRequest = React.useCallback((request: IRequestMessage, clientHandle?: number) => {
+   const processRawResponse = React.useCallback((response: IResponseMessage) => {
+      if (response) {
+         const callerHandle = response.Body?.ResponseHeader?.RequestHandle ?? 0;
+         const request = m.current.requests.get(callerHandle);
+         if (request) {
+            m.current.requests.delete(callerHandle);
+            request.response = response;
+            m.current.responses.push(request);
+            console.error("Session SUB (" + Array.from(m.current.requests.keys()).join(",") + "): " + callerHandle);
+            console.error(`===>>> RESPONSE: ${getApiName(response?.ServiceId ?? '')} ${callerHandle}`);
+            setMessageCounter(x => x + 1);
+         }
+      }
+   }, [])
+
+   const sendRequest = React.useCallback((request: IRequestMessage, callerHandle?: number) => {
       if (!request.Body.RequestHeader) {
          request.Body.RequestHeader = {}
       }
@@ -105,10 +137,69 @@ export const SessionProvider = ({ children }: SessionProps) => {
       }
       m.current.requests.set(
          requestHeader.RequestHandle,
-         { clientHandle: clientHandle ?? requestHeader.RequestHandle, request }
+         { callerHandle: callerHandle ?? requestHeader.RequestHandle, request }
       );
-      sendMessage(JSON.stringify(request));
-   }, [sendMessage]);
+      console.error("Session ADD (" + Array.from(m.current.requests.keys()).join(",") + "): " + (requestHeader.RequestHandle ?? 0));
+
+      try {
+         if (readyState === ReadyState.OPEN) {
+            sendMessage(JSON.stringify(request));
+         }
+         else {
+            const callerHandle = requestHeader.RequestHandle;
+            console.error(`===>>> REQUEST: ${apiNames[request.ServiceId ?? ''].path} ${requestHeader.RequestHandle}`);
+
+            call(
+               `/opcua/${apiNames[request.ServiceId ?? ''].path}`,
+               { callerHandle: callerHandle, request: { Body: request.Body } },
+               undefined,
+               user,
+               true)
+               .then(response => {
+                  if (response.code) {
+                     processRawResponse({
+                        ServiceId: apiNames[request.ServiceId ?? ''].response,
+                        Body: {
+                           ResponseHeader: {
+                              RequestHandle: callerHandle,
+                              ServiceResult: response.code,
+                              ServiceDiagnostics: { LocalizedText: 0 }, 
+                              StringTable: [response.message]
+                           }
+                        }
+                     })
+                  }
+                  else {
+                     processRawResponse({
+                        ServiceId: apiNames[request.ServiceId ?? ''].response,
+                        Body: response
+                     })
+                  }
+               })
+               .catch(error => {
+                  console.error('Unexpected HTTP error:', error);
+                  m.current.requests.delete(callerHandle);
+               });
+         }
+      } catch (error) {
+         console.error('Failed to send request:', error);
+      }
+   }, [sendMessage, processRawResponse, readyState, user]);
+
+   const processMessages = React.useCallback((matcher: (message: ICompletedRequest) => boolean): ICompletedRequest[] => {
+      const responses = m.current.responses;
+      const matched: ICompletedRequest[] = [];
+      const remaining: ICompletedRequest[] = [];
+      for (const ii of responses) {
+         if (matcher(ii)) {
+            matched.push(ii);
+         } else {
+            remaining.push(ii);
+         }
+      }
+      m.current.responses = remaining;
+      return matched;
+   }, []);
 
    const activateSession = React.useCallback((createSessionResponse: OpcUa.CreateSessionResponse) => {
       const endpoint = createSessionResponse?.ServerEndpoints?.find((endpoint) => {
@@ -201,6 +292,40 @@ export const SessionProvider = ({ children }: SessionProps) => {
       }
    }, [readyState, createSession, deleteSession])
 
+   React.useEffect(() => {
+      const messages = processMessages((message) => {
+         switch (message?.response?.ServiceId) {
+            case OpcUa.DataTypeIds.CreateSessionResponse:
+            case OpcUa.DataTypeIds.ActivateSessionResponse:
+            case OpcUa.DataTypeIds.CloseSessionResponse:
+               {
+                  return true;
+               }
+         }
+         return false;
+      });
+      messages?.forEach(message => {
+         const response = message?.response;
+         if (response?.ServiceId === OpcUa.DataTypeIds.CreateSessionResponse) {
+            const csr = response.Body as OpcUa.CreateSessionResponse;
+            m.current.authenticationToken = csr.AuthenticationToken;
+            activateSession(csr);
+         }
+         else if (response?.ServiceId === OpcUa.DataTypeIds.ActivateSessionResponse) {
+            const asr = response.Body as OpcUa.ActivateSessionResponse;
+            m.current.serverNonce = asr.ServerNonce;
+            m.current.sessionState = SessionState.SessionActive;
+            setSessionState(m.current.sessionState);
+         }
+         else if (response?.ServiceId === OpcUa.DataTypeIds.CloseSessionResponse) {
+            m.current.authenticationToken = undefined;
+            m.current.serverNonce = undefined;
+            m.current.sessionState = SessionState.NoSession;
+            setSessionState(m.current.sessionState);
+         }
+      });
+   }, [messageCounter, processMessages, activateSession])
+
    const setServerUrlImpl = React.useCallback((value: string) => {
       m.current.serverUrl = value ?? null;
       if (m.current.isEnabled) {
@@ -241,7 +366,8 @@ export const SessionProvider = ({ children }: SessionProps) => {
       requestTimeout: m.current.requestTimeout,
       setRequestTimeout: (value: number) => m.current.requestTimeout = value,
       sendRequest,
-      lastCompletedRequest: m.current.lastCompletedRequest
+      messageCounter,
+      processMessages
    } as ISessionContext;
 
    const processResponse = React.useCallback((response: IResponseMessage) => {
@@ -263,26 +389,9 @@ export const SessionProvider = ({ children }: SessionProps) => {
          setSessionState(m.current.sessionState);
       }
       else if (response) {
-         const requestHandle = response?.Body?.ResponseHeader?.RequestHandle ?? 0;
-         const request = m.current.requests.get(requestHandle);
-         if (request) {
-            m.current.requests.delete(requestHandle);
-            m.current.lastCompletedRequest = { ...request, response };
-         }
+         processRawResponse(response);
       }
-   }, [activateSession])
-
-   React.useEffect(() => {
-      if (lastMessage?.data) {
-         try {
-            const message = JSON.parse(lastMessage.data) as IResponseMessage;
-            processResponse(message);
-         }
-         catch (error) {
-            // do nothing.
-         }
-      }
-   }, [lastMessage, processResponse])
+   }, [activateSession, processRawResponse])
 
    return (
       <SessionContext.Provider value={sessionContext}>

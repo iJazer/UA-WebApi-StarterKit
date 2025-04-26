@@ -1,10 +1,4 @@
-﻿using System.IO.Compression;
-using System.Text;
-using System.Text.Json.Serialization;
-using Microsoft.EntityFrameworkCore.Sqlite.Query.Internal;
-using Opc.Ua;
-using Opc.Ua.Server;
-using UaRestGateway.Server.Service;
+﻿using System.Text.Json.Serialization;
 
 namespace UaRestGateway.Server.Controllers
 {
