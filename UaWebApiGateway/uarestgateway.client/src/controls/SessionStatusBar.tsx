@@ -63,9 +63,11 @@ export const SessionStatusBar = () => {
       }
    }, [lastCompletedRequest, clientHandle]);
 
+   /*
    React.useEffect(() => {
       setIsSubscriptionEnabled(isSessionEnabled);
    }, [isSessionEnabled, setIsSubscriptionEnabled]);
+   */
 
    React.useEffect(() => {
       if (lastCompletedRequest?.callerHandle === clientHandle) {
@@ -119,6 +121,15 @@ export const SessionStatusBar = () => {
       }
    }, [setIsEnabled, setIsSessionEnabled]);
 
+    const handleSubscription = React.useCallback((subscriptionState: SubscriptionState) => {
+        if (subscriptionState === SubscriptionState.Closed) {
+            setIsSubscriptionEnabled(true);
+        }
+        else {
+            setIsSubscriptionEnabled(false);
+        }
+    }, [isSessionEnabled, setIsSubscriptionEnabled]);
+
    React.useEffect(() => {
       if (sessionState === SessionState.SessionActive) {
          startTimer();
@@ -141,8 +152,8 @@ export const SessionStatusBar = () => {
             <Button sx={{ my: 2 }}>
                <Typography variant='body2' sx={{ pr: 4 }}>Server Time:</Typography>
                <Typography variant='body2' fontWeight={'bolder'}>{Web.formatTime(currentTime?.Value) ?? '---'}</Typography>
-            </Button>
-            <Button sx={{ my: 2 }}>
+               </Button>
+               <Button sx={{ my: 2 }} onClick={() => handleSubscription(subscriptionState)}>
                <Typography variant='body2' sx={{ pr: 4 }}>Subscription:</Typography>
                <Typography variant='body2' fontWeight={'bolder'}>{SubscriptionState[subscriptionState]}</Typography>
             </Button>

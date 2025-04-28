@@ -87,7 +87,7 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
          RequestedLifetimeCount: 180,
          RequestedMaxKeepAliveCount: 3,
          MaxNotificationsPerPublish: 1000,
-         PublishingEnabled: true,
+         PublishingEnabled: true, //toDo --> set on false and set on true if element is in DataView
          Priority: 100
       }
       const message: IRequestMessage = {
