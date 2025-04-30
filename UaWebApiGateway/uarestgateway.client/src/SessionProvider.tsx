@@ -27,7 +27,8 @@ export interface ISessionContext {
    requestTimeout: number,
    setRequestTimeout: (value: number) => void,
    sendRequest: (request: IRequestMessage, clientHandle?: number) => void
-   lastCompletedRequest?: ICompletedRequest,
+   messageCounter?: number,
+   processMessages: (matcher: (message: ICompletedRequest) => boolean) => ICompletedRequest[],
    message: string
 }
 
@@ -45,7 +46,7 @@ interface SessionInternals {
    authenticationToken?: string,
    serverNonce?: string,
    requests: Map<number, ICompletedRequest>,
-   responses: IResponseMessage[],
+   responses: ICompletedRequest[],
    message: string | null,
 }
 
@@ -57,15 +58,37 @@ const apiNames = {
    [OpcUa.DataTypeIds.CallRequest]: { path: "call", response: OpcUa.DataTypeIds.CallResponse },
    [OpcUa.DataTypeIds.TranslateBrowsePathsToNodeIdsRequest]: { path: "translate", response: OpcUa.DataTypeIds.TranslateBrowsePathsToNodeIdsResponse },
    [OpcUa.DataTypeIds.HistoryReadRequest]: { path: "historyread", response: OpcUa.DataTypeIds.HistoryReadResponse }, 
-   [OpcUa.DataTypeIds.HistoryUpdateRequest]: { path: "historyupdate", response: OpcUa.DataTypeIds.HistoryUpdateResponse }
+   [OpcUa.DataTypeIds.HistoryUpdateRequest]: { path: "historyupdate", response: OpcUa.DataTypeIds.HistoryUpdateResponse },
+
+    [OpcUa.DataTypeIds.CreateSessionRequest]: { path: "createsession", response: OpcUa.DataTypeIds.CreateSessionResponse },
+    [OpcUa.DataTypeIds.ActivateSessionRequest]: { path: "activatesession", response: OpcUa.DataTypeIds.ActivateSessionResponse },
+    [OpcUa.DataTypeIds.CloseSessionRequest]: { path: "closesession", response: OpcUa.DataTypeIds.CloseSessionResponse },
+    [OpcUa.DataTypeIds.PublishRequest]: { path: "publish", response: OpcUa.DataTypeIds.PublishResponse },
+    [OpcUa.DataTypeIds.SetPublishingModeRequest]: { path: "setpublishingmode", response: OpcUa.DataTypeIds.SetPublishingModeResponse },
+    [OpcUa.DataTypeIds.CreateSubscriptionRequest]: { path: "createsubscription", response: OpcUa.DataTypeIds.CreateSubscriptionResponse },
+    [OpcUa.DataTypeIds.DeleteSubscriptionsRequest]: { path: "deletesubscription", response: OpcUa.DataTypeIds.DeleteSubscriptionsResponse },
+    [OpcUa.DataTypeIds.ModifySubscriptionRequest]: { path: "modifysubscription", response: OpcUa.DataTypeIds.ModifySubscriptionResponse },
+    [OpcUa.DataTypeIds.CreateMonitoredItemsRequest]: { path: "createmonitoreditems", response: OpcUa.DataTypeIds.CreateMonitoredItemsResponse },
+    [OpcUa.DataTypeIds.ModifyMonitoredItemsRequest]: { path: "modifymonitoreditems", response: OpcUa.DataTypeIds.ModifyMonitoredItemsResponse },
+    [OpcUa.DataTypeIds.DeleteMonitoredItemsRequest]: { path: "deletemonitoreditems", response: OpcUa.DataTypeIds.DeleteMonitoredItemsResponse }
 };
+
+function getApiName(responseId: string): string | undefined {
+    for (const [, value] of Object.entries(apiNames)) {
+        if (value.response === responseId) {
+            return value.path;
+        }
+    }
+    return undefined;
+}
 
 export const SessionProvider = ({ children }: SessionProps) => {
    const [serverUrl, setServerUrl] = React.useState<string | null>(DefaultServerUrl);
    const [isEnabled, setIsEnabled] = React.useState<boolean>(false);
    const [isSessionEnabled, setIsSessionEnabled] = React.useState<boolean>(false);
    const [sessionState, setSessionState] = React.useState<SessionState>(SessionState.Disconnected);
-   const [lastCompletedRequest, setLastCompletedRequest] = React.useState<ICompletedRequest | undefined>();
+   const [messageCounter, setMessageCounter] = React.useState<number>(0);
+
    const { user, loginStatus } = React.useContext(UserContext);
    const [visibleNodes, setVisibleNodes] = React.useState<string[]>([]);
    const [message, setMessage] = React.useState<string>("");
@@ -82,15 +105,23 @@ export const SessionProvider = ({ children }: SessionProps) => {
       message: null,
    });
 
-   const { sendMessage, lastMessage, readyState } = useWebSocket(
+    const handleOnMessage = React.useCallback((event: MessageEvent) => {
+        try {
+            const response = JSON.parse(event.data) as IResponseMessage;
+            processRawResponse(response);
+        } catch (error) {
+            console.warn('SessionProvider:WebSocket:OnMesssage', error);
+        }
+    }, []);
+
+    const { sendMessage, readyState } = useWebSocket(
       (isEnabled) ? serverUrl : null,
       {
          share: true,
-          protocols: (user?.accessToken) ? ["aas+opcua+uajson", `opcua+token+${user?.accessToken}`] : ["aas+opcua+uajson"],
-         shouldReconnect: () => {
-            return isEnabled;
-         }
-      },
+         protocols: (user?.accessToken) ? ["aas+opcua+uajson", `opcua+token+${user?.accessToken}`] : ["aas+opcua+uajson"],
+         shouldReconnect: () => isEnabled,
+         onMessage: handleOnMessage
+        },
    );
 
    /**
@@ -101,14 +132,18 @@ export const SessionProvider = ({ children }: SessionProps) => {
     * The function checks the requestHandle of the response and processes the response accordingly
     */
    const processRawResponse = React.useCallback((response: IResponseMessage) => {
-      if (response) {
-         const requestHandle = response?.Body?.ResponseHeader?.RequestHandle ?? 0;
-         const request = m.current.requests.get(requestHandle);
-         if (request) {
-            m.current.requests.delete(requestHandle);
-            setLastCompletedRequest({ ...request, response });
-         }
-      }
+       if (response) {
+           const callerHandle = response.Body?.ResponseHeader?.RequestHandle ?? 0;
+           const request = m.current.requests.get(callerHandle);
+           if (request) {
+               m.current.requests.delete(callerHandle);
+               request.response = response;
+               m.current.responses.push(request);
+               // console.error("Session SUB (" + Array.from(m.current.requests.keys()).join(",") + "): " + callerHandle);
+               // console.error(`===>>> RESPONSE: ${getApiName(response?.ServiceId ?? '')} ${callerHandle}`);
+               setMessageCounter(x => x + 1);
+           }
+       }
    }, [])
 
    /**
@@ -149,20 +184,40 @@ export const SessionProvider = ({ children }: SessionProps) => {
             sendMessage(JSON.stringify(request));
          }
          else {
-            const clientHandle = requestHeader.RequestHandle;
+              const callerHandle = requestHeader.RequestHandle;
 
               if (request.Body.RequestHeader.RequestHandle) { //Erkennung ob es ein OPC UA request ist, da RequestHandle nur für OPC UA calls genutzt werden
-                 call(`/opcua/${apiNames[request.ServiceId ?? ''].path}`,
-                     { callerHandle: clientHandle, request: { Body: request.Body } },
-                     undefined,
-                     user,
-                     true)
-                     .then(response => {
-                         processRawResponse({ ServiceId: apiNames[request.ServiceId ?? ''].response, Body: response });
-                     })
-                     .catch(error => {
-                         console.error('Failed to send request:', error);
-                     });
+                  call(
+                      `/opcua/${apiNames[request.ServiceId ?? ''].path}`,
+                      { callerHandle: callerHandle, request: { Body: request.Body } },
+                      undefined,
+                      user,
+                      true)
+                      .then(response => {
+                          if (response.code) {
+                              processRawResponse({
+                                  ServiceId: apiNames[request.ServiceId ?? ''].response,
+                                  Body: {
+                                      ResponseHeader: {
+                                          RequestHandle: callerHandle,
+                                          ServiceResult: response.code,
+                                          ServiceDiagnostics: { LocalizedText: 0 },
+                                          StringTable: [response.message]
+                                      }
+                                  }
+                              })
+                          }
+                          else {
+                              processRawResponse({
+                                  ServiceId: apiNames[request.ServiceId ?? ''].response,
+                                  Body: response
+                              })
+                          }
+                      })
+                      .catch(error => {
+                          console.error('Unexpected HTTP error:', error);
+                          m.current.requests.delete(callerHandle);
+                      });
              }
              else if (request.Body.RequestHeader.AASRequestHandle) { //Erkennung ob es ein AAS request ist --> Für Juliee
                   console.log("AAS call");
@@ -177,6 +232,20 @@ export const SessionProvider = ({ children }: SessionProps) => {
       }
    }, [sendMessage, processRawResponse, readyState, user]);
 
+    const processMessages = React.useCallback((matcher: (message: ICompletedRequest) => boolean): ICompletedRequest[] => {
+        const responses = m.current.responses;
+        const matched: ICompletedRequest[] = [];
+        const remaining: ICompletedRequest[] = [];
+        for (const ii of responses) {
+            if (matcher(ii)) {
+                matched.push(ii);
+            } else {
+                remaining.push(ii);
+            }
+        }
+        m.current.responses = remaining;
+        return matched;
+    }, []);
 
    /**
     * activateSession: Function which is the second step in the connection process after the createSession call
@@ -185,38 +254,37 @@ export const SessionProvider = ({ children }: SessionProps) => {
     * 
     * The function searches for the correct endpoint and token to activate the session
     */
-   const activateSession = React.useCallback((createSessionResponse: OpcUa.CreateSessionResponse) => {
-      const endpoint = createSessionResponse?.ServerEndpoints?.find((endpoint) => {
-         if (endpoint.TransportProfileUri === "http://opcfoundation.org/UA-Profile/Transport/wss-uajson") {
-            return endpoint;
-         }
-         return null;
-      });
-      let token: OpcUa.ExtensionObject | undefined = undefined;
-      if (loginStatus === UserLoginStatus.LoggedIn && user.accessToken) {
-         const policy = endpoint?.UserIdentityTokens?.find(
-            (token) => (token.IssuedTokenType === 'http://opcfoundation.org/UA/UserToken#JWT') ? token : undefined
-         );
-         token = {
-            "@TypeId": OpcUa.DataTypeIds.IssuedIdentityToken,
-            PolicyId: policy?.PolicyId,
-            TokenData: btoa(user.accessToken ?? '')
-         } as OpcUa.ExtensionObject;
-      }
-      const request: OpcUa.ActivateSessionRequest = {
-         RequestHeader: {
-            AuthenticationToken: createSessionResponse?.AuthenticationToken
-         },
-         LocaleIds: ["en"],
-         UserIdentityToken: token
-      }
-      const message: IRequestMessage = {
-         ServiceId: OpcUa.DataTypeIds.ActivateSessionRequest,
-         Body: request
-      };
-      console.warn("activateSession");
-      sendRequest(message);
-   }, [sendRequest, loginStatus, user?.accessToken]);
+    const activateSession = React.useCallback((createSessionResponse: OpcUa.CreateSessionResponse) => {
+        const endpoint = createSessionResponse?.ServerEndpoints?.find((endpoint) => {
+            if (endpoint.TransportProfileUri === "http://opcfoundation.org/UA-Profile/Transport/wss-uajson") {
+                return endpoint;
+            }
+            return null;
+        });
+        let token: OpcUa.ExtensionObject | undefined = undefined;
+        if (loginStatus === UserLoginStatus.LoggedIn && user.accessToken) {
+            const policy = endpoint?.UserIdentityTokens?.find(
+                (token) => (token.IssuedTokenType === 'http://opcfoundation.org/UA/UserToken#JWT') ? token : undefined
+            );
+            token = {
+                "@TypeId": OpcUa.DataTypeIds.IssuedIdentityToken,
+                PolicyId: policy?.PolicyId,
+                TokenData: btoa(user.accessToken ?? '')
+            } as OpcUa.ExtensionObject;
+        }
+        const request: OpcUa.ActivateSessionRequest = {
+            RequestHeader: {
+                AuthenticationToken: createSessionResponse?.AuthenticationToken
+            },
+            LocaleIds: ["en"],
+            UserIdentityToken: token
+        }
+        const message: IRequestMessage = {
+            ServiceId: OpcUa.DataTypeIds.ActivateSessionRequest,
+            Body: request
+        };
+        sendRequest(message);
+    }, [sendRequest, loginStatus, user?.accessToken]);
 
    /**
     * createSession: Function which is the first step in the connection process
@@ -242,7 +310,6 @@ export const SessionProvider = ({ children }: SessionProps) => {
          ServiceId: OpcUa.DataTypeIds.CreateSessionRequest,
          Body: request
       };
-      console.warn("createSession");
       sendRequest(message);
    }, [sendRequest]);
 
@@ -254,7 +321,6 @@ export const SessionProvider = ({ children }: SessionProps) => {
          ServiceId: OpcUa.DataTypeIds.CloseSessionRequest,
          Body: request
       };
-      console.warn("deleteSession");
       sendRequest(message);
    }, [sendRequest]);
 
@@ -283,6 +349,40 @@ export const SessionProvider = ({ children }: SessionProps) => {
             break;
       }
    }, [readyState, createSession, deleteSession])
+
+    React.useEffect(() => {
+        const messages = processMessages((message) => {
+            switch (message?.response?.ServiceId) {
+                case OpcUa.DataTypeIds.CreateSessionResponse:
+                case OpcUa.DataTypeIds.ActivateSessionResponse:
+                case OpcUa.DataTypeIds.CloseSessionResponse:
+                    {
+                        return true;
+                    }
+            }
+            return false;
+        });
+        messages?.forEach(message => {
+            const response = message?.response;
+            if (response?.ServiceId === OpcUa.DataTypeIds.CreateSessionResponse) {
+                const csr = response.Body as OpcUa.CreateSessionResponse;
+                m.current.authenticationToken = csr.AuthenticationToken;
+                activateSession(csr);
+            }
+            else if (response?.ServiceId === OpcUa.DataTypeIds.ActivateSessionResponse) {
+                const asr = response.Body as OpcUa.ActivateSessionResponse;
+                m.current.serverNonce = asr.ServerNonce;
+                m.current.sessionState = SessionState.SessionActive;
+                setSessionState(m.current.sessionState);
+            }
+            else if (response?.ServiceId === OpcUa.DataTypeIds.CloseSessionResponse) {
+                m.current.authenticationToken = undefined;
+                m.current.serverNonce = undefined;
+                m.current.sessionState = SessionState.NoSession;
+                setSessionState(m.current.sessionState);
+            }
+        });
+    }, [messageCounter, processMessages, activateSession]);
 
    const setMessageImpl = React.useCallback((message: string) => {
       m.current.message = message;
@@ -329,7 +429,8 @@ export const SessionProvider = ({ children }: SessionProps) => {
       requestTimeout: m.current.requestTimeout,
       setRequestTimeout: (value: number) => m.current.requestTimeout = value,
       sendRequest,
-      lastCompletedRequest: lastCompletedRequest,
+      messageCounter,
+      processMessages,
       visibleNodes,
       setVisibleNodes,
       message,
@@ -366,6 +467,7 @@ export const SessionProvider = ({ children }: SessionProps) => {
       }
    }, [activateSession, processRawResponse])
 
+   /*
    React.useEffect(() => {
       if (lastMessage?.data) {
          try {
@@ -377,6 +479,7 @@ export const SessionProvider = ({ children }: SessionProps) => {
          }
       }
    }, [lastMessage, processResponse])
+   */
 
    return (
       <SessionContext.Provider value={sessionContext}>

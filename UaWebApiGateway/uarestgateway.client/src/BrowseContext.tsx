@@ -8,7 +8,8 @@ export const BrowseContext = React.createContext<IBrowseContext>({
    nodes: new Map<string, IBrowsedNode>,
    visibleNodes: [],
    setVisibleNodes: () => { },
-   lastCompletedRequest: undefined,
    browseChildren: (): Promise<void> => Promise.resolve(),
-   readValues: (): Promise<void> => Promise.resolve()
+   readValues: (): Promise<void> => Promise.resolve(),
+   responseCount: 0,
+   processResults: () => { return []; }
 });

@@ -9,7 +9,6 @@ import Paper from '@mui/material/Paper/Paper';
 import Typography from '@mui/material/Typography';
 
 import * as OpcUa from 'opcua-webapi';
-//import { ApplicationContext } from '../ApplicationProvider';
 import { TreeItem } from '@mui/x-tree-view/TreeItem/TreeItem';
 import { NodeIcon } from './NodeIcon';
 import { IBrowsedNode } from '../service/IBrowsedNode';
@@ -17,6 +16,7 @@ import { IBrowsedNode } from '../service/IBrowsedNode';
 import { BrowseContext } from '../BrowseContext';
 import { HandleFactory } from '../service/HandleFactory';
 
+import { SessionContext } from '../SessionContext';
 import ContextMenu from '../ContextMenu';
 import VariableValueList from './VariableValueList';
 
@@ -32,18 +32,18 @@ import VariableValueList from './VariableValueList';
  * 
  */
 interface BrowseTreeNodeProps {
-    parentId?: string;
-    selectionId?: string;
-    onChildrenUpdated?: (oldNodes: IBrowsedNode[], newNodes: IBrowsedNode[]) => void;
-    onSelectionChanged?: (node: OpcUa.ReferenceDescription) => void;
-    onAddAccessViewItem: (displayName: string, nodeId: string) => void;
+    parentId?: string
+    selectionId?: string
+    onChildrenUpdated?: (oldNodes: IBrowsedNode[], newNodes: IBrowsedNode[]) => void
+    onSelectionChanged?: (node: OpcUa.ReferenceDescription) => void
+    onAddAccessViewItem: (displayName: string, nodeId: string) => void
 }
 
 /**
  * 
  */
 interface BrowseTreeNodeInternals {
-    requestId: number;
+    requestId: number
 }
 
 /**
@@ -62,8 +62,9 @@ interface BrowseTreeNodeInternals {
  */
 const BrowseTreeNode = ({ parentId, selectionId, onSelectionChanged, onAddAccessViewItem }: BrowseTreeNodeProps) => {
     const [children, setChildren] = React.useState<IBrowsedNode[]>([]);
-    const { browseChildren, lastCompletedRequest, stateChangeCount } = React.useContext(BrowseContext);
+    const { browseChildren, processResults, responseCount } = React.useContext(BrowseContext);
     const [contextMenu, setContextMenu] = React.useState<{ mouseX: number, mouseY: number, displayName: string } | null>(null);
+    const { isConnected } = React.useContext(SessionContext);
 
     const m = React.useRef<BrowseTreeNodeInternals>({
         requestId: HandleFactory.increment()
@@ -77,17 +78,22 @@ const BrowseTreeNode = ({ parentId, selectionId, onSelectionChanged, onAddAccess
         if (browseChildren && parentId && selectionId === parentId) {
             browseChildren(m.current.requestId, parentId);
         }
-    }, [browseChildren, parentId, selectionId, stateChangeCount]);
+    }, [browseChildren, parentId, selectionId, isConnected]);
 
     /**
      * Effect to update children nodes when a request completes.
      * If the last completed request matches the current requestId, it updates the children state with the new nodes.
      */
     React.useEffect(() => {
-        if (lastCompletedRequest && m.current.requestId && m.current.requestId === lastCompletedRequest.callerHandle) {
-            setChildren(lastCompletedRequest.children ?? []);
+        const results = processResults((result) => {
+            return m.current.requestId && m.current.requestId === result.callerHandle ? true : false;
+        });
+        if (results) {
+            results?.forEach(result => {
+                setChildren(result.children ?? []);
+            });
         }
-    }, [lastCompletedRequest, setChildren]);
+    }, [processResults, responseCount, setChildren]);
 
     /**
      * Handles the context menu opening on right-click.
@@ -125,7 +131,7 @@ const BrowseTreeNode = ({ parentId, selectionId, onSelectionChanged, onAddAccess
         }
         handleClose();
     }, [contextMenu, handleClose, children, onAddAccessViewItem]);
-
+    
     return (
         <React.Fragment>
             {children?.map((node) => {
@@ -165,8 +171,8 @@ const BrowseTreeNode = ({ parentId, selectionId, onSelectionChanged, onAddAccess
  * @param onSelectionChanged - Callback function to be called when the selection changes.
  */
 interface BrowseTreeViewProps {
-    rootNodeId?: string;
-    onSelectionChanged?: (node: OpcUa.ReferenceDescription) => void;
+    rootNodeId?: string
+    onSelectionChanged?: (node: OpcUa.ReferenceDescription) => void
 }
 
 /**
@@ -219,6 +225,7 @@ const BrowseTreeRoot = ({ rootNodeId, onSelectionChanged }: BrowseTreeViewProps)
     const handleAddAccessViewItem = React.useCallback((displayName: string, nodeId: string) => {
         setAccessViewItems((prevItems) => [...prevItems, { displayName, nodeId }]);
     }, []);
+
 
     return (
         <Box display="flex" p={2} pb={4} sx={{ width: '100%', height: '33.33vh' }}>

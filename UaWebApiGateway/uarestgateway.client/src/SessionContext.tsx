@@ -1,6 +1,7 @@
 import React from 'react';
 import { SessionState } from './service/SessionState';
 import { ISessionContext, DefaultServerUrl } from './SessionProvider';
+import { ICompletedRequest } from './service/ICompletedRequest';
 
 
 export const SessionContext = React.createContext<ISessionContext>({
@@ -15,7 +16,7 @@ export const SessionContext = React.createContext<ISessionContext>({
     requestTimeout: 60000,
     setRequestTimeout: () => { },
     sendRequest: () => { },
-    lastCompletedRequest: undefined,
-    message: "",
-    getSubmodelNodes: (): Promise<string> => Promise.resolve("")
+    messageCounter: 0,
+    processMessages: () => { return []; },
+    message: ""
 });

@@ -132,7 +132,7 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
         setVariables(newVariables);
     }, [accessViewItems]);
 
-
+    //TODO
     /**
      * Deletes an item from the list and unsubscribes it.
      * @param index - The index of the item to delete.
@@ -141,12 +141,21 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
         if (subscriptionState === SubscriptionState.Open) {
             unsubscribeElement(m.current.monitoredItems, index, m.current.internalHandle);
         }
+
+        // Remove the item at the specified index
         accessViewItems.splice(index, 1);
         variables.splice(index, 1);
-        setVariables(variables);
+
+        // Update the state with the new arrays
         setItems(accessViewItems);
+        setVariables(variables);
+
+        // Update monitored items if the subscription is open
         if (subscriptionState === SubscriptionState.Open) {
-            m.current.monitoredItems = items;
+            m.current.monitoredItems = accessViewItems.map((item, idx) => ({
+                ...m.current.monitoredItems[idx],
+                nodeId: item.nodeId,
+            }));
         }
     };
 
