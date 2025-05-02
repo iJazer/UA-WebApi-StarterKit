@@ -63,8 +63,12 @@ export default defineConfig({
             ws: true,
             secure: false
            },
-           '^/api/aas': {
-               target: 'https://localhost:7010/',
+        '^/api/aas': {
+            target: 'https://localhost:7010/',
+            secure: false
+           },
+         '^/api/v3.0': {
+            target: 'https://localhost:7010/',
             secure: false
          }
       },
