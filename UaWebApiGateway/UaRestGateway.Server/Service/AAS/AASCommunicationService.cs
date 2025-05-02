@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Text.Json;
 using System.Xml;
 using System.Xml.Serialization;
+using UaRestGateway.Server.Exceptions.AAS;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace UaRestGateway.Server.Service.AAS
@@ -18,6 +19,8 @@ namespace UaRestGateway.Server.Service.AAS
         List<IAssetAdministrationShell> AssetAdministrationShells { get;}
         List<ISubmodel> Submodels { get; }
         List<IConceptDescription> ConceptDescriptions { get; }
+
+        ISubmodel GetSubmodelByIdWithinAAS(string aasIdentifier, string submodelIdentifier);
     }
     public class AASCommunicationService : BackgroundService, IAASCommunicationService
     {
@@ -122,6 +125,33 @@ namespace UaRestGateway.Server.Service.AAS
         {
             Logger.LogInformation("AASCommunication Scoped Service Hosted Service is starting");
             return base.StartAsync(cancellationToken);
+        }
+
+        public ISubmodel GetSubmodelByIdWithinAAS(string aasIdentifier, string submodelIdentifier)
+        {
+            var aas = m_AssetAdministrationShells.Find(a => a.Id.Equals(aasIdentifier));
+            if (aas == null)
+            {
+                throw new NotFoundException($"AssetAdministrationShell with id {aasIdentifier} NOT found");
+            }
+
+            bool isSmPresentInAas = false;
+            if (aas.Submodels != null) 
+            {
+                isSmPresentInAas = aas.Submodels.Exists(s => s.Keys.First().Value.Equals(submodelIdentifier));
+            }
+
+            if (!isSmPresentInAas)
+            {
+                throw new NotFoundException($"No submodel with id {submodelIdentifier} present in AAS with id {aasIdentifier}");
+            }
+
+            var submodel = m_Submodels.Find(s => s.Id.Equals(submodelIdentifier));
+            if(submodel == null)
+            {
+                throw new NotFoundException($"Submodel with id {submodelIdentifier} NOT found");
+            }
+            return submodel;
         }
     }
 }
