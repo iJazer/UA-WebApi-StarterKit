@@ -23,6 +23,7 @@ namespace UaRestGateway.Server.Controllers
         public StreamController(
             IConfiguration configuration,
             ILogger<UaServerController> logger,
+            ILogger<AasController> aaslogger,
             DatabaseContext context,
             IMemoryCache cache,
             IUACommunicationService communicationService)
@@ -227,9 +228,9 @@ namespace UaRestGateway.Server.Controllers
                         }
                     }
                 }
-
-                response = await MessageUtils.CreateSession(sessionContext, server, csr);
                 
+                response = await MessageUtils.CreateSession(sessionContext, server, csr);
+
                 lock (sessionContext)
                 {
                     sessionContext.AuthenticationToken = ((CreateSessionResponse)response).AuthenticationToken;
@@ -289,7 +290,8 @@ namespace UaRestGateway.Server.Controllers
                     switch (request)
                     {
                         case CloseSessionRequest input:
-                            response = await MessageUtils.CloseSession(sessionContext, server, input);
+                            response = await MessageUtils.CloseSession_with_Client(sessionContext, client, input);
+                            //response = await MessageUtils.CloseSession(sessionContext, server, input);
                             break;
 
                         case ReadRequest input:
@@ -302,11 +304,13 @@ namespace UaRestGateway.Server.Controllers
                             break;
 
                         case WriteRequest input:
-                            response = await MessageUtils.Write(sessionContext, server, input);
+                            response = await MessageUtils.Write_with_Client(sessionContext, client, input);
+                            //response = await MessageUtils.Write(sessionContext, server, input);
                             break;
 
                         case CallRequest input:
-                            response = await MessageUtils.Call(sessionContext, server, input);
+                            response = await MessageUtils.Call_with_Client(sessionContext, client, input);
+                            //response = await MessageUtils.Call(sessionContext, server, input);
                             break;
 
                         case BrowseRequest input:
@@ -320,7 +324,8 @@ namespace UaRestGateway.Server.Controllers
                             break;
 
                         case TranslateBrowsePathsToNodeIdsRequest input:
-                            response = await MessageUtils.TranslateBrowsePathsToNodeIds(sessionContext, server, input);
+                            response = await MessageUtils.TranslateBrowsePathsToNodeIds_with_Client(sessionContext, client, input);
+                            //response = await MessageUtils.TranslateBrowsePathsToNodeIds(sessionContext, server, input);
                             break;
 
                         case HistoryReadRequest input:
@@ -337,7 +342,13 @@ namespace UaRestGateway.Server.Controllers
                             break;
 
                         case DeleteSubscriptionsRequest input:
-                            response = await MessageUtils.DeleteSubscriptions(sessionContext, server, input);
+                            response = await MessageUtils.DeleteSubscriptions_with_Client(sessionContext, client, input);
+                            //response = await MessageUtils.DeleteSubscriptions(sessionContext, server, input);
+                            break;
+
+                        case ModifySubscriptionRequest input:
+                            response = await MessageUtils.ModifySubscription_with_Client(sessionContext, client, input);
+                            //response = await MessageUtils.DeleteSubscriptions(sessionContext, server, input);
                             break;
 
                         case PublishRequest input:
@@ -359,6 +370,22 @@ namespace UaRestGateway.Server.Controllers
                             response = await MessageUtils.DeleteMonitoredItems_with_Client(sessionContext, client, input);
                             //response = await MessageUtils.DeleteMonitoredItems(sessionContext, server, input);
                             break;
+
+                        case SetPublishingModeRequest input:
+                            response = await MessageUtils.SetPublishingMode_with_Client(sessionContext, client, input);
+                            //response = await MessageUtils.DeleteMonitoredItems(sessionContext, server, input);
+                            break;
+
+                        case CreateSessionRequest input:
+                            response = await MessageUtils.CreateSession_with_Client(sessionContext, client, input);
+                            //response = await MessageUtils.CreateSession(sessionContext, server, input);
+                            break;
+
+                        case ActivateSessionRequest input:
+                            response = await MessageUtils.ActivateSession_with_Client(sessionContext, client, input);
+                            //response = await MessageUtils.ActivateSession(sessionContext, server, input);
+                            break;
+
                         default:
                             throw new ServiceResultException(Opc.Ua.StatusCodes.BadNotSupported, "Request not supported.");
                     }

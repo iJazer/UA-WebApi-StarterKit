@@ -12,5 +12,7 @@ export const SubscriptionContext = React.createContext<ISubscriptionContext>({
     subscriptionState: SubscriptionState.Closed,
     lastSequenceNumber: 0,
     subscribe: () => { },
-    unsubscribe: () => { }
+    unsubscribe: () => { },
+    createSubscription: () => { },
+    deleteSubscription: () => { }
 });

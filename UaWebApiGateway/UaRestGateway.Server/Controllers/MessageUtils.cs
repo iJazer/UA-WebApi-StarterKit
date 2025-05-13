@@ -285,41 +285,8 @@ namespace UaRestGateway.Server.Controllers
             return fault;
         }
 
-        public static Task<IServiceResponse> CloseSession(
-            SessionContext context,
-            StandardServer server,
-            CloseSessionRequest request)
-        {
-            try
-            {
-                SecureChannelContext.Current = context.ChannelContext;
+        //-------------------------------------------------------------------- Client
 
-                if (NodeId.IsNull(request.RequestHeader.AuthenticationToken))
-                {
-                    request.RequestHeader.AuthenticationToken = context.AuthenticationToken;
-                }
-
-                var requestHandle = request.RequestHeader.RequestHandle;
-
-                var responseHeader = server.CloseSession(
-                    request.RequestHeader,
-                    request.DeleteSubscriptions);
-
-                var response = new CloseSessionResponse()
-                {
-                    ResponseHeader = responseHeader
-                };
-
-                response.ResponseHeader.RequestHandle = requestHandle;
-
-                return Task.FromResult<IServiceResponse>(response);
-            }
-            catch (Exception e)
-            {
-                return Task.FromResult(Fault(request, e));
-            }
-        }
-     
         public static Task<IServiceResponse> BrowseNext_with_Client(
             SessionContext context,
             UAClient client,
@@ -514,6 +481,47 @@ namespace UaRestGateway.Server.Controllers
             }
         }
 
+        public static Task<IServiceResponse> DeleteSubscriptions_with_Client(
+            SessionContext context,
+            UAClient client,
+            DeleteSubscriptionsRequest request)
+        {
+            try
+            {
+                SecureChannelContext.Current = context.ChannelContext;
+
+                /*
+                if (NodeId.IsNull(request.RequestHeader.AuthenticationToken))
+                {
+                    throw new ServiceResultException(Opc.Ua.StatusCodes.BadSessionIdInvalid, "Session not specified.");
+                }
+                */
+                request.RequestHeader.AuthenticationToken = NodeId.Null;
+                var requestHandle = request.RequestHeader.RequestHandle;
+
+                var responseHeader = client.Session.DeleteSubscriptions(
+                    request.RequestHeader,
+                    request.SubscriptionIds,
+                    out StatusCodeCollection results,
+                    out DiagnosticInfoCollection diagnosticInfos);
+
+                var response = new DeleteSubscriptionsResponse()
+                {
+                    ResponseHeader = responseHeader,
+                    Results = results,
+                    DiagnosticInfos = diagnosticInfos
+                };
+
+                response.ResponseHeader.RequestHandle = requestHandle;
+
+                return Task.FromResult<IServiceResponse>(response);
+            }
+            catch (Exception e)
+            {
+                return Task.FromResult(Fault(request, e));
+            }
+        }
+
         public static Task<IServiceResponse> CreateMonitoredItems_with_Client(
             SessionContext context,
             UAClient client,
@@ -683,6 +691,409 @@ namespace UaRestGateway.Server.Controllers
                 return Task.FromResult(Fault(request, e));
             }
         }
+
+        public static Task<IServiceResponse> SetPublishingMode_with_Client(
+           SessionContext context,
+           UAClient client,
+           SetPublishingModeRequest request)
+        {
+            try
+            {
+                SecureChannelContext.Current = context.ChannelContext;
+
+                /*
+                if (NodeId.IsNull(request.RequestHeader.AuthenticationToken))
+                {
+                    throw new ServiceResultException(Opc.Ua.StatusCodes.BadSessionIdInvalid, "Session not specified.");
+                }
+                */
+                request.RequestHeader.AuthenticationToken = NodeId.Null;
+                var requestHandle = request.RequestHeader.RequestHandle;
+
+                var responseHeader = client.Session.SetPublishingMode(
+                    request.RequestHeader,
+                    request.PublishingEnabled,
+                    request.SubscriptionIds,
+                    out var results,
+                    out var diagnosticInfos);
+
+                var response = new SetPublishingModeResponse()
+                {
+                    ResponseHeader = responseHeader,
+                    Results = results,
+                    DiagnosticInfos = diagnosticInfos
+                };
+
+                response.ResponseHeader.RequestHandle = requestHandle;
+
+                return Task.FromResult<IServiceResponse>(response);
+            }
+            catch (Exception e)
+            {
+                return Task.FromResult(Fault(request, e));
+            }
+        }
+
+        public static Task<IServiceResponse> ModifySubscription_with_Client(
+           SessionContext context,
+           UAClient client,
+           ModifySubscriptionRequest request)
+        {
+            try
+            {
+                SecureChannelContext.Current = context.ChannelContext;
+
+                /*
+                if (NodeId.IsNull(request.RequestHeader.AuthenticationToken))
+                {
+                    throw new ServiceResultException(Opc.Ua.StatusCodes.BadSessionIdInvalid, "Session not specified.");
+                }
+                */
+                request.RequestHeader.AuthenticationToken = NodeId.Null;
+                var requestHandle = request.RequestHeader.RequestHandle;
+
+                var responseHeader = client.Session.ModifySubscription(
+                    request.RequestHeader,
+                    request.SubscriptionId,
+                    request.RequestedPublishingInterval,
+                    request.RequestedLifetimeCount,
+                    request.RequestedMaxKeepAliveCount,
+                    request.MaxNotificationsPerPublish,
+                    request.Priority,
+                    out var revisedPublishingInterval,
+                    out var revisedLifetimeCount,
+                    out var revisedMaxKeepAliveCount);
+
+                var response = new ModifySubscriptionResponse()
+                {
+                    ResponseHeader = responseHeader,
+                    RevisedLifetimeCount = revisedLifetimeCount,
+                    RevisedMaxKeepAliveCount = revisedMaxKeepAliveCount,
+                    RevisedPublishingInterval = revisedPublishingInterval
+                };
+
+                response.ResponseHeader.RequestHandle = requestHandle;
+
+                return Task.FromResult<IServiceResponse>(response);
+            }
+            catch (Exception e)
+            {
+                return Task.FromResult(Fault(request, e));
+            }
+        }
+
+        public static Task<IServiceResponse> Write_with_Client(
+            SessionContext context,
+            UAClient client,
+            WriteRequest request)
+        {
+            try
+            {
+                SecureChannelContext.Current = context.ChannelContext;
+
+                /*
+                if (NodeId.IsNull(request.RequestHeader.AuthenticationToken))
+                {
+                    throw new ServiceResultException(Opc.Ua.StatusCodes.BadSessionIdInvalid, "Session not specified.");
+                }
+                */
+                request.RequestHeader.AuthenticationToken = NodeId.Null;
+                var requestHandle = request.RequestHeader.RequestHandle;
+
+                var responseHeader = client.Session.Write(
+                    request.RequestHeader,
+                    request.NodesToWrite,
+                    out StatusCodeCollection results,
+                    out DiagnosticInfoCollection diagnosticInfos);
+
+                var response = new WriteResponse()
+                {
+                    ResponseHeader = responseHeader,
+                    Results = results,
+                    DiagnosticInfos = diagnosticInfos
+                };
+
+                response.ResponseHeader.RequestHandle = requestHandle;
+
+                return Task.FromResult<IServiceResponse>(response);
+            }
+            catch (Exception e)
+            {
+                return Task.FromResult(Fault(request, e));
+            }
+        }
+
+        public static Task<IServiceResponse> Call_with_Client(
+            SessionContext context,
+            UAClient client,
+            CallRequest request)
+        {
+            try
+            {
+                SecureChannelContext.Current = context.ChannelContext;
+
+                /*
+                if (NodeId.IsNull(request.RequestHeader.AuthenticationToken))
+                {
+                    throw new ServiceResultException(Opc.Ua.StatusCodes.BadSessionIdInvalid, "Session not specified.");
+                }
+                */
+                request.RequestHeader.AuthenticationToken = NodeId.Null;
+                var requestHandle = request.RequestHeader.RequestHandle;
+
+                var responseHeader = client.Session.Call(
+                    request.RequestHeader,
+                    request.MethodsToCall,
+                    out CallMethodResultCollection results,
+                    out DiagnosticInfoCollection diagnosticInfos);
+
+                var response = new CallResponse()
+                {
+                    ResponseHeader = responseHeader,
+                    Results = results,
+                    DiagnosticInfos = diagnosticInfos
+                };
+
+                response.ResponseHeader.RequestHandle = requestHandle;
+
+                return Task.FromResult<IServiceResponse>(response);
+            }
+            catch (Exception e)
+            {
+                return Task.FromResult(Fault(request, e));
+            }
+        }
+
+        public static Task<IServiceResponse> TranslateBrowsePathsToNodeIds_with_Client(
+            SessionContext context,
+            UAClient client,
+            TranslateBrowsePathsToNodeIdsRequest request)
+        {
+            try
+            {
+                SecureChannelContext.Current = context.ChannelContext;
+
+                /*
+                if (NodeId.IsNull(request.RequestHeader.AuthenticationToken))
+                {
+                    throw new ServiceResultException(Opc.Ua.StatusCodes.BadSessionIdInvalid, "Session not specified.");
+                }
+                */
+                request.RequestHeader.AuthenticationToken = NodeId.Null;
+                var requestHandle = request.RequestHeader.RequestHandle;
+
+                var responseHeader = client.Session.TranslateBrowsePathsToNodeIds(
+                    request.RequestHeader,
+                    request.BrowsePaths,
+                    out BrowsePathResultCollection results,
+                    out DiagnosticInfoCollection diagnosticInfos);
+
+                var response = new TranslateBrowsePathsToNodeIdsResponse()
+                {
+                    ResponseHeader = responseHeader,
+                    Results = results,
+                    DiagnosticInfos = diagnosticInfos
+                };
+
+                response.ResponseHeader.RequestHandle = requestHandle;
+
+                return Task.FromResult<IServiceResponse>(response);
+            }
+            catch (Exception e)
+            {
+                return Task.FromResult(Fault(request, e));
+            }
+        }
+
+        public static Task<IServiceResponse> CreateSession_with_Client(
+            SessionContext context,
+            UAClient client,
+            CreateSessionRequest request)
+        {
+            try
+            {
+                SecureChannelContext.Current = context.ChannelContext;
+
+                /*
+                if (NodeId.IsNull(request.RequestHeader.AuthenticationToken))
+                {
+                    throw new ServiceResultException(Opc.Ua.StatusCodes.BadSessionIdInvalid, "Session not specified.");
+                }
+                */
+                request.RequestHeader.AuthenticationToken = NodeId.Null;
+                var requestHandle = request.RequestHeader.RequestHandle;
+
+                var responseHeader = client.Session.CreateSession(
+                    request.RequestHeader,
+                    request.ClientDescription,
+                    request.ServerUri,
+                    request.EndpointUrl,
+                    request.SessionName,
+                    request.ClientNonce,
+                    request.ClientCertificate,
+                    request.RequestedSessionTimeout,
+                    request.MaxResponseMessageSize,
+                    out NodeId sessionId,
+                    out NodeId authenticationToken,
+                    out double revisedSessionTimeout,
+                    out byte[] serverNonce,
+                    out byte[] serverCertificate,
+                    out EndpointDescriptionCollection serverEndpoints,
+                    out SignedSoftwareCertificateCollection serverSoftwareCertificates,
+                    out SignatureData serverSignature,
+                    out uint maxRequestMessageSize);
+
+                serverEndpoints = new EndpointDescriptionCollection(new EndpointDescription[] { SecureChannelContext.Current.EndpointDescription });
+
+                var response = new CreateSessionResponse()
+                {
+                    ResponseHeader = responseHeader,
+                    SessionId = sessionId,
+                    AuthenticationToken = authenticationToken,
+                    RevisedSessionTimeout = revisedSessionTimeout,
+                    ServerNonce = serverNonce,
+                    ServerCertificate = serverCertificate,
+                    ServerEndpoints = serverEndpoints,
+                    ServerSoftwareCertificates = serverSoftwareCertificates,
+                    ServerSignature = serverSignature,
+                    MaxRequestMessageSize = maxRequestMessageSize
+                };
+
+                response.ResponseHeader.RequestHandle = requestHandle;
+
+                return Task.FromResult<IServiceResponse>(response);
+            }
+            catch (Exception e)
+            {
+                return Task.FromResult(Fault(request, e));
+            }
+        }
+
+        public static Task<IServiceResponse> ActivateSession_with_Client(
+            SessionContext context,
+            UAClient client,
+            ActivateSessionRequest request,
+            string accessToken = null)
+        {
+            try
+            {
+                SecureChannelContext.Current = context.ChannelContext;
+
+                var userIdentity =
+                    (request?.UserIdentityToken?.Body == null)
+                    ? request.UserIdentityToken
+                    : ((!String.IsNullOrEmpty(accessToken))
+                    ? new ExtensionObject(new IssuedIdentityToken()
+                    {
+                        PolicyId = SecureChannelContext.Current.EndpointDescription.UserIdentityTokens.Where(x => x.TokenType == UserTokenType.IssuedToken).FirstOrDefault()?.PolicyId,
+                        DecryptedTokenData = new UTF8Encoding(false).GetBytes(accessToken)
+                    })
+                    : null);
+
+                var requestHandle = request.RequestHeader.RequestHandle;
+
+                var responseHeader = client.Session.ActivateSession(
+                    request.RequestHeader,
+                    request.ClientSignature,
+                    request.ClientSoftwareCertificates,
+                    request.LocaleIds,
+                    userIdentity,
+                    request.UserTokenSignature,
+                    out byte[] serverNonce,
+                    out StatusCodeCollection results,
+                    out DiagnosticInfoCollection diagnosticInfos);
+
+                var response = new ActivateSessionResponse()
+                {
+                    ResponseHeader = responseHeader,
+                    ServerNonce = serverNonce,
+                    Results = results,
+                    DiagnosticInfos = diagnosticInfos
+                };
+
+                response.ResponseHeader.RequestHandle = requestHandle;
+
+                return Task.FromResult<IServiceResponse>(response);
+            }
+            catch (Exception e)
+            {
+                return Task.FromResult(Fault(request, e));
+            }
+        }
+
+        public static Task<IServiceResponse> CloseSession_with_Client(
+            SessionContext context,
+            UAClient client,
+            CloseSessionRequest request)
+        {
+            try
+            {
+                SecureChannelContext.Current = context.ChannelContext;
+
+                if (NodeId.IsNull(request.RequestHeader.AuthenticationToken))
+                {
+                    request.RequestHeader.AuthenticationToken = context.AuthenticationToken;
+                }
+
+                var requestHandle = request.RequestHeader.RequestHandle;
+
+                var responseHeader = client.Session.CloseSession(
+                    request.RequestHeader,
+                    request.DeleteSubscriptions);
+
+                var response = new CloseSessionResponse()
+                {
+                    ResponseHeader = responseHeader
+                };
+
+                response.ResponseHeader.RequestHandle = requestHandle;
+
+                return Task.FromResult<IServiceResponse>(response);
+            }
+            catch (Exception e)
+            {
+                return Task.FromResult(Fault(request, e));
+            }
+        }
+
+
+        //-------------------------------------------------------------------- Server
+
+        public static Task<IServiceResponse> CloseSession(
+            SessionContext context,
+            StandardServer server,
+            CloseSessionRequest request)
+        {
+            try
+            {
+                SecureChannelContext.Current = context.ChannelContext;
+
+                if (NodeId.IsNull(request.RequestHeader.AuthenticationToken))
+                {
+                    request.RequestHeader.AuthenticationToken = context.AuthenticationToken;
+                }
+
+                var requestHandle = request.RequestHeader.RequestHandle;
+
+                var responseHeader = server.CloseSession(
+                    request.RequestHeader,
+                    request.DeleteSubscriptions);
+
+                var response = new CloseSessionResponse()
+                {
+                    ResponseHeader = responseHeader
+                };
+
+                response.ResponseHeader.RequestHandle = requestHandle;
+
+                return Task.FromResult<IServiceResponse>(response);
+            }
+            catch (Exception e)
+            {
+                return Task.FromResult(Fault(request, e));
+            }
+        }
+
         public static Task<IServiceResponse> Read(
             SessionContext context,
             StandardServer server,

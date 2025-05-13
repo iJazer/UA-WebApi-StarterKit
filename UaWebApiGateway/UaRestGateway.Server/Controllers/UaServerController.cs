@@ -112,7 +112,8 @@ namespace UaRestGateway.Server.Controllers
             {
                 var context = GetSessionContext(HttpContext);
                 var request = await Decode<WriteRequest>(Server.MessageContext);
-                var response = await MessageUtils.Write(context, Server, request);
+                var response = await MessageUtils.Write_with_Client(context, Client, request);
+                //var response = await MessageUtils.Write(context, Server, request);
                 return await Encode(Server.MessageContext, response);
             }
             catch (Exception e)
@@ -129,7 +130,8 @@ namespace UaRestGateway.Server.Controllers
             {
                 var context = GetSessionContext(HttpContext);
                 var request = await Decode<CallRequest>(Server.MessageContext);
-                var response = await MessageUtils.Call(context, Server, request);
+                var response = await MessageUtils.Call_with_Client(context, Client, request);
+                //var response = await MessageUtils.Call(context, Server, request);
                 return await Encode(Server.MessageContext, response);
             }
             catch (Exception e)
@@ -146,8 +148,8 @@ namespace UaRestGateway.Server.Controllers
             {
                 var context = GetSessionContext(HttpContext);
                 var request = await Decode<BrowseRequest>(Server.MessageContext);
-                //var response = await MessageUtils.Browse(context, Server, request);
                 var response = await MessageUtils.Browse_with_Client(context, Client, request);
+                //var response = await MessageUtils.Browse(context, Server, request);
                 return await Encode(Server.MessageContext, response);
             }
             catch (Exception e)
@@ -182,7 +184,8 @@ namespace UaRestGateway.Server.Controllers
             {
                 var context = GetSessionContext(HttpContext);
                 var request = await Decode<TranslateBrowsePathsToNodeIdsRequest>(Server.MessageContext);
-                var response = await MessageUtils.TranslateBrowsePathsToNodeIds(context, Server, request);
+                var response = await MessageUtils.TranslateBrowsePathsToNodeIds_with_Client(context, Client, request);
+                //var response = await MessageUtils.TranslateBrowsePathsToNodeIds(context, Server, request);
                 return await Encode(Server.MessageContext, response);
             }
             catch (Exception e)
@@ -217,6 +220,208 @@ namespace UaRestGateway.Server.Controllers
                 var context = GetSessionContext(HttpContext);
                 var request = await Decode<HistoryUpdateRequest>(Server.MessageContext);
                 var response = await MessageUtils.HistoryUpdate(context, Server, request);
+                return await Encode(Server.MessageContext, response);
+            }
+            catch (Exception e)
+            {
+                return await Fault(e);
+            }
+        }
+
+        [HttpPost]
+        [Route("createsession")]
+        public async Task<IActionResult> CreateSession()
+        {
+            try
+            {
+                var context = GetSessionContext(HttpContext);
+                var request = await Decode<CreateSessionRequest>(Server.MessageContext);
+                var response = await MessageUtils.CreateSession_with_Client(context, Client, request);
+                //var response = await MessageUtils.CreateSession(context, Server, request);
+                return await Encode(Server.MessageContext, response);
+            }
+            catch (Exception e)
+            {
+                return await Fault(e);
+            }
+        }
+
+        [HttpPost]
+        [Route("activatesession")]
+        public async Task<IActionResult> ActivateSession()
+        {
+            try
+            {
+                var context = GetSessionContext(HttpContext);
+                var request = await Decode<ActivateSessionRequest>(Server.MessageContext);
+                var response = await MessageUtils.ActivateSession_with_Client(context, Client, request);
+                //var response = await MessageUtils.ActivateSession(context, Server, request);
+                return await Encode(Server.MessageContext, response);
+            }
+            catch (Exception e)
+            {
+                return await Fault(e);
+            }
+        }
+
+        [HttpPost]
+        [Route("closesession")]
+        public async Task<IActionResult> CloseSession()
+        {
+            try
+            {
+                var context = GetSessionContext(HttpContext);
+                var request = await Decode<CloseSessionRequest>(Server.MessageContext);
+                var response = await MessageUtils.CloseSession_with_Client(context, Client, request);
+                //var response = await MessageUtils.CloseSession(context, Server, request);
+                return await Encode(Server.MessageContext, response);
+            }
+            catch (Exception e)
+            {
+                return await Fault(e);
+            }
+        }
+
+        [HttpPost]
+        [Route("publish")]
+        public async Task<IActionResult> publish()
+        {
+            try
+            {
+                var context = GetSessionContext(HttpContext);
+                var request = await Decode<PublishRequest>(Server.MessageContext);
+                var response = await MessageUtils.Publish_with_Client(context, Client, request);
+                //var response = await MessageUtils.Publish(context, Server, request);
+                return await Encode(Server.MessageContext, response);
+            }
+            catch (Exception e)
+            {
+                return await Fault(e);
+            }
+        }
+
+        //--> TODO
+        
+        [HttpPost]
+        [Route("setpublishingmode")]
+        public async Task<IActionResult> SetPublishingMode()
+        {
+            try
+            {
+                var context = GetSessionContext(HttpContext);
+                var request = await Decode<SetPublishingModeRequest>(Server.MessageContext);
+                var response = await MessageUtils.SetPublishingMode_with_Client(context, Client, request);
+                //var response = await MessageUtils.SetPublishingMode(context, Server, request);
+                return await Encode(Server.MessageContext, response);
+            }
+            catch (Exception e)
+            {
+                return await Fault(e);
+            }
+        }
+        
+
+        [HttpPost]
+        [Route("createsubscription")]
+        public async Task<IActionResult> CreateSubscription()
+        {
+            try
+            {
+                var context = GetSessionContext(HttpContext);
+                var request = await Decode<CreateSubscriptionRequest>(Server.MessageContext);
+                var response = await MessageUtils.CreateSubscription_with_Client(context, Client, request);
+                //var response = await MessageUtils.CreateSubscription(context, Server, request);
+                return await Encode(Server.MessageContext, response);
+            }
+            catch (Exception e)
+            {
+                return await Fault(e);
+            }
+        }
+
+        [HttpPost]
+        [Route("deletesubscription")]
+        public async Task<IActionResult> DeleteSubscription()
+        {
+            try
+            {
+                var context = GetSessionContext(HttpContext);
+                var request = await Decode<DeleteSubscriptionsRequest>(Server.MessageContext);
+                var response = await MessageUtils.DeleteSubscriptions_with_Client(context, Client, request);
+                //var response = await MessageUtils.DeleteSubscriptions(context, Server, request);
+                return await Encode(Server.MessageContext, response);
+            }
+            catch (Exception e)
+            {
+                return await Fault(e);
+            }
+        }
+
+        [HttpPost]
+        [Route("modifysubscription")]
+        public async Task<IActionResult> ModifySubscription()
+        {
+            try
+            {
+                var context = GetSessionContext(HttpContext);
+                var request = await Decode<ModifySubscriptionRequest>(Server.MessageContext);
+                var response = await MessageUtils.ModifySubscription_with_Client(context, Client, request);
+                //var response = await MessageUtils.ModifySubscription(context, Server, request);
+                return await Encode(Server.MessageContext, response);
+            }
+            catch (Exception e)
+            {
+                return await Fault(e);
+            }
+        }
+        
+
+        [HttpPost]
+        [Route("createmonitoreditems")]
+        public async Task<IActionResult> CreateMonitoredItems()
+        {
+            try
+            {
+                var context = GetSessionContext(HttpContext);
+                var request = await Decode<CreateMonitoredItemsRequest>(Server.MessageContext);
+                var response = await MessageUtils.CreateMonitoredItems_with_Client(context, Client, request);
+                //var response = await MessageUtils.CreateMonitoredItems(context, Server, request);
+                return await Encode(Server.MessageContext, response);
+            }
+            catch (Exception e)
+            {
+                return await Fault(e);
+            }
+        }
+
+        [HttpPost]
+        [Route("deletemonitoreditems")]
+        public async Task<IActionResult> DeleteMonitoredItems()
+        {
+            try
+            {
+                var context = GetSessionContext(HttpContext);
+                var request = await Decode<DeleteMonitoredItemsRequest>(Server.MessageContext);
+                var response = await MessageUtils.DeleteMonitoredItems_with_Client(context, Client, request);
+                //var response = await MessageUtils.DeleteMonitoredItems(context, Server, request);
+                return await Encode(Server.MessageContext, response);
+            }
+            catch (Exception e)
+            {
+                return await Fault(e);
+            }
+        }
+
+        [HttpPost]
+        [Route("modifymonitoreditems")]
+        public async Task<IActionResult> ModifyMonitoredItems()
+        {
+            try
+            {
+                var context = GetSessionContext(HttpContext);
+                var request = await Decode<ModifyMonitoredItemsRequest>(Server.MessageContext);
+                var response = await MessageUtils.ModifyMonitoredItems_with_Client(context, Client, request);
+                //var response = await MessageUtils.ModifyMonitoredItems(context, Server, request);
                 return await Encode(Server.MessageContext, response);
             }
             catch (Exception e)
