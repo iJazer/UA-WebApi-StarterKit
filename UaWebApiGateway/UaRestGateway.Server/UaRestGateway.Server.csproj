@@ -64,6 +64,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AasCore.Aas3.Package" Version="1.0.1" />
+    <PackageReference Include="AasCore.Aas3_0" Version="1.0.3" />
     <PackageReference Include="Azure.Identity" Version="1.13.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.SpaProxy">
@@ -76,7 +78,8 @@
     <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.1.2" />
     <PackageReference Include="OPCFoundation.NetStandard.Opc.Ua.Client" Version="1.5.377-preview.ga511586173" />
     <PackageReference Include="OPCFoundation.NetStandard.Opc.Ua.Server" Version="1.5.377-preview.ga511586173" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.9.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="8.1.1" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.1.2" />
   </ItemGroup>
 
@@ -89,6 +92,9 @@
   <ItemGroup>
     <None Update="config\uaserver-configuration.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\TemplateAAS.aasx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="UaRestGateway.sqllite">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
