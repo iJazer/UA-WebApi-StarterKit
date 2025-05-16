@@ -63,12 +63,6 @@ export const SessionStatusBar = () => {
       }
    }, [lastCompletedRequest, clientHandle]);
 
-   /*
-   React.useEffect(() => {
-      setIsSubscriptionEnabled(isSessionEnabled);
-   }, [isSessionEnabled, setIsSubscriptionEnabled]);
-   */
-
    React.useEffect(() => {
       if (lastCompletedRequest?.callerHandle === clientHandle) {
          if (lastCompletedRequest?.response?.ServiceId === OpcUa.DataTypeIds.ReadResponse) {
@@ -121,6 +115,12 @@ export const SessionStatusBar = () => {
       }
    }, [setIsEnabled, setIsSessionEnabled]);
 
+   /***
+    * Handle subscription state changes
+    * @param subscriptionState
+    * 
+    * This function is called when the subscription state changes.
+    */
     const handleSubscription = React.useCallback((subscriptionState: SubscriptionState) => {
         if (subscriptionState === SubscriptionState.Closed) {
             setIsSubscriptionEnabled(true);
@@ -129,6 +129,8 @@ export const SessionStatusBar = () => {
             setIsSubscriptionEnabled(false);
         }
     }, [isSessionEnabled, setIsSubscriptionEnabled]);
+
+
 
    React.useEffect(() => {
       if (sessionState === SessionState.SessionActive) {

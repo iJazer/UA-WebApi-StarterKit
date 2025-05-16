@@ -57,7 +57,19 @@ const apiNames = {
    [OpcUa.DataTypeIds.CallRequest]: { path: "call", response: OpcUa.DataTypeIds.CallResponse },
    [OpcUa.DataTypeIds.TranslateBrowsePathsToNodeIdsRequest]: { path: "translate", response: OpcUa.DataTypeIds.TranslateBrowsePathsToNodeIdsResponse },
    [OpcUa.DataTypeIds.HistoryReadRequest]: { path: "historyread", response: OpcUa.DataTypeIds.HistoryReadResponse }, 
-   [OpcUa.DataTypeIds.HistoryUpdateRequest]: { path: "historyupdate", response: OpcUa.DataTypeIds.HistoryUpdateResponse }
+   [OpcUa.DataTypeIds.HistoryUpdateRequest]: { path: "historyupdate", response: OpcUa.DataTypeIds.HistoryUpdateResponse },
+
+   [OpcUa.DataTypeIds.CreateSessionRequest]: { path: "createsession", response: OpcUa.DataTypeIds.CreateSessionResponse },
+   [OpcUa.DataTypeIds.ActivateSessionRequest]: { path: "activatesession", response: OpcUa.DataTypeIds.ActivateSessionResponse },
+   [OpcUa.DataTypeIds.CloseSessionRequest]: { path: "closesession", response: OpcUa.DataTypeIds.CloseSessionResponse },
+   [OpcUa.DataTypeIds.PublishRequest]: { path: "publish", response: OpcUa.DataTypeIds.PublishResponse },
+   [OpcUa.DataTypeIds.SetPublishingModeRequest]: { path: "setpublishingmode", response: OpcUa.DataTypeIds.SetPublishingModeResponse },
+   [OpcUa.DataTypeIds.CreateSubscriptionRequest]: { path: "createsubscription", response: OpcUa.DataTypeIds.CreateSubscriptionResponse },
+   [OpcUa.DataTypeIds.DeleteSubscriptionsRequest]: { path: "deletesubscription", response: OpcUa.DataTypeIds.DeleteSubscriptionsResponse },
+   [OpcUa.DataTypeIds.ModifySubscriptionRequest]: { path: "modifysubscription", response: OpcUa.DataTypeIds.ModifySubscriptionResponse },
+   [OpcUa.DataTypeIds.CreateMonitoredItemsRequest]: { path: "createmonitoreditems", response: OpcUa.DataTypeIds.CreateMonitoredItemsResponse },
+   [OpcUa.DataTypeIds.ModifyMonitoredItemsRequest]: { path: "modifymonitoreditems", response: OpcUa.DataTypeIds.ModifyMonitoredItemsResponse },
+   [OpcUa.DataTypeIds.DeleteMonitoredItemsRequest]: { path: "deletemonitoreditems", response: OpcUa.DataTypeIds.DeleteMonitoredItemsResponse }
 };
 
 export const SessionProvider = ({ children }: SessionProps) => {

@@ -31,7 +31,10 @@ export interface ISubscriptionContext {
    lastSequenceNumber: number,
    subscribe: (items: IMonitoredItem[], clientHandle: number) => void,
    unsubscribe: (items: IMonitoredItem[], clientHandle: number) => void,
-   unsubscribeElement: (items: IMonitoredItem[], index:number, clientHandle: number) => void
+   unsubscribeElement: (items: IMonitoredItem[], index: number, clientHandle: number) => void,
+   createSubscription?: () => void,
+   deleteSubscription?: (subscriptionId: number) => void,
+    subscriptionId?: number,
 }
 
 interface SubscriptionProps {
@@ -63,7 +66,8 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
    const [subscriptionState, setSubscriptionState] = React.useState<SubscriptionState>(SubscriptionState.Closed);
    const [lastSequenceNumber, setLastSequenceNumber] = React.useState<number>(0);
    const [publishCount, setPublishCount] = React.useState<number>(0);
-   const [componentHandle] = React.useState<number>(HandleFactory.increment());
+    const [componentHandle] = React.useState<number>(HandleFactory.increment());
+    const [subscriptionId, setSubscriptionId] = React.useState<number>(0); 
 
    const {
       sessionState,
@@ -81,13 +85,32 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
       requests: []
    });
 
+    const enablePublishing = React.useCallback((value: boolean, subscriptionId: number) => {
+        const request: OpcUa.SetPublishingModeRequest = {
+            PublishingEnabled: value,
+        }
+
+        request.SubscriptionIds = [];
+        if (subscriptionId) {
+            request.SubscriptionIds.push(subscriptionId);
+        }
+
+        const message: IRequestMessage = {
+            ServiceId: OpcUa.DataTypeIds.SetPublishingModeRequest,
+            Body: request
+        };
+
+        console.warn("enablePublishing");
+        sendRequest(message, componentHandle);
+    }, [sendRequest, componentHandle]);
+
    const createSubscription = React.useCallback(() => {
       const request: OpcUa.CreateSubscriptionRequest = {
          RequestedPublishingInterval: publishingInterval,
          RequestedLifetimeCount: 180,
          RequestedMaxKeepAliveCount: 3,
          MaxNotificationsPerPublish: 1000,
-         PublishingEnabled: true, //toDo --> set on false and set on true if element is in DataView
+         PublishingEnabled: false, //toDo --> set on false and set on true if element is in DataView
          Priority: 100
       }
       const message: IRequestMessage = {
@@ -271,11 +294,16 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
             const csrm = lastCompletedRequest?.response?.Body as OpcUa.CreateSubscriptionResponse;
             if (csrm?.ResponseHeader && !csrm?.ResponseHeader.ServiceResult) {
                m.current.subscriptionId = csrm?.SubscriptionId;
-               m.current.subscriptionState = SubscriptionState.Open;
-               setSubscriptionState(m.current.subscriptionState);
+               setSubscriptionId(m.current.subscriptionId);
                console.warn("CreateSubscriptionResponse");
-               publish();
             } 
+         }
+         else if (lastCompletedRequest?.response?.ServiceId === OpcUa.DataTypeIds.SetPublishingModeResponse) {
+             const sprm = lastCompletedRequest?.response?.Body as OpcUa.SetPublishingModeResponse;
+             if (sprm?.ResponseHeader && !sprm?.ResponseHeader.ServiceResult) {
+                  console.warn("SetPublishingModeResponse");
+                  publish();
+              }
          }
          else if (lastCompletedRequest?.response?.ServiceId === OpcUa.DataTypeIds.DeleteSubscriptionsResponse) {
             m.current.subscriptionId = undefined;
@@ -293,7 +321,7 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
                      SequenceNumber: ii
                   });
                });
-               if (prm.NotificationMessage?.NotificationData) {
+                if (prm.NotificationMessage?.NotificationData) {
                   prm.NotificationMessage?.NotificationData.forEach((eo) => {
                      if (eo.UaTypeId === OpcUa.DataTypeIds.DataChangeNotification) {
                         const dcn = eo as OpcUa.DataChangeNotification;
@@ -352,12 +380,13 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
 
    React.useEffect(() => {
       if (publishCount !== 0) {
-         if (sessionState === SessionState.SessionActive) {
-            if (m.current.isEnabled && m.current.subscriptionState === SubscriptionState.Open) {
+         //if (sessionState === SessionState.SessionActive) {
+          //if (m.current.isEnabled && m.current.subscriptionState === SubscriptionState.Open) {
+          //if (m.current.subscriptionState === SubscriptionState.Open) {
                console.warn("Publish " + publishCount);
                publish();
-            }
-         }
+            //}
+         //}
       }
    }, [publishCount, sessionState, publish]);
 
@@ -365,7 +394,7 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
       switch (sessionState) {
          case SessionState.SessionActive:
             if (m.current.isEnabled && m.current.subscriptionState === SubscriptionState.Closed) {
-               createSubscription();
+               //createSubscription();
             }
             break;
          default:
@@ -390,11 +419,12 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
    }, [translate, createMonitoredItems]);
 
     const unsubscribeElement = React.useCallback((items: IMonitoredItem[], index: number) => {
-        if (items[index].itemHandle) {
-            m.current.monitoredItems.delete(items[index].itemHandle);
+        if (items.length > 0) {
+            //m.current.monitoredItems.delete(items[index].itemHandle);
+            deleteMonitoredItem(items[index]);
         }
 
-        deleteMonitoredItem(items[index]);
+        
     }, [deleteMonitoredItems]);
 
    const unsubscribe = React.useCallback((items: IMonitoredItem[]) => {
@@ -406,18 +436,21 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
       deleteMonitoredItems(items);
    }, [deleteMonitoredItems]);
 
-   const setIsSubscriptionEnabledImpl = React.useCallback((value: boolean) => {
-      if (m.current.isEnabled === value) {
+    const setIsSubscriptionEnabledImpl = React.useCallback((value: boolean) => {
+      if (!m.current.subscriptionId) {
          return;
       }
-      m.current.isEnabled = value;
-      setIsSubscriptionEnabled(m.current.isEnabled);
-      if (value && sessionState === SessionState.SessionActive && m.current.subscriptionState === SubscriptionState.Closed) {
-         createSubscription();
+      else if (m.current.subscriptionState === SubscriptionState.Closed) {
+          enablePublishing(value, m.current.subscriptionId);
+         console.warn(m.current.monitoredItems);
+         m.current.subscriptionState = SubscriptionState.Open;
+         setSubscriptionState(SubscriptionState.Open);
          return;
       }
-      if (!value && m.current.subscriptionId && m.current.subscriptionState === SubscriptionState.Open) {
-         deleteSubscription(m.current.subscriptionId);
+      else if (m.current.subscriptionState === SubscriptionState.Open) {
+          enablePublishing(value, m.current.subscriptionId);
+          m.current.subscriptionState = SubscriptionState.Closed;
+          setSubscriptionState(SubscriptionState.Closed);
          return;
       }
    }, [createSubscription, deleteSubscription, sessionState]);
@@ -443,7 +476,9 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
       lastSequenceNumber,
       subscribe: subscribe,
       unsubscribe: unsubscribe,
-      unsubscribeElement: unsubscribeElement
+      unsubscribeElement: unsubscribeElement,
+      createSubscription: createSubscription,
+      deleteSubscription: deleteSubscription,
    } as ISubscriptionContext;
 
    return (

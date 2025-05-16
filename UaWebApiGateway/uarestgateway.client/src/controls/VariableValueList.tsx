@@ -67,6 +67,7 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
     const [items, setItems] = React.useState<AccessViewItem[]>(accessViewItems);
     const [variables, setVariables] = React.useState<Row[]>([]);
     const [counter, setCounter] = React.useState<number>(1);
+    const previousLength = React.useRef(variables.length);
 
     // The reference to the internal state of the component.
     const m = React.useRef<VariableValueListInternals>({
@@ -95,11 +96,13 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
         subscribe,
         unsubscribe,
         unsubscribeElement,
-        lastSequenceNumber
+        lastSequenceNumber,
+        createSubscription,
+        deleteSubscription,
+        subscriptionId
     } = React.useContext(SubscriptionContext);
 
     const {
-        browseChildren,
         readValues,
         lastCompletedRequest,
         stateChangeCount
@@ -125,10 +128,10 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
                 newVariables.push({ name: x?.displayName, item: items[items.length - 1] });
             }
         });
-        if (subscriptionState === SubscriptionState.Open) {
-            subscribe(items, m.current.internalHandle);
-            m.current.monitoredItems = items;
-        }
+        //if (subscriptionState === SubscriptionState.Open) {
+        subscribe(items, m.current.internalHandle);
+        m.current.monitoredItems = items;
+        //}
         setVariables(newVariables);
     }, [accessViewItems]);
 
@@ -179,37 +182,14 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
         }
     }, [subscriptionState, subscribe, unsubscribe]);
 
-    /**
-     * Effect to browse the root node when it changes and subscribe to the variables.
-     */
-    React.useEffect(() => {
-        async function changeRoot() {
-            const items: IMonitoredItem[] = m.current.monitoredItems;
-            unsubscribe(items, m.current.internalHandle);
-            m.current.monitoredItems = [];
-            setVariables([]);
-        }
-        async function browse(nodeId: string) {
-            await changeRoot();
-            if (nodeId) {
-                m.current.internalHandle = HandleFactory.increment();
-                m.current.requests.push(m.current.internalHandle);
-                console.error("browseChildren[" + nodeId + "]: " + m.current.internalHandle);
-                browseChildren(m.current.internalHandle, nodeId);
-            }
-        }
-        if (rootId) {
-            browse(rootId);
-        }
-    }, [rootId, browseChildren, subscriptionState, unsubscribe, subscribe]);
-
+    
     /**
      * Effect to trigger render when a publish response is received.
      * It updates the counter and sets the items.
      */
     React.useEffect(() => {
         setCounter(counter => counter + 1);
-        setItems(accessViewItems);
+        //setItems(accessViewItems);
     }, [lastSequenceNumber]);
 
     /**
@@ -257,12 +237,12 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
                         }
                     }
                 });
-                /*
+                
                 m.current.monitoredItems = items;
                 if (subscriptionState === SubscriptionState.Open) {
                     subscribe(items, m.current.internalHandle);
                 }
-                */
+                
                 console.error("setVariables[" + newVariables.length + "]: " + lastCompletedRequest.callerHandle);
                 setVariables(newVariables);
             }
@@ -290,6 +270,19 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
         );
     }
     */
+
+    // Effect to detect when a new element is added to the variables array
+    React.useEffect(() => {
+        if (variables.length == 1) {
+            subscribe(variables.map(x => x.item), m.current.internalHandle);
+            createSubscription();
+        }
+        console.log('A new element was added to the variables array.');
+
+        // Perform any additional logic here
+        previousLength.current = variables.length;
+    }, [variables]);
+
     return (
         <TableContainer component={Paper} elevation={3} sx={{ height: '100%', width: '80%' }}>
             <Table>
