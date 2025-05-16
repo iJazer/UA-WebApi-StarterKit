@@ -22,7 +22,7 @@ using AasCore.Aas3_0;
 using UaRestGateway.Server.Service.AAS;
 
 namespace UaRestGateway.Server.Controllers
-{ 
+{
     /// <summary>
     /// 
     /// </summary>
@@ -34,13 +34,13 @@ namespace UaRestGateway.Server.Controllers
         private readonly IBase64UrlDecoderService _decoderService;
 
         public AssetAdministrationShellRepositoryAPIApiController(
-            IAasTreeService aasTreeService, 
+            IAasTreeService aasTreeService,
             IAASCommunicationService aasCommunicationService,
             IBase64UrlDecoderService decoderService)
         {
             _aasTreeService = aasTreeService;
             _aasCommunicationService = aasCommunicationService;
-           _decoderService = decoderService;
+            _decoderService = decoderService;
         }
 
         /// <summary>
@@ -62,8 +62,8 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult DeleteAssetAdministrationShellById([FromRoute][Required]string aasIdentifier)
-        { 
+        public virtual IActionResult DeleteAssetAdministrationShellById([FromRoute][Required] string aasIdentifier)
+        {
             throw new NotImplementedException();
         }
 
@@ -90,8 +90,8 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult DeleteFileByPathAasRepository([FromRoute][Required]string aasIdentifier, [FromRoute][Required]string submodelIdentifier, [FromRoute][Required]string idShortPath)
-        { 
+        public virtual IActionResult DeleteFileByPathAasRepository([FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier, [FromRoute][Required] string idShortPath)
+        {
             throw new NotImplementedException();
         }
 
@@ -117,8 +117,8 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult DeleteSubmodelByIdAasRepository([FromRoute][Required]string aasIdentifier, [FromRoute][Required]string submodelIdentifier)
-        { 
+        public virtual IActionResult DeleteSubmodelByIdAasRepository([FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier)
+        {
             throw new NotImplementedException();
         }
 
@@ -145,8 +145,8 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult DeleteSubmodelElementByPathAasRepository([FromRoute][Required]string aasIdentifier, [FromRoute][Required]string submodelIdentifier, [FromRoute][Required]string idShortPath)
-        { 
+        public virtual IActionResult DeleteSubmodelElementByPathAasRepository([FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier, [FromRoute][Required] string idShortPath)
+        {
             throw new NotImplementedException();
         }
 
@@ -172,8 +172,8 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult DeleteSubmodelReferenceByIdAasRepository([FromRoute][Required]string aasIdentifier, [FromRoute][Required]string submodelIdentifier)
-        { 
+        public virtual IActionResult DeleteSubmodelReferenceByIdAasRepository([FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier)
+        {
             throw new NotImplementedException();
         }
 
@@ -198,8 +198,8 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult DeleteThumbnailAasRepository([FromRoute][Required]string aasIdentifier)
-        { 
+        public virtual IActionResult DeleteThumbnailAasRepository([FromRoute][Required] string aasIdentifier)
+        {
             throw new NotImplementedException();
         }
 
@@ -226,7 +226,7 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 403, type: typeof(Result), description: "Forbidden")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult GetAllAssetAdministrationShells([FromQuery]List<string> assetIds, [FromQuery]string idShort, [FromQuery]int? limit, [FromQuery]string cursor)
+        public virtual IActionResult GetAllAssetAdministrationShells([FromQuery] List<string> assetIds, [FromQuery] string idShort, [FromQuery] int? limit, [FromQuery] string cursor)
         {
             // Load AAS from database, file, or service
             AssetAdministrationShell aas = (AssetAdministrationShell)_aasCommunicationService.AssetAdministrationShells.First(); // You need to implement this
@@ -261,9 +261,9 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 403, type: typeof(Result), description: "Forbidden")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult GetAllAssetAdministrationShellsReference([FromQuery]List<string> assetIds, [FromQuery]string idShort, [FromQuery]int? limit, [FromQuery]string cursor)
-        { 
-            throw new NotImplementedException ();
+        public virtual IActionResult GetAllAssetAdministrationShellsReference([FromQuery] List<string> assetIds, [FromQuery] string idShort, [FromQuery] int? limit, [FromQuery] string cursor)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -293,8 +293,8 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult GetAllSubmodelElementsAasRepository([FromRoute][Required]string aasIdentifier, [FromRoute][Required]string submodelIdentifier, [FromQuery]int? limit, [FromQuery]string cursor, [FromQuery]string level, [FromQuery]string extent)
-        { 
+        public virtual IActionResult GetAllSubmodelElementsAasRepository([FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier, [FromQuery] int? limit, [FromQuery] string cursor, [FromQuery] string level, [FromQuery] string extent)
+        {
             throw new NotImplementedException();
         }
 
@@ -324,9 +324,9 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult GetAllSubmodelElementsMetadataAasRepository([FromRoute][Required]string aasIdentifier, [FromRoute][Required]string submodelIdentifier, [FromQuery]int? limit, [FromQuery]string cursor)
-        { 
-            throw new NotImplementedException() ;
+        public virtual IActionResult GetAllSubmodelElementsMetadataAasRepository([FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier, [FromQuery] int? limit, [FromQuery] string cursor)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -357,8 +357,8 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult GetAllSubmodelElementsPathAasRepository([FromRoute][Required]string aasIdentifier, [FromRoute][Required]string submodelIdentifier, [FromQuery]int? limit, [FromQuery]string cursor, [FromQuery]string level, [FromQuery]string extent)
-        { 
+        public virtual IActionResult GetAllSubmodelElementsPathAasRepository([FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier, [FromQuery] int? limit, [FromQuery] string cursor, [FromQuery] string level, [FromQuery] string extent)
+        {
             throw new NotImplementedException();
         }
 
@@ -389,9 +389,9 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult GetAllSubmodelElementsReferenceAasRepository([FromRoute][Required]string aasIdentifier, [FromRoute][Required]string submodelIdentifier, [FromQuery]int? limit, [FromQuery]string cursor, [FromQuery]string level)
-        { 
-            throw new NotImplementedException ();
+        public virtual IActionResult GetAllSubmodelElementsReferenceAasRepository([FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier, [FromQuery] int? limit, [FromQuery] string cursor, [FromQuery] string level)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -421,8 +421,8 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult GetAllSubmodelElementsValueOnlyAasRepository([FromRoute][Required]string aasIdentifier, [FromRoute][Required]string submodelIdentifier, [FromQuery]int? limit, [FromQuery]string cursor, [FromQuery]string level)
-        { 
+        public virtual IActionResult GetAllSubmodelElementsValueOnlyAasRepository([FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier, [FromQuery] int? limit, [FromQuery] string cursor, [FromQuery] string level)
+        {
             throw new NotImplementedException();
         }
 
@@ -451,9 +451,9 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult GetAllSubmodelReferencesAasRepository([FromRoute][Required]string aasIdentifier, [FromQuery]int? limit, [FromQuery]string cursor)
-        { 
-            throw new NotImplementedException() ;
+        public virtual IActionResult GetAllSubmodelReferencesAasRepository([FromRoute][Required] string aasIdentifier, [FromQuery] int? limit, [FromQuery] string cursor)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -478,9 +478,12 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult GetAssetAdministrationShellById([FromRoute][Required]string aasIdentifier)
-        { 
-            throw new NotImplementedException();
+        public virtual IActionResult GetAssetAdministrationShellById([FromRoute][Required] string aasIdentifier)
+        {
+            var decodedAasIdentifier = _decoderService.Decode("aasIdentifier", aasIdentifier);
+            var aas = _aasCommunicationService.GetAssetAdministrationShellById(decodedAasIdentifier);
+            var output = Jsonization.Serialize.ToJsonObject(aas);
+            return Ok(output);
         }
 
         /// <summary>
@@ -505,9 +508,9 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult GetAssetAdministrationShellByIdReferenceAasRepository([FromRoute][Required]string aasIdentifier)
-        { 
-            throw new NotImplementedException ();
+        public virtual IActionResult GetAssetAdministrationShellByIdReferenceAasRepository([FromRoute][Required] string aasIdentifier)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -532,8 +535,8 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult GetAssetInformationAasRepository([FromRoute][Required]string aasIdentifier)
-        { 
+        public virtual IActionResult GetAssetInformationAasRepository([FromRoute][Required] string aasIdentifier)
+        {
             throw new NotImplementedException();
         }
 
@@ -561,7 +564,7 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult GetFileByPathAasRepository([FromRoute][Required]string aasIdentifier, [FromRoute][Required]string submodelIdentifier, [FromRoute][Required]string idShortPath)
+        public virtual IActionResult GetFileByPathAasRepository([FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier, [FromRoute][Required] string idShortPath)
         {
             throw new NotImplementedException();
         }
@@ -592,9 +595,9 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult GetOperationAsyncResultAasRepository([FromRoute][Required]string aasIdentifier, [FromRoute][Required]string submodelIdentifier, [FromRoute][Required]string idShortPath, [FromRoute][Required]string handleId)
-        { 
-            throw new NotImplementedException() ;
+        public virtual IActionResult GetOperationAsyncResultAasRepository([FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier, [FromRoute][Required] string idShortPath, [FromRoute][Required] string handleId)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -623,9 +626,9 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult GetOperationAsyncResultValueOnlyAasRepository([FromRoute][Required]string aasIdentifier, [FromRoute][Required]string submodelIdentifier, [FromRoute][Required]string idShortPath, [FromRoute][Required]string handleId)
-        { 
-            throw new NotImplementedException() ;
+        public virtual IActionResult GetOperationAsyncResultValueOnlyAasRepository([FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier, [FromRoute][Required] string idShortPath, [FromRoute][Required] string handleId)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -655,8 +658,8 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult GetOperationAsyncStatusAasRepository([FromRoute][Required]string aasIdentifier, [FromRoute][Required]string submodelIdentifier, [FromRoute][Required]string idShortPath, [FromRoute][Required]string handleId)
-        { 
+        public virtual IActionResult GetOperationAsyncStatusAasRepository([FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier, [FromRoute][Required] string idShortPath, [FromRoute][Required] string handleId)
+        {
             throw new NotImplementedException();
         }
 
@@ -685,7 +688,7 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult GetSubmodelByIdAasRepository([FromRoute][Required]string aasIdentifier, [FromRoute][Required]string submodelIdentifier, [FromQuery]string level, [FromQuery]string extent)
+        public virtual IActionResult GetSubmodelByIdAasRepository([FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier, [FromQuery] string level, [FromQuery] string extent)
         {
             var decodedAasId = _decoderService.Decode("aasIdentifier", aasIdentifier);
             var decodedSubmodelId = _decoderService.Decode("submodelIdentifier", submodelIdentifier);
@@ -718,9 +721,9 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult GetSubmodelByIdMetadataAasRepository([FromRoute][Required]string aasIdentifier, [FromRoute][Required]string submodelIdentifier)
-        { 
-            throw new NotImplementedException ();
+        public virtual IActionResult GetSubmodelByIdMetadataAasRepository([FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -747,8 +750,8 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult GetSubmodelByIdPathAasRepository([FromRoute][Required]string aasIdentifier, [FromRoute][Required]string submodelIdentifier, [FromQuery]string level)
-        { 
+        public virtual IActionResult GetSubmodelByIdPathAasRepository([FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier, [FromQuery] string level)
+        {
             throw new NotImplementedException();
         }
 
@@ -775,9 +778,9 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult GetSubmodelByIdReferenceAasRepository([FromRoute][Required]string aasIdentifier, [FromRoute][Required]string submodelIdentifier)
-        { 
-            throw new NotImplementedException() ;
+        public virtual IActionResult GetSubmodelByIdReferenceAasRepository([FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -805,8 +808,8 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult GetSubmodelByIdValueOnlyAasRepository([FromRoute][Required]string aasIdentifier, [FromRoute][Required]string submodelIdentifier, [FromQuery]string level, [FromQuery]string extent)
-        { 
+        public virtual IActionResult GetSubmodelByIdValueOnlyAasRepository([FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier, [FromQuery] string level, [FromQuery] string extent)
+        {
             throw new NotImplementedException();
         }
 
@@ -836,9 +839,9 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult GetSubmodelElementByPathAasRepository([FromRoute][Required]string aasIdentifier, [FromRoute][Required]string submodelIdentifier, [FromRoute][Required]string idShortPath, [FromQuery]string level, [FromQuery]string extent)
-        { 
-            throw new NotImplementedException() ;
+        public virtual IActionResult GetSubmodelElementByPathAasRepository([FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier, [FromRoute][Required] string idShortPath, [FromQuery] string level, [FromQuery] string extent)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -865,8 +868,8 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult GetSubmodelElementByPathMetadataAasRepository([FromRoute][Required]string aasIdentifier, [FromRoute][Required]string submodelIdentifier, [FromRoute][Required]string idShortPath)
-        { 
+        public virtual IActionResult GetSubmodelElementByPathMetadataAasRepository([FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier, [FromRoute][Required] string idShortPath)
+        {
             throw new NotImplementedException();
         }
 
@@ -895,9 +898,9 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult GetSubmodelElementByPathPathAasRepository([FromRoute][Required]string aasIdentifier, [FromRoute][Required]string submodelIdentifier, [FromRoute][Required]string idShortPath, [FromQuery]string level)
-        { 
-            throw new NotImplementedException ();
+        public virtual IActionResult GetSubmodelElementByPathPathAasRepository([FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier, [FromRoute][Required] string idShortPath, [FromQuery] string level)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -924,8 +927,8 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult GetSubmodelElementByPathReferenceAasRepository([FromRoute][Required]string aasIdentifier, [FromRoute][Required]string submodelIdentifier, [FromRoute][Required]string idShortPath)
-        { 
+        public virtual IActionResult GetSubmodelElementByPathReferenceAasRepository([FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier, [FromRoute][Required] string idShortPath)
+        {
             throw new NotImplementedException();
         }
 
@@ -955,9 +958,9 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult GetSubmodelElementByPathValueOnlyAasRepository([FromRoute][Required]string aasIdentifier, [FromRoute][Required]string submodelIdentifier, [FromRoute][Required]string idShortPath, [FromQuery]string level, [FromQuery]string extent)
-        { 
-            throw new NotImplementedException() ;
+        public virtual IActionResult GetSubmodelElementByPathValueOnlyAasRepository([FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier, [FromRoute][Required] string idShortPath, [FromQuery] string level, [FromQuery] string extent)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -982,8 +985,8 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult GetThumbnailAasRepository([FromRoute][Required]string aasIdentifier)
-        { 
+        public virtual IActionResult GetThumbnailAasRepository([FromRoute][Required] string aasIdentifier)
+        {
             throw new NotImplementedException();
         }
 
@@ -1012,9 +1015,9 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult InvokeOperationAasRepository([FromBody]object body, [FromRoute][Required]string aasIdentifier, [FromRoute][Required]string submodelIdentifier, [FromRoute][Required]string idShortPath)
-        { 
-            throw new NotImplementedException() ;
+        public virtual IActionResult InvokeOperationAasRepository([FromBody] object body, [FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier, [FromRoute][Required] string idShortPath)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -1041,8 +1044,8 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult InvokeOperationAsyncAasRepository([FromBody]object body, [FromRoute][Required]string aasIdentifier, [FromRoute][Required]string submodelIdentifier, [FromRoute][Required]string idShortPath)
-        { 
+        public virtual IActionResult InvokeOperationAsyncAasRepository([FromBody] object body, [FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier, [FromRoute][Required] string idShortPath)
+        {
             throw new NotImplementedException();
         }
 
@@ -1070,8 +1073,8 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult InvokeOperationAsyncValueOnlyAasRepository([FromBody]object body, [FromRoute][Required]string aasIdentifier, [FromRoute][Required]string submodelIdentifier, [FromRoute][Required]string idShortPath)
-        { 
+        public virtual IActionResult InvokeOperationAsyncValueOnlyAasRepository([FromBody] object body, [FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier, [FromRoute][Required] string idShortPath)
+        {
             throw new NotImplementedException();
         }
 
@@ -1100,9 +1103,9 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult InvokeOperationValueOnlyAasRepository([FromBody]object body, [FromRoute][Required]string aasIdentifier, [FromRoute][Required]string submodelIdentifier, [FromRoute][Required]string idShortPath)
-        { 
-            throw new NotImplementedException ();
+        public virtual IActionResult InvokeOperationValueOnlyAasRepository([FromBody] object body, [FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier, [FromRoute][Required] string idShortPath)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -1129,8 +1132,8 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult PatchSubmodelAasRepository([FromBody]Submodel body, [FromRoute][Required]string aasIdentifier, [FromRoute][Required]string submodelIdentifier, [FromQuery]string level)
-        { 
+        public virtual IActionResult PatchSubmodelAasRepository([FromBody] Submodel body, [FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier, [FromQuery] string level)
+        {
             throw new NotImplementedException();
         }
 
@@ -1157,8 +1160,8 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult PatchSubmodelByIdMetadataAasRepository([FromBody]object body, [FromRoute][Required]string aasIdentifier, [FromRoute][Required]string submodelIdentifier)
-        { 
+        public virtual IActionResult PatchSubmodelByIdMetadataAasRepository([FromBody] object body, [FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier)
+        {
             throw new NotImplementedException();
         }
 
@@ -1186,8 +1189,8 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult PatchSubmodelByIdValueOnlyAasRepository([FromBody]object body, [FromRoute][Required]string aasIdentifier, [FromRoute][Required]string submodelIdentifier, [FromQuery]string level)
-        { 
+        public virtual IActionResult PatchSubmodelByIdValueOnlyAasRepository([FromBody] object body, [FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier, [FromQuery] string level)
+        {
             throw new NotImplementedException();
         }
 
@@ -1216,8 +1219,8 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult PatchSubmodelElementValueByPathAasRepository([FromBody]ISubmodelElement body, [FromRoute][Required]string aasIdentifier, [FromRoute][Required]string submodelIdentifier, [FromRoute][Required]string idShortPath, [FromQuery]string level)
-        { 
+        public virtual IActionResult PatchSubmodelElementValueByPathAasRepository([FromBody] ISubmodelElement body, [FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier, [FromRoute][Required] string idShortPath, [FromQuery] string level)
+        {
             throw new NotImplementedException();
         }
 
@@ -1245,8 +1248,8 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult PatchSubmodelElementValueByPathMetadata([FromBody]object body, [FromRoute][Required]string aasIdentifier, [FromRoute][Required]string submodelIdentifier, [FromRoute][Required]string idShortPath)
-        { 
+        public virtual IActionResult PatchSubmodelElementValueByPathMetadata([FromBody] object body, [FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier, [FromRoute][Required] string idShortPath)
+        {
             throw new NotImplementedException();
         }
 
@@ -1275,8 +1278,8 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult PatchSubmodelElementValueByPathValueOnly([FromBody]object body, [FromRoute][Required]string aasIdentifier, [FromRoute][Required]string submodelIdentifier, [FromRoute][Required]string idShortPath, [FromQuery]string level)
-        { 
+        public virtual IActionResult PatchSubmodelElementValueByPathValueOnly([FromBody] object body, [FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier, [FromRoute][Required] string idShortPath, [FromQuery] string level)
+        {
             throw new NotImplementedException();
         }
 
@@ -1302,9 +1305,9 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 409, type: typeof(Result), description: "Conflict, a resource which shall be created exists already. Might be thrown if a Submodel or SubmodelElement with the same ShortId is contained in a POST request.")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult PostAssetAdministrationShell([FromBody]AssetAdministrationShell body)
-        { 
-            throw new NotImplementedException ();
+        public virtual IActionResult PostAssetAdministrationShell([FromBody] AssetAdministrationShell body)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -1333,8 +1336,8 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 409, type: typeof(Result), description: "Conflict, a resource which shall be created exists already. Might be thrown if a Submodel or SubmodelElement with the same ShortId is contained in a POST request.")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult PostSubmodelElementAasRepository([FromBody]ISubmodelElement body, [FromRoute][Required]string aasIdentifier, [FromRoute][Required]string submodelIdentifier)
-        { 
+        public virtual IActionResult PostSubmodelElementAasRepository([FromBody] ISubmodelElement body, [FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier)
+        {
             throw new NotImplementedException();
         }
 
@@ -1365,8 +1368,8 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 409, type: typeof(Result), description: "Conflict, a resource which shall be created exists already. Might be thrown if a Submodel or SubmodelElement with the same ShortId is contained in a POST request.")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult PostSubmodelElementByPathAasRepository([FromBody]ISubmodelElement body, [FromRoute][Required]string aasIdentifier, [FromRoute][Required]string submodelIdentifier, [FromRoute][Required]string idShortPath)
-        { 
+        public virtual IActionResult PostSubmodelElementByPathAasRepository([FromBody] ISubmodelElement body, [FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier, [FromRoute][Required] string idShortPath)
+        {
             throw new NotImplementedException();
         }
 
@@ -1395,7 +1398,7 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 409, type: typeof(Result), description: "Conflict, a resource which shall be created exists already. Might be thrown if a Submodel or SubmodelElement with the same ShortId is contained in a POST request.")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult PostSubmodelReferenceAasRepository([FromBody]Reference body, [FromRoute][Required]string aasIdentifier)
+        public virtual IActionResult PostSubmodelReferenceAasRepository([FromBody] Reference body, [FromRoute][Required] string aasIdentifier)
         {
             throw new NotImplementedException();
         }
@@ -1422,8 +1425,8 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult PutAssetAdministrationShellById([FromBody]AssetAdministrationShell body, [FromRoute][Required]string aasIdentifier)
-        { 
+        public virtual IActionResult PutAssetAdministrationShellById([FromBody] AssetAdministrationShell body, [FromRoute][Required] string aasIdentifier)
+        {
             throw new NotImplementedException();
         }
 
@@ -1449,8 +1452,8 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult PutAssetInformationAasRepository([FromBody]AssetInformation body, [FromRoute][Required]string aasIdentifier)
-        { 
+        public virtual IActionResult PutAssetInformationAasRepository([FromBody] AssetInformation body, [FromRoute][Required] string aasIdentifier)
+        {
             throw new NotImplementedException();
         }
 
@@ -1478,8 +1481,8 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult PutSubmodelByIdAasRepository([FromBody]Submodel body, [FromRoute][Required]string aasIdentifier, [FromRoute][Required]string submodelIdentifier)
-        { 
+        public virtual IActionResult PutSubmodelByIdAasRepository([FromBody] Submodel body, [FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier)
+        {
             throw new NotImplementedException();
         }
 
@@ -1507,8 +1510,8 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult PutSubmodelElementByPathAasRepository([FromBody]ISubmodelElement body, [FromRoute][Required]string aasIdentifier, [FromRoute][Required]string submodelIdentifier, [FromRoute][Required]string idShortPath)
-        { 
+        public virtual IActionResult PutSubmodelElementByPathAasRepository([FromBody] ISubmodelElement body, [FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier, [FromRoute][Required] string idShortPath)
+        {
             throw new NotImplementedException();
         }
 

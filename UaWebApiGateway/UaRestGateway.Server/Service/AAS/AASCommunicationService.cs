@@ -14,12 +14,13 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace UaRestGateway.Server.Service.AAS
 {
-    public interface IAASCommunicationService: IHostedService
+    public interface IAASCommunicationService : IHostedService
     {
-        List<IAssetAdministrationShell> AssetAdministrationShells { get;}
+        List<IAssetAdministrationShell> AssetAdministrationShells { get; }
         List<ISubmodel> Submodels { get; }
         List<IConceptDescription> ConceptDescriptions { get; }
 
+        IAssetAdministrationShell GetAssetAdministrationShellById(string decodedAasIdentifier);
         ISubmodel GetSubmodelByIdWithinAAS(string aasIdentifier, string submodelIdentifier);
     }
     public class AASCommunicationService : BackgroundService, IAASCommunicationService
@@ -32,7 +33,7 @@ namespace UaRestGateway.Server.Service.AAS
         List<ISubmodel> m_Submodels { get; set; }
         List<IConceptDescription> m_ConceptDescriptions { get; set; }
 
-        public List<IAssetAdministrationShell> AssetAdministrationShells { get { return m_AssetAdministrationShells; }}
+        public List<IAssetAdministrationShell> AssetAdministrationShells { get { return m_AssetAdministrationShells; } }
 
         public List<ISubmodel> Submodels { get { return m_Submodels; } }
 
@@ -113,7 +114,7 @@ namespace UaRestGateway.Server.Service.AAS
                 m_ConceptDescriptions = env.ConceptDescriptions;
                 Logger.LogInformation("Total AASs found " + m_AssetAdministrationShells.Count);
             }
-            
+
         }
 
         public override void Dispose()
@@ -136,7 +137,7 @@ namespace UaRestGateway.Server.Service.AAS
             }
 
             bool isSmPresentInAas = false;
-            if (aas.Submodels != null) 
+            if (aas.Submodels != null)
             {
                 isSmPresentInAas = aas.Submodels.Exists(s => s.Keys.First().Value.Equals(submodelIdentifier));
             }
@@ -147,11 +148,21 @@ namespace UaRestGateway.Server.Service.AAS
             }
 
             var submodel = m_Submodels.Find(s => s.Id.Equals(submodelIdentifier));
-            if(submodel == null)
+            if (submodel == null)
             {
                 throw new NotFoundException($"Submodel with id {submodelIdentifier} NOT found");
             }
             return submodel;
+        }
+
+        public IAssetAdministrationShell GetAssetAdministrationShellById(string aasIdentifier)
+        {
+            var aas = m_AssetAdministrationShells.Find(a => a.Id.Equals(aasIdentifier));
+            if (aas == null)
+            {
+                throw new NotFoundException($"AssetAdministrationShell with id {aasIdentifier} NOT found");
+            }
+            return aas;
         }
     }
 }
