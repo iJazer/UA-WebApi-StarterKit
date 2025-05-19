@@ -45,6 +45,7 @@ namespace UaRestGateway.Server.Service
             //Change Server URL
             //Uri serverUrl = new Uri("opc.tcp://WhiteCat:48030/");
             Uri serverUrl = new Uri("opc.tcp://192.168.119.131:4840");
+            //Uri serverUrl = new Uri("opc.tcp://nb-pf4n27ex:62541/Quickstarts/ReferenceServer");
 
             CertificatePasswordProvider PasswordProvider = new CertificatePasswordProvider(password);
             ApplicationInstance application = new ApplicationInstance
