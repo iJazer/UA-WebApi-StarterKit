@@ -10,6 +10,7 @@ using System.Security.Claims;
 using System.Text.Json;
 using UaRestGateway.Server.Model;
 using UaRestGateway.Server.Service;
+using UaRestGateway.Server.Service.AAS;
 
 namespace UaRestGateway.Server
 {
@@ -24,6 +25,12 @@ namespace UaRestGateway.Server
 
             builder.Services.AddSingleton<IUACommunicationService, UACommunicationService>();
             builder.Services.AddHostedService<UACommunicationService>(provider => (UACommunicationService)provider.GetService<IUACommunicationService>());
+
+            builder.Services.AddSingleton<IAASCommunicationService, AASCommunicationService>();
+            builder.Services.AddHostedService(sp => (AASCommunicationService)sp.GetService<IAASCommunicationService>());
+
+            builder.Services.AddScoped<IAasTreeService, AasTreeService>();
+            builder.Services.AddTransient<IBase64UrlDecoderService, Base64UrlDecoderService>();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
