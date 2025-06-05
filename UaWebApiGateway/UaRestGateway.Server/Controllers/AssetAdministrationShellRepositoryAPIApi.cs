@@ -841,7 +841,12 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
         public virtual IActionResult GetSubmodelElementByPathAasRepository([FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier, [FromRoute][Required] string idShortPath, [FromQuery] string level, [FromQuery] string extent)
         {
-            throw new NotImplementedException();
+            var decodedAasId = _decoderService.Decode("aasIdentifier", aasIdentifier);
+            var decodedSubmodelId = _decoderService.Decode("submodelIdentifier", submodelIdentifier);
+
+            var submodelElement = _aasCommunicationService.GetSubmodelElementByPathWithinAAS(decodedAasId, decodedSubmodelId, idShortPath);
+            var output = AasCore.Aas3_0.Jsonization.Serialize.ToJsonObject(submodelElement);
+            return Ok(output);
         }
 
         /// <summary>
