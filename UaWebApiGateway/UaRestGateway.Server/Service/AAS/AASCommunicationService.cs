@@ -22,6 +22,7 @@ namespace UaRestGateway.Server.Service.AAS
 
         IAssetAdministrationShell GetAssetAdministrationShellById(string decodedAasIdentifier);
         ISubmodel GetSubmodelByIdWithinAAS(string aasIdentifier, string submodelIdentifier);
+        ISubmodelElement GetSubmodelElementByPathWithinAAS(string aasIdentifier, string submodelIdentifier, string idShortPath);
     }
     public class AASCommunicationService : BackgroundService, IAASCommunicationService
     {
@@ -163,6 +164,62 @@ namespace UaRestGateway.Server.Service.AAS
                 throw new NotFoundException($"AssetAdministrationShell with id {aasIdentifier} NOT found");
             }
             return aas;
+        }
+
+        public ISubmodelElement GetSubmodelElementByPathWithinAAS(string aasIdentifier, string submodelIdentifier, string idShortPath)
+        {
+            ISubmodelElement output = null;
+            var submodel = GetSubmodelByIdWithinAAS(aasIdentifier, submodelIdentifier);
+
+            
+
+            if (submodel.SubmodelElements != null)
+            {
+                output = GetSubmodelElement(submodel.SubmodelElements, idShortPath);
+                
+            }
+
+            if(output == null)
+            {
+                throw new NotFoundException($"Submodel Element with idShortPath {idShortPath} NOT found.");
+            }
+
+            return output;
+        }
+
+        private ISubmodelElement GetSubmodelElement(List<ISubmodelElement> submodelElements, string idShortPath)
+        {
+            ISubmodelElement output = null;
+            if (!idShortPath.Contains("."))
+            {
+                //Submodel element on the hierarchy level 1
+                output = submodelElements.Find(sme => sme.IdShort.Equals(idShortPath));
+            }
+            else
+            {
+                var splitIdShorts = idShortPath.Split('.', 2);
+                var parentIdShort = splitIdShorts[0];
+                var childIdShort = splitIdShorts[1];
+                var parent = submodelElements.Find(sme => sme.IdShort.Equals(parentIdShort));
+                if (parent != null)
+                {
+                    if(parent is SubmodelElementCollection parentSmc)
+                    {
+                        output = GetSubmodelElement(parentSmc.Value, childIdShort);
+                    }
+                    else
+                    {
+                        throw new Exception("Parent SubmodelElement not supported.");
+                    }
+                }
+            }
+
+            if (output == null)
+            {
+                throw new NotFoundException($"Submodel Element with idShortPath {idShortPath} NOT found.");
+            }
+
+            return output;
         }
     }
 }
