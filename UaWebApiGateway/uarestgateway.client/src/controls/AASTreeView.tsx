@@ -138,6 +138,22 @@ const AASTreeView: React.FC = () => {
         setAccessViewContextMenu(null);
     };
 
+    const renderValue = (val: any): string => {
+        if (val == null) return "";
+        if (typeof val === "string" || typeof val === "number" || typeof val === "boolean") return val.toString();
+
+        // Handle MultiLanguageProperty
+        if (Array.isArray(val) && val.every(v => v.language && v.text)) {
+            return val.map(v => `[${v.language}]: ${v.text}`).join(", ");
+        }
+
+        // Fallback to JSON
+        try {
+            return JSON.stringify(val);
+        } catch {
+            return "[Unsupported Value]";
+        }
+    };
 
 
 
@@ -211,7 +227,7 @@ const AASTreeView: React.FC = () => {
                                     style={{ cursor: "context-menu" }}
                                 >
                                     <td style={tdStyle}>{idShort}</td>
-                                    <td style={tdStyle}>{value}</td>
+                                    <td style={tdStyle}>{renderValue(value)}</td>
                                 </tr>
                             );
                         })}
