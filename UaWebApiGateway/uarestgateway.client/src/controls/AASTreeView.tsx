@@ -14,6 +14,11 @@ interface TreeNode {
     type: string;
     children?: TreeNode[];
     original: aas.types.Class | null;
+    parentAASId?: string;
+    parentSubmodelId?: string;
+    path?: string;
+    pollIntervalId?: number;
+    value?: any;
 }
 
 const AASTreeView: React.FC = () => {
@@ -33,6 +38,14 @@ const AASTreeView: React.FC = () => {
 
     useEffect(() => {
         loadTree();
+
+        return () => {
+            accessViewItems.forEach(item => {
+                if (item.pollIntervalId) {
+                    clearInterval(item.pollIntervalId);
+                }
+            });
+        };
     }, []);
 
     const loadTree = async () => {
@@ -46,7 +59,7 @@ const AASTreeView: React.FC = () => {
             const smRes = await fetch(`${API_BASE}/shells/${encodeId(shell.id)}/submodels/${encodeId(id)}`);
             const smJson = await smRes.json();
             const sm = aas.jsonization.submodelFromJsonable(smJson).mustValue();
-            children.push(await submodelToTree(sm));
+            children.push(await submodelToTree(sm, shell.id));
         }
 
         setTreeData({
@@ -58,11 +71,11 @@ const AASTreeView: React.FC = () => {
         });
     };
 
-    const submodelToTree = async (submodel: aas.types.Submodel): Promise<TreeNode> => {
+    const submodelToTree = async (submodel: aas.types.Submodel, aasId: string): Promise<TreeNode> => {
         const children: TreeNode[] = [];
 
         for (const el of submodel.submodelElements ?? []) {
-            children.push(await elementToTree(el));
+            children.push(await elementToTree(el, aasId, submodel.id, el.idShort ?? "", ""));
         }
 
         return {
@@ -70,25 +83,37 @@ const AASTreeView: React.FC = () => {
             name: `Submodel: ${submodel.idShort}`,
             type: "Submodel",
             original: submodel,
+            parentAASId: aasId,
+            parentSubmodelId: submodel.id,
             children,
         };
     };
 
-    const elementToTree = async (element: aas.types.ISubmodelElement): Promise<TreeNode> => {
+    const elementToTree = async (
+        element: aas.types.ISubmodelElement,
+        aasId: string,
+        submodelId: string,
+        idShort: string,
+        parentPath: string
+    ): Promise<TreeNode> => {
         const label = `${getSubmodelElementAbbreviation(element.constructor.name)}: ${element.idShort}`;
+        const currentPath = parentPath ? `${parentPath}.${idShort}` : idShort;
         let children: TreeNode[] = [];
 
         if (element instanceof aas.types.SubmodelElementCollection && element.value) {
             for (const el of element.value) {
-                children.push(await elementToTree(el));
+                children.push(await elementToTree(el, aasId, submodelId, el.idShort ?? "", currentPath));
             }
         }
 
         return {
-            id: element.idShort ?? crypto.randomUUID(),
+            id: crypto.randomUUID(),
             name: label,
             type: element.constructor.name,
             original: element,
+            parentAASId: aasId,
+            parentSubmodelId: submodelId,
+            path: currentPath,
             children,
         };
     };
@@ -110,16 +135,37 @@ const AASTreeView: React.FC = () => {
         setContextMenu(null);
     };
 
+    const fetchValue = async (node: TreeNode) => {
+        if (!node.parentAASId || !node.parentSubmodelId || !node.path) return null;
+
+        try {
+            const res = await fetch(`${API_BASE}/shells/${encodeId(node.parentAASId)}/submodels/${encodeId(node.parentSubmodelId)}/submodel-elements/${node.path}`);
+            const json = await res.json();
+            return json.value ?? json;
+        } catch (e) {
+            console.error("Polling error:", e);
+            return null;
+        }
+    };
+
     const handleOnAddAccessView = useCallback(() => {
         if (contextMenu?.node) {
-            console.log("Adding to access view:", contextMenu?.node);
-            setAccessViewItems((prev) => [...prev, contextMenu.node]);
+            const node = contextMenu.node;
+            console.log("Adding to access view:", node);
+
+            const poll = async () => {
+                const value = await fetchValue(node);
+                setAccessViewItems(prev => prev.map(i => i.id === node.id ? { ...i, value } : i));
+            };
+
+            poll();
+            const intervalId = window.setInterval(poll, 3000);
+
+            setAccessViewItems((prev) => [...prev, { ...node, pollIntervalId: intervalId }]);
         }
         handleCloseContextMenu();
     }, [contextMenu]);
 
-
-    //This code handles entries in access view
     const handleAccessViewContextMenu = (
         event: React.MouseEvent,
         index: number
@@ -132,9 +178,14 @@ const AASTreeView: React.FC = () => {
         });
     };
 
-    //Removes entry from data access view
     const handleRemoveAccessViewItem = (index: number) => {
-        setAccessViewItems((prev) => prev.filter((_, i) => i !== index));
+        setAccessViewItems((prev) => {
+            const item = prev[index];
+            if (item.pollIntervalId) {
+                clearInterval(item.pollIntervalId);
+            }
+            return prev.filter((_, i) => i !== index);
+        });
         setAccessViewContextMenu(null);
     };
 
@@ -142,20 +193,16 @@ const AASTreeView: React.FC = () => {
         if (val == null) return "";
         if (typeof val === "string" || typeof val === "number" || typeof val === "boolean") return val.toString();
 
-        // Handle MultiLanguageProperty
         if (Array.isArray(val) && val.every(v => v.language && v.text)) {
             return val.map(v => `[${v.language}]: ${v.text}`).join(", ");
         }
 
-        // Fallback to JSON
         try {
             return JSON.stringify(val);
         } catch {
             return "[Unsupported Value]";
         }
     };
-
-
 
     const renderTree = (node: TreeNode): React.ReactNode => (
         <TreeItem
@@ -198,7 +245,6 @@ const AASTreeView: React.FC = () => {
         );
     };
 
-    //Renders Data Access View
     return (
         <div style={{ display: "flex", gap: "1rem" }}>
             <div style={{ flex: 1 }}>
@@ -219,7 +265,7 @@ const AASTreeView: React.FC = () => {
                         {accessViewItems.map((item, idx) => {
                             const original = item.original as aas.types.Class;
                             const idShort = (original as any)?.idShort ?? item.name;
-                            const value = (original as any)?.value ?? null;
+                            const value = item.value ?? (original as any)?.value ?? null;
                             return (
                                 <tr
                                     key={idx}
@@ -267,7 +313,6 @@ const AASTreeView: React.FC = () => {
                     </li>
                 </ul>
             )}
-
         </div>
     );
 };
