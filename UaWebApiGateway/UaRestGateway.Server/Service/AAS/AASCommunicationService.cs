@@ -14,6 +14,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace UaRestGateway.Server.Service.AAS
 {
+    
     public interface IAASCommunicationService : IHostedService
     {
         List<IAssetAdministrationShell> AssetAdministrationShells { get; }
@@ -26,6 +27,7 @@ namespace UaRestGateway.Server.Service.AAS
     }
     public class AASCommunicationService : BackgroundService, IAASCommunicationService
     {
+        Random random = new Random();
         private CancellationToken m_stoppingToken;
         protected IConfiguration Configuration { get; private set; }
         protected ILogger Logger { get; private set; }
@@ -192,8 +194,14 @@ namespace UaRestGateway.Server.Service.AAS
             ISubmodelElement output = null;
             if (!idShortPath.Contains("."))
             {
-                //Submodel element on the hierarchy level 1
                 output = submodelElements.Find(sme => sme.IdShort.Equals(idShortPath));
+                if(idShortPath.Equals("PCFCO2eq"))
+                {
+                    var output_val = output as Property;
+                    output_val.Value = random.Next(0, 100).ToString();
+                    Logger.LogDebug($"PCFCO2eq value set to {output_val.Value}");
+                    output = output_val;
+                }
             }
             else
             {
