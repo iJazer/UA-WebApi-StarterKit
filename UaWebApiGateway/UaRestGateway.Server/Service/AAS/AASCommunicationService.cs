@@ -211,6 +211,13 @@ namespace UaRestGateway.Server.Service.AAS
             if (!idShortPath.Contains("."))
             {
                 output = submodelElements.Find(sme => sme.IdShort.Equals(idShortPath));
+                if(idShortPath.Equals("PCFCO2eq"))
+                {
+                    var output_val = output as Property;
+                    output_val.Value = random.Next(0, 100).ToString();
+                    Logger.LogDebug($"PCFCO2eq value set to {output_val.Value}");
+                    output = output_val;
+                }
             }
             else
             {

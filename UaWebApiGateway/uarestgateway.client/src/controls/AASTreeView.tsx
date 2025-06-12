@@ -151,6 +151,19 @@ const AASTreeView: React.FC = () => {
     };
 
 
+    const fetchValue = async (node: TreeNode) => {
+        if (!node.parentAASId || !node.parentSubmodelId || !node.path) return null;
+
+        try {
+            const res = await fetch(`${API_BASE}/shells/${encodeId(node.parentAASId)}/submodels/${encodeId(node.parentSubmodelId)}/submodel-elements/${node.path}`);
+            const json = await res.json();
+            return json.value ?? json;
+        } catch (e) {
+            console.error("Polling error:", e);
+            return null;
+        }
+    };
+
     const handleOnAddAccessView = useCallback(() => {
         if (contextMenu?.node) {
             const node = contextMenu.node;
