@@ -1,15 +1,20 @@
 ﻿
 using AasCore.Aas3_0;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Opc.Ua;
+using Opc.Ua.Client;
 using System;
 using System.Collections;
 using System.Reflection;
+using System.Runtime.Intrinsics.X86;
 using System.Text.Json;
 using System.Xml;
 using System.Xml.Serialization;
 using UaRestGateway.Server.Exceptions.AAS;
+using UaRestGateway.Server.Model;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace UaRestGateway.Server.Service.AAS
@@ -29,6 +34,10 @@ namespace UaRestGateway.Server.Service.AAS
     {
         Random random = new Random();
         private CancellationToken m_stoppingToken;
+        private readonly IUACommunicationService m_uaCommunicationService;
+        private readonly IUACommunicationService uaCommunicationService;
+        private UAClient OpcUaClient => m_uaCommunicationService.ClientAPI;
+
         protected IConfiguration Configuration { get; private set; }
         protected ILogger Logger { get; private set; }
 
@@ -43,10 +52,12 @@ namespace UaRestGateway.Server.Service.AAS
         public List<IConceptDescription> ConceptDescriptions { get { return m_ConceptDescriptions; } }
 
         public AASCommunicationService(IConfiguration configuration,
-            ILogger<AASCommunicationService> logger)
+            ILogger<AASCommunicationService> logger,
+            IUACommunicationService uaCommunicationService)
         {
             Configuration = configuration;
             Logger = logger;
+            m_uaCommunicationService = uaCommunicationService;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -178,7 +189,12 @@ namespace UaRestGateway.Server.Service.AAS
             if (submodel.SubmodelElements != null)
             {
                 output = GetSubmodelElement(submodel.SubmodelElements, idShortPath);
-                
+                bool opcuaFlag = GetExtensionValue(output);
+                if (opcuaFlag)
+                {
+                    var opcUaVal = GetOpcUaNodeValue(output, submodel.IdShort, idShortPath);
+                    ((Property)output).Value = opcUaVal;
+                }
             }
 
             if(output == null)
@@ -195,13 +211,6 @@ namespace UaRestGateway.Server.Service.AAS
             if (!idShortPath.Contains("."))
             {
                 output = submodelElements.Find(sme => sme.IdShort.Equals(idShortPath));
-                if(idShortPath.Equals("PCFCO2eq"))
-                {
-                    var output_val = output as Property;
-                    output_val.Value = random.Next(0, 100).ToString();
-                    Logger.LogDebug($"PCFCO2eq value set to {output_val.Value}");
-                    output = output_val;
-                }
             }
             else
             {
@@ -228,6 +237,191 @@ namespace UaRestGateway.Server.Service.AAS
             }
 
             return output;
+        }
+
+        private string GetOpcUaNodeValue(ISubmodelElement submodelElement, string submodelIdShort, string idShortPath)
+        {
+            if(OpcUaClient == null)
+            {
+                throw new Exception("OpcUaClient is not initialized. Cannot get OpcUa node value.");
+            }
+
+            var session = OpcUaClient.Session;
+
+            return FindAndReadOpcUaValue((Session)session, submodelIdShort, idShortPath);
+        }
+
+        private string FindAndReadOpcUaValue(Session session, string submodelIdShort, string idShortPath)
+        {
+            //Get AAS Environment root node
+            NodeId aasEnvNodeId = GetNodeIdByTypeDefinition(session, ObjectIds.ObjectsFolder, AasToOpcUaTypeDefinitions.Mappings["Environment"]);
+
+            //Get AAS node
+            if (aasEnvNodeId == null)
+            {
+                throw new NotFoundException("AAS Environment node not found.");
+            }
+
+            NodeId aasNodeId = GetNodeIdByTypeDefinition(session, aasEnvNodeId, AasToOpcUaTypeDefinitions.Mappings["AssetAdministrationShell"]);
+            if (aasNodeId == null)
+            {
+                throw new NotFoundException("AAS node not found.");
+            }
+
+            NodeId submodelNodeId = GetNodeIdByTypeDefinition(session, aasNodeId, AasToOpcUaTypeDefinitions.Mappings[submodelIdShort]);
+            if (submodelNodeId == null)
+            {
+                throw new NotFoundException("Submodel node not found.");
+            }
+
+            //Browse OpcUa Node for the given idShortPath
+            NodeId smeNodeId = GetSmeNodeIdByIdShortPath(session, submodelNodeId, idShortPath);
+            if (smeNodeId == null)
+            {
+                throw new NotFoundException($"OPC UA Node corresponding to Submodel Element with idShortPath {idShortPath} NOT found.");
+            }
+
+            //Read the value of the Submodel Element
+            var value = OpcUaClient.Session.ReadValue(smeNodeId).Value;
+            Logger.LogInformation($"OpcUa Node Value for {smeNodeId} is {value}");
+            return value.ToString();
+        }
+
+        private NodeId GetSmeNodeIdByIdShortPath(Session session, NodeId parentNodeId, string idShortPath)
+        {
+            NodeId outputNodeId = null;
+            if (!idShortPath.Contains("."))
+            {
+                //As this is the last part of the idShortPath, we can directly get the nodeId based on BrowseName
+                outputNodeId = GetNodeIdByBrowseName(session, parentNodeId, idShortPath);
+            }
+            else
+            {
+                var splitIdShorts = idShortPath.Split('.', 2);
+                var parentIdShort = splitIdShorts[0];
+                var childIdShort = splitIdShorts[1];
+
+                parentNodeId = GetNodeIdByTypeDefinition(session, parentNodeId, AasToOpcUaTypeDefinitions.Mappings[parentIdShort]);
+                if(parentNodeId == null)
+                {
+                    throw new NotFoundException($"ParentNode for SubmodelElement with idShort {parentIdShort} NOT found.");
+                }
+
+                outputNodeId = GetSmeNodeIdByIdShortPath(session, parentNodeId, childIdShort);
+
+            }
+
+            return outputNodeId; 
+        }
+
+        private NodeId GetNodeIdByBrowseName(Session session, NodeId root, string idShortPath)
+        {
+            ReferenceDescriptionCollection refs;
+            byte[] cp;
+            session.Browse(
+                null,
+                null,
+                root,
+                0u,
+                BrowseDirection.Forward,
+                ReferenceTypeIds.HierarchicalReferences,
+                true,
+                0, // All NodeClasses
+                out cp,
+                out refs);
+
+            foreach (var rd in refs)
+            {
+                NodeId rdNodeId = ExpandedNodeId.ToNodeId(rd.NodeId, session.NamespaceUris);
+                //Check BrowseName for idShortPath
+                if (rd.BrowseName != null && rd.BrowseName.Name.Equals(idShortPath))
+                {
+                    Console.WriteLine($"Found required node: {rd.DisplayName.Text}");
+                    return rdNodeId; // Return the AAS node ID
+                }
+            }
+            return null; // If not found, return null
+        }
+
+        private NodeId GetNodeIdByTypeDefinition(Session session, NodeId root, NodeId typeDefId)
+        {
+            ReferenceDescriptionCollection refs;
+            byte[] cp;
+            session.Browse(
+                null,
+                null,
+                root,
+                0u,
+                BrowseDirection.Forward,
+                ReferenceTypeIds.HierarchicalReferences,
+                true,
+                0, // All NodeClasses
+                out cp,
+                out refs);
+
+            foreach (var rd in refs)
+            {
+                NodeId rdNodeId = ExpandedNodeId.ToNodeId(rd.NodeId, session.NamespaceUris);
+                // ✅ Use HasTypeDefinition to check type
+                NodeId typeDef = GetTypeDefinition(session, rdNodeId);
+                if (typeDef != null && NodeId.Equals(typeDef, typeDefId))
+                {
+                    Console.WriteLine($"Found required node: {rd.DisplayName.Text}");
+                    return rdNodeId; // Return the AAS node ID
+                }
+            }
+            return null; // If not found, return null
+        }
+
+        private NodeId GetTypeDefinition(Session session, NodeId nodeId)
+        {
+            session.Browse(
+                null,
+                null,
+                nodeId,
+                0u,
+                BrowseDirection.Forward,
+                ReferenceTypeIds.HasTypeDefinition,
+                true,
+                0u, // No node class filtering!
+                out byte[] cp,
+                out ReferenceDescriptionCollection refs);
+
+            if (refs != null && refs.Count > 0)
+            {
+                return ExpandedNodeId.ToNodeId(refs[0].NodeId, session.NamespaceUris);
+            }
+
+            return null;
+        }
+
+        private bool GetExtensionValue(ISubmodelElement output)
+        {
+            if(output.Extensions == null || output.Extensions.Count == 0)
+            {
+                return false;
+            }
+
+            foreach (var ext in output.Extensions)
+            {
+                if (ext.Name.Equals("OpcUa"))
+                {
+                    if (ext.Value.Equals("True", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return true;
+                    }
+                    else if (ext.Value.Equals("False", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        throw new Exception($"Invalid OpcUa extension value: {ext.Value}");
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }
