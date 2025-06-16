@@ -151,16 +151,12 @@ const AASTreeView: React.FC = () => {
     const handleOnAddAccessView = useCallback(() => {
         if (contextMenu?.node) {
             const node = contextMenu.node;
-            console.log("Adding to access view:", node);
-
             const poll = async () => {
                 const value = await fetchValue(node);
                 setAccessViewItems(prev => prev.map(i => i.id === node.id ? { ...i, value } : i));
             };
-
             poll();
             const intervalId = window.setInterval(poll, 3000);
-
             setAccessViewItems((prev) => [...prev, { ...node, pollIntervalId: intervalId }]);
         }
         handleCloseContextMenu();
@@ -192,11 +188,9 @@ const AASTreeView: React.FC = () => {
     const renderValue = (val: any): string => {
         if (val == null) return "";
         if (typeof val === "string" || typeof val === "number" || typeof val === "boolean") return val.toString();
-
         if (Array.isArray(val) && val.every(v => v.language && v.text)) {
             return val.map(v => `[${v.language}]: ${v.text}`).join(", ");
         }
-
         try {
             return JSON.stringify(val);
         } catch {
@@ -213,8 +207,7 @@ const AASTreeView: React.FC = () => {
             onContextMenu={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                console.log("Right-clicked on:", node.name, node.type);
-                handleContextMenu(e, node)
+                handleContextMenu(e, node);
             }}
         >
             {node.children?.map(renderTree)}
@@ -226,7 +219,7 @@ const AASTreeView: React.FC = () => {
 
         const entries = Object.entries(selected);
         return (
-            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+            <table style={{ width: "100%", tableLayout: "fixed" }}>
                 <thead>
                     <tr>
                         <th style={thStyle}>Property</th>
@@ -237,7 +230,7 @@ const AASTreeView: React.FC = () => {
                     {entries.map(([key, value]) => (
                         <tr key={key}>
                             <td style={tdStyle}>{key}</td>
-                            <td style={tdStyle}>{JSON.stringify(value)}</td>
+                            <td style={{ ...tdStyle, whiteSpace: "nowrap" }}>{JSON.stringify(value)}</td>
                         </tr>
                     ))}
                 </tbody>
@@ -246,39 +239,45 @@ const AASTreeView: React.FC = () => {
     };
 
     return (
-        <div style={{ display: "flex", gap: "1rem" }}>
-            <div style={{ flex: 1 }}>
-                <TreeView defaultCollapseIcon={<ExpandMoreIcon />} defaultExpandIcon={<ChevronRightIcon />}>
-                    {treeData && renderTree(treeData)}
-                </TreeView>
+        <div style={{ display: "flex", height: "80vh", width: "100%" }}>
+            <div style={{ width: "33%", overflow: "auto", borderRight: "1px solid #ccc" }}>
+                <div style={{ height: "100%", overflow: "auto" }}>
+                    <TreeView defaultCollapseIcon={<ExpandMoreIcon />} defaultExpandIcon={<ChevronRightIcon />}>
+                        {treeData && renderTree(treeData)}
+                    </TreeView>
+                </div>
             </div>
-            <div style={{ flex: 1 }}>{renderDetails()}</div>
-            <div style={{ flex: 1 }}>
-                <table style={{ width: "100%", borderCollapse: "collapse" }}>
-                    <thead>
-                        <tr>
-                            <th style={thStyle}>Name (idShort)</th>
-                            <th style={thStyle}>Value</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {accessViewItems.map((item, idx) => {
-                            const original = item.original as aas.types.Class;
-                            const idShort = (original as any)?.idShort ?? item.name;
-                            const value = item.value ?? (original as any)?.value ?? null;
-                            return (
-                                <tr
-                                    key={idx}
-                                    onContextMenu={(e) => handleAccessViewContextMenu(e, idx)}
-                                    style={{ cursor: "context-menu" }}
-                                >
-                                    <td style={tdStyle}>{idShort}</td>
-                                    <td style={tdStyle}>{renderValue(value)}</td>
-                                </tr>
-                            );
-                        })}
-                    </tbody>
-                </table>
+            <div style={{ width: "33%", overflow: "auto", borderRight: "1px solid #ccc", padding: "0 8px" }}>
+                <div style={{ height: "100%", overflow: "auto" }}>{renderDetails()}</div>
+            </div>
+            <div style={{ width: "34%", overflow: "auto", padding: "0 8px" }}>
+                <div style={{ height: "100%", overflow: "auto" }}>
+                    <table style={{ width: "100%", tableLayout: "fixed" }}>
+                        <thead>
+                            <tr>
+                                <th style={thStyle}>Name (idShort)</th>
+                                <th style={thStyle}>Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {accessViewItems.map((item, idx) => {
+                                const original = item.original as aas.types.Class;
+                                const idShort = (original as any)?.idShort ?? item.name;
+                                const value = item.value ?? (original as any)?.value ?? null;
+                                return (
+                                    <tr
+                                        key={idx}
+                                        onContextMenu={(e) => handleAccessViewContextMenu(e, idx)}
+                                        style={{ cursor: "context-menu" }}
+                                    >
+                                        <td style={tdStyle}>{idShort}</td>
+                                        <td style={{ ...tdStyle, whiteSpace: "nowrap" }}>{renderValue(value)}</td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <ContextMenu
@@ -326,43 +325,34 @@ const thStyle: React.CSSProperties = {
     background: "#f0f0f0",
     padding: "8px",
     borderBottom: "1px solid #ccc",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
 };
 
 const tdStyle: React.CSSProperties = {
     padding: "8px",
     borderBottom: "1px solid #eee",
+    whiteSpace: "nowrap",
+    overflow: "auto",
 };
 
 function getSubmodelElementAbbreviation(name: string): string {
     switch (name) {
-        case "Property":
-            return "Prop";
-        case "MultiLanguageProperty":
-            return "MLP";
-        case "Range":
-            return "Range";
-        case "ReferenceElement":
-            return "RefEle";
-        case "RelationshipElement":
-            return "RelEle";
-        case "AnnotatedRelationshipElement":
-            return "ARelEle";
-        case "File":
-            return "File";
-        case "Blob":
-            return "Blob";
-        case "SubmodelElementCollection":
-            return "SMC";
-        case "SubmodelElementList":
-            return "SML";
-        case "Entity":
-            return "Ent";
-        case "BasicEventElement":
-            return "Evt";
-        case "Capability":
-            return "Cap";
-        default:
-            return "unnamed";
+        case "Property": return "Prop";
+        case "MultiLanguageProperty": return "MLP";
+        case "Range": return "Range";
+        case "ReferenceElement": return "RefEle";
+        case "RelationshipElement": return "RelEle";
+        case "AnnotatedRelationshipElement": return "ARelEle";
+        case "File": return "File";
+        case "Blob": return "Blob";
+        case "SubmodelElementCollection": return "SMC";
+        case "SubmodelElementList": return "SML";
+        case "Entity": return "Ent";
+        case "BasicEventElement": return "Evt";
+        case "Capability": return "Cap";
+        default: return "unnamed";
     }
 }
 
