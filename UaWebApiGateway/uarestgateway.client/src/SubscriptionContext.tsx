@@ -11,8 +11,8 @@ export const SubscriptionContext = React.createContext<ISubscriptionContext>({
     setIsSubscriptionEnabled: () => { },
     subscriptionState: SubscriptionState.Closed,
     lastSequenceNumber: 0,
-    subscribe: () => { },
-    unsubscribe: () => { },
+    addNewMonitoredItem: () => { },
+    removeMonitoredItems: () => { },
     createSubscription: () => { },
     deleteSubscription: () => { }
 });

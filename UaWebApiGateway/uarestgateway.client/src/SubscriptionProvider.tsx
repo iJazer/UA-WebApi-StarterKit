@@ -29,9 +29,9 @@ export interface ISubscriptionContext {
    setIsSubscriptionEnabled: (enabled: boolean) => void,
    subscriptionState: SubscriptionState,
    lastSequenceNumber: number,
-   subscribe: (items: IMonitoredItem[], clientHandle: number) => void,
-   unsubscribe: (items: IMonitoredItem[], clientHandle: number) => void,
-   unsubscribeElement: (items: IMonitoredItem[], index: number, clientHandle: number) => void,
+    addNewMonitoredItem: (items: IMonitoredItem[], clientHandle: number) => void,
+    removeMonitoredItems: (items: IMonitoredItem[], clientHandle: number) => void,
+    removeMonitoredItem: (items: IMonitoredItem[], index: number, clientHandle: number) => void,
    createSubscription?: () => void,
    deleteSubscription?: (subscriptionId: number) => void,
     subscriptionId?: number,
@@ -67,7 +67,7 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
    const [lastSequenceNumber, setLastSequenceNumber] = React.useState<number>(0);
    const [publishCount, setPublishCount] = React.useState<number>(0);
     const [componentHandle] = React.useState<number>(HandleFactory.increment());
-    const [subscriptionId, setSubscriptionId] = React.useState<number>(0); 
+    const [subscriptionId, setSubscriptionId] = React.useState<number | undefined>(undefined); 
 
    const {
       sessionState,
@@ -82,7 +82,8 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
       subscriptionState: SubscriptionState.Closed,
       monitoredItems: new Map<number, IMonitoredItem>(),
       acknowledgements: [],
-      requests: []
+      requests: [],
+      subscriptionId: undefined
    });
 
     const enablePublishing = React.useCallback((value: boolean, subscriptionId: number) => {
@@ -110,7 +111,7 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
          RequestedLifetimeCount: 180,
          RequestedMaxKeepAliveCount: 3,
          MaxNotificationsPerPublish: 1000,
-         PublishingEnabled: false, //toDo --> set on false and set on true if element is in DataView
+         PublishingEnabled: false,
          Priority: 100
       }
       const message: IRequestMessage = {
@@ -307,6 +308,7 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
          }
          else if (lastCompletedRequest?.response?.ServiceId === OpcUa.DataTypeIds.DeleteSubscriptionsResponse) {
             m.current.subscriptionId = undefined;
+            setSubscriptionId(m.current.subscriptionId);
             m.current.acknowledgements = [];
             m.current.subscriptionState = SubscriptionState.Closed;
             setSubscriptionState(m.current.subscriptionState);
@@ -407,7 +409,7 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
       }
    }, [sessionState, createSubscription]);
 
-   const subscribe = React.useCallback((items: IMonitoredItem[]) => {
+    const addNewMonitoredItem = React.useCallback((items: IMonitoredItem[]) => {
       items.forEach((item) => {
          item.itemHandle = HandleFactory.increment();
          item.subscriberHandle = item.subscriberHandle || item.itemHandle;
@@ -418,7 +420,7 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
       createMonitoredItems(items);
    }, [translate, createMonitoredItems]);
 
-    const unsubscribeElement = React.useCallback((items: IMonitoredItem[], index: number) => {
+    const removeMonitoredItem = React.useCallback((items: IMonitoredItem[], index: number) => {
         if (items.length > 0) {
             //m.current.monitoredItems.delete(items[index].itemHandle);
             deleteMonitoredItem(items[index]);
@@ -427,7 +429,7 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
         
     }, [deleteMonitoredItems]);
 
-   const unsubscribe = React.useCallback((items: IMonitoredItem[]) => {
+   const removeMonitoredItems = React.useCallback((items: IMonitoredItem[]) => {
       items.forEach((item) => {
          if (item.itemHandle) {
             m.current.monitoredItems.delete(item.itemHandle);
@@ -441,7 +443,7 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
          return;
       }
       else if (m.current.subscriptionState === SubscriptionState.Closed) {
-          enablePublishing(value, m.current.subscriptionId);
+         enablePublishing(value, m.current.subscriptionId);
          console.warn(m.current.monitoredItems);
          m.current.subscriptionState = SubscriptionState.Open;
          setSubscriptionState(SubscriptionState.Open);
@@ -453,6 +455,7 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
           setSubscriptionState(SubscriptionState.Closed);
          return;
       }
+        setIsSubscriptionEnabled(value);
    }, [createSubscription, deleteSubscription, sessionState]);
 
    const setPublishingIntervalImpl = React.useCallback((value: number) => {
@@ -474,11 +477,12 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
       setSamplingInterval: setSamplingIntervalImpl,
       subscriptionState,
       lastSequenceNumber,
-      subscribe: subscribe,
-      unsubscribe: unsubscribe,
-      unsubscribeElement: unsubscribeElement,
+      addNewMonitoredItem: addNewMonitoredItem,
+      removeMonitoredItems: removeMonitoredItems,
+      removeMonitoredItem: removeMonitoredItem,
       createSubscription: createSubscription,
       deleteSubscription: deleteSubscription,
+      subscriptionId
    } as ISubscriptionContext;
 
    return (

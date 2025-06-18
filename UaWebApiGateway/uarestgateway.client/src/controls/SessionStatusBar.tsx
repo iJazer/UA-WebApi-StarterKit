@@ -108,7 +108,8 @@ export const SessionStatusBar = () => {
          setIsEnabled(true);
       }
       else if (state === SessionState.SessionActive || state == SessionState.Error) {
-         setIsSessionEnabled(false);
+          setIsSessionEnabled(false);
+          setIsEnabled(false);
       }
       else if (state === SessionState.NoSession) {
          setIsEnabled(false);

@@ -93,13 +93,14 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
 
     const {
         subscriptionState,
-        subscribe,
-        unsubscribe,
-        unsubscribeElement,
+        addNewMonitoredItem,
+        removeMonitoredItems,
+        removeMonitoredItem,
         lastSequenceNumber,
         createSubscription,
         deleteSubscription,
-        subscriptionId
+        subscriptionId,
+        setIsSubscriptionEnabled
     } = React.useContext(SubscriptionContext);
 
     const {
@@ -115,7 +116,6 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
      * @param accessViewItems - The list of access view items to subscribe to.
      */
     React.useEffect(() => {
-
         const items: IMonitoredItem[] = [];
         const newVariables: Row[] = [];
 
@@ -128,12 +128,12 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
                 newVariables.push({ name: x?.displayName, item: items[items.length - 1] });
             }
         });
-        //if (subscriptionState === SubscriptionState.Open) {
-        subscribe(items, m.current.internalHandle);
+        
+        addNewMonitoredItem(items, m.current.internalHandle);
         m.current.monitoredItems = items;
-        //}
+        
         setVariables(newVariables);
-    }, [accessViewItems]);
+    }, [accessViewItems, addNewMonitoredItem]);
 
 
     /**
@@ -141,15 +141,15 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
      * @param index - The index of the item to delete.
      */
     const onDeleteItem = (index: number) => {
-        if (subscriptionState === SubscriptionState.Open) {
-            unsubscribeElement(m.current.monitoredItems, index, m.current.internalHandle);
-        }
+        removeMonitoredItem(m.current.monitoredItems, index, m.current.internalHandle);
         accessViewItems.splice(index, 1);
         variables.splice(index, 1);
         setVariables(variables);
         setItems(accessViewItems);
-        if (subscriptionState === SubscriptionState.Open) {
-            m.current.monitoredItems = items;
+
+        if (variables.length == 0) {
+            setIsSubscriptionEnabled(false);
+            deleteSubscription(subscriptionId);
         }
     };
 
@@ -160,27 +160,30 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
         const state = m.current;
         return () => {
             if (!state.mounted && !state.cleanedUp && state.monitoredItems.length) {
-                unsubscribe(state.monitoredItems, state.internalHandle);
+                removeMonitoredItems(state.monitoredItems, state.internalHandle);
                 state.cleanedUp = true;
             }
         };
-    }, [unsubscribe]);
+    }, [removeMonitoredItems]);
 
     /**
      * Effect to handle state changes to the subscription.
      */
     React.useEffect(() => {
+        
         if (subscriptionState === SubscriptionState.Open) {
             const itemsToCreate = m.current.monitoredItems.filter(item => !item.itemHandle);
             if (itemsToCreate.length) {
-                subscribe(itemsToCreate, m.current.internalHandle);
+                addNewMonitoredItem(itemsToCreate, m.current.internalHandle);
             }
         }
         else {
-            unsubscribe(m.current.monitoredItems, m.current.internalHandle);
+            removeMonitoredItems(m.current.monitoredItems, m.current.internalHandle);
             m.current.monitoredItems = [];
-        }
-    }, [subscriptionState, subscribe, unsubscribe]);
+        } 
+        // Trigger a re-render when subscriptionState changes
+        setCounter(counter => counter + 1);
+    }, [subscriptionState, addNewMonitoredItem, removeMonitoredItems]);
 
     
     /**
@@ -189,7 +192,6 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
      */
     React.useEffect(() => {
         setCounter(counter => counter + 1);
-        //setItems(accessViewItems);
     }, [lastSequenceNumber]);
 
     /**
@@ -239,9 +241,10 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
                 });
                 
                 m.current.monitoredItems = items;
-                if (subscriptionState === SubscriptionState.Open) {
-                    subscribe(items, m.current.internalHandle);
-                }
+
+                //if (subscriptionState === SubscriptionState.Open) {
+                    //addNewMonitoredItem(items, m.current.internalHandle);
+                //}
                 
                 console.error("setVariables[" + newVariables.length + "]: " + lastCompletedRequest.callerHandle);
                 setVariables(newVariables);
@@ -259,7 +262,7 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
             }
             m.current.requests = m.current.requests.filter(x => x !== lastCompletedRequest.callerHandle);
         }
-    }, [lastCompletedRequest, variables, subscribe, subscriptionState, setItems]);
+    }, [lastCompletedRequest, variables, addNewMonitoredItem, subscriptionState, setItems]);
 
     /*
     if (!variables?.length || counter === 0) {
@@ -274,10 +277,29 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
     // Effect to detect when a new element is added to the variables array
     React.useEffect(() => {
         if (variables.length == 1) {
-            subscribe(variables.map(x => x.item), m.current.internalHandle);
+            addNewMonitoredItem(variables.map(x => x.item), m.current.internalHandle);
             createSubscription();
         }
         console.log('A new element was added to the variables array.');
+
+        // Read values for new variables
+        if (readValues && variables.length) {
+            const nodesToRead: IReadValueId[] = [];
+            variables.forEach((x) => {
+                if (x.item.nodeId) {
+                    nodesToRead.push({
+                        id: x.item.subscriberHandle ?? 0,
+                        nodeId: x.item.nodeId,
+                        path: x.item.path,
+                        attributeId: x.item.attributeId
+                    });
+                }
+            });
+            m.current.internalHandle = HandleFactory.increment();
+            m.current.requests.push(m.current.internalHandle);
+            console.error("readValues[" + nodesToRead.length + "]: " + m.current.internalHandle);
+            readValues(m.current.internalHandle, nodesToRead);
+        }
 
         // Perform any additional logic here
         previousLength.current = variables.length;
