@@ -155,14 +155,30 @@ const AASTreeView: React.FC = () => {
         if (!node.parentAASId || !node.parentSubmodelId || !node.path) return null;
 
         try {
-            const res = await fetch(`${API_BASE}/shells/${encodeId(node.parentAASId)}/submodels/${encodeId(node.parentSubmodelId)}/submodel-elements/${node.path}`);
-            const json = await res.json();
-            return json.value ?? json;
+            const result = await sendAASRequest(session, "GET", `/shells/${encodeId(node.parentAASId)}/submodels/${encodeId(node.parentSubmodelId)}/submodel-elements/${node.path}`);
+
+            // Normalize: if result has a `value` field, use it; otherwise fallback
+            //const sme = aas.jsonization.submodelElementFromJsonable(result).mustValue(); // Ensure it's a valid SubmodelElement
+
+            //if (sme instanceof aas.types.Property || sme instanceof aas.types.MultiLanguageProperty) {
+            //    return sme.value;
+            //}
+
+            if (result && typeof result === "object" && "value" in result) {
+                return result.value;
+            }
+
+            if (result && typeof result === "string" && "value" in result) {
+                return result.value;
+            }
+
+            return result;
         } catch (e) {
             console.error("Polling error:", e);
             return null;
         }
     };
+
 
     const handleOnAddAccessView = useCallback(() => {
         if (contextMenu?.node) {
