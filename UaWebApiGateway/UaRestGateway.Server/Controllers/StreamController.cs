@@ -1,36 +1,45 @@
-﻿using System.Net.WebSockets;
-using System.Text;
-using Microsoft.AspNetCore.Mvc;
-using UaRestGateway.Server.Service;
-using Microsoft.Extensions.Caching.Memory;
-using UaRestGateway.Server.Model;
-using Opc.Ua;
-using Opc.Ua.Server;
-using Opc.Ua.Client;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using System.Runtime.CompilerServices;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using Opc.Ua.Configuration;
+﻿using AasCore.Aas3_0;
 using Azure;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.IdentityModel.Tokens;
+using Opc.Ua;
+using Opc.Ua.Client;
+using Opc.Ua.Configuration;
+using Opc.Ua.Server;
+using System.IdentityModel.Tokens.Jwt;
+using System.Net.Sockets;
+using System.Net.WebSockets;
+using System.Runtime.CompilerServices;
+using System.Security.Claims;
+using System.Text;
+using System.Text.Json;
+using System.Text.RegularExpressions;
+using UaRestGateway.Server.Model;
+using UaRestGateway.Server.Service;
+using UaRestGateway.Server.Service.AAS;
 
 namespace UaRestGateway.Server.Controllers
 {
     [Route("[controller]")]
     public class StreamController : CommonController
     {
+        private readonly IAASCommunicationService m_aasCommunicationService;
+
         public StreamController(
             IConfiguration configuration,
             ILogger<UaServerController> logger,
             ILogger<AasController> aaslogger,
             DatabaseContext context,
             IMemoryCache cache,
-            IUACommunicationService communicationService)
+            IUACommunicationService communicationService,
+            IAASCommunicationService aasCommunicationService)
         :
             base(configuration, logger, context, cache, communicationService)
         {
-            
+            m_aasCommunicationService = aasCommunicationService;
         }
 
         private ClaimsPrincipal VerifyToken(string token)
@@ -190,9 +199,27 @@ namespace UaRestGateway.Server.Controllers
             IServiceRequest request = null;
             IServiceResponse response = null;
 
+            byte[] rawBytes = stream.ToArray(); // snapshot before any reads
+            string rawText = null;
             try
             {
-                request = await MessageUtils.Decode<IServiceRequest>(server.MessageContext, stream, envelopeExpected: true);
+                if (result.MessageType == WebSocketMessageType.Text)
+                {
+                    rawText = Encoding.UTF8.GetString(rawBytes);
+
+                    var jsonDoc = System.Text.Json.JsonDocument.Parse(rawText);
+                    if (jsonDoc.RootElement.TryGetProperty("ServiceId", out var serviceId) &&
+                        serviceId.GetString() == "AASRequest")
+                    {
+                        await HandleAASRequest(jsonDoc.RootElement, webSocket);
+                        return;
+                    }
+                }
+
+                // Otherwise: decode as OPC UA
+                // Reset a fresh stream for OPC UA decode
+                using var freshStream = new MemoryStream(rawBytes);
+                request = await MessageUtils.Decode<IServiceRequest>(server.MessageContext, freshStream, envelopeExpected: true);
             }
             catch (Exception e)
             {
@@ -270,6 +297,99 @@ namespace UaRestGateway.Server.Controllers
             {
                 await ProcessRequest(webSocket, stream, sessionContext, server, client, request, result.MessageType == WebSocketMessageType.Binary);
             });
+        }
+
+        private async Task HandleAASRequest(JsonElement root, WebSocket webSocket)
+        {
+            try
+            {
+                var requestHeader = root.GetProperty("Body").GetProperty("RequestHeader");
+                var method = root.GetProperty("Body").GetProperty("Method").GetString();
+                var path = root.GetProperty("Body").GetProperty("Path").GetString();
+                var body = root.GetProperty("Body").TryGetProperty("Body", out var b) ? b : default;
+                var requestHandle = requestHeader.GetProperty("AASRequestHandle").GetInt32();
+
+                if (method == "GET" && path != null)
+                {
+                    var match = Regex.Match(path, @"^/shells/(?<aasId>[^/]+)/submodels/(?<submodelId>[^/]+)/submodel-elements/(?<elementPath>.+)$");
+                    if (match.Success)
+                    {
+                        var aasIdEncoded = match.Groups["aasId"].Value;
+                        var submodelIdEncoded = match.Groups["submodelId"].Value;
+                        var elementPath = match.Groups["elementPath"].Value;
+
+                        // Decode Base64 URL-safe encoded IDs
+                        var aasId = DecodeBase64Url(aasIdEncoded);
+                        var submodelId = DecodeBase64Url(submodelIdEncoded);
+
+                        var result = m_aasCommunicationService.GetSubmodelElementByPathWithinAAS(aasId, submodelId, elementPath);
+
+                        var response = new
+                        {
+                            ServiceId = "AASResponse",
+                            Body = new
+                            {
+                                RequestHeader = new { AASRequestHandle = requestHandle },
+                                Result = Jsonization.Serialize.ToJsonObject(result)
+                            }
+                        };
+
+                        var jsonResponse = JsonSerializer.Serialize(response);
+                        var buffer = Encoding.UTF8.GetBytes(jsonResponse);
+                        await webSocket.SendAsync(buffer, WebSocketMessageType.Text, true, CancellationToken.None);
+                        return;
+                    }
+                }
+
+                // Fallback: unsupported AAS path
+                await SendError(webSocket, requestHandle, $"Unsupported AAS path: {path}");
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "Error handling AASRequest");
+                await SendError(webSocket, -1, "Internal Server Error");
+            }
+        }
+
+        private async Task SendError(WebSocket socket, int requestHandle, string message)
+        {
+            var errorResponse = new
+            {
+                ServiceId = "AASResponse",
+                Body = new
+                {
+                    RequestHeader = new { AASRequestHandle = requestHandle },
+                    Error = message
+                }
+            };
+
+            var json = JsonSerializer.Serialize(errorResponse);
+            var buffer = Encoding.UTF8.GetBytes(json);
+            await socket.SendAsync(buffer, WebSocketMessageType.Text, true, CancellationToken.None);
+        }
+
+        private string DecodeBase64Url(string encoded)
+        {
+            encoded = encoded.Replace('-', '+').Replace('_', '/');
+            switch (encoded.Length % 4)
+            {
+                case 2: encoded += "=="; break;
+                case 3: encoded += "="; break;
+            }
+            return Encoding.UTF8.GetString(Convert.FromBase64String(encoded));
+        }
+
+        private async Task<object> CallAASController(string method, string path, JsonElement body)
+        {
+            return new
+            {
+                echo = new
+                {
+                    Method = method,
+                    Path = path,
+                    Body = body.ToString()
+                }
+            };
         }
 
         private async Task ProcessRequest(

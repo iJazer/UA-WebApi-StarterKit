@@ -1,12 +1,12 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useContext } from "react";
 import { TreeView } from "@mui/x-tree-view/TreeView";
 import { TreeItem } from "@mui/x-tree-view/TreeItem";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import * as aas from "@aas-core-works/aas-core3.0-typescript";
 import ContextMenu from "../ContextMenu";
-
-const API_BASE = `https://${location.host}/api/v3.0`;
+import { SessionContext } from "../SessionContext";
+import { sendAASRequest } from "../utils/SendAASRequest";
 
 interface TreeNode {
     id: string;
@@ -36,9 +36,10 @@ const AASTreeView: React.FC = () => {
         index: number;
     } | null>(null);
 
+    const session = useContext(SessionContext);
+
     useEffect(() => {
         loadTree();
-
         return () => {
             accessViewItems.forEach(item => {
                 if (item.pollIntervalId) {
@@ -49,15 +50,13 @@ const AASTreeView: React.FC = () => {
     }, []);
 
     const loadTree = async () => {
-        const res = await fetch(`${API_BASE}/shells`);
-        const shellJson = await res.json();
+        const shellJson = await sendAASRequest(session, "GET", "/shells");
         const shell = aas.jsonization.assetAdministrationShellFromJsonable(shellJson).mustValue();
 
         const children: TreeNode[] = [];
         for (const ref of shell.submodels ?? []) {
             const id = ref.keys[0].value;
-            const smRes = await fetch(`${API_BASE}/shells/${encodeId(shell.id)}/submodels/${encodeId(id)}`);
-            const smJson = await smRes.json();
+            const smJson = await sendAASRequest(session, "GET", `/shells/${encodeId(shell.id)}/submodels/${encodeId(id)}`);
             const sm = aas.jsonization.submodelFromJsonable(smJson).mustValue();
             children.push(await submodelToTree(sm, shell.id));
         }
@@ -73,11 +72,9 @@ const AASTreeView: React.FC = () => {
 
     const submodelToTree = async (submodel: aas.types.Submodel, aasId: string): Promise<TreeNode> => {
         const children: TreeNode[] = [];
-
         for (const el of submodel.submodelElements ?? []) {
             children.push(await elementToTree(el, aasId, submodel.id, el.idShort ?? "", ""));
         }
-
         return {
             id: submodel.id,
             name: `Submodel: ${submodel.idShort}`,
@@ -120,33 +117,39 @@ const AASTreeView: React.FC = () => {
 
     const handleContextMenu = (event: React.MouseEvent, node: TreeNode) => {
         event.preventDefault();
-        setContextMenu(
-            contextMenu === null
-                ? {
-                    mouseX: event.clientX + 2,
-                    mouseY: event.clientY + 2,
-                    node,
-                }
-                : null
-        );
+        setContextMenu({ mouseX: event.clientX + 2, mouseY: event.clientY + 2, node });
     };
 
-    const handleCloseContextMenu = () => {
-        setContextMenu(null);
-    };
+    const handleCloseContextMenu = () => setContextMenu(null);
 
     const fetchValue = async (node: TreeNode) => {
         if (!node.parentAASId || !node.parentSubmodelId || !node.path) return null;
 
         try {
-            const res = await fetch(`${API_BASE}/shells/${encodeId(node.parentAASId)}/submodels/${encodeId(node.parentSubmodelId)}/submodel-elements/${node.path}`);
-            const json = await res.json();
-            return json.value ?? json;
+            const result = await sendAASRequest(session, "GET", `/shells/${encodeId(node.parentAASId)}/submodels/${encodeId(node.parentSubmodelId)}/submodel-elements/${node.path}`);
+
+            // Normalize: if result has a `value` field, use it; otherwise fallback
+            //const sme = aas.jsonization.submodelElementFromJsonable(result).mustValue(); // Ensure it's a valid SubmodelElement
+
+            //if (sme instanceof aas.types.Property || sme instanceof aas.types.MultiLanguageProperty) {
+            //    return sme.value;
+            //}
+
+            if (result && typeof result === "object" && "value" in result) {
+                return result.value;
+            }
+
+            if (result && typeof result === "string" && "value" in result) {
+                return result.value;
+            }
+
+            return result;
         } catch (e) {
             console.error("Polling error:", e);
             return null;
         }
     };
+
 
     const handleOnAddAccessView = useCallback(() => {
         if (contextMenu?.node) {
@@ -157,29 +160,20 @@ const AASTreeView: React.FC = () => {
             };
             poll();
             const intervalId = window.setInterval(poll, 3000);
-            setAccessViewItems((prev) => [...prev, { ...node, pollIntervalId: intervalId }]);
+            setAccessViewItems(prev => [...prev, { ...node, pollIntervalId: intervalId }]);
         }
         handleCloseContextMenu();
     }, [contextMenu]);
 
-    const handleAccessViewContextMenu = (
-        event: React.MouseEvent,
-        index: number
-    ) => {
+    const handleAccessViewContextMenu = (event: React.MouseEvent, index: number) => {
         event.preventDefault();
-        setAccessViewContextMenu({
-            mouseX: event.clientX + 2,
-            mouseY: event.clientY + 2,
-            index,
-        });
+        setAccessViewContextMenu({ mouseX: event.clientX + 2, mouseY: event.clientY + 2, index });
     };
 
     const handleRemoveAccessViewItem = (index: number) => {
-        setAccessViewItems((prev) => {
+        setAccessViewItems(prev => {
             const item = prev[index];
-            if (item.pollIntervalId) {
-                clearInterval(item.pollIntervalId);
-            }
+            if (item.pollIntervalId) clearInterval(item.pollIntervalId);
             return prev.filter((_, i) => i !== index);
         });
         setAccessViewContextMenu(null);
@@ -198,92 +192,46 @@ const AASTreeView: React.FC = () => {
         }
     };
 
-    const renderTree = (node: TreeNode): React.ReactNode => (
-        <TreeItem
-            key={node.id}
-            nodeId={node.id}
-            label={node.name}
-            onClick={() => setSelected(node.original)}
-            onContextMenu={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                handleContextMenu(e, node);
-            }}
-        >
-            {node.children?.map(renderTree)}
-        </TreeItem>
-    );
-
-    const renderDetails = () => {
-        if (!selected) return <div>Select a node to see details</div>;
-
-        const entries = Object.entries(selected);
-        return (
-            <table style={{ width: "100%", tableLayout: "fixed" }}>
-                <thead>
-                    <tr>
-                        <th style={thStyle}>Property</th>
-                        <th style={thStyle}>Value</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {entries.map(([key, value]) => (
-                        <tr key={key}>
-                            <td style={tdStyle}>{key}</td>
-                            <td style={{ ...tdStyle, whiteSpace: "nowrap" }}>{JSON.stringify(value)}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        );
-    };
-
     return (
         <div style={{ display: "flex", height: "80vh", width: "100%" }}>
             <div style={{ width: "33%", overflow: "auto", borderRight: "1px solid #ccc" }}>
-                <div style={{ height: "100%", overflow: "auto" }}>
-                    <TreeView defaultCollapseIcon={<ExpandMoreIcon />} defaultExpandIcon={<ChevronRightIcon />}>
-                        {treeData && renderTree(treeData)}
-                    </TreeView>
-                </div>
+                <TreeView defaultCollapseIcon={<ExpandMoreIcon />} defaultExpandIcon={<ChevronRightIcon />}>
+                    {treeData && renderTree(treeData)}
+                </TreeView>
             </div>
             <div style={{ width: "33%", overflow: "auto", borderRight: "1px solid #ccc", padding: "0 8px" }}>
-                <div style={{ height: "100%", overflow: "auto" }}>{renderDetails()}</div>
+                {renderDetails()}
             </div>
             <div style={{ width: "34%", overflow: "auto", padding: "0 8px" }}>
-                <div style={{ height: "100%", overflow: "auto" }}>
-                    <table style={{ width: "100%", tableLayout: "fixed" }}>
-                        <thead>
-                            <tr>
-                                <th style={thStyle}>Name (idShort)</th>
-                                <th style={thStyle}>Value</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {accessViewItems.map((item, idx) => {
-                                const original = item.original as aas.types.Class;
-                                const idShort = (original as any)?.idShort ?? item.name;
-                                const value = item.value ?? (original as any)?.value ?? null;
-                                return (
-                                    <tr
-                                        key={idx}
-                                        onContextMenu={(e) => handleAccessViewContextMenu(e, idx)}
-                                        style={{ cursor: "context-menu" }}
-                                    >
-                                        <td style={tdStyle}>{idShort}</td>
-                                        <td style={{ ...tdStyle, whiteSpace: "nowrap" }}>{renderValue(value)}</td>
-                                    </tr>
-                                );
-                            })}
-                        </tbody>
-                    </table>
-                </div>
+                <table style={{ width: "100%", tableLayout: "fixed" }}>
+                    <thead>
+                        <tr>
+                            <th style={thStyle}>Name (idShort)</th>
+                            <th style={thStyle}>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {accessViewItems.map((item, idx) => {
+                            const original = item.original as aas.types.Class;
+                            const idShort = (original as any)?.idShort ?? item.name;
+                            const value = item.value ?? (original as any)?.value ?? null;
+                            return (
+                                <tr
+                                    key={idx}
+                                    onContextMenu={(e) => handleAccessViewContextMenu(e, idx)}
+                                    style={{ cursor: "context-menu" }}
+                                >
+                                    <td style={tdStyle}>{idShort}</td>
+                                    <td style={{ ...tdStyle, whiteSpace: "nowrap" }}>{renderValue(value)}</td>
+                                </tr>
+                            );
+                        })}
+                    </tbody>
+                </table>
             </div>
 
             <ContextMenu
-                anchorPosition={
-                    contextMenu ? { mouseX: contextMenu.mouseX, mouseY: contextMenu.mouseY } : null
-                }
+                anchorPosition={contextMenu ? { mouseX: contextMenu.mouseX, mouseY: contextMenu.mouseY } : null}
                 handleClose={handleCloseContextMenu}
                 onAddAccessView={handleOnAddAccessView}
             />
@@ -314,11 +262,48 @@ const AASTreeView: React.FC = () => {
             )}
         </div>
     );
-};
 
-function encodeId(id: string): string {
-    return btoa(id).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
-}
+    function renderTree(node: TreeNode): React.ReactNode {
+        return (
+            <TreeItem
+                key={node.id}
+                nodeId={node.id}
+                label={node.name}
+                onClick={() => setSelected(node.original)}
+                onContextMenu={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleContextMenu(e, node);
+                }}
+            >
+                {node.children?.map(renderTree)}
+            </TreeItem>
+        );
+    }
+
+    function renderDetails() {
+        if (!selected) return <div>Select a node to see details</div>;
+        const entries = Object.entries(selected);
+        return (
+            <table style={{ width: "100%", tableLayout: "fixed" }}>
+                <thead>
+                    <tr>
+                        <th style={thStyle}>Property</th>
+                        <th style={thStyle}>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {entries.map(([key, value]) => (
+                        <tr key={key}>
+                            <td style={tdStyle}>{key}</td>
+                            <td style={tdStyle}>{JSON.stringify(value)}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        );
+    }
+};
 
 const thStyle: React.CSSProperties = {
     textAlign: "left",
@@ -336,6 +321,10 @@ const tdStyle: React.CSSProperties = {
     whiteSpace: "nowrap",
     overflow: "auto",
 };
+
+function encodeId(id: string): string {
+    return btoa(id).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
 
 function getSubmodelElementAbbreviation(name: string): string {
     switch (name) {
