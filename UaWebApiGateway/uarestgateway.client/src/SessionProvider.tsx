@@ -28,7 +28,8 @@ export interface ISessionContext {
    setRequestTimeout: (value: number) => void,
    sendRequest: (request: IRequestMessage, clientHandle?: number) => void
    lastCompletedRequest?: ICompletedRequest,
-   message: string
+    message: string,
+    addAASResponseListener?: (handle: number, callback: (response: IResponseMessage) => void) => void;
 }
 
 interface SessionProps {
@@ -46,7 +47,8 @@ interface SessionInternals {
    serverNonce?: string,
    requests: Map<number, ICompletedRequest>,
    responses: IResponseMessage[],
-   message: string | null,
+    message: string | null,
+    aasListeners?: Map<number, (response: IResponseMessage) => void>;
 }
 
 const apiNames = {
@@ -92,6 +94,7 @@ export const SessionProvider = ({ children }: SessionProps) => {
       requests: new Map<number, ICompletedRequest>(),
       responses: [],
       message: null,
+      aasListeners: new Map<number, (response: IResponseMessage) => void>(),
    });
 
    const { sendMessage, lastMessage, readyState } = useWebSocket(
@@ -329,6 +332,14 @@ export const SessionProvider = ({ children }: SessionProps) => {
       }
    }, [createSession, deleteSession]);
 
+    const addAASResponseListener = React.useCallback((
+        handle: number,
+        callback: (response: IResponseMessage) => void
+    ) => {
+        m.current.aasListeners?.set(handle, callback);
+    }, []);
+
+
    const sessionContext = {
       serverUrl: m.current.serverUrl,
       setServerUrl: setServerUrlImpl,
@@ -345,7 +356,8 @@ export const SessionProvider = ({ children }: SessionProps) => {
       visibleNodes,
       setVisibleNodes,
       message,
-      setMessage: setMessageImpl
+      setMessage: setMessageImpl,
+      addAASResponseListener,
    } as ISessionContext;
 
    /**
@@ -355,7 +367,18 @@ export const SessionProvider = ({ children }: SessionProps) => {
     * 
     * The function checks the ServiceId of the response and processes the response accordingly
     */
-   const processResponse = React.useCallback((response: IResponseMessage) => {
+    const processResponse = React.useCallback((response: IResponseMessage) => {
+
+        if (response?.ServiceId === "AASResponse") {
+            const handle = response?.Body?.RequestHeader?.AASRequestHandle;
+            const listener = m.current.aasListeners?.get(handle);
+            if (listener) {
+                listener(response);
+                m.current.aasListeners?.delete(handle);
+            }
+            return;
+        }
+
       if (response?.ServiceId === OpcUa.DataTypeIds.CreateSessionResponse) {
          const csr = response.Body as OpcUa.CreateSessionResponse;
          m.current.authenticationToken = csr.AuthenticationToken;
