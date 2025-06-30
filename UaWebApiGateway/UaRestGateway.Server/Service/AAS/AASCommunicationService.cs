@@ -29,6 +29,7 @@ namespace UaRestGateway.Server.Service.AAS
         IAssetAdministrationShell GetAssetAdministrationShellById(string decodedAasIdentifier);
         ISubmodel GetSubmodelByIdWithinAAS(string aasIdentifier, string submodelIdentifier);
         ISubmodelElement GetSubmodelElementByPathWithinAAS(string aasIdentifier, string submodelIdentifier, string idShortPath);
+        (ISubmodelElement Element, bool IsOpcUaBacked, NodeId NodeId) GetSubmodelElementInfo(string aasIdentifier, string submodelIdentifier, string idShortPath);
     }
     public class AASCommunicationService : BackgroundService, IAASCommunicationService
     {
@@ -181,29 +182,61 @@ namespace UaRestGateway.Server.Service.AAS
 
         public ISubmodelElement GetSubmodelElementByPathWithinAAS(string aasIdentifier, string submodelIdentifier, string idShortPath)
         {
-            ISubmodelElement output = null;
-            var submodel = GetSubmodelByIdWithinAAS(aasIdentifier, submodelIdentifier);
+            //ISubmodelElement output = null;
+            //var submodel = GetSubmodelByIdWithinAAS(aasIdentifier, submodelIdentifier);
 
-            
+            //if (submodel.SubmodelElements != null)
+            //{
+            //    output = GetSubmodelElement(submodel.SubmodelElements, idShortPath);
+            //    bool opcuaFlag = GetExtensionValue(output);
+            //    if (opcuaFlag)
+            //    {
+            //        var opcUaVal = GetOpcUaNodeValue(output, submodel.IdShort, idShortPath);
+            //        ((Property)output).Value = opcUaVal;
+            //    }
+            //}
 
-            if (submodel.SubmodelElements != null)
-            {
-                output = GetSubmodelElement(submodel.SubmodelElements, idShortPath);
-                bool opcuaFlag = GetExtensionValue(output);
-                if (opcuaFlag)
-                {
-                    var opcUaVal = GetOpcUaNodeValue(output, submodel.IdShort, idShortPath);
-                    ((Property)output).Value = opcUaVal;
-                }
-            }
+            //if(output == null)
+            //{
+            //    throw new NotFoundException($"Submodel Element with idShortPath {idShortPath} NOT found.");
+            //}
 
-            if(output == null)
+            //return output;
+
+            var (element, isOpcUa, nodeId) = GetSubmodelElementInfo(aasIdentifier, submodelIdentifier, idShortPath);
+
+            if (element == null)
             {
                 throw new NotFoundException($"Submodel Element with idShortPath {idShortPath} NOT found.");
             }
 
-            return output;
+            if (isOpcUa && element is Property prop)
+            {
+                var value = GetOpcUaNodeValue(nodeId);
+                prop.Value = value;
+            }
+
+            return element;
         }
+
+        public (ISubmodelElement Element, bool IsOpcUaBacked, NodeId NodeId) GetSubmodelElementInfo(
+        string aasIdentifier, string submodelIdentifier, string idShortPath)
+        {
+            var submodel = GetSubmodelByIdWithinAAS(aasIdentifier, submodelIdentifier);
+
+            if (submodel.SubmodelElements == null)
+                throw new NotFoundException("Submodel has no elements");
+
+            var element = GetSubmodelElement(submodel.SubmodelElements, idShortPath);
+            if (element == null)
+                throw new NotFoundException($"Element not found: {idShortPath}");
+
+            bool isOpcUa = GetExtensionValue(element);
+            NodeId nodeId = isOpcUa ? FindOpcUaNodeId(submodel.IdShort, idShortPath) : null;
+
+            return (element, isOpcUa, nodeId);
+        }
+
 
         private ISubmodelElement GetSubmodelElement(List<ISubmodelElement> submodelElements, string idShortPath)
         {
@@ -239,22 +272,27 @@ namespace UaRestGateway.Server.Service.AAS
             return output;
         }
 
-        private string GetOpcUaNodeValue(ISubmodelElement submodelElement, string submodelIdShort, string idShortPath)
+        //private string GetOpcUaNodeValue(ISubmodelElement submodelElement, string submodelIdShort, string idShortPath)
+        private string GetOpcUaNodeValue(NodeId smeNodeId)
         {
-            if(OpcUaClient == null)
+            
+
+            //return FindAndReadOpcUaValue((Session)session, submodelIdShort, idShortPath);
+            //var smeNodeId = FindOpcUaNodeId(submodelIdShort, idShortPath);
+            return ReadOpcUaNodeValue(smeNodeId);
+        }
+
+        //private string FindAndReadOpcUaValue(Session session, string submodelIdShort, string idShortPath)
+        private NodeId FindOpcUaNodeId(string submodelIdShort, string idShortPath)
+        {
+            if (OpcUaClient == null)
             {
                 throw new Exception("OpcUaClient is not initialized. Cannot get OpcUa node value.");
             }
 
             var session = OpcUaClient.Session;
-
-            return FindAndReadOpcUaValue((Session)session, submodelIdShort, idShortPath);
-        }
-
-        private string FindAndReadOpcUaValue(Session session, string submodelIdShort, string idShortPath)
-        {
             //Get AAS Environment root node
-            NodeId aasEnvNodeId = GetNodeIdByTypeDefinition(session, ObjectIds.ObjectsFolder, AasToOpcUaTypeDefinitions.Mappings["Environment"]);
+            NodeId aasEnvNodeId = GetNodeIdByTypeDefinition((Session)session, ObjectIds.ObjectsFolder, AasToOpcUaTypeDefinitions.Mappings["Environment"]);
 
             //Get AAS node
             if (aasEnvNodeId == null)
@@ -262,28 +300,46 @@ namespace UaRestGateway.Server.Service.AAS
                 throw new NotFoundException("AAS Environment node not found.");
             }
 
-            NodeId aasNodeId = GetNodeIdByTypeDefinition(session, aasEnvNodeId, AasToOpcUaTypeDefinitions.Mappings["AssetAdministrationShell"]);
+            NodeId aasNodeId = GetNodeIdByTypeDefinition((Session)session, aasEnvNodeId, AasToOpcUaTypeDefinitions.Mappings["AssetAdministrationShell"]);
             if (aasNodeId == null)
             {
                 throw new NotFoundException("AAS node not found.");
             }
 
-            NodeId submodelNodeId = GetNodeIdByTypeDefinition(session, aasNodeId, AasToOpcUaTypeDefinitions.Mappings[submodelIdShort]);
+            NodeId submodelNodeId = GetNodeIdByTypeDefinition((Session)session, aasNodeId, AasToOpcUaTypeDefinitions.Mappings[submodelIdShort]);
             if (submodelNodeId == null)
             {
                 throw new NotFoundException("Submodel node not found.");
             }
 
             //Browse OpcUa Node for the given idShortPath
-            NodeId smeNodeId = GetSmeNodeIdByIdShortPath(session, submodelNodeId, idShortPath);
+            NodeId smeNodeId = GetSmeNodeIdByIdShortPath((Session)session, submodelNodeId, idShortPath);
             if (smeNodeId == null)
             {
                 throw new NotFoundException($"OPC UA Node corresponding to Submodel Element with idShortPath {idShortPath} NOT found.");
             }
 
             //Read the value of the Submodel Element
-            var value = OpcUaClient.Session.ReadValue(smeNodeId).Value;
-            Logger.LogInformation($"OpcUa Node Value for {smeNodeId} is {value}");
+            //var value = OpcUaClient.Session.ReadValue(smeNodeId).Value;
+            //Logger.LogInformation($"OpcUa Node Value for {smeNodeId} is {value}");
+            //return value.ToString();
+
+            return smeNodeId;
+        }
+
+        private string ReadOpcUaNodeValue(NodeId nodeId)
+        {
+            if (OpcUaClient == null)
+            {
+                throw new Exception("OpcUaClient is not initialized. Cannot get OpcUa node value.");
+            }
+
+            var session = OpcUaClient.Session;
+            var value = session.ReadValue(nodeId).Value;
+            if (value == null)
+            {
+                throw new NotFoundException($"Value for OpcUa Node {nodeId} not found.");
+            }
             return value.ToString();
         }
 
@@ -336,7 +392,7 @@ namespace UaRestGateway.Server.Service.AAS
                 //Check BrowseName for idShortPath
                 if (rd.BrowseName != null && rd.BrowseName.Name.Equals(idShortPath))
                 {
-                    Console.WriteLine($"Found required node: {rd.DisplayName.Text}");
+                    //Console.WriteLine($"Found required node: {rd.DisplayName.Text}");
                     return rdNodeId; // Return the AAS node ID
                 }
             }
@@ -366,7 +422,7 @@ namespace UaRestGateway.Server.Service.AAS
                 NodeId typeDef = GetTypeDefinition(session, rdNodeId);
                 if (typeDef != null && NodeId.Equals(typeDef, typeDefId))
                 {
-                    Console.WriteLine($"Found required node: {rd.DisplayName.Text}");
+                    //Console.WriteLine($"Found required node: {rd.DisplayName.Text}");
                     return rdNodeId; // Return the AAS node ID
                 }
             }

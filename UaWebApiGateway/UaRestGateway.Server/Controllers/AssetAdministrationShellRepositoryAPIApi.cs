@@ -29,15 +29,18 @@ namespace UaRestGateway.Server.Controllers
     [ApiController]
     public class AssetAdministrationShellRepositoryAPIApiController : ControllerBase
     {
+        private readonly ILogger<AssetAdministrationShellRepositoryAPIApiController> _logger;
         private readonly IAasTreeService _aasTreeService;
         private readonly IAASCommunicationService _aasCommunicationService;
         private readonly IBase64UrlDecoderService _decoderService;
 
         public AssetAdministrationShellRepositoryAPIApiController(
+            ILogger<AssetAdministrationShellRepositoryAPIApiController> logger,
             IAasTreeService aasTreeService,
             IAASCommunicationService aasCommunicationService,
             IBase64UrlDecoderService decoderService)
         {
+            _logger = logger;
             _aasTreeService = aasTreeService;
             _aasCommunicationService = aasCommunicationService;
             _decoderService = decoderService;
@@ -843,6 +846,8 @@ namespace UaRestGateway.Server.Controllers
         {
             var decodedAasId = _decoderService.Decode("aasIdentifier", aasIdentifier);
             var decodedSubmodelId = _decoderService.Decode("submodelIdentifier", submodelIdentifier);
+
+            _logger.LogInformation($"Received REST request to get sme {idShortPath}");
 
             var submodelElement = _aasCommunicationService.GetSubmodelElementByPathWithinAAS(decodedAasId, decodedSubmodelId, idShortPath);
             var output = AasCore.Aas3_0.Jsonization.Serialize.ToJsonObject(submodelElement);

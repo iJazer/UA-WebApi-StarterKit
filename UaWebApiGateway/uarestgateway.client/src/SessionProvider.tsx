@@ -31,6 +31,7 @@ export interface ISessionContext {
     message: string,
     processMessages: (matcher: (message: ICompletedRequest) => boolean) => ICompletedRequest[],
     addAASResponseListener?: (handle: number, callback: (response: IResponseMessage) => void) => void;
+    addPushUpdateListener?: (callback: (response: IResponseMessage) => void) => void;
 }
 
 interface SessionProps {
@@ -50,6 +51,7 @@ interface SessionInternals {
     responses: ICompletedRequest[]
     message: string | null,
     aasListeners?: Map<number, (response: IResponseMessage) => void>;
+    pushUpdateListeners?: Set<(response: IResponseMessage) => void>;
 }
 
 const apiNames = {
@@ -105,7 +107,8 @@ export const SessionProvider = ({ children }: SessionProps) => {
       requests: new Map<number, ICompletedRequest>(),
       responses: [],
       message: null,
-      aasListeners: new Map<number, (response: IResponseMessage) => void>(),
+       aasListeners: new Map<number, (response: IResponseMessage) => void>(),
+       pushUpdateListeners: new Set<(response: IResponseMessage) => void>(),
    });
 
     const handleOnMessage = React.useCallback((event: MessageEvent) => {
@@ -429,6 +432,15 @@ export const SessionProvider = ({ children }: SessionProps) => {
         m.current.aasListeners?.set(handle, callback);
     }, []);
 
+    const addPushUpdateListener = React.useCallback((
+        callback: (response: IResponseMessage) => void
+    ) => {
+        if (!m.current.pushUpdateListeners) {
+            m.current.pushUpdateListeners = new Set();
+        }
+        m.current.pushUpdateListeners.add(callback);
+    }, []);
+
     const sessionContext = {
         serverUrl: m.current.serverUrl,
         setServerUrl: setServerUrlImpl,
@@ -448,6 +460,7 @@ export const SessionProvider = ({ children }: SessionProps) => {
         messageCounter,
         processMessages,
         addAASResponseListener,
+        addPushUpdateListener,
     } as ISessionContext;
 
     /**
@@ -460,11 +473,13 @@ export const SessionProvider = ({ children }: SessionProps) => {
     const processResponse = React.useCallback((response: IResponseMessage) => {
 
         if (response?.ServiceId === "AASResponse") {
-            const handle = response?.Body?.RequestHeader?.AASRequestHandle;
+            const handle = response.Body?.RequestHeader?.AASRequestHandle;
             const listener = m.current.aasListeners?.get(handle);
             if (listener) {
                 listener(response);
                 m.current.aasListeners?.delete(handle);
+            } else {
+                m.current.pushUpdateListeners?.forEach(cb => cb(response));
             }
             return;
         }
