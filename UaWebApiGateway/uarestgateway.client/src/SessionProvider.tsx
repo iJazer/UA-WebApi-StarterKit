@@ -30,6 +30,7 @@ export interface ISessionContext {
    lastCompletedRequest?: ICompletedRequest,
     message: string,
     addAASResponseListener?: (handle: number, callback: (response: IResponseMessage) => void) => void;
+    addPushUpdateListener?: (callback: (response: IResponseMessage) => void) => void;
 }
 
 interface SessionProps {
@@ -49,6 +50,7 @@ interface SessionInternals {
    responses: IResponseMessage[],
     message: string | null,
     aasListeners?: Map<number, (response: IResponseMessage) => void>;
+    pushUpdateListeners?: Set<(response: IResponseMessage) => void>;
 }
 
 const apiNames = {
@@ -94,7 +96,8 @@ export const SessionProvider = ({ children }: SessionProps) => {
       requests: new Map<number, ICompletedRequest>(),
       responses: [],
       message: null,
-      aasListeners: new Map<number, (response: IResponseMessage) => void>(),
+       aasListeners: new Map<number, (response: IResponseMessage) => void>(),
+       pushUpdateListeners: new Set<(response: IResponseMessage) => void>(),
    });
 
    const { sendMessage, lastMessage, readyState } = useWebSocket(
@@ -339,6 +342,16 @@ export const SessionProvider = ({ children }: SessionProps) => {
         m.current.aasListeners?.set(handle, callback);
     }, []);
 
+    const addPushUpdateListener = React.useCallback((
+        callback: (response: IResponseMessage) => void
+    ) => {
+        if (!m.current.pushUpdateListeners) {
+            m.current.pushUpdateListeners = new Set();
+        }
+        m.current.pushUpdateListeners.add(callback);
+    }, []);
+
+
 
    const sessionContext = {
       serverUrl: m.current.serverUrl,
@@ -357,7 +370,8 @@ export const SessionProvider = ({ children }: SessionProps) => {
       setVisibleNodes,
       message,
       setMessage: setMessageImpl,
-      addAASResponseListener,
+       addAASResponseListener,
+       addPushUpdateListener,
    } as ISessionContext;
 
    /**
@@ -370,11 +384,13 @@ export const SessionProvider = ({ children }: SessionProps) => {
     const processResponse = React.useCallback((response: IResponseMessage) => {
 
         if (response?.ServiceId === "AASResponse") {
-            const handle = response?.Body?.RequestHeader?.AASRequestHandle;
+            const handle = response.Body?.RequestHeader?.AASRequestHandle;
             const listener = m.current.aasListeners?.get(handle);
             if (listener) {
                 listener(response);
                 m.current.aasListeners?.delete(handle);
+            } else {
+                m.current.pushUpdateListeners?.forEach(cb => cb(response));
             }
             return;
         }
