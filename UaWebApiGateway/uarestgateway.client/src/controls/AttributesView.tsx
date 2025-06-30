@@ -31,18 +31,19 @@ interface AttributesViewProps {
 
 export const AttributesView = ({ reference, requestTimeout }: AttributesViewProps) => {
     const [values, setValues] = React.useState<IReadResult[]>([]);
-    const name = reference?.DisplayName?.Text ?? reference?.BrowseName ?? reference?.NodeId;
+    const nodeId = reference?.NodeId;
     const theme = useTheme();
     const { user } = React.useContext(UserContext);
 
     const m = React.useRef<VariableValueListInternals>({
-        internalHandle: HandleFactory.increment(),
+        internalHandle: HandleFactory.increment() + 20000,
         requests: []
     });
 
     const {
         readValues,
-        lastCompletedRequest
+        responseCount,
+        processResults
     } = React.useContext(BrowseContext);
 
     React.useEffect(() => {
@@ -64,24 +65,33 @@ export const AttributesView = ({ reference, requestTimeout }: AttributesViewProp
     }, [reference, reference?.NodeId, requestTimeout, user, readValues]);
 
     React.useEffect(() => {
-        if (lastCompletedRequest && m.current.requests.find(x => x === lastCompletedRequest.callerHandle)) {
-            const values: IReadResult[] = [];
-            if (lastCompletedRequest.values) {
-                for (let ii = 0; ii < lastCompletedRequest.values.length; ii++) {
-                    const x = lastCompletedRequest.values[ii];
-                    if (x.value?.StatusCode?.Code !== OpcUa.StatusCodes.BadAttributeIdInvalid) {
-                        values.push({
-                            id: HandleFactory.increment(),
-                            nodeId: x.nodeId ?? '',
-                            attributeId: x.attributeId ?? 0,
-                            value: x.value
-                        });
-                    }
-                }
-            }
-            setValues(values ?? []);
-        }
-    }, [lastCompletedRequest]);
+        const results = processResults((result) => {
+            return m.current.requests.find(x => x === result.callerHandle) ? true : false;
+        });
+        if (results) {
+            results?.forEach(result => {
+                if (result.values) {
+                    const newValues: IReadResult[] = [];
+                    result.values.forEach((x) => {
+                        if (nodeId == x.nodeId) {
+                            if (x.value?.StatusCode?.Code !== OpcUa.StatusCodes.BadAttributeIdInvalid) {
+                                newValues.push({
+                                    id: HandleFactory.increment(),
+                                    nodeId: x.nodeId ?? '',
+                                    attributeId: x.attributeId ?? 0,
+                                    value: x.value
+                                });
+                            }
+                        }
+                    }); 
+                    setValues(newValues);
+                }   
+            });
+                 
+        }  
+    }, [responseCount, processResults]);
+
+
 
 
    if (!reference) {

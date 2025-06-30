@@ -7,7 +7,7 @@ import TableRow from '@mui/material/TableRow/TableRow';
 import TableCell from '@mui/material/TableCell/TableCell';
 import TableBody from '@mui/material/TableBody/TableBody';
 import Paper from '@mui/material/Paper/Paper';
-import { Typography } from '@mui/material';
+import { Skeleton, Typography } from '@mui/material';
 
 import * as OpcUa from 'opcua-webapi';
 
@@ -71,7 +71,7 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
 
     // The reference to the internal state of the component.
     const m = React.useRef<VariableValueListInternals>({
-        internalHandle: HandleFactory.increment(),
+        internalHandle: HandleFactory.increment() + 20000,
         monitoredItems: [],
         requests: [],
         mounted: true,
@@ -96,18 +96,32 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
         addNewMonitoredItem,
         removeMonitoredItems,
         removeMonitoredItem,
-        lastSequenceNumber,
         createSubscription,
         deleteSubscription,
         subscriptionId,
-        setIsSubscriptionEnabled
+        setIsSubscriptionEnabled,
+        subscribe,
+        unsubscribe,
+        lastSequenceNumber
     } = React.useContext(SubscriptionContext);
 
     const {
+        browseChildren,
         readValues,
-        lastCompletedRequest,
-        stateChangeCount
+        responseCount,
+        processResults
     } = React.useContext(BrowseContext);
+
+    // Unsubscribe when component is unmounted
+    React.useEffect(() => {
+        const state = m.current;
+        return () => {
+            if (!state.mounted && !state.cleanedUp && state.monitoredItems.length) {
+                unsubscribe(state.monitoredItems, state.internalHandle);
+                state.cleanedUp = true;
+            }
+        };
+    }, [unsubscribe]);
 
     /**
      * The effect to subscribe to the variables when the component is mounted.
@@ -116,6 +130,9 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
      * @param accessViewItems - The list of access view items to subscribe to.
      */
     React.useEffect(() => {
+
+
+
         const items: IMonitoredItem[] = [];
         const newVariables: Row[] = [];
 
@@ -128,13 +145,24 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
                 newVariables.push({ name: x?.displayName, item: items[items.length - 1] });
             }
         });
-        
-        addNewMonitoredItem(items, m.current.internalHandle);
-        m.current.monitoredItems = items;
-        
         setVariables(newVariables);
-    }, [accessViewItems, addNewMonitoredItem]);
+        
+        if (variables.length == 0) {
+            createSubscription();
+        }
+        else {
+            addNewMonitoredItem(items, m.current.internalHandle);
+        }
+        m.current.monitoredItems = items;
+    }, [accessViewItems, createSubscription]);
 
+    // Effect to add monitored items only after subscription is open
+    React.useEffect(() => {
+        if (subscriptionState === SubscriptionState.Open && m.current.monitoredItems.length > 0) {
+            addNewMonitoredItem(m.current.monitoredItems, m.current.internalHandle);
+        }
+        setCounter(counter => counter + 1);
+    }, [subscriptionState, addNewMonitoredItem]);
 
     /**
      * Deletes an item from the list and unsubscribes it.
@@ -167,32 +195,33 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
     }, [removeMonitoredItems]);
 
     /**
-     * Effect to handle state changes to the subscription.
-     */
-    React.useEffect(() => {
-        
-        if (subscriptionState === SubscriptionState.Open) {
-            const itemsToCreate = m.current.monitoredItems.filter(item => !item.itemHandle);
-            if (itemsToCreate.length) {
-                addNewMonitoredItem(itemsToCreate, m.current.internalHandle);
-            }
-        }
-        else {
-            removeMonitoredItems(m.current.monitoredItems, m.current.internalHandle);
-            m.current.monitoredItems = [];
-        } 
-        // Trigger a re-render when subscriptionState changes
-        setCounter(counter => counter + 1);
-    }, [subscriptionState, addNewMonitoredItem, removeMonitoredItems]);
-
-    
-    /**
      * Effect to trigger render when a publish response is received.
      * It updates the counter and sets the items.
      */
     React.useEffect(() => {
         setCounter(counter => counter + 1);
     }, [lastSequenceNumber]);
+
+    // Browse the root node when it changes and subscribe to the variables
+    React.useEffect(() => {
+        async function changeRoot() {
+            const items: IMonitoredItem[] = m.current.monitoredItems;
+            unsubscribe(items, m.current.internalHandle);
+            m.current.monitoredItems = [];
+            setVariables([]);
+        }
+        async function browse(nodeId: string) {
+            await changeRoot();
+            if (nodeId) {
+                m.current.internalHandle = HandleFactory.increment() + 20000
+                m.current.requests.push(m.current.internalHandle);
+                browseChildren(m.current.internalHandle, nodeId);
+            }
+        }
+        if (rootId) {
+            browse(rootId);
+        }
+    }, [rootId, browseChildren, subscriptionState, unsubscribe, subscribe]);
 
     /**
      * Effect to read values when the state changes.
@@ -216,53 +245,52 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
             console.error("readValues[" + nodesToRead.length + "]: " + m.current.internalHandle);
             readValues(m.current.internalHandle, nodesToRead);
         }
-    }, [readValues, variables, stateChangeCount]);
+    }, [readValues, variables]);
 
     /**
      * Effect to handle the last completed request.
      * It updates the variables and subscribes to them if needed.
      */
     React.useEffect(() => {
-        console.error("ValueList[" + m.current.requests.join(",") + "]: " + (lastCompletedRequest?.callerHandle ?? 0));
-        if (lastCompletedRequest && m.current.requests.find(x => x === lastCompletedRequest.callerHandle)) {
-            if (lastCompletedRequest.children) {
-                const items: IMonitoredItem[] = [];
-                const newVariables: Row[] = [];
-                lastCompletedRequest.children.forEach((x) => {
-                    if (x?.reference?.NodeClass === OpcUa.NodeClass.Variable && x?.reference?.NodeId) {
-                        items.push({
-                            nodeId: x.reference.NodeId,
-                            subscriberHandle: HandleFactory.increment()
-                        });
-                        if (x?.reference?.DisplayName?.Text) {
-                            newVariables.push({ name: x?.reference?.DisplayName?.Text, item: items[items.length - 1] });
+        const results = processResults((result) => {
+            return m.current.requests.find(x => x === result.callerHandle) ? true : false;
+        });
+        if (results) {
+            results?.forEach(result => {
+                m.current.requests = m.current.requests.filter(x => x !== result.callerHandle);
+                if (result.children) {
+                    const items: IMonitoredItem[] = [];
+                    const newVariables: Row[] = [];
+                    result.children.forEach((x) => {
+                        if (x?.reference?.NodeClass === OpcUa.NodeClass.Variable && x?.reference?.NodeId) {
+                            items.push({
+                                nodeId: x.reference.NodeId,
+                                subscriberHandle: HandleFactory.increment() + 20000
+                            });
+                            if (x?.reference?.DisplayName?.Text) {
+                                newVariables.push({ name: x?.reference?.DisplayName?.Text, item: items[items.length - 1] });
+                            }
                         }
+                    });
+                    m.current.monitoredItems = items;
+                    if (subscriptionState === SubscriptionState.Open) {
+                        subscribe(items, m.current.internalHandle);
                     }
-                });
-                
-                m.current.monitoredItems = items;
-
-                //if (subscriptionState === SubscriptionState.Open) {
-                    //addNewMonitoredItem(items, m.current.internalHandle);
-                //}
-                
-                console.error("setVariables[" + newVariables.length + "]: " + lastCompletedRequest.callerHandle);
-                setVariables(newVariables);
-            }
-            else if (lastCompletedRequest.values) {
-                lastCompletedRequest.values.forEach((result) => {
-                    const mi = variables.find(x => x.item.subscriberHandle === result.id)
-                    if (mi) {
-                        mi.item.value = result.value;
-                    }
-                });
-                console.error("setCounter[" + lastCompletedRequest.values.length + "]: " + lastCompletedRequest.callerHandle);
-                // Trigger render after updating the values.
-                setCounter(counter => counter + 1);
-            }
-            m.current.requests = m.current.requests.filter(x => x !== lastCompletedRequest.callerHandle);
+                    setVariables(newVariables);
+                }
+                else if (result.values) {
+                    result.values.forEach((x) => {
+                        const mi = variables.find(y => y.item.subscriberHandle === x.id)
+                        if (mi) {
+                            mi.item.value = x.value;
+                        }
+                    });
+                    // trigger render after updating the values.
+                    setCounter(counter => counter + 1);
+                }
+            });
         }
-    }, [lastCompletedRequest, variables, addNewMonitoredItem, subscriptionState, setItems]);
+    }, [responseCount, processResults, variables, subscribe, subscriptionState]);
 
     /*
     if (!variables?.length || counter === 0) {
@@ -271,15 +299,15 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
                 <Skeleton variant='rounded' height={300}></Skeleton>
             </Paper>
         );
-    }
+    };
     */
 
     // Effect to detect when a new element is added to the variables array
     React.useEffect(() => {
-        if (variables.length == 1) {
-            addNewMonitoredItem(variables.map(x => x.item), m.current.internalHandle);
-            createSubscription();
-        }
+        //if (variables.length == 1) {
+        //    createSubscription();
+            //addNewMonitoredItem(variables.map(x => x.item), m.current.internalHandle);
+        //}
         console.log('A new element was added to the variables array.');
 
         // Read values for new variables
@@ -304,9 +332,10 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
         // Perform any additional logic here
         previousLength.current = variables.length;
     }, [variables]);
+    
 
     return (
-        <TableContainer component={Paper} elevation={3} sx={{ height: '100%', width: '80%' }}>
+        <TableContainer component={Paper} elevation={3} sx={{ height: '100%', width: '100%' }}>
             <Table>
                 <TableHead>
                     <TableRow>

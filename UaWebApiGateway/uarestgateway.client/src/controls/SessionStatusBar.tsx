@@ -15,6 +15,7 @@ import { HandleFactory } from '../service/HandleFactory';
 import { SubscriptionState } from '../service/SubscriptionState';
 import { SessionState } from '../service/SessionState';
 import { IRequestMessage } from '../service/IRequestMessage';
+import { TypeDefinitionCard } from './TypeDefinitionCard';
 
 /*
 const CustomButton = styled(Button)(({ theme }) => ({
@@ -28,93 +29,80 @@ const CustomButton = styled(Button)(({ theme }) => ({
 */
 
 export const SessionStatusBar = () => {
-   const theme = useTheme();
-   const [currentTime, setCurrentTime] = React.useState<OpcUa.DataValue | undefined>();
-   const timer = React.useRef<NodeJS.Timeout | null>(null);
-   const [clientHandle] = React.useState<number>(HandleFactory.increment());
-   const [monitoredItems] = React.useState<IMonitoredItem[]>([
-      {
-         itemHandle: 2,
-         nodeId: OpcUa.VariableIds.Server_ServerStatus,
-         path: ['State'],
-      }]);
+    const theme = useTheme();
+    const timer = React.useRef<NodeJS.Timeout | null>(null);
+    const [variables, setVariables] = React.useState<IMonitoredItem[]>([]);
+    const [, setCounter] = React.useState<number>(1);
+    const [tickCount, setTickCount] = React.useState<number>(1);
 
-   const {
-      sessionState,
-      sendRequest,
-      setIsEnabled,
-      isSessionEnabled,
-      setIsSessionEnabled,
-      lastCompletedRequest
-   } = React.useContext(SessionContext);
+    const {
+        sessionState,
+        setIsEnabled,
+        setIsSessionEnabled
+    } = React.useContext(SessionContext);
 
-   const {
-      setIsSubscriptionEnabled,
-      subscriptionState,
-      lastSequenceNumber
-   } = React.useContext(SubscriptionContext);
+    const {
+        setIsSubscriptionEnabled,
+        subscriptionState,
+        lastSequenceNumber,
+    } = React.useContext(SubscriptionContext);
 
-   React.useEffect(() => {
-      if (lastCompletedRequest?.callerHandle === clientHandle) {
-         if (lastCompletedRequest?.response?.ServiceId === OpcUa.DataTypeIds.ReadResponse) {
-            const rrm = lastCompletedRequest.response.Body as OpcUa.ReadResponse;
-            setCurrentTime(rrm?.Results?.at(0));
-         }
-      }
-   }, [lastCompletedRequest, clientHandle]);
+    React.useEffect(() => {
+        const items = [{
+            subscriberHandle: 1,
+            nodeId: OpcUa.VariableIds.Server_ServerStatus,
+            path: [OpcUa.BrowseNames.CurrentTime]
+        }];
+        setVariables(items);
+    }, []);
 
-   React.useEffect(() => {
-      if (lastCompletedRequest?.callerHandle === clientHandle) {
-         if (lastCompletedRequest?.response?.ServiceId === OpcUa.DataTypeIds.ReadResponse) {
-            const rrm = lastCompletedRequest.response.Body as OpcUa.ReadResponse;
-            setCurrentTime(rrm?.Results?.at(0));
-         }
-      }
-   }, [lastCompletedRequest, clientHandle]);
+    const getValue = React.useCallback((field: number) => {
+        const value = variables.find(x => x.subscriberHandle === field)?.value;
+        return value;
+    }, [variables]);
 
-   const sendRead = React.useCallback(() => {
-      const request: OpcUa.ReadRequest= {
-         NodesToRead: [
-            {
-               NodeId: OpcUa.VariableIds.Server_ServerStatus_CurrentTime,
-               AttributeId: OpcUa.Attributes.Value
-            }
-         ]
-      };
-      const message: IRequestMessage = {
-         ServiceId: OpcUa.DataTypeIds.ReadRequest,
-         Body: request
-      };
-      sendRequest(message, clientHandle);
-   }, [sendRequest, clientHandle]);
+    const valueUpdated = React.useCallback(() => {
+        setCounter(counter => counter + 1);
+    }, []);
 
-   const startTimer = React.useCallback(() => {
-      if (timer.current !== null) return; // Prevent starting multiple timers
-      timer.current = setInterval(() => {
-         sendRead();
-      }, 1000);
-   }, [sendRead]);
+    const startTimer = React.useCallback(() => {
+        if (timer.current !== null) return; // Prevent starting multiple timers
+        timer.current = setInterval(() => {
+            setTickCount(count => count + 1);
+        }, 1000);
+    }, [setTickCount]);
 
-   const stopTimer = React.useCallback(() => {
-      if (timer.current !== null) {
-         clearInterval(timer.current);
-         timer.current = null;
-      }
-   }, []);
+    const stopTimer = React.useCallback(() => {
+        if (timer.current !== null) {
+            clearInterval(timer.current);
+            timer.current = null;
+        }
+    }, []);
 
-   const handleConnect = React.useCallback((state: SessionState) => {
-      if (state === SessionState.Disconnected) {
-         setIsSessionEnabled(true);
-         setIsEnabled(true);
-      }
-      else if (state === SessionState.SessionActive || state == SessionState.Error) {
-          setIsSessionEnabled(false);
-          setIsEnabled(false);
-      }
-      else if (state === SessionState.NoSession) {
-         setIsEnabled(false);
-      }
-   }, [setIsEnabled, setIsSessionEnabled]);
+    const handleConnect = React.useCallback((state: SessionState) => {
+        if (state === SessionState.Disconnected || state === SessionState.NoSession) {
+            setIsSubscriptionEnabled(true);
+            setIsSessionEnabled(true);
+            setIsEnabled(true);
+        }
+        else if (state === SessionState.SessionActive || state == SessionState.Error) {
+            setIsSubscriptionEnabled(false);
+            setIsSessionEnabled(false);
+            setIsEnabled(false);
+        }
+        //else if (state === SessionState.NoSession) {
+        //    setIsEnabled(false);
+        //}
+    }, [setIsEnabled, setIsSessionEnabled, setIsSubscriptionEnabled]);
+
+    React.useEffect(() => {
+        if (sessionState === SessionState.SessionActive) {
+            stopTimer();
+        }
+        else {
+            startTimer();
+        }
+    }, [sessionState, startTimer, stopTimer]);
 
    /***
     * Handle subscription state changes
@@ -129,18 +117,7 @@ export const SessionStatusBar = () => {
         else {
             setIsSubscriptionEnabled(false);
         }
-    }, [isSessionEnabled, setIsSubscriptionEnabled]);
-
-
-
-   React.useEffect(() => {
-      if (sessionState === SessionState.SessionActive) {
-         startTimer();
-      }
-      else {
-         stopTimer();
-      }
-   }, [sessionState, startTimer, stopTimer]);
+    }, [setIsSubscriptionEnabled]);
 
    return (
       <Toolbar variant='dense' disableGutters sx={{ py: 0, minHeight: '36px', justifyContent: 'space-between' }}>
@@ -152,11 +129,13 @@ export const SessionStatusBar = () => {
                <Typography variant='body2' sx={{ pr: 4 }}>Websocket:</Typography>
                <Typography variant='body2' fontWeight={'bolder'}>{SessionState[sessionState]}</Typography>
             </Button>
-            <Button sx={{ my: 2 }}>
-               <Typography variant='body2' sx={{ pr: 4 }}>Server Time:</Typography>
-               <Typography variant='body2' fontWeight={'bolder'}>{Web.formatTime(currentTime?.Value) ?? '---'}</Typography>
-               </Button>
-               <Button sx={{ my: 2 }} onClick={() => handleSubscription(subscriptionState)}>
+               {/* <Button sx={{ my: 2 }}>
+                <TypeDefinitionCard variables={variables} onValueUpdate={valueUpdated} readTrigger={tickCount}>
+                    <Typography variant='body2' sx={{ pr: 4 }}>Server Time:</Typography>
+                    <Typography variant='body2' fontWeight={'bolder'}>{Web.formatTime(getValue(1)?.Value) ?? '---'}</Typography>
+                </TypeDefinitionCard>
+            </Button> */}
+            <Button sx={{ my: 2 }} onClick={() => handleSubscription(subscriptionState)}>
                <Typography variant='body2' sx={{ pr: 4 }}>Subscription:</Typography>
                <Typography variant='body2' fontWeight={'bolder'}>{SubscriptionState[subscriptionState]}</Typography>
             </Button>
