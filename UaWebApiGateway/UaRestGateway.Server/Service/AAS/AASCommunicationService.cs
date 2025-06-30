@@ -11,6 +11,7 @@ using System.Collections;
 using System.Reflection;
 using System.Runtime.Intrinsics.X86;
 using System.Text.Json;
+using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 using UaRestGateway.Server.Exceptions.AAS;
@@ -232,7 +233,7 @@ namespace UaRestGateway.Server.Service.AAS
                 throw new NotFoundException($"Element not found: {idShortPath}");
 
             bool isOpcUa = GetExtensionValue(element);
-            NodeId nodeId = isOpcUa ? FindOpcUaNodeId(submodel.IdShort, idShortPath) : null;
+            NodeId nodeId = isOpcUa ? FindOpcUaNodeId(submodel.IdShort, idShortPath).Result : null;
 
             return (element, isOpcUa, nodeId);
         }
@@ -283,7 +284,7 @@ namespace UaRestGateway.Server.Service.AAS
         }
 
         //private string FindAndReadOpcUaValue(Session session, string submodelIdShort, string idShortPath)
-        private NodeId FindOpcUaNodeId(string submodelIdShort, string idShortPath)
+        private async Task<NodeId> FindOpcUaNodeId(string submodelIdShort, string idShortPath)
         {
             if (OpcUaClient == null)
             {
@@ -291,6 +292,16 @@ namespace UaRestGateway.Server.Service.AAS
             }
 
             var session = OpcUaClient.Session;
+
+            if(session == null  || !session.Connected)
+            {     
+                bool connected = await OpcUaClient.ConnectAsync(m_stoppingToken).ConfigureAwait(false);
+                if(connected)
+                    session = OpcUaClient.Session;
+                else
+                    throw new Exception("OpcUa session is not connected. Cannot get OpcUa node value.");
+            }
+
             //Get AAS Environment root node
             NodeId aasEnvNodeId = GetNodeIdByTypeDefinition((Session)session, ObjectIds.ObjectsFolder, AasToOpcUaTypeDefinitions.Mappings["Environment"]);
 
