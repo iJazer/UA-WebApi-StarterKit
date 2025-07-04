@@ -126,10 +126,15 @@ const AASTreeView: React.FC = () => {
         }
     };
 
+    const registeredViaWebSocket = useRef<Set<string>>(new Set());
+
     const handleOnAddAccessView = useCallback(() => {
         if (!contextMenu?.node) return;
 
         const node = contextMenu.node;
+        const session = sessionRef.current;
+        const path = node.path!;
+        const url = `/shells/${encodeId(node.parentAASId!)}/submodels/${encodeId(node.parentSubmodelId!)}/submodel-elements/${path}`;
 
         const fetchAndUpdate = async () => {
             const value = await fetchValue(node);
@@ -138,18 +143,46 @@ const AASTreeView: React.FC = () => {
             );
         };
 
-        fetchAndUpdate(); // Send first request immediately
+        const updateItem = (patch: Partial<TreeNode>) => {
+            setAccessViewItems(prev =>
+                prev.map(i => i.id === node.id ? { ...i, ...patch } : i)
+            );
+        };
 
-        if (!sessionRef.current.isConnected) {
-            const intervalId = window.setInterval(fetchAndUpdate, 3000);
-            setAccessViewItems(prev => [...prev, { ...node, pollIntervalId: intervalId }]);
+        // If the item already exists in access view, cancel its poll
+        const existing = accessViewItems.find(i => i.id === node.id);
+        if (existing?.pollIntervalId) {
+            clearInterval(existing.pollIntervalId);
+            updateItem({ pollIntervalId: undefined });
+        }
+
+        // Fetch once for value display
+        fetchAndUpdate();
+
+        if (session.isConnected) {
+            // WebSocket mode
+            if (!registeredViaWebSocket.current.has(path)) {
+                registeredViaWebSocket.current.add(path);
+                sendAASRequest(session, "GET", url).catch(err => {
+                    console.error("WebSocket GET failed:", err);
+                    registeredViaWebSocket.current.delete(path);
+                });
+            }
+            if (!existing) {
+                setAccessViewItems(prev => [...prev, { ...node }]);
+            }
         } else {
-            // Register listener: updates will be pushed automatically
-            setAccessViewItems(prev => [...prev, { ...node }]);
+            // Fallback to polling
+            const intervalId = window.setInterval(fetchAndUpdate, 3000);
+            if (!existing) {
+                setAccessViewItems(prev => [...prev, { ...node, pollIntervalId: intervalId }]);
+            } else {
+                updateItem({ pollIntervalId: intervalId });
+            }
         }
 
         handleCloseContextMenu();
-    }, [contextMenu]);
+    }, [contextMenu, accessViewItems]);
 
     const handleContextMenu = (event: React.MouseEvent, node: TreeNode) => {
         event.preventDefault();
