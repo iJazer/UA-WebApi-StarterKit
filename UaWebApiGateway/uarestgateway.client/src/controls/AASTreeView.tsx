@@ -45,21 +45,33 @@ const AASTreeView: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        if (sessionRef.current.addPushUpdateListener) {
-            sessionRef.current.addPushUpdateListener((response) => {
-                const updatedPath = response?.Body?.Path;
-                const value = response?.Body?.Result?.value ?? response?.Body?.Result;
+        const session = sessionRef.current;
+        const listener = (response: IResponseMessage) => {
+            const updatedPath = response?.Body?.Path;
+            const value = response?.Body?.Result?.value ?? response?.Body?.Result;
 
-                if (!updatedPath) return;
+            if (!updatedPath) return;
 
-                setAccessViewItems(prev =>
-                    prev.map(item =>
-                        item.path === updatedPath ? { ...item, value } : item
-                    )
-                );
-            });
+            console.log("Push update for", updatedPath, value);
+
+            setAccessViewItems(prev =>
+                prev.map(item =>
+                    item.path === updatedPath ? { ...item, value } : item
+                )
+            );
+        };
+
+        if (session.addPushUpdateListener) {
+            session.addPushUpdateListener(listener);
         }
-    }, []);
+
+        return () => {
+            // no built-in removeListener logic, but if you build it later, clean up here
+        };
+    }, [session, session.messageCounter]); // 
+
+
+
 
     const loadTree = async () => {
         const shellJson = await sendAASRequest(sessionRef.current, "GET", "/shells");
@@ -161,6 +173,7 @@ const AASTreeView: React.FC = () => {
 
         if (session.isConnected) {
             // WebSocket mode
+            console.log("Connected to websocket");
             if (!registeredViaWebSocket.current.has(path)) {
                 registeredViaWebSocket.current.add(path);
                 sendAASRequest(session, "GET", url).catch(err => {

@@ -139,6 +139,20 @@ export const SessionProvider = ({ children }: SessionProps) => {
      */
     const processRawResponse = React.useCallback((response: IResponseMessage) => {
         if (response) {
+
+            // Forward AASResponses to listeners
+            if (response.ServiceId === "AASResponse") {
+                const handle = response.Body?.RequestHeader?.AASRequestHandle;
+                const listener = m.current.aasListeners?.get(handle);
+                if (listener) {
+                    listener(response);
+                    m.current.aasListeners?.delete(handle);
+                } else {
+                    m.current.pushUpdateListeners?.forEach(cb => cb(response));
+                }
+                return; 
+            }
+
             const callerHandle = response.Body?.ResponseHeader?.RequestHandle ?? 0;
             const request = m.current.requests.get(callerHandle);
             if (request) {
