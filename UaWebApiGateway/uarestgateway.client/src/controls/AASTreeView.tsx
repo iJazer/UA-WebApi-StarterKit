@@ -231,6 +231,30 @@ const AASTreeView: React.FC = () => {
         }
     };
 
+
+    const refreshTreeNode = async (node: TreeNode) => {
+        if (node.type === "AssetAdministrationShell") {
+            await loadTree(); // refresh entire tree
+        } else if (node.type === "Submodel") {
+            const shellId = node.parentAASId!;
+            const submodelId = node.original?.id!;
+            const smJson = await sendAASRequest(sessionRef.current, "GET", `/shells/${encodeId(shellId)}/submodels/${encodeId(submodelId)}`);
+            const sm = aas.jsonization.submodelFromJsonable(smJson).mustValue();
+            const updatedNode = await submodelToTree(sm, shellId);
+
+            // Replace this submodel in the treeData
+            setTreeData(prev => {
+                if (!prev) return prev;
+                return {
+                    ...prev,
+                    children: prev.children?.map(child =>
+                        child.id === updatedNode.id ? updatedNode : child
+                    )
+                };
+            });
+        }
+    };
+
     return (
         <div style={{ display: "flex", height: "80vh", width: "100%" }}>
             <div style={{ width: "33%", overflow: "auto", borderRight: "1px solid #ccc" }}>
@@ -285,7 +309,12 @@ const AASTreeView: React.FC = () => {
 
     function renderTree(node: TreeNode): React.ReactNode {
         return (
-            <TreeItem key={node.id} nodeId={node.id} label={node.name} onClick={() => setSelected(node.original)} onContextMenu={(e) => { e.preventDefault(); e.stopPropagation(); handleContextMenu(e, node); }}>
+            <TreeItem key={node.id} nodeId={node.id} label={node.name}
+                onClick={async () => {
+                    setSelected(node.original);
+                    await refreshTreeNode(node);
+                }}
+                onContextMenu={(e) => { e.preventDefault(); e.stopPropagation(); handleContextMenu(e, node); }}>
                 {node.children?.map(renderTree)}
             </TreeItem>
         );

@@ -231,6 +231,7 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
         public virtual IActionResult GetAllAssetAdministrationShells([FromQuery] List<string> assetIds, [FromQuery] string idShort, [FromQuery] int? limit, [FromQuery] string cursor)
         {
+            _logger.LogInformation("Received REST request to get All shells.");
             // Load AAS from database, file, or service
             AssetAdministrationShell aas = (AssetAdministrationShell)_aasCommunicationService.AssetAdministrationShells.First(); // You need to implement this
 
@@ -484,6 +485,9 @@ namespace UaRestGateway.Server.Controllers
         public virtual IActionResult GetAssetAdministrationShellById([FromRoute][Required] string aasIdentifier)
         {
             var decodedAasIdentifier = _decoderService.Decode("aasIdentifier", aasIdentifier);
+
+            _logger.LogInformation("Received REST request to get AAS with ID: {AasIdentifier}", decodedAasIdentifier);
+
             var aas = _aasCommunicationService.GetAssetAdministrationShellById(decodedAasIdentifier);
             var output = Jsonization.Serialize.ToJsonObject(aas);
             return Ok(output);
@@ -695,6 +699,8 @@ namespace UaRestGateway.Server.Controllers
         {
             var decodedAasId = _decoderService.Decode("aasIdentifier", aasIdentifier);
             var decodedSubmodelId = _decoderService.Decode("submodelIdentifier", submodelIdentifier);
+
+            _logger.LogInformation($"Received REST request to get Submodel with id {decodedSubmodelId}");
 
             var submodel = _aasCommunicationService.GetSubmodelByIdWithinAAS(decodedAasId, decodedSubmodelId);
             var output = AasCore.Aas3_0.Jsonization.Serialize.ToJsonObject(submodel);
