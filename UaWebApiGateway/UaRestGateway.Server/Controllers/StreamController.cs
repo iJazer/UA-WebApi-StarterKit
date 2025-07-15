@@ -345,7 +345,7 @@ namespace UaRestGateway.Server.Controllers
                 var body = root.GetProperty("Body").TryGetProperty("Body", out var b) ? b : default;
                 var requestHandle = requestHeader.GetProperty("AASRequestHandle").GetInt32();
 
-                m_streamLogger.LogInformation($"AASRequest at Websocket: Method={method}, Path={path}, RequestHandle={requestHandle}");
+                m_streamLogger.LogDebug($"AASRequest at Websocket: Method={method}, Path={path}, RequestHandle={requestHandle}");
 
                 if (method != "GET" || path == null)
                 {
@@ -416,7 +416,7 @@ namespace UaRestGateway.Server.Controllers
                     if (isOpcUa && element is Property prop)
                     {
                         var sessionKey = sessionContext.ChannelContext.SecureChannelId;
-                        m_streamLogger.LogInformation($"Subscription count: {_subscriptions.Count}");
+                        //m_streamLogger.LogInformation($"Subscription count: {_subscriptions.Count}");
                         SetupOpcUaSubscription(sessionKey, nodeId, Client, prop, elementPath, requestHandle, webSocket);
                         return; // async updates will be sent as data arrives
                     }
@@ -504,7 +504,7 @@ namespace UaRestGateway.Server.Controllers
                 if (args.NotificationValue is MonitoredItemNotification notification)
                 {
                     var value = notification.Value?.Value;
-                    m_streamLogger.LogInformation($"Received update for {nodeId}: {value}");
+                    m_streamLogger.LogDebug($"Received update for {nodeId}: {value}");
 
                     var currentKey = _subscriptions.FirstOrDefault(kvp => kvp.Value.Item == monItem).Key;
 
