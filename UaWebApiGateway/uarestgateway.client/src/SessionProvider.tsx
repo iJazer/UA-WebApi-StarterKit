@@ -29,7 +29,9 @@ export interface ISessionContext {
     sendRequest: (request: IRequestMessage, callerHandle?: number) => void,
     messageCounter?: number,
     message: string,
-    processMessages: (matcher: (message: ICompletedRequest) => boolean) => ICompletedRequest[]
+    processMessages: (matcher: (message: ICompletedRequest) => boolean) => ICompletedRequest[],
+    addAASResponseListener?: (handle: number, callback: (response: IResponseMessage) => void) => void;
+    addPushUpdateListener?: (callback: (response: IResponseMessage) => void) => void;
 }
 
 interface SessionProps {
@@ -48,6 +50,8 @@ interface SessionInternals {
     requests: Map<number, ICompletedRequest>,
     responses: ICompletedRequest[]
     message: string | null,
+    aasListeners?: Map<number, (response: IResponseMessage) => void>;
+    pushUpdateListeners?: Set<(response: IResponseMessage) => void>;
 }
 
 const apiNames = {
@@ -93,17 +97,19 @@ export const SessionProvider = ({ children }: SessionProps) => {
     const [visibleNodes, setVisibleNodes] = React.useState<string[]>([]);
     const [message, setMessage] = React.useState<string>("");
 
-    const m = React.useRef<SessionInternals>({
-        serverUrl: null,
-        isConnected: false,
-        sessionState: SessionState.Disconnected,
-        isEnabled: false,
-        isSessionEnabled: false,
-        requestTimeout: 60000,
-        requests: new Map<number, ICompletedRequest>(),
-        responses: [],
-        message: null,
-    });
+   const m = React.useRef<SessionInternals>({
+      serverUrl: null,
+      isConnected: false,
+      sessionState: SessionState.Disconnected,
+      isEnabled: false,
+      isSessionEnabled: false,
+      requestTimeout: 60000,
+      requests: new Map<number, ICompletedRequest>(),
+      responses: [],
+      message: null,
+       aasListeners: new Map<number, (response: IResponseMessage) => void>(),
+       pushUpdateListeners: new Set<(response: IResponseMessage) => void>(),
+   });
 
     const handleOnMessage = React.useCallback((event: MessageEvent) => {
         try {
@@ -133,6 +139,20 @@ export const SessionProvider = ({ children }: SessionProps) => {
      */
     const processRawResponse = React.useCallback((response: IResponseMessage) => {
         if (response) {
+
+            // Forward AASResponses to listeners
+            if (response.ServiceId === "AASResponse") {
+                const handle = response.Body?.RequestHeader?.AASRequestHandle;
+                const listener = m.current.aasListeners?.get(handle);
+                if (listener) {
+                    listener(response);
+                    m.current.aasListeners?.delete(handle);
+                } else {
+                    m.current.pushUpdateListeners?.forEach(cb => cb(response));
+                }
+                return; 
+            }
+
             const callerHandle = response.Body?.ResponseHeader?.RequestHandle ?? 0;
             const request = m.current.requests.get(callerHandle);
             if (request) {
@@ -419,6 +439,22 @@ export const SessionProvider = ({ children }: SessionProps) => {
         }
     }, [createSession, deleteSession]);
 
+    const addAASResponseListener = React.useCallback((
+        handle: number,
+        callback: (response: IResponseMessage) => void
+    ) => {
+        m.current.aasListeners?.set(handle, callback);
+    }, []);
+
+    const addPushUpdateListener = React.useCallback((
+        callback: (response: IResponseMessage) => void
+    ) => {
+        if (!m.current.pushUpdateListeners) {
+            m.current.pushUpdateListeners = new Set();
+        }
+        m.current.pushUpdateListeners.add(callback);
+    }, []);
+
     const sessionContext = {
         serverUrl: m.current.serverUrl,
         setServerUrl: setServerUrlImpl,
@@ -436,7 +472,9 @@ export const SessionProvider = ({ children }: SessionProps) => {
         message,
         setMessage: setMessageImpl,
         messageCounter,
-        processMessages
+        processMessages,
+        addAASResponseListener,
+        addPushUpdateListener,
     } as ISessionContext;
 
     /**
@@ -447,6 +485,19 @@ export const SessionProvider = ({ children }: SessionProps) => {
      * The function checks the ServiceId of the response and processes the response accordingly
      */
     const processResponse = React.useCallback((response: IResponseMessage) => {
+
+        if (response?.ServiceId === "AASResponse") {
+            const handle = response.Body?.RequestHeader?.AASRequestHandle;
+            const listener = m.current.aasListeners?.get(handle);
+            if (listener) {
+                listener(response);
+                m.current.aasListeners?.delete(handle);
+            } else {
+                m.current.pushUpdateListeners?.forEach(cb => cb(response));
+            }
+            return;
+        }
+
         if (response?.ServiceId === OpcUa.DataTypeIds.CreateSessionResponse) {
             const csr = response.Body as OpcUa.CreateSessionResponse;
             m.current.authenticationToken = csr.AuthenticationToken;

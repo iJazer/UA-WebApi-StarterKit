@@ -29,15 +29,18 @@ namespace UaRestGateway.Server.Controllers
     [ApiController]
     public class AssetAdministrationShellRepositoryAPIApiController : ControllerBase
     {
+        private readonly ILogger<AssetAdministrationShellRepositoryAPIApiController> _logger;
         private readonly IAasTreeService _aasTreeService;
         private readonly IAASCommunicationService _aasCommunicationService;
         private readonly IBase64UrlDecoderService _decoderService;
 
         public AssetAdministrationShellRepositoryAPIApiController(
+            ILogger<AssetAdministrationShellRepositoryAPIApiController> logger,
             IAasTreeService aasTreeService,
             IAASCommunicationService aasCommunicationService,
             IBase64UrlDecoderService decoderService)
         {
+            _logger = logger;
             _aasTreeService = aasTreeService;
             _aasCommunicationService = aasCommunicationService;
             _decoderService = decoderService;
@@ -228,6 +231,7 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
         public virtual IActionResult GetAllAssetAdministrationShells([FromQuery] List<string> assetIds, [FromQuery] string idShort, [FromQuery] int? limit, [FromQuery] string cursor)
         {
+            _logger.LogDebug("Received REST request to get All shells.");
             // Load AAS from database, file, or service
             AssetAdministrationShell aas = (AssetAdministrationShell)_aasCommunicationService.AssetAdministrationShells.First(); // You need to implement this
 
@@ -481,6 +485,9 @@ namespace UaRestGateway.Server.Controllers
         public virtual IActionResult GetAssetAdministrationShellById([FromRoute][Required] string aasIdentifier)
         {
             var decodedAasIdentifier = _decoderService.Decode("aasIdentifier", aasIdentifier);
+
+            _logger.LogDebug("Received REST request to get AAS with ID: {AasIdentifier}", decodedAasIdentifier);
+
             var aas = _aasCommunicationService.GetAssetAdministrationShellById(decodedAasIdentifier);
             var output = Jsonization.Serialize.ToJsonObject(aas);
             return Ok(output);
@@ -693,6 +700,8 @@ namespace UaRestGateway.Server.Controllers
             var decodedAasId = _decoderService.Decode("aasIdentifier", aasIdentifier);
             var decodedSubmodelId = _decoderService.Decode("submodelIdentifier", submodelIdentifier);
 
+            _logger.LogDebug($"Received REST request to get Submodel with id {decodedSubmodelId}");
+
             var submodel = _aasCommunicationService.GetSubmodelByIdWithinAAS(decodedAasId, decodedSubmodelId);
             var output = AasCore.Aas3_0.Jsonization.Serialize.ToJsonObject(submodel);
             return Ok(output);
@@ -841,7 +850,14 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
         public virtual IActionResult GetSubmodelElementByPathAasRepository([FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier, [FromRoute][Required] string idShortPath, [FromQuery] string level, [FromQuery] string extent)
         {
-            throw new NotImplementedException();
+            var decodedAasId = _decoderService.Decode("aasIdentifier", aasIdentifier);
+            var decodedSubmodelId = _decoderService.Decode("submodelIdentifier", submodelIdentifier);
+
+            _logger.LogDebug($"Received REST request to get sme {idShortPath}");
+
+            var submodelElement = _aasCommunicationService.GetSubmodelElementByPathWithinAAS(decodedAasId, decodedSubmodelId, idShortPath);
+            var output = AasCore.Aas3_0.Jsonization.Serialize.ToJsonObject(submodelElement);
+            return Ok(output);
         }
 
         /// <summary>
