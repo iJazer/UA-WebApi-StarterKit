@@ -1,5 +1,4 @@
-﻿
-using AasCore.Aas3_0;
+﻿using AasCore.Aas3_0;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
@@ -29,8 +28,8 @@ namespace UaRestGateway.Server.Service.AAS
 
         IAssetAdministrationShell GetAssetAdministrationShellById(string decodedAasIdentifier);
         ISubmodel GetSubmodelByIdWithinAAS(string aasIdentifier, string submodelIdentifier);
-        ISubmodelElement GetSubmodelElementByPathWithinAAS(string aasIdentifier, string submodelIdentifier, string idShortPath);
-        (ISubmodelElement Element, bool IsOpcUaBacked, NodeId NodeId) GetSubmodelElementInfo(string aasIdentifier, string submodelIdentifier, string idShortPath);
+        Task<ISubmodelElement> GetSubmodelElementByPathWithinAASAsync(string aasIdentifier, string submodelIdentifier, string idShortPath);
+        Task<(ISubmodelElement Element, bool IsOpcUaBacked, NodeId NodeId)> GetSubmodelElementInfoAsync(string aasIdentifier, string submodelIdentifier, string idShortPath);
     }
     public class AASCommunicationService : BackgroundService, IAASCommunicationService
     {
@@ -68,7 +67,7 @@ namespace UaRestGateway.Server.Service.AAS
             {
                 m_stoppingToken = stoppingToken;
                 Logger.LogDebug("AASCommunication Scoped Service Hosted Service running.");
-                await LoadAASXFile();
+                await LoadAASXFile().ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -90,47 +89,45 @@ namespace UaRestGateway.Server.Service.AAS
         private async Task LoadAASXFile()
         {
             Logger.LogDebug("AASCommunication Scoped Service Hosted Service is working");
-            // load the application configuration.
             string folder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var aasxFile = Path.Combine(folder, "Resources", "TemplateAAS.aasx");
 
             var packaging = new AasCore.Aas3.Package.Packaging();
-            using var pkgOrErr = packaging.OpenRead(aasxFile);
+            using var pkgOrErr = await Task.Run(() => packaging.OpenRead(aasxFile));
 
             if (pkgOrErr.MaybeException != null)
             {
-                throw new ArgumentException(
-                    "something went wrong", pkgOrErr.MaybeException);
+                throw new ArgumentException("something went wrong", pkgOrErr.MaybeException);
             }
 
             var pkg = pkgOrErr.Must();
-            // Read the specs
             var specsByContentType = pkg.SpecsByContentType();
             if (!specsByContentType.ContainsKey("text/xml"))
             {
                 throw new ArgumentException("No json specs");
             }
             var spec = specsByContentType["text/xml"].First();
-            byte[] specContent = spec.ReadAllBytes();
+            byte[] specContent = await Task.Run(() => spec.ReadAllBytes());
 
             AasCore.Aas3_0.Environment env;
 
-            XmlReaderSettings settings = new XmlReaderSettings();
-            settings.IgnoreComments = true;
-            settings.IgnoreProcessingInstructions = true;
-            settings.IgnoreWhitespace = true;
-            settings.CheckCharacters = false;
+            XmlReaderSettings settings = new XmlReaderSettings
+            {
+                IgnoreComments = true,
+                IgnoreProcessingInstructions = true,
+                IgnoreWhitespace = true,
+                CheckCharacters = false
+            };
 
             using (var memoryStream = new MemoryStream(specContent))
             using (XmlReader xr = XmlReader.Create(memoryStream, settings))
             {
-                env = Xmlization.Deserialize.EnvironmentFrom(xr);
+                env = await Task.Run(() => Xmlization.Deserialize.EnvironmentFrom(xr));
                 m_AssetAdministrationShells = env.AssetAdministrationShells;
                 m_Submodels = env.Submodels;
                 m_ConceptDescriptions = env.ConceptDescriptions;
                 Logger.LogInformation("Total AASs found " + m_AssetAdministrationShells.Count);
             }
-
         }
 
         public override void Dispose()
@@ -181,30 +178,9 @@ namespace UaRestGateway.Server.Service.AAS
             return aas;
         }
 
-        public ISubmodelElement GetSubmodelElementByPathWithinAAS(string aasIdentifier, string submodelIdentifier, string idShortPath)
+        public async Task<ISubmodelElement> GetSubmodelElementByPathWithinAASAsync(string aasIdentifier, string submodelIdentifier, string idShortPath)
         {
-            //ISubmodelElement output = null;
-            //var submodel = GetSubmodelByIdWithinAAS(aasIdentifier, submodelIdentifier);
-
-            //if (submodel.SubmodelElements != null)
-            //{
-            //    output = GetSubmodelElement(submodel.SubmodelElements, idShortPath);
-            //    bool opcuaFlag = GetExtensionValue(output);
-            //    if (opcuaFlag)
-            //    {
-            //        var opcUaVal = GetOpcUaNodeValue(output, submodel.IdShort, idShortPath);
-            //        ((Property)output).Value = opcUaVal;
-            //    }
-            //}
-
-            //if(output == null)
-            //{
-            //    throw new NotFoundException($"Submodel Element with idShortPath {idShortPath} NOT found.");
-            //}
-
-            //return output;
-
-            var (element, isOpcUa, nodeId) = GetSubmodelElementInfo(aasIdentifier, submodelIdentifier, idShortPath);
+            var (element, isOpcUa, nodeId) = await GetSubmodelElementInfoAsync(aasIdentifier, submodelIdentifier, idShortPath).ConfigureAwait(false);
 
             if (element == null)
             {
@@ -220,8 +196,8 @@ namespace UaRestGateway.Server.Service.AAS
             return element;
         }
 
-        public (ISubmodelElement Element, bool IsOpcUaBacked, NodeId NodeId) GetSubmodelElementInfo(
-        string aasIdentifier, string submodelIdentifier, string idShortPath)
+        public async Task<(ISubmodelElement Element, bool IsOpcUaBacked, NodeId NodeId)> GetSubmodelElementInfoAsync(
+            string aasIdentifier, string submodelIdentifier, string idShortPath)
         {
             var submodel = GetSubmodelByIdWithinAAS(aasIdentifier, submodelIdentifier);
 
@@ -233,7 +209,13 @@ namespace UaRestGateway.Server.Service.AAS
                 throw new NotFoundException($"Element not found: {idShortPath}");
 
             bool isOpcUa = GetExtensionValue(element);
-            NodeId nodeId = isOpcUa ? FindOpcUaNodeId(submodel.IdShort, idShortPath).Result : null;
+            NodeId nodeId = null;
+
+            if (isOpcUa)
+            {
+                // Await the task to retrieve the NodeId before assigning it
+                nodeId = await FindOpcUaNodeId(submodel.IdShort, idShortPath).ConfigureAwait(false);
+            }
 
             return (element, isOpcUa, nodeId);
         }
@@ -273,17 +255,11 @@ namespace UaRestGateway.Server.Service.AAS
             return output;
         }
 
-        //private string GetOpcUaNodeValue(ISubmodelElement submodelElement, string submodelIdShort, string idShortPath)
         private string GetOpcUaNodeValue(NodeId smeNodeId)
         {
-            
-
-            //return FindAndReadOpcUaValue((Session)session, submodelIdShort, idShortPath);
-            //var smeNodeId = FindOpcUaNodeId(submodelIdShort, idShortPath);
             return ReadOpcUaNodeValue(smeNodeId);
         }
 
-        //private string FindAndReadOpcUaValue(Session session, string submodelIdShort, string idShortPath)
         private async Task<NodeId> FindOpcUaNodeId(string submodelIdShort, string idShortPath)
         {
             if (OpcUaClient == null)
@@ -329,11 +305,6 @@ namespace UaRestGateway.Server.Service.AAS
             {
                 throw new NotFoundException($"OPC UA Node corresponding to Submodel Element with idShortPath {idShortPath} NOT found.");
             }
-
-            //Read the value of the Submodel Element
-            //var value = OpcUaClient.Session.ReadValue(smeNodeId).Value;
-            //Logger.LogInformation($"OpcUa Node Value for {smeNodeId} is {value}");
-            //return value.ToString();
 
             return smeNodeId;
         }
