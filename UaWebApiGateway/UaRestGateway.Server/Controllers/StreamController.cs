@@ -405,7 +405,7 @@ namespace UaRestGateway.Server.Controllers
                     var submodelId = DecodeBase64Url(matchElem.Groups["submodelId"].Value);
                     var elementPath = matchElem.Groups["elementPath"].Value;
 
-                    var (element, isOpcUa, nodeId) = m_aasCommunicationService.GetSubmodelElementInfo(aasId, submodelId, elementPath);
+                    var (element, isOpcUa, nodeId) = await m_aasCommunicationService.GetSubmodelElementInfoAsync(aasId, submodelId, elementPath).ConfigureAwait(false);
 
                     if (element == null)
                     {

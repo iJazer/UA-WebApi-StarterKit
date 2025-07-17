@@ -848,14 +848,14 @@ namespace UaRestGateway.Server.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(Result), description: "Not Found")]
         [SwaggerResponse(statusCode: 500, type: typeof(Result), description: "Internal Server Error")]
         [SwaggerResponse(statusCode: 0, type: typeof(Result), description: "Default error handling for unmentioned status codes")]
-        public virtual IActionResult GetSubmodelElementByPathAasRepository([FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier, [FromRoute][Required] string idShortPath, [FromQuery] string level, [FromQuery] string extent)
+        public virtual async Task<IActionResult> GetSubmodelElementByPathAasRepositoryAsync([FromRoute][Required] string aasIdentifier, [FromRoute][Required] string submodelIdentifier, [FromRoute][Required] string idShortPath, [FromQuery] string level, [FromQuery] string extent)
         {
             var decodedAasId = _decoderService.Decode("aasIdentifier", aasIdentifier);
             var decodedSubmodelId = _decoderService.Decode("submodelIdentifier", submodelIdentifier);
 
             _logger.LogDebug($"Received REST request to get sme {idShortPath}");
 
-            var submodelElement = _aasCommunicationService.GetSubmodelElementByPathWithinAAS(decodedAasId, decodedSubmodelId, idShortPath);
+            var submodelElement = await _aasCommunicationService.GetSubmodelElementByPathWithinAASAsync(decodedAasId, decodedSubmodelId, idShortPath).ConfigureAwait(false);
             var output = AasCore.Aas3_0.Jsonization.Serialize.ToJsonObject(submodelElement);
             return Ok(output);
         }
