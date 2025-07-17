@@ -131,8 +131,6 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
      */
     React.useEffect(() => {
 
-
-
         const items: IMonitoredItem[] = [];
         const newVariables: Row[] = [];
 
@@ -146,15 +144,16 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
             }
         });
         setVariables(newVariables);
-        
-        if (variables.length == 0) {
-            createSubscription();
-        }
-        else {
-            addNewMonitoredItem(items, m.current.internalHandle);
-        }
+
+        //if (variables.length == 0) {
+        //    createSubscription();
+        //}
+        //else {
+        //addNewMonitoredItem(items, m.current.internalHandle);
+        //}
         m.current.monitoredItems = items;
-    }, [accessViewItems, createSubscription]);
+        
+    }, [accessViewItems]);
 
     // Effect to add monitored items only after subscription is open
     React.useEffect(() => {
@@ -304,10 +303,9 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
 
     // Effect to detect when a new element is added to the variables array
     React.useEffect(() => {
-        //if (variables.length == 1) {
-        //    createSubscription();
-            //addNewMonitoredItem(variables.map(x => x.item), m.current.internalHandle);
-        //}
+        if (variables.length == 1) {
+            createSubscription();
+        }
         console.log('A new element was added to the variables array.');
 
         // Read values for new variables
@@ -331,7 +329,7 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
 
         // Perform any additional logic here
         previousLength.current = variables.length;
-    }, [variables]);
+    }, [variables, createSubscription]);
     
 
     return (

@@ -88,15 +88,23 @@ export const TopMenu = ({ appId, pages, title, subtitle }: TopMenuProps) => {
             }}
          >
             {title}
-         </Typography>
-         <Box ml={6} my={0} pt={2} sx={{ flexGrow: 0, display: { xs: 'none', md: 'flex' } }}>
+           </Typography>
+           <Box ml={6} my={0} pt={2} sx={{ flexGrow: 0, display: { xs: 'none', md: 'flex' } }}>
+               <img src='/idta_logo.png' alt='IDTA_Logo' height={50} style={{
+                   borderTop: '1px solid white',
+                   borderLeft: '1px solid white',
+                   borderBottom: '1px solid black',
+                   borderRight: '1px solid black'
+               }} />
+           </Box>
+           <Box ml={6} my={0} pt={2} sx={{ flexGrow: 0, display: { xs: 'none', md: 'flex' } }}>
             <img src='/logo.png' alt='Logo' height={50} style={{
                borderTop: '1px solid white',
                borderLeft: '1px solid white',
                borderBottom: '1px solid black',
                borderRight: '1px solid black'
             }} />
-         </Box>
+           </Box>   
          <Box ml={6} mr="auto" sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             <Box ml={2}>
                <Typography variant="subtitle1" component="div" noWrap>
