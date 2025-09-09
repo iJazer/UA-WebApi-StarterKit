@@ -115,26 +115,6 @@ export const TopMenu = ({ appId, pages, title, subtitle }: TopMenuProps) => {
                </Typography>
             </Box>
          </Box>
-         <Box ml={6} sx={{ flexGrow: 0, display: { xs: 'none', md: 'flex' } }}>
-            {pages?.map((page) => {
-               if (page.appId !== appId) {
-                  return null;
-               }
-               return (
-                  <Button
-                     className={(page.path === path) ? "selected" : undefined}
-                     key={page.name}
-                     disableRipple={false}
-                     sx={{ my: 2, color: 'white', display: 'flex' }}
-                  >
-                     <Link to={page.path}>{t(page.name)}</Link>
-                  </Button>
-               );
-            })}
-         </Box>
-         <Box sx={{ flexGrow: 0 }}>
-            <SettingsMenu />
-         </Box>
       </Toolbar>
    );
 }

@@ -49,6 +49,8 @@ const lightBlue = '#E8EFF4';
 const darkBlue = '#084A79';
 const lightGrey = '#D7D9DA'
 
+const mediumOrange = '#B45F06'
+
 const darkThemeOverrides: ThemeOptions = {
    palette: {
       primary: Color.grey,
@@ -103,7 +105,7 @@ const darkThemeOverrides: ThemeOptions = {
 const lightThemeOverrides: ThemeOptions = {
    palette: {
       primary: {
-         main: mediumBlue,
+         main: mediumOrange,
          dark: darkBlue,
          light: lightBlue,
          contrastText: lightText
