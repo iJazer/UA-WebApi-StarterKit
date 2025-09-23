@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Caching.Memory;
 using Opc.Ua;
 using Opc.Ua.Server;
+using ISession = Opc.Ua.Server.ISession;
 using UaRestGateway.Server.Model;
 using UaRestGateway.Server.Service;
 
@@ -153,8 +154,8 @@ namespace UaRestGateway.Server.Controllers
 
                 if (endpoints == null || endpoints.Count == 0)
                 {
-                    var status = Server.GetStatus();
-                    throw new ApiResponseException(ErrorCodes.ServerNotRunning, $"{ErrorCodes.ServerNotRunning}. State={status.State}");
+                    var status = Server.CurrentState;
+                    throw new ApiResponseException(ErrorCodes.ServerNotRunning, $"{ErrorCodes.ServerNotRunning}. State={status}");
                 }
 
                 var ed = Server.GetEndpoints().Where(x => x.TransportProfileUri == Profiles.HttpsJsonTransport).First();

@@ -71,11 +71,11 @@ namespace UaRestGateway.Server.Service
                 var configurationFile = Path.Combine(folder, "config", "uaserver-configuration.xml");
 
                 // load the application configuration.
-                var configuration = await application.LoadApplicationConfiguration(configurationFile, false).ConfigureAwait(false);
+                var configuration = await application.LoadApplicationConfigurationAsync(configurationFile, false).ConfigureAwait(false);
 
                 // check the application certificate.
                 bool haveAppCertificate = await application
-                    .CheckApplicationInstanceCertificates(false)
+                    .CheckApplicationInstanceCertificatesAsync(false)
                     .ConfigureAwait(false);
 
                 if (!haveAppCertificate)
@@ -123,7 +123,7 @@ namespace UaRestGateway.Server.Service
                 {
                     ITransportWaitingConnection connection = null;
                     m_logger.LogInformation("Connecting to... {0}", m_settings.ServerUrl);
-                    var endpointDescription = CoreClientUtils.SelectEndpoint(m_configuration, m_settings.ServerUrl, !m_settings.NoSecurity);
+                    var endpointDescription = await CoreClientUtils.SelectEndpointAsync(m_configuration, m_settings.ServerUrl, !m_settings.NoSecurity, CancellationToken.None);
 
                     var endpointConfiguration = EndpointConfiguration.Create(m_configuration);
                     var endpoint = new ConfiguredEndpoint(null, endpointDescription, endpointConfiguration);
@@ -194,7 +194,7 @@ namespace UaRestGateway.Server.Service
                         m_reconnectHandler = null;
                     }
 
-                    m_session.Close();
+                    m_session.CloseAsync().GetAwaiter().GetResult();
                     m_session.Dispose();
                     m_session = null;
 

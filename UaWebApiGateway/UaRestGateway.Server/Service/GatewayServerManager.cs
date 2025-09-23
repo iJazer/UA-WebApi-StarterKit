@@ -38,6 +38,7 @@ using Opc.Ua.Bindings;
 using Opc.Ua.Server;
 using UaRestGateway.Server.Model;
 using StatusCodes = Opc.Ua.StatusCodes;
+using ISession = Opc.Ua.Server.ISession;
 
 namespace UaRestGateway.Server.Service
 {
@@ -106,7 +107,7 @@ namespace UaRestGateway.Server.Service
 
         protected override ResourceManager CreateResourceManager(IServerInternal server, ApplicationConfiguration configuration)
         {
-            ResourceManager resourceManager = new ResourceManager(server, configuration);
+            var resourceManager = new ResourceManager(configuration);
 
             System.Reflection.FieldInfo[] fields = typeof(StatusCodes).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
 
@@ -165,7 +166,7 @@ namespace UaRestGateway.Server.Service
                         configuration.SecurityConfiguration.UserIssuerCertificates != null)
                     {
                         CertificateValidator certificateValidator = new CertificateValidator();
-                        certificateValidator.Update(configuration).Wait();
+                        certificateValidator.UpdateAsync(configuration).Wait();
                         certificateValidator.Update(configuration.SecurityConfiguration.UserIssuerCertificates,
                             configuration.SecurityConfiguration.TrustedUserCertificates,
                             configuration.SecurityConfiguration.RejectedCertificateStore);
@@ -241,7 +242,7 @@ namespace UaRestGateway.Server.Service
         /// <summary>
         /// Called when a client tries to change its user identity.
         /// </summary>
-        private void SessionManager_ImpersonateUser(Session session, ImpersonateEventArgs args)
+        private void SessionManager_ImpersonateUser(ISession session, ImpersonateEventArgs args)
         {
             // check for issued token.
             if (args.NewIdentity is IssuedIdentityToken issuedToken)

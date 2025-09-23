@@ -28,10 +28,10 @@ namespace UaRestGateway.Server.Service
             // load the application configuration.
             string folder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var configurationFile = Path.Combine(folder, "config", "uaserver-configuration.xml");
-            var config = await m_application.LoadApplicationConfiguration("config/uaserver-configuration.xml", false).ConfigureAwait(false);
+            var config = await m_application.LoadApplicationConfigurationAsync("config/uaserver-configuration.xml", false).ConfigureAwait(false);
 
             // check the application certificate.
-            bool haveAppCertificate = await m_application.CheckApplicationInstanceCertificates(false).ConfigureAwait(false);
+            bool haveAppCertificate = await m_application.CheckApplicationInstanceCertificatesAsync(false).ConfigureAwait(false);
 
             if (!haveAppCertificate)
             {
@@ -47,7 +47,7 @@ namespace UaRestGateway.Server.Service
 
             // start the server.
             m_server = new GatewayServerManager();
-            await m_application.Start(m_server).ConfigureAwait(false);
+            await m_application.StartAsync(m_server).ConfigureAwait(false);
 
             // print endpoint info
             var endpoints = m_application.Server.GetEndpoints();
