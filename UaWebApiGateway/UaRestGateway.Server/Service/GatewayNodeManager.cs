@@ -40,7 +40,7 @@ namespace UaRestGateway.Server.Service
     {
         #region Private Fields
         private Dictionary<NodeId, FileManager> m_fileManagers = new();
-        private ushort MeasurementsNamespaceIndex => (NamespaceIndexes?.Length > 0) ? NamespaceIndexes[0] : (ushort)0;
+        private ushort MeasurementsNamespaceIndex => (NamespaceIndexes?.Count > 0) ? NamespaceIndexes[0] : (ushort)0;
         private Timer m_simulationTimer;
         #endregion
 

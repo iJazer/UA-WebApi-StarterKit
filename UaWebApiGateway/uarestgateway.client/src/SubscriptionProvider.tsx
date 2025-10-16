@@ -454,6 +454,7 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
    }, [deleteMonitoredItems]);
 
     const setIsSubscriptionEnabledImpl = React.useCallback((value: boolean) => {
+      console.log("Set subscription enabled: " + value);
       if (!m.current.subscriptionId) {
          return;
       }

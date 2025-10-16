@@ -27,20 +27,18 @@
  * http://opcfoundation.org/License/MIT/1.00/
  * ======================================================================*/
 
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using Microsoft.IdentityModel.Tokens;
 using Opc.Ua;
 using Opc.Ua.Bindings;
 using Opc.Ua.Server;
 using UaRestGateway.Server.Model;
 using StatusCodes = Opc.Ua.StatusCodes;
+using ISession = Opc.Ua.Server.ISession;
 
 namespace UaRestGateway.Server.Service
 {
@@ -109,7 +107,7 @@ namespace UaRestGateway.Server.Service
 
         protected override ResourceManager CreateResourceManager(IServerInternal server, ApplicationConfiguration configuration)
         {
-            ResourceManager resourceManager = new ResourceManager(server, configuration);
+            var resourceManager = new ResourceManager(configuration);
 
             System.Reflection.FieldInfo[] fields = typeof(StatusCodes).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
 
@@ -146,7 +144,7 @@ namespace UaRestGateway.Server.Service
             server.DiagnosticsNodeManager.DeleteNode(server.DefaultSystemContext, ObjectIds.Quantities);
 
             // request notifications when the user identity is changed. all valid users are accepted by default.
-            server.SessionManager.ImpersonateUser += new ImpersonateEventHandler(SessionManager_ImpersonateUser);
+            //server.SessionManager.ImpersonateUser += new ImpersonateEventHandler(SessionManager_ImpersonateUser);
         }
         #endregion
 
@@ -168,7 +166,7 @@ namespace UaRestGateway.Server.Service
                         configuration.SecurityConfiguration.UserIssuerCertificates != null)
                     {
                         CertificateValidator certificateValidator = new CertificateValidator();
-                        certificateValidator.Update(configuration.SecurityConfiguration).Wait();
+                        certificateValidator.UpdateAsync(configuration).Wait();
                         certificateValidator.Update(configuration.SecurityConfiguration.UserIssuerCertificates,
                             configuration.SecurityConfiguration.TrustedUserCertificates,
                             configuration.SecurityConfiguration.RejectedCertificateStore);

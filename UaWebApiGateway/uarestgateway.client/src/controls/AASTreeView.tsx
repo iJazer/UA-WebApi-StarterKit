@@ -7,6 +7,7 @@ import * as aas from "@aas-core-works/aas-core3.0-typescript";
 import ContextMenu from "../ContextMenu";
 import { SessionContext } from "../SessionContext";
 import { sendAASRequest } from "../utils/SendAASRequest";
+//import { IResponseMessage } from '../service/IResponseMessage';
 
 interface TreeNode {
     id: string;
@@ -107,7 +108,7 @@ const AASTreeView: React.FC = () => {
     const elementToTree = async (element: aas.types.ISubmodelElement, aasId: string, submodelId: string, idShort: string, parentPath: string): Promise<TreeNode> => {
         const label = `${getSubmodelElementAbbreviation(element.constructor.name)}: ${element.idShort}`;
         const currentPath = parentPath ? `${parentPath}.${idShort}` : idShort;
-        let children: TreeNode[] = [];
+        const children: TreeNode[] = [];
 
         if (element instanceof aas.types.SubmodelElementCollection && element.value) {
             for (const el of element.value) {
@@ -237,7 +238,8 @@ const AASTreeView: React.FC = () => {
             await loadTree(); // refresh entire tree
         } else if (node.type === "Submodel") {
             const shellId = node.parentAASId!;
-            const submodelId = node.original?.id!;
+            const submodelId = (node.original && 'id' in node.original) ? (node.original as { id: string }).id : undefined;
+            if (!submodelId) return; // <-- Add this guard
             const smJson = await sendAASRequest(sessionRef.current, "GET", `/shells/${encodeId(shellId)}/submodels/${encodeId(submodelId)}`);
             const sm = aas.jsonization.submodelFromJsonable(smJson).mustValue();
             const updatedNode = await submodelToTree(sm, shellId);

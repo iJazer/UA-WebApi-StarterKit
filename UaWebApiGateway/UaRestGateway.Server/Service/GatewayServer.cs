@@ -28,13 +28,10 @@ namespace UaRestGateway.Server.Service
             // load the application configuration.
             string folder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var configurationFile = Path.Combine(folder, "config", "uaserver-configuration.xml");
-            var config = await m_application.LoadApplicationConfiguration("config/uaserver-configuration.xml", false).ConfigureAwait(false);
-
+            var config = await m_application.LoadApplicationConfigurationAsync("config/uaserver-configuration.xml", false).ConfigureAwait(false);
+            
             // check the application certificate.
-            bool haveAppCertificate = await m_application.CheckApplicationInstanceCertificate(
-                false,
-                CertificateFactory.DefaultKeySize,
-                CertificateFactory.DefaultLifeTime).ConfigureAwait(false);
+            bool haveAppCertificate = await m_application.CheckApplicationInstanceCertificatesAsync(false).ConfigureAwait(false);
 
             if (!haveAppCertificate)
             {

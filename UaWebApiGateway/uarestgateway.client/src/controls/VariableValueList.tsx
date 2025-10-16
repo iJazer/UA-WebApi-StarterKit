@@ -7,7 +7,7 @@ import TableRow from '@mui/material/TableRow/TableRow';
 import TableCell from '@mui/material/TableCell/TableCell';
 import TableBody from '@mui/material/TableBody/TableBody';
 import Paper from '@mui/material/Paper/Paper';
-import { Skeleton, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 
 import * as OpcUa from 'opcua-webapi';
 
@@ -176,7 +176,9 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
 
         if (variables.length == 0) {
             setIsSubscriptionEnabled(false);
-            deleteSubscription(subscriptionId);
+            if (typeof subscriptionId === "number" && typeof deleteSubscription === "function") {
+                deleteSubscription(subscriptionId);
+            }
         }
     };
 
@@ -304,9 +306,11 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
     // Effect to detect when a new element is added to the variables array
     React.useEffect(() => {
         if (variables.length == 1) {
-            createSubscription();
+            if (typeof createSubscription === "function") {
+                createSubscription();
+            }
         }
-        console.log('A new element was added to the variables array.');
+        //console.log('A new element was added to the variables array.');
 
         // Read values for new variables
         if (readValues && variables.length) {

@@ -14,7 +14,7 @@ interface OpcFunctionsProps {
     // Define any props if needed
 }
 
-const OpcFunctions: React.FC<OpcFunctionscProps> = () => {
+const OpcFunctions: React.FC<OpcFunctionsProps> = () => {
     //const session = useContext(SessionContext);
 
     return (

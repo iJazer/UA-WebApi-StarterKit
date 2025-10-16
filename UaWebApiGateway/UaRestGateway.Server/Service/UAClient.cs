@@ -46,6 +46,7 @@ namespace UaRestGateway.Server.Service
             //Uri serverUrl = new Uri("opc.tcp://WhiteCat:48030/");
             //Uri serverUrl = new Uri("opc.tcp://192.168.119.131:4840");
             Uri serverUrl = new Uri("opc.tcp://192.168.56.101:4840");
+            //Uri serverUrl = new Uri("opc.tcp://192.168.50.60:62520/AggregationServer");
             //Uri serverUrl = new Uri("opc.tcp://localhost:4840");
             //Uri serverUrl = new Uri("opc.tcp://nb-pf4n27ex:62541/Quickstarts/ReferenceServer");
 
@@ -58,19 +59,19 @@ namespace UaRestGateway.Server.Service
                 CertificatePasswordProvider = PasswordProvider
             };
 
-            var config = await application.LoadApplicationConfiguration(silent: false).ConfigureAwait(false);
+            var config = await application.LoadApplicationConfigurationAsync(silent: false).ConfigureAwait(false);
 
             config.TraceConfiguration.ApplySettings();
 
 
-            bool haveAppCertificate = await application.CheckApplicationInstanceCertificate(silent: false, minimumKeySize: 0);
+            bool haveAppCertificate = await application.CheckApplicationInstanceCertificatesAsync(false);
             if (!haveAppCertificate)
             {
                 throw new Exception("Application instance certificate invalid!");
             }
 
             // Create a session with the server
-            var endpointDescription = CoreClientUtils.SelectEndpoint(serverUrl.ToString(), useSecurity: false);
+            var endpointDescription = CoreClientUtils.SelectEndpoint(config, serverUrl.ToString(), useSecurity: false);
             var endpointConfiguration = EndpointConfiguration.Create(config);
             var endpoint = new ConfiguredEndpoint(null, endpointDescription, endpointConfiguration);
 
@@ -123,11 +124,11 @@ namespace UaRestGateway.Server.Service
                 var configurationFile = Path.Combine(folder, "config", "uaserver-configuration.xml");
 
                 // load the application configuration.
-                var configuration = await application.LoadApplicationConfiguration(configurationFile, false).ConfigureAwait(false);
+                var configuration = await application.LoadApplicationConfigurationAsync(configurationFile, false).ConfigureAwait(false);
 
                 // check the application certificate.
                 bool haveAppCertificate = await application
-                    .CheckApplicationInstanceCertificate(false, minimumKeySize: 0)
+                    .CheckApplicationInstanceCertificatesAsync(false)
                     .ConfigureAwait(false);
 
                 if (!haveAppCertificate)

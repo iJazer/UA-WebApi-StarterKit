@@ -152,7 +152,7 @@ export const SessionProvider = ({ children }: SessionProps) => {
                 }
                 return; 
             }
-
+            
             const callerHandle = response.Body?.ResponseHeader?.RequestHandle ?? 0;
             const request = m.current.requests.get(callerHandle);
             if (request) {
@@ -239,9 +239,6 @@ export const SessionProvider = ({ children }: SessionProps) => {
                             console.error('Unexpected HTTP error:', error);
                             m.current.requests.delete(callerHandle);
                         });
-                }
-                else if (request.Body.RequestHeader.AASRequestHandle) { //Erkennung ob es ein AAS request ist --> Für Juliee
-                    console.log("AAS call");
                 }
                 else {
                     console.error("Unknown callerId");
@@ -424,6 +421,7 @@ export const SessionProvider = ({ children }: SessionProps) => {
     }, []);
 
     const setIsSessionEnabledImpl = React.useCallback((value: boolean) => {
+        console.log("Set session enabled: " + value);
         if (m.current.isSessionEnabled === value) {
             return;
         }
@@ -484,6 +482,7 @@ export const SessionProvider = ({ children }: SessionProps) => {
      * 
      * The function checks the ServiceId of the response and processes the response accordingly
      */
+    /*
     const processResponse = React.useCallback((response: IResponseMessage) => {
 
         if (response?.ServiceId === "AASResponse") {
@@ -519,6 +518,7 @@ export const SessionProvider = ({ children }: SessionProps) => {
             processRawResponse(response);
         }
     }, [activateSession, processRawResponse])
+    */
 
     return (
         <SessionContext.Provider value={sessionContext}>

@@ -109,8 +109,9 @@
     <Folder Include="wwwroot\data\" />
   </ItemGroup>
 
+  <!--
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="powershell .\incrementbuildverision.ps1" />
   </Target>
-
+  -->
 </Project>

@@ -80,6 +80,7 @@ export const SessionStatusBar = () => {
     }, []);
 
     const handleConnect = React.useCallback((state: SessionState) => {
+        
         if (state === SessionState.Disconnected || state === SessionState.NoSession) {
             setIsSubscriptionEnabled(true);
             setIsSessionEnabled(true);

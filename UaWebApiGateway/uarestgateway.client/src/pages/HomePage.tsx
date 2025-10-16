@@ -1,15 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Box from '@mui/material/Box/Box';
 
-import { BrowseTreeView } from '../controls/BrowseTreeView';
-import { AASBrowseTreeView } from '../controls/AASBrowseTreeView';
-import VariableValueList from '../controls/VariableValueList';
+//import VariableValueList from '../controls/VariableValueList';
 import SessionStatusBar from '../controls/SessionStatusBar';
 
-import * as OpcUa from 'opcua-webapi';
-import ServerStatusCard from '../controls/ServerStatusCard';
-import AASSubmodel from '../controls/AASSubmodel';
-import AASFunctions from '../controls/AASFunctions';
+//import * as OpcUa from 'opcua-webapi';
+//import ServerStatusCard from '../controls/ServerStatusCard';
 import NetworkListener from '../controls/NetworkListener';
 import BrowseProvider from '../BrowseProvider';
 import SubscriptionPage from './SubscriptionPage';
@@ -17,9 +13,10 @@ import AASTreeView from '../controls/AASTreeView';
 
 
 export const HomePage = () => {
-   const [selection, setSelection] = React.useState<OpcUa.ReferenceDescription | undefined>();
-   const [message, setMessage] = useState<string>('');
+   //const [selection, setSelection] = React.useState<OpcUa.ReferenceDescription | undefined>();
+   //const [message, setMessage] = useState<string>('');
 
+   /*
    const selectPanel = React.useCallback((reference?: OpcUa.ReferenceDescription) => {
       if (!reference) {
          return <VariableValueList />;
@@ -34,6 +31,7 @@ export const HomePage = () => {
             }
       }
    }, []);
+   */
 
    //const onSelectionChanged = React.useCallback((x: OpcUa.ReferenceDescription | undefined) => setSelection({ ...x }), []);
 
