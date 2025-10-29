@@ -1,0 +1,17 @@
+version: '2.4'
+
+services:
+  uarestgateway-server:
+    image: 'uawebapigateway-uarestgateway-server'
+    networks:
+      - default
+    mem_limit: 2000mb
+    ports:
+      - "44430:44430"
+      - "46040:46040"
+      - "4840:4840"
+      - "62541:62541"
+networks:
+    proxy-redirect:
+      external:
+        name: proxy-redirect

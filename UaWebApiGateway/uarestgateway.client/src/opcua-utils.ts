@@ -3,10 +3,6 @@ import * as OpcUa from 'opcua-webapi';
 import * as pako from 'pako';
 import { Account } from './user/Account';
 import { ICompletedRequest } from './service/ICompletedRequest';
-import { IBrowsedNode } from './service/IBrowsedNode';
-import { IReadResult } from './service/IReadResult';
-import { HandleFactory } from './service/HandleFactory';
-import { IReadValueId } from './service/IReadValueId';
 import { IResponseBody } from './service/IResponseBody';
 
 function toFault(request: ICompletedRequest, response?: IResponseBody): ICompletedRequest | null {
@@ -30,7 +26,7 @@ function toFault(request: ICompletedRequest, response?: IResponseBody): IComplet
       return {
          ...request,
          code: responseHeader.ServiceResult?.Code,
-         message: message
+         error: message
       }
    }
    return {
@@ -55,7 +51,7 @@ async function gzip(data: string): Promise<Uint8Array> {
 async function readResponseBody(url: string, response: Response) {
    const content = response.headers.get("Content-Type");
    if (content && content.indexOf("json") < 0) {
-      console.error("UnexpectedResponse: " + await response.text());
+      // console.error("UnexpectedResponse: " + await response.text());
       return null;
    }
    return await response.clone().json();
@@ -83,11 +79,11 @@ async function readResponseBody(url: string, response: Response) {
 
 export async function call(
    url: string,
-   result: ICompletedRequest,
+   message: ICompletedRequest,
    controller?: AbortController,
    user?: Account,
    compress?: boolean) {
-   const request = result.request.Body;
+   const request = message.request.Body;
    const timeoutId = (request?.RequestHeader?.TimeoutHint && controller)
       ? setTimeout(() => controller.abort(), request?.RequestHeader?.TimeoutHint)
       : null;
@@ -111,15 +107,16 @@ export async function call(
       if (timeoutId) clearTimeout(timeoutId);
       if (response.ok) {
          const body = await readResponseBody(url, response);
-         const fault = toFault(result, body);
+         const fault = toFault(message, body);
          if (fault) {
             return fault;
          }
          return body;
       }
       else {
-         console.info(`call: ${response.status} ${response.statusText}`);
+         console.info(`call: ${message.callerHandle} ${response.status} ${response.statusText}`);
          return {
+            callerHandle: message.callerHandle,
             code: OpcUa.StatusCodes.BadUnexpectedError,
             message: `HTTP ${response.status} ${response.statusText}`
          };
@@ -128,287 +125,18 @@ export async function call(
    catch (exception: any) {
       if (timeoutId) clearTimeout(timeoutId);
       if (exception.code) {
-         console.info(`call: ${exception.code} ${exception.message}`);
-         return exception;
-      } else {
-         console.info(`call: BadUnexpectedError ${exception.toString()}`);
+         console.info(`call: ${message.callerHandle} ${exception.code} ${exception.message}`);
          return {
+            callerHandle: message.callerHandle,
+            ...exception
+         };
+      } else {
+         console.info(`call: ${message.callerHandle} BadUnexpectedError ${exception.toString()}`);
+         return {
+            callerHandle: message.callerHandle,
             code: OpcUa.StatusCodes.BadUnexpectedError,
             message: exception.toString()
          };
       }
    }
-}
-
-export async function browseChildren(
-   nodeId: string,
-   requestTimeout: number = 120000,
-    user?: Account,
-): Promise<IBrowsedNode[] | undefined> {
-
-   const controller: AbortController = new AbortController();
-   const request: OpcUa.BrowseRequest = {
-      RequestHeader: {
-         Timestamp: new Date(),
-         TimeoutHint: requestTimeout
-      },
-      RequestedMaxReferencesPerNode: 20,
-      NodesToBrowse: [
-         {
-            NodeId: nodeId,
-            BrowseDirection: OpcUa.BrowseDirection.Forward,
-            ReferenceTypeId: OpcUa.ReferenceTypeIds.HierarchicalReferences,
-            IncludeSubtypes: true,
-            ResultMask: 63
-         }
-      ]
-   };
-   const result: ICompletedRequest = { callerHandle: HandleFactory.increment(), request: { Body: request } };
-   const response = await call(`/opcua/browse`, result, controller, user, true);
-   if (!response) {
-      return undefined;
-   }
-   if (response.code) {
-      console.warn(`Browse call failed: [${OpcUa.StatusCodes[response.code] ?? response.code}] '${response.message ?? ''}'`);
-      return undefined;
-   }
-   const nodes: IBrowsedNode[] = [];
-   let continuationPoints: string[] = [];
-   let body: OpcUa.BrowseResponse = response;
-   do {
-      continuationPoints = [];
-      body.Results?.forEach(x => x.References?.forEach((y) => {
-         if (OpcUa.StatusUtils.isGood(x.StatusCode)) {
-            nodes.push({
-               id: `${y.NodeId}`,
-               reference: y
-            });
-            if (x.ContinuationPoint) {
-               continuationPoints.push(x.ContinuationPoint);
-            }
-         }
-      }));
-      if (continuationPoints.length > 0) {
-         const request: OpcUa.BrowseNextRequest = {
-            RequestHeader: {
-               Timestamp: new Date(),
-               TimeoutHint: requestTimeout
-            },
-            ReleaseContinuationPoints: false,
-            ContinuationPoints: continuationPoints
-         };
-         result.request = { Body: request };
-         const response = await call(`/opcua/browsenext`, result, controller, user, true);
-         if (!response) {
-            return undefined;
-         }
-         if (response.code) {
-            console.warn(`BrowseNext call failed: [${OpcUa.StatusCodes[response.code] ?? response.code}] '${response.message ?? ''}'`);
-            return undefined;
-         }
-         body = response;
-      }
-   } while (continuationPoints.length > 0);
-
-   return nodes;
-}
-
-export async function readAttributes(
-   reference: OpcUa.ReferenceDescription,
-   requestTimeout: number = 120000,
-   user?: Account
-): Promise<IReadResult[] | null> {
-
-   const controller: AbortController = new AbortController();
-   const request: OpcUa.ReadRequest = {
-      RequestHeader: {
-         Timestamp: new Date(),
-         TimeoutHint: requestTimeout
-      },
-      MaxAge: 0,
-      TimestampsToReturn: OpcUa.TimestampsToReturn.Server,
-      NodesToRead: []
-   };
-   for (const id in OpcUa.Attributes) {
-      request.NodesToRead?.push(
-         {
-            NodeId: reference.NodeId,
-            AttributeId: Number(OpcUa.Attributes[id])
-         });
-   }
-   const response = await call(`/opcua/read`, { callerHandle: HandleFactory.increment(), request: { Body: request } }, controller, user, true);
-   if (!response) {
-      return null;
-   }
-   if (response.code) {
-      console.warn(`Read call failed: [${OpcUa.StatusCodes[response.code] ?? response.code}] '${response.message ?? ''}'`);
-      return null;
-   }
-   const body: OpcUa.ReadResponse = response;
-   const values: IReadResult[] = [];
-   if (body.Results && request.NodesToRead) {
-      for (let ii = 0; ii < body.Results?.length; ii++) {
-         const x = body.Results[ii];
-         if (x.StatusCode?.Code !== OpcUa.StatusCodes.BadAttributeIdInvalid) {
-            values.push({
-               id: HandleFactory.increment(),
-               nodeId: reference.NodeId ?? '',
-               attributeId: request.NodesToRead[ii].AttributeId ?? 0,
-               value: x
-            });
-         }
-      }
-   }
-   return values;
-}
-
-export async function readValues(
-   variableIds: string[],
-   requestTimeout: number,
-   user?: Account
-): Promise<IReadResult[] | null> {
-
-   const controller: AbortController = new AbortController();
-   const request: OpcUa.ReadRequest = {
-      RequestHeader: {
-         Timestamp: new Date(),
-         TimeoutHint: requestTimeout
-      },
-      MaxAge: 0,
-      TimestampsToReturn: OpcUa.TimestampsToReturn.Both,
-      NodesToRead: []
-   };
-   variableIds.map(ii => {
-      request.NodesToRead?.push(
-         {
-            NodeId: ii,
-            AttributeId: OpcUa.Attributes.Value
-         });
-      return null;
-   });
-   const values: IReadResult[] = [];
-   if (request.NodesToRead?.length) {
-      const response = await call(`/opcua/read`, { callerHandle: HandleFactory.increment(), request: { Body: request } }, controller, user, true);
-      if (!response) {
-         return null;
-      }
-      if (response.code) {
-         console.warn(`Read call failed: [${OpcUa.StatusCodes[response.code] ?? response.code}] '${response.message ?? ''}'`);
-         return null;
-      }
-      const body: OpcUa.ReadResponse = response
-      if (body.Results && request.NodesToRead) {
-         for (let ii = 0; ii < body.Results?.length; ii++) {
-            const item = body.Results[ii];
-            values.push({
-               id: HandleFactory.increment(),
-               nodeId: variableIds[ii] ?? '',
-               attributeId: request.NodesToRead[ii].AttributeId ?? 0,
-               value: item
-            });
-         }
-      }
-   }
-   return values;
-}
-
-export async function translateAndReadValues(
-   nodesToRead: IReadValueId[],
-   requestTimeout: number,
-   user?: Account
-): Promise<IReadResult[] | null> {
-   const controller: AbortController = new AbortController();
-   const browsePaths: OpcUa.BrowsePath[] = [];
-   const nodesToTranslate: IReadValueId[] = [];
-   const values: IReadResult[] = [];
-   nodesToRead.forEach((item) => {
-      values.push({
-         id: item.id ?? values.length,
-         nodeId: item.resolvedNodeId ?? item.nodeId,
-         attributeId: item.attributeId ?? OpcUa.Attributes.Value,
-         value: { StatusCode: { Code: OpcUa.StatusCodes.BadNodeIdUnknown } }
-      } as IReadResult);  
-      if (item.resolvedNodeId) {
-         return;
-      }
-      if (!item.path?.length) {
-         item.resolvedNodeId = item.nodeId;
-         return;
-      }
-      browsePaths.push({
-         StartingNode: item.nodeId,
-         RelativePath: {
-            Elements: item.path?.map((path) => {
-               return {
-                  ReferenceTypeId: OpcUa.ReferenceTypeIds.HierarchicalReferences,
-                  IsInverse: false,
-                  IncludeSubtypes: true,
-                  TargetName: path
-               } as OpcUa.ReferenceDescription
-            })
-         }
-      });
-      nodesToTranslate.push(item);
-   });
-   if (browsePaths.length) {
-      const request: OpcUa.TranslateBrowsePathsToNodeIdsRequest = {
-         RequestHeader: {
-            Timestamp: new Date(),
-            TimeoutHint: requestTimeout
-         },
-         BrowsePaths: browsePaths
-      };
-      const response = await call(`/opcua/translate`, { callerHandle: HandleFactory.increment(), request: { Body: request } }, controller, user, true);
-      if (!response) {
-         return null;
-      }
-      if (response.code) {
-         console.warn(`Translate call failed: [${OpcUa.StatusCodes[response.code] ?? response.code}] '${response.message ?? ''}'`);
-         return null;
-      }
-      const body : OpcUa.TranslateBrowsePathsToNodeIdsResponse = response;
-      body.Results?.forEach((item, index) => {
-         if (!item.StatusCode && item?.Targets?.at(0)?.RemainingPathIndex === 4294967295) {
-            nodesToTranslate[index].resolvedNodeId = item.Targets[0].TargetId;
-         }
-      });
-   }
-   const valuesToRead: OpcUa.ReadValueId[] = [];
-   const subsetOfResults: (IReadResult | undefined)[] = []; 
-   nodesToRead.forEach((item, index) => {
-      if (!item.resolvedNodeId) {
-         return;
-      }
-      valuesToRead.push({
-         NodeId: item.resolvedNodeId,
-         AttributeId: item.attributeId ?? OpcUa.Attributes.Value
-      });
-      item.id = valuesToRead.length;
-      subsetOfResults.push(values.at(index));
-   });
-   if (valuesToRead.length) {
-      const request: OpcUa.ReadRequest = {
-         RequestHeader: {
-            Timestamp: new Date(),
-            TimeoutHint: requestTimeout
-         },
-         MaxAge: 0,
-         NodesToRead: valuesToRead
-      };
-      const response = await call(`/opcua/read`, { callerHandle: HandleFactory.increment(), request: { Body: request } }, controller, user, true);
-      if (!response) {
-         return null;
-      }
-      if (response.code) {
-         console.warn(`Read call failed: [${OpcUa.StatusCodes[response.code] ?? response.code}] '${response.message ?? ''}'`);
-         return null;
-      }
-      const body: OpcUa.ReadResponse = response;
-      subsetOfResults.forEach((item, index) => {
-         if (item?.value) {
-            item.value = body.Results?.at(index);
-         }
-      });
-   }
-   return values;
 }

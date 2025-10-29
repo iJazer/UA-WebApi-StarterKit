@@ -50,7 +50,8 @@ COPY --from=build /src/uarestgateway.client /app/uarestgateway.client
 
 ENV ASPNETCORE_URLS=http://0.0.0.0:44430
 EXPOSE 44430
-EXPOSE 4840
+EXPOSE 7010
 EXPOSE 46040
 EXPOSE 62541
+
 ENTRYPOINT ["dotnet", "UaRestGateway.Server.dll"]

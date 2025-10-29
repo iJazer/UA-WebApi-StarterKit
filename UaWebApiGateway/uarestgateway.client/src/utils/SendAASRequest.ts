@@ -1,6 +1,5 @@
 ﻿// SendAASRequest.ts
 import { IRequestMessage } from "../service/IRequestMessage";
-//import { IResponseMessage } from "../service/IResponseMessage";
 import { HandleFactory } from "../service/HandleFactory";
 import { SessionContext } from "../SessionContext";
 

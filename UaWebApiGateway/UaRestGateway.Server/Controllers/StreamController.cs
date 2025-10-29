@@ -97,13 +97,12 @@ namespace UaRestGateway.Server.Controllers
         {
             try
             {
-                var sessionContext = GetSessionContext(HttpContext);
-                var httpContext = ControllerContext.HttpContext;
-                var isSocketRequest = httpContext.WebSockets.IsWebSocketRequest;
+                var context = ControllerContext.HttpContext;
+                var isSocketRequest = context.WebSockets.IsWebSocketRequest;
 
                 if (isSocketRequest)
                 {
-                    var protocols = httpContext.WebSockets.WebSocketRequestedProtocols;
+                    var protocols = context.WebSockets.WebSocketRequestedProtocols;
 
                     string selectedProtocol = "aas+opcua+uajson";
 
@@ -129,12 +128,12 @@ namespace UaRestGateway.Server.Controllers
                         }
                     }
 
-                    WebSocket webSocket = await httpContext.WebSockets.AcceptWebSocketAsync(selectedProtocol);
-                    await ProcessMessages(httpContext, sessionContext, webSocket, accessToken);
+                    WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync(selectedProtocol);
+                    await ProcessMessages(context, webSocket, accessToken);
                 }
                 else
                 {
-                    httpContext.Response.StatusCode = 400;
+                    context.Response.StatusCode = 400;
                 }
             }
             catch (Exception ex)
@@ -143,8 +142,10 @@ namespace UaRestGateway.Server.Controllers
             }
         }
 
-        private async Task ProcessMessages(HttpContext httpContext, SessionContext sessionContext, WebSocket webSocket, string accessToken)
+        private async Task ProcessMessages(HttpContext httpContext, WebSocket webSocket, string accessToken)
         {
+		    var sessionContext = GetSessionContext(httpContext, accessToken);
+			
             try
             {
                 while (webSocket.State == WebSocketState.Open)
@@ -291,19 +292,18 @@ namespace UaRestGateway.Server.Controllers
                         }
                     }
                 }
-                
+
                 response = await MessageUtils.CreateSession(sessionContext, server, csr);
 
                 lock (sessionContext)
                 {
                     sessionContext.AuthenticationToken = ((CreateSessionResponse)response).AuthenticationToken;
                 }
-                
+
                 await SendResponse(webSocket, server.MessageContext, response, compress);
                 return;
             }
 
-            
             if (sessionContext.AuthenticationToken == null || sessionContext.AuthenticationToken != request.RequestHeader.AuthenticationToken)
             {
                 response = MessageUtils.Fault(request, new ServiceResultException(Opc.Ua.StatusCodes.BadSessionIdInvalid, "Session not created."));
@@ -311,8 +311,7 @@ namespace UaRestGateway.Server.Controllers
                 Logger.LogError($"BadSessionIdInvalid {request.RequestHeader.RequestHandle}");
                 return;
             }
-            
-            
+
             if (request is ActivateSessionRequest asr)
             {
                 response = await MessageUtils.ActivateSession(sessionContext, server, asr);
@@ -327,7 +326,6 @@ namespace UaRestGateway.Server.Controllers
                 Logger.LogError($"BadSessionNotActivated {request.RequestHeader.RequestHandle}");
                 return;
             }
-            
 
             var task = Task.Run(async () =>
             {
@@ -609,12 +607,8 @@ namespace UaRestGateway.Server.Controllers
                             break;
 
                         case ReadRequest input:
-//#ifdef ClientAccess
                             response = await MessageUtils.Read_with_Client(sessionContext, client, input);
-//#endif
-//#ifdef ServerAccess
                             //response = await MessageUtils.Read(sessionContext, server, input);
-//#endif
                             break;
 
                         case WriteRequest input:

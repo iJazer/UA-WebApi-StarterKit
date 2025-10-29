@@ -37,12 +37,8 @@ function toText(value?: OpcUa.DataValue): string {
       case OpcUa.BuiltInType.ByteString: {
          const text = value.Value as string;
          if (text) {
-            const binaryString = atob(text); // Decode base64 to binary
-            const buffer = new Uint8Array(binaryString.length);
-            for (let i = 0; i < binaryString.length; i++) {
-               buffer[i] = binaryString.charCodeAt(i);
-            }
-            return Array.from(buffer)
+            const buffer = Buffer.from(value.Value as string, 'base64');
+            return Array.from(new Uint8Array(buffer))
                .map(byte => byte.toString(16).padStart(2, '0'))
                .join('');
          }

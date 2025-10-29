@@ -16,39 +16,38 @@ import { setNetworkMessage } from './controls/NetworkListener';
 import { SessionContext } from './SessionContext';
 
 export interface ISessionContext {
-    serverUrl: string,
-    setServerUrl: (value: string) => void,
-    isConnected: boolean,
-    sessionState: SessionState,
-    isEnabled: boolean,
-    setIsEnabled: (value: boolean) => void,
-    isSessionEnabled: boolean,
-    setIsSessionEnabled: (value: boolean) => void,
-    requestTimeout: number,
-    setRequestTimeout: (value: number) => void,
+   serverUrl: string,
+   setServerUrl: (value: string) => void,
+   isConnected: boolean,
+   sessionState: SessionState,
+   isEnabled: boolean,
+   setIsEnabled: (value: boolean) => void,
+   isSessionEnabled: boolean,
+   setIsSessionEnabled: (value: boolean) => void,
+   requestTimeout: number,
+   setRequestTimeout: (value: number) => void,
     sendRequest: (request: IRequestMessage, callerHandle?: number) => void,
-    messageCounter?: number,
+   messageCounter?: number,
     message: string,
     processMessages: (matcher: (message: ICompletedRequest) => boolean) => ICompletedRequest[],
     addAASResponseListener?: (handle: number, callback: (response: IResponseMessage) => void) => void;
     addPushUpdateListener?: (callback: (response: IResponseMessage) => void) => void;
 }
-
 interface SessionProps {
-    children?: React.ReactNode
+   children?: React.ReactNode
 }
 
 interface SessionInternals {
-    serverUrl: string | null,
-    isConnected: boolean,
-    sessionState: SessionState,
-    isEnabled: boolean,
-    isSessionEnabled: boolean,
-    requestTimeout: number,
-    authenticationToken?: string,
-    serverNonce?: string,
-    requests: Map<number, ICompletedRequest>,
-    responses: ICompletedRequest[]
+   serverUrl: string | null,
+   isConnected: boolean,
+   sessionState: SessionState,
+   isEnabled: boolean,
+   isSessionEnabled: boolean,
+   requestTimeout: number,
+   authenticationToken?: string,
+   serverNonce?: string,
+   requests: Map<number, ICompletedRequest>,
+   responses: ICompletedRequest[]
     message: string | null,
     aasListeners?: Map<number, (response: IResponseMessage) => void>;
     pushUpdateListeners?: Set<(response: IResponseMessage) => void>;
@@ -78,22 +77,22 @@ const apiNames = {
 };
 
 function getApiName(responseId: string): string | undefined {
-    for (const [, value] of Object.entries(apiNames)) {
-        if (value.response === responseId) {
-            return value.path;
-        }
-    }
-    return undefined;
+   for (const [, value] of Object.entries(apiNames)) {
+      if (value.response === responseId) {
+         return value.path;
+      }
+   }
+   return undefined; 
 }
 
 export const SessionProvider = ({ children }: SessionProps) => {
-    const [serverUrl, setServerUrl] = React.useState<string | null>(DefaultServerUrl);
-    const [isEnabled, setIsEnabled] = React.useState<boolean>(false);
-    const [isSessionEnabled, setIsSessionEnabled] = React.useState<boolean>(false);
-    const [sessionState, setSessionState] = React.useState<SessionState>(SessionState.Disconnected);
-    const [messageCounter, setMessageCounter] = React.useState<number>(0);
+   const [serverUrl, setServerUrl] = React.useState<string | null>(DefaultServerUrl);
+   const [isEnabled, setIsEnabled] = React.useState<boolean>(false);
+   const [isSessionEnabled, setIsSessionEnabled] = React.useState<boolean>(false);
+   const [sessionState, setSessionState] = React.useState<SessionState>(SessionState.Disconnected);
+   const [messageCounter, setMessageCounter] = React.useState<number>(0);
 
-    const { user, loginStatus } = React.useContext(UserContext);
+   const { user, loginStatus } = React.useContext(UserContext);
     const [visibleNodes, setVisibleNodes] = React.useState<string[]>([]);
     const [message, setMessage] = React.useState<string>("");
 
@@ -111,14 +110,14 @@ export const SessionProvider = ({ children }: SessionProps) => {
        pushUpdateListeners: new Set<(response: IResponseMessage) => void>(),
    });
 
-    const handleOnMessage = React.useCallback((event: MessageEvent) => {
-        try {
-            const response = JSON.parse(event.data) as IResponseMessage;
-            processRawResponse(response);
-        } catch (error) {
-            console.warn('SessionProvider:WebSocket:OnMesssage', error);
-        }
-    }, []);
+   const handleOnMessage = React.useCallback((event: MessageEvent) => {
+      try {
+         const response = JSON.parse(event.data) as IResponseMessage;
+         processRawResponse(response);
+      } catch (error) {
+         console.warn('SessionProvider:WebSocket:OnMesssage', error);
+      }
+   }, []);
 
     const { sendMessage, readyState } = useWebSocket(
         (isEnabled) ? serverUrl : null,
@@ -152,19 +151,18 @@ export const SessionProvider = ({ children }: SessionProps) => {
                 }
                 return; 
             }
-            
-            const callerHandle = response.Body?.ResponseHeader?.RequestHandle ?? 0;
-            const request = m.current.requests.get(callerHandle);
-            if (request) {
-                m.current.requests.delete(callerHandle);
-                request.response = response;
-                m.current.responses.push(request);
-                console.error("Session SUB (" + Array.from(m.current.requests.keys()).join(",") + "): " + callerHandle);
-                console.error(`===>>> RESPONSE: ${getApiName(response?.ServiceId ?? '')} ${callerHandle}`);
-                setMessageCounter(x => x + 1);
-            }
-        }
-    }, [])
+         const callerHandle = response.Body?.ResponseHeader?.RequestHandle ?? 0;
+         const request = m.current.requests.get(callerHandle);
+         if (request) {
+            m.current.requests.delete(callerHandle);
+            request.response = response;
+            m.current.responses.push(request);
+            // console.error("Session SUB (" + Array.from(m.current.requests.keys()).join(",") + "): " + callerHandle);
+            // console.error(`===>>> RESPONSE: ${getApiName(response?.ServiceId ?? '')} ${callerHandle}`);
+            setMessageCounter(x => x + 1);
+         }
+      }
+   }, [])
 
     /**
      * sendRequest is the connection link between the client and the server
@@ -207,48 +205,42 @@ export const SessionProvider = ({ children }: SessionProps) => {
                 const callerHandle = requestHeader.RequestHandle;
                 console.error(`===>>> REQUEST: ${apiNames[request.ServiceId ?? ''].path} ${requestHeader.RequestHandle}`);
 
-                if (request.Body.RequestHeader.RequestHandle) { //Erkennung ob es ein OPC UA request ist, da RequestHandle nur für OPC UA calls genutzt werden
-                    call(
-                        `/opcua/${apiNames[request.ServiceId ?? ''].path}`,
-                        { callerHandle: callerHandle, request: { Body: request.Body } },
-                        undefined,
-                        user,
-                        true)
-                        .then(response => {
-                            if (response.code) {
-                                processRawResponse({
-                                    ServiceId: apiNames[request.ServiceId ?? ''].response,
-                                    Body: {
-                                        ResponseHeader: {
-                                            RequestHandle: callerHandle,
-                                            ServiceResult: response.code,
-                                            ServiceDiagnostics: { LocalizedText: 0 },
-                                            StringTable: [response.message]
-                                        }
-                                    }
-                                })
-                            }
-                            else {
-                                processRawResponse({
-                                    ServiceId: apiNames[request.ServiceId ?? ''].response,
-                                    Body: response
-                                })
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Unexpected HTTP error:', error);
-                            m.current.requests.delete(callerHandle);
-                        });
-                }
-                else {
-                    console.error("Unknown callerId");
-                }
-            }
-        } catch (error) {
-            console.error('Failed to send request:', error);
-            // Handle the error appropriately
-        }
-    }, [sendMessage, processRawResponse, readyState, user]);
+            call(
+               `/opcua/${apiNames[request.ServiceId ?? ''].path}`,
+               { callerHandle: callerHandle, request: { Body: request.Body } },
+               undefined,
+               user,
+               true)
+               .then(response => {
+                  if (response.code) {
+                     processRawResponse({
+                        ServiceId: apiNames[request.ServiceId ?? ''].response,
+                        Body: {
+                           ResponseHeader: {
+                              RequestHandle: callerHandle,
+                              ServiceResult: response.code,
+                              ServiceDiagnostics: { LocalizedText: 0 }, 
+                              StringTable: [response.message]
+                           }
+                        }
+                     })
+                  }
+                  else {
+                     processRawResponse({
+                        ServiceId: apiNames[request.ServiceId ?? ''].response,
+                        Body: response
+                     })
+                  }
+               })
+               .catch(error => {
+                  console.error('Unexpected HTTP error:', error);
+                  m.current.requests.delete(callerHandle);
+               });
+         }
+      } catch (error) {
+         console.error('Failed to send request:', error);
+      }
+   }, [sendMessage, processRawResponse, readyState, user]);
 
     const processMessages = React.useCallback((matcher: (message: ICompletedRequest) => boolean): ICompletedRequest[] => {
         const responses = m.current.responses;
@@ -474,51 +466,6 @@ export const SessionProvider = ({ children }: SessionProps) => {
         addAASResponseListener,
         addPushUpdateListener,
     } as ISessionContext;
-
-    /**
-     * processResponse: Function which processes the response from the server
-     * 
-     * @param response: IResponseMessage - the response from the server
-     * 
-     * The function checks the ServiceId of the response and processes the response accordingly
-     */
-    /*
-    const processResponse = React.useCallback((response: IResponseMessage) => {
-
-        if (response?.ServiceId === "AASResponse") {
-            const handle = response.Body?.RequestHeader?.AASRequestHandle;
-            const listener = m.current.aasListeners?.get(handle);
-            if (listener) {
-                listener(response);
-                m.current.aasListeners?.delete(handle);
-            } else {
-                m.current.pushUpdateListeners?.forEach(cb => cb(response));
-            }
-            return;
-        }
-
-        if (response?.ServiceId === OpcUa.DataTypeIds.CreateSessionResponse) {
-            const csr = response.Body as OpcUa.CreateSessionResponse;
-            m.current.authenticationToken = csr.AuthenticationToken;
-            activateSession(csr);
-        }
-        else if (response?.ServiceId === OpcUa.DataTypeIds.ActivateSessionResponse) {
-            const asr = response.Body as OpcUa.ActivateSessionResponse;
-            m.current.serverNonce = asr.ServerNonce;
-            m.current.sessionState = SessionState.SessionActive;
-            setSessionState(m.current.sessionState);
-        }
-        else if (response?.ServiceId === OpcUa.DataTypeIds.CloseSessionResponse) {
-            m.current.authenticationToken = undefined;
-            m.current.serverNonce = undefined;
-            m.current.sessionState = SessionState.NoSession;
-            setSessionState(m.current.sessionState);
-        }
-        else if (response) {
-            processRawResponse(response);
-        }
-    }, [activateSession, processRawResponse])
-    */
 
     return (
         <SessionContext.Provider value={sessionContext}>

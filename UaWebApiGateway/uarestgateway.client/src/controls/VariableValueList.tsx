@@ -25,11 +25,11 @@ import { BrowseContext } from '../BrowseContext';
  * It subscribes to the variables and updates the values when they change.
  */
 interface VariableValueListInternals {
-    internalHandle: number,
-    monitoredItems: IMonitoredItem[],
-    requests: number[],
-    mounted: boolean,
-    cleanedUp: boolean
+   internalHandle: number,
+   monitoredItems: IMonitoredItem[],
+   requests: number[],
+   mounted: boolean,
+   cleanedUp: boolean
 }
 
 interface VariableValueListProps {
@@ -39,8 +39,8 @@ interface VariableValueListProps {
 }
 
 interface Row {
-    name: string,
-    item: IMonitoredItem
+   name: string,
+   item: IMonitoredItem
 }
 
 export interface AccessViewItem {
@@ -64,10 +64,11 @@ export interface AccessViewItem {
  * @param m - The reference to the internal state of the component.
  */
 export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValueListProps) => {
-    const [items, setItems] = React.useState<AccessViewItem[]>(accessViewItems);
-    const [variables, setVariables] = React.useState<Row[]>([]);
-    const [counter, setCounter] = React.useState<number>(1);
-    const previousLength = React.useRef(variables.length);
+   const [items, setItems] = React.useState<AccessViewItem[]>(accessViewItems);
+   const [variables, setVariables] = React.useState<Row[]>([]);
+   const [counter, setCounter] = React.useState<number>(1);
+
+   const previousLength = React.useRef(variables.length);
 
     // The reference to the internal state of the component.
     const m = React.useRef<VariableValueListInternals>({
@@ -90,20 +91,20 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
         };
     }, []);
 
-
-    const {
-        subscriptionState,
-        addNewMonitoredItem,
-        removeMonitoredItems,
-        removeMonitoredItem,
-        createSubscription,
-        deleteSubscription,
-        subscriptionId,
-        setIsSubscriptionEnabled,
-        subscribe,
-        unsubscribe,
-        lastSequenceNumber
-    } = React.useContext(SubscriptionContext);
+   // The hook to access active subscription.
+   const {
+      subscriptionState,
+      addNewMonitoredItem,
+      removeMonitoredItems,
+      removeMonitoredItem,
+      createSubscription,
+      deleteSubscription,
+      subscriptionId,
+      setIsSubscriptionEnabled,
+      subscribe,
+      unsubscribe,
+      lastSequenceNumber
+   } = React.useContext(SubscriptionContext);
 
     const {
         browseChildren,
@@ -145,12 +146,6 @@ export const VariableValueList = ({ rootId, accessViewItems = [] }: VariableValu
         });
         setVariables(newVariables);
 
-        //if (variables.length == 0) {
-        //    createSubscription();
-        //}
-        //else {
-        //addNewMonitoredItem(items, m.current.internalHandle);
-        //}
         m.current.monitoredItems = items;
         
     }, [accessViewItems]);

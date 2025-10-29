@@ -1,11 +1,9 @@
-﻿using System.Runtime.CompilerServices;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Http.Features.Authentication;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Opc.Ua;
 using Opc.Ua.Server;
 using Opc.Ua.Client;
+using ISession = Opc.Ua.Server.ISession;
 using UaRestGateway.Server.Model;
 using UaRestGateway.Server.Service;
 
@@ -16,7 +14,7 @@ namespace UaRestGateway.Server.Controllers
         private readonly static object m_lock = new();
         private readonly IMemoryCache m_cache;
         private readonly IUACommunicationService m_communicationService;
-        private readonly Dictionary<string, Microsoft.AspNetCore.Http.ISession> m_sessions = new();
+        private readonly Dictionary<string, ISession> m_sessions = new();
  
         protected IConfiguration Configuration { get; private set; }
 
@@ -159,8 +157,8 @@ namespace UaRestGateway.Server.Controllers
 
                 if (endpoints == null || endpoints.Count == 0)
                 {
-                    var status = Server.GetStatus();
-                    throw new ApiResponseException(ErrorCodes.ServerNotRunning, $"{ErrorCodes.ServerNotRunning}. State={status.State}");
+                    var status = Server.CurrentState;
+                    throw new ApiResponseException(ErrorCodes.ServerNotRunning, $"{ErrorCodes.ServerNotRunning}. State={status}");
                 }
 
                 var ed = Server.GetEndpoints().Where(x => x.TransportProfileUri == Profiles.HttpsJsonTransport).First();

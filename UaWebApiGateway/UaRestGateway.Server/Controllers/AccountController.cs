@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using System.Net;
-using System.Text;
 using System.Text.Json;
 using UaRestGateway.Server.Model;
 

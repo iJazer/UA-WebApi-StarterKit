@@ -7,7 +7,7 @@ import TableRow from '@mui/material/TableRow/TableRow';
 import TableCell from '@mui/material/TableCell/TableCell';
 import TableBody from '@mui/material/TableBody/TableBody';
 import Paper from '@mui/material/Paper/Paper';
-import { Skeleton, Typography, useTheme } from '@mui/material';
+import { Skeleton, Typography } from '@mui/material';
 
 import * as OpcUa from 'opcua-webapi';
 import * as Web from '../Web';
@@ -32,7 +32,6 @@ interface AttributesViewProps {
 export const AttributesView = ({ reference, requestTimeout }: AttributesViewProps) => {
     const [values, setValues] = React.useState<IReadResult[]>([]);
     const nodeId = reference?.NodeId;
-    const theme = useTheme();
     const { user } = React.useContext(UserContext);
 
     const m = React.useRef<VariableValueListInternals>({

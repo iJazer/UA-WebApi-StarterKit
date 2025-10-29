@@ -7,7 +7,6 @@ import * as aas from "@aas-core-works/aas-core3.0-typescript";
 import ContextMenu from "../ContextMenu";
 import { SessionContext } from "../SessionContext";
 import { sendAASRequest } from "../utils/SendAASRequest";
-//import { IResponseMessage } from '../service/IResponseMessage';
 
 interface TreeNode {
     id: string;

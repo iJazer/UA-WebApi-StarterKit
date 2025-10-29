@@ -86,11 +86,11 @@ export const ServerStatusCard = ({ rootId }: ServerStatusCardProps) => {
    const getValue = React.useCallback((field: ServerStatusField) => {
       return variables.find(x => x.subscriberHandle === field)?.value;
    }, [variables]);
-   
+
    const valueUpdated = React.useCallback(() => {
       setCounter(counter => counter + 1);
    },[]);
-   
+
    return (
       <TypeDefinitionCard variables={variables} onValueUpdate={valueUpdated} >
          <Card sx={{ m: 4, mr: 20 }}>

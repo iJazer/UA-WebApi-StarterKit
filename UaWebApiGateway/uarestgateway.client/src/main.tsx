@@ -11,7 +11,7 @@ import SessionProvider from './SessionProvider.tsx';
 import SubscriptionProvider from './SubscriptionProvider.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  // <React.StrictMode>
+   <React.StrictMode>
       <BrowserRouter>
          <UserProvider>
             <SessionProvider>
@@ -22,5 +22,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             </SessionProvider>
          </UserProvider>
       </BrowserRouter>
- //  </React.StrictMode>
+   </React.StrictMode>
 )

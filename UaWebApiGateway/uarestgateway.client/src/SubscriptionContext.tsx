@@ -15,7 +15,7 @@ export const SubscriptionContext = React.createContext<ISubscriptionContext>({
     removeMonitoredItems: () => { },
     createSubscription: () => { },
     deleteSubscription: () => { },
-    removeMonitoredItem: () => { },      // <-- Add this
-    subscribe: () => { },                // <-- Add this
-    unsubscribe: () => { },              // <-- Add this
+    removeMonitoredItem: () => { },      
+    subscribe: () => { },                
+    unsubscribe: () => { },              
 });

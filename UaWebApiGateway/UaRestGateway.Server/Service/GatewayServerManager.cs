@@ -144,7 +144,7 @@ namespace UaRestGateway.Server.Service
             server.DiagnosticsNodeManager.DeleteNode(server.DefaultSystemContext, ObjectIds.Quantities);
 
             // request notifications when the user identity is changed. all valid users are accepted by default.
-            //server.SessionManager.ImpersonateUser += new ImpersonateEventHandler(SessionManager_ImpersonateUser);
+            server.SessionManager.ImpersonateUser += new ImpersonateEventHandler(SessionManager_ImpersonateUser);
         }
         #endregion
 
@@ -242,7 +242,7 @@ namespace UaRestGateway.Server.Service
         /// <summary>
         /// Called when a client tries to change its user identity.
         /// </summary>
-        private void SessionManager_ImpersonateUser(Session session, ImpersonateEventArgs args)
+        private void SessionManager_ImpersonateUser(ISession session, ImpersonateEventArgs args)
         {
             // check for issued token.
             if (args.NewIdentity is IssuedIdentityToken issuedToken)

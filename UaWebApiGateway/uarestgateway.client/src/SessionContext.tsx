@@ -1,6 +1,7 @@
 import React from 'react';
 import { SessionState } from './service/SessionState';
 import { ISessionContext, DefaultServerUrl } from './SessionProvider';
+import { ICompletedRequest } from './service/ICompletedRequest';
 
 
 export const SessionContext = React.createContext<ISessionContext>({

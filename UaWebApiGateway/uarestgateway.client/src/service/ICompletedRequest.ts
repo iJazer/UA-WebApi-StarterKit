@@ -6,5 +6,5 @@ export interface ICompletedRequest {
    request: IRequestMessage,
    response?: IResponseMessage,
    code?: number,
-   message?: string
+   error?: string
 }

@@ -68,7 +68,6 @@ export const SubscriptionProvider = ({ children }: SubscriptionProps) => {
    const [subscriptionState, setSubscriptionState] = React.useState<SubscriptionState>(SubscriptionState.Closed);
    const [lastSequenceNumber, setLastSequenceNumber] = React.useState<number>(0);
    const [publishCount, setPublishCount] = React.useState<number>(0);
-   //const [componentHandle] = React.useState<number>(HandleFactory.increment());
    const [subscriptionId, setSubscriptionId] = React.useState<number | undefined>(undefined); 
 
    const {
