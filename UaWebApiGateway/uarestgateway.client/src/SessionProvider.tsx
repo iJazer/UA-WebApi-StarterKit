@@ -10,7 +10,7 @@ import { SessionState } from './service/SessionState';
 import { HandleFactory } from './service/HandleFactory';
 import { call } from './opcua-utils';
 
-export const DefaultServerUrl = `wss://${location.host}/stream`;
+export const DefaultServerUrl = `ws://${location.host}/stream`;
 
 import { setNetworkMessage } from './controls/NetworkListener';
 import { SessionContext } from './SessionContext';

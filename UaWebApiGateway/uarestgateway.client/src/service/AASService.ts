@@ -1,7 +1,7 @@
 import { AASWebSocketClient } from "./AASWebSocketClient";
 
 const API_BASE = `https://${location.host}/api/v3.0`;
-const WS_BASE = `wss://${location.host}/ws`;
+const WS_BASE = `ws://${location.host}/ws`;
 
 let wsClient: AASWebSocketClient;
 

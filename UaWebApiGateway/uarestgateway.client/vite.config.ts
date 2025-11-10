@@ -62,7 +62,7 @@ export default defineConfig({
             secure: false
          },
          '^/stream': {
-            target: 'wss://localhost:7010/',
+            target: 'ws://localhost:7010/',
             ws: true,
             secure: false
            },

@@ -11,7 +11,7 @@ export async function sendAASRequest<T = any>(
 ): Promise<T> {
     const requestHandle = HandleFactory.increment();
 
-    const defaultAASServerUrl = `wss://${location.host}/stream`;
+    const defaultAASServerUrl = `ws://${location.host}/stream`;
     if (!session.serverUrl && session.setServerUrl) {
         console.log("[AAS] Setting default WebSocket URL...");
         session.setServerUrl(defaultAASServerUrl);

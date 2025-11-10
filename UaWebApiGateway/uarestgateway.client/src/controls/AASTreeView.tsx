@@ -116,7 +116,7 @@ const AASTreeView: React.FC = () => {
         }
 
         return {
-            id: crypto.randomUUID(),
+            id: generateUUIDv4(),
             name: label,
             type: element.constructor.name,
             original: element,
@@ -359,6 +359,7 @@ function encodeId(id: string): string {
 }
 
 function getSubmodelElementAbbreviation(name: string): string {
+    console.log("Getting abbreviation for", name);
     switch (name) {
         case "Property": return "Prop";
         case "MultiLanguageProperty": return "MLP";
@@ -375,6 +376,15 @@ function getSubmodelElementAbbreviation(name: string): string {
         case "Capability": return "Cap";
         default: return "unnamed";
     }
+}
+
+function generateUUIDv4(): string {
+    // Generates a random UUID v4 string
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        const r = Math.random() * 16 | 0;
+        const v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
 }
 
 export default AASTreeView;
