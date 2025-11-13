@@ -275,7 +275,10 @@ const AASTreeView: React.FC = () => {
                             const idShort = (original as any)?.idShort ?? item.name;
                             const value = item.value ?? (original as any)?.value ?? null;
                             return (
-                                <tr key={idx} onContextMenu={(e) => handleAccessViewContextMenu(e, idx)} style={{ cursor: "context-menu" }}>
+                                <tr key={idx}
+                                    onContextMenu={(e) => handleAccessViewContextMenu(e, idx)}
+                                    onDoubleClick={(e) => handleAccessViewContextMenu(e, idx)}
+                                    style={{ cursor: "context-menu" }}>
                                     <td style={tdStyle}>{idShort}</td>
                                     <td style={{ ...tdStyle, whiteSpace: "nowrap" }}>{renderValue(value)}</td>
                                 </tr>
@@ -300,7 +303,8 @@ const AASTreeView: React.FC = () => {
                     padding: "4px 0",
                     zIndex: 1000
                 }} onMouseLeave={() => setAccessViewContextMenu(null)}>
-                    <li style={{ padding: "4px 12px", cursor: "pointer" }} onClick={() => handleRemoveAccessViewItem(accessViewContextMenu.index)}>
+                    <li style={{ padding: "4px 12px", cursor: "pointer" }}
+                        onClick={() => handleRemoveAccessViewItem(accessViewContextMenu.index)}>
                         Remove from Access View
                     </li>
                 </ul>
@@ -315,7 +319,8 @@ const AASTreeView: React.FC = () => {
                     setSelected(node.original);
                     await refreshTreeNode(node);
                 }}
-                onContextMenu={(e) => { e.preventDefault(); e.stopPropagation(); handleContextMenu(e, node); }}>
+                onContextMenu={(e) => { e.preventDefault(); e.stopPropagation(); handleContextMenu(e, node); }}
+                onDoubleClick={(e) => { e.preventDefault(); e.stopPropagation(); handleContextMenu(e, node); }}>
                 {node.children?.map(renderTree)}
             </TreeItem>
         );

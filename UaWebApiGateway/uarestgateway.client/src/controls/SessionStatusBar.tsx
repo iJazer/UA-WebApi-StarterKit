@@ -57,16 +57,16 @@ export const SessionStatusBar = () => {
                     {(sessionState === SessionState.Disconnected) ? <PlayArrowIcon /> : <StopIcon />}
                 </CustomButton> */}
             <Button sx={{ mr: 2 }} onClick={() => handleConnect(sessionState)} >
-               <Typography variant='body2' sx={{ pr: 4 }}>Websocket:</Typography>
-               <Typography variant='body2' fontWeight={'bolder'}>{SessionState[sessionState]}</Typography>
+                   <Typography variant='body2' sx={{ pr: 4, color:'black'}}>Websocket:</Typography>
+                   <Typography variant='body2' sx={{ color: 'black', fontWeight: 'bolder'}}>{SessionState[sessionState]}</Typography>
             </Button>
             <Button sx={{ my: 2 }} onClick={() => handleSubscription(subscriptionState)}>
-               <Typography variant='body2' sx={{ pr: 4 }}>Subscription:</Typography>
-               <Typography variant='body2' fontWeight={'bolder'}>{SubscriptionState[subscriptionState]}</Typography>
+                   <Typography variant='body2' sx={{ pr: 4, color: 'black' }}>Subscription:</Typography>
+                   <Typography variant='body2' sx={{ color: 'black', fontWeight: 'bolder' }}>{SubscriptionState[subscriptionState]}</Typography>
             </Button>
             <Button sx={{ my: 2 }}>
-               <Typography variant='body2' sx={{ pr: 4 }}>Last Publish:</Typography>
-               <Typography variant='body2' fontWeight={'bolder'}>{lastSequenceNumber ?? '---'}</Typography>
+                   <Typography variant='body2' sx={{ pr: 4, color: 'black' }}>Last Publish:</Typography>
+                   <Typography variant='body2' sx={{ color: 'black', fontWeight: 'bolder' }}>{lastSequenceNumber ?? '---'}</Typography>
             </Button>
          </Box>
       </Toolbar>

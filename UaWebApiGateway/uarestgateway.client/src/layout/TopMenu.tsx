@@ -107,10 +107,10 @@ export const TopMenu = ({ appId, pages, title, subtitle }: TopMenuProps) => {
            </Box>   
          <Box ml={6} mr="auto" sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             <Box ml={2}>
-               <Typography variant="subtitle1" component="div" noWrap>
+                   <Typography variant="subtitle1" component="div" noWrap sx={{ color: 'black', fontWeight: 'bolder' }}>
                   {title}
                </Typography>
-               <Typography variant="body1" component="div" sx={{ fontWeight: 'lighter', fontSize: 'smaller' }} noWrap>
+                   <Typography variant="body1" component="div" sx={{ color: 'black', fontSize: 'smaller' }} noWrap>
                   {`${(subtitle?.length)?subtitle:''}`}
                </Typography>
             </Box>

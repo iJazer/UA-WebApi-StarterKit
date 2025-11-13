@@ -144,7 +144,8 @@ const BrowseTreeNode = ({ parentId, selectionId, onSelectionChanged, onAddAccess
                         nodeId={`${node.reference.NodeId}`}
                         label={node?.reference?.DisplayName?.Text ?? node?.reference?.BrowseName}
                         icon={<NodeIcon nodeClass={node?.reference?.NodeClass} typeDefinitionId={node?.reference?.TypeDefinition} />}
-                        onContextMenu={(event) => handleContextMenu(event, node?.reference?.DisplayName?.Text ?? '')}>
+                        onContextMenu={(event) => handleContextMenu(event, node?.reference?.DisplayName?.Text ?? '')}
+                        onDoubleClick={(event) => handleContextMenu(event, node?.reference?.DisplayName?.Text ?? '')}>
                         <BrowseTreeNode
                             parentId={node.reference.NodeId}
                             selectionId={selectionId}
