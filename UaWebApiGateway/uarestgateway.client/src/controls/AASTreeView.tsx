@@ -105,7 +105,8 @@ const AASTreeView: React.FC = () => {
     };
 
     const elementToTree = async (element: aas.types.ISubmodelElement, aasId: string, submodelId: string, idShort: string, parentPath: string): Promise<TreeNode> => {
-        const label = `${getSubmodelElementAbbreviation(element.constructor.name)}: ${element.idShort}`;
+        //const label = `${getSubmodelElementAbbreviation(element.constructor.name)}: ${element.idShort}`;
+        const label = `${getSubmodelElementAbbreviation(element)}: ${element.idShort}`;
         const currentPath = parentPath ? `${parentPath}.${idShort}` : idShort;
         const children: TreeNode[] = [];
 
@@ -363,24 +364,41 @@ function encodeId(id: string): string {
     return btoa(id).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 
-function getSubmodelElementAbbreviation(name: string): string {
-    console.log("Getting abbreviation for", name);
-    switch (name) {
-        case "Property": return "Prop";
-        case "MultiLanguageProperty": return "MLP";
-        case "Range": return "Range";
-        case "ReferenceElement": return "RefEle";
-        case "RelationshipElement": return "RelEle";
-        case "AnnotatedRelationshipElement": return "ARelEle";
-        case "File": return "File";
-        case "Blob": return "Blob";
-        case "SubmodelElementCollection": return "SMC";
-        case "SubmodelElementList": return "SML";
-        case "Entity": return "Ent";
-        case "BasicEventElement": return "Evt";
-        case "Capability": return "Cap";
-        default: return "unnamed";
-    }
+function getSubmodelElementAbbreviation(el: aas.types.ISubmodelElement): string {
+    const dbg = {
+        modelType: (el as any).modelType,
+        ctorName: el?.constructor?.name,
+        isProperty: aas.types.isProperty(el),
+        isMLP: aas.types.isMultiLanguageProperty(el),
+        isRange: aas.types.isRange(el),
+        isRefEle: aas.types.isReferenceElement(el),
+        isRelEle: aas.types.isRelationshipElement(el),
+        isARelEle: aas.types.isAnnotatedRelationshipElement(el),
+        isFile: aas.types.isFile(el),
+        isBlob: aas.types.isBlob(el),
+        isSMC: aas.types.isSubmodelElementCollection(el),
+        isSML: aas.types.isSubmodelElementList(el),
+        isEntity: aas.types.isEntity(el),
+        isEvt: aas.types.isBasicEventElement(el),
+        isCap: aas.types.isCapability(el),
+    };
+
+    if (aas.types.isProperty(el)) return "Prop";
+    if (aas.types.isMultiLanguageProperty(el)) return "MLP";
+    if (aas.types.isRange(el)) return "Range";
+    if (aas.types.isReferenceElement(el)) return "RefEle";
+    if (aas.types.isRelationshipElement(el)) return "RelEle";
+    if (aas.types.isAnnotatedRelationshipElement(el)) return "ARelEle";
+    if (aas.types.isFile(el)) return "File";
+    if (aas.types.isBlob(el)) return "Blob";
+    if (aas.types.isSubmodelElementCollection(el)) return "SMC";
+    if (aas.types.isSubmodelElementList(el)) return "SML";
+    if (aas.types.isEntity(el)) return "Ent";
+    if (aas.types.isBasicEventElement(el)) return "Evt";
+    if (aas.types.isCapability(el)) return "Cap";
+
+    console.warn("[AAS-DEBUG] getSubmodelElementAbbreviation: unknown SME type, returning 'unnamed'", dbg);
+    return "unnamed";
 }
 
 function generateUUIDv4(): string {
